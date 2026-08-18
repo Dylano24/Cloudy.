@@ -7,40 +7,24 @@ import { Footer } from "@/components/layout/footer";
 import { Tip4ServScript } from "@/components/providers/tip4serv-script";
 import { getStoreWhoami } from "@/lib/api-client";
 
-const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-});
+const inter = Inter({ variable: "--font-sans", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Duster Theme - Premium Gaming Products",
-  description: "Your one-stop shop for premium gaming products, VIP ranks, and exclusive perks",
-  icons: {
-    icon: '/duster-theme-logo.png',
-  },
+  title: "Cloudy | Rust Store",
+  description: "The official Cloudy Rust store for ranks, kits and exclusive server perks.",
 };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  // Fetch store info server-side for SSR
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const initialStore = await getStoreWhoami();
 
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} antialiased`}
-        suppressHydrationWarning
-      >
+      <body className={inter.variable + " antialiased"} suppressHydrationWarning>
         <QueryProvider>
           <Tip4ServScript />
           <div className="min-h-screen flex flex-col">
             <Header initialStore={initialStore} />
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
             <Footer initialStore={initialStore} />
           </div>
         </QueryProvider>
