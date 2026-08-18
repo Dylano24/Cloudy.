@@ -1,74 +1,41 @@
 'use client';
 
+import Link from 'next/link';
+import { ArrowRight, Package, TrendingUp } from 'lucide-react';
 import { useProducts } from '@/hooks/use-api';
 import { ProductCard } from '@/components/product/product-card';
-import { ArrowRight, TrendingUp } from 'lucide-react';
-import Link from 'next/link';
 
 export function ProductsGrid() {
   const { data: products, isLoading } = useProducts({ maxPage: 12, onlyEnabled: true });
-
-  const featuredProducts = products?.products.filter(p => p.featured) || [];
-  const allProducts = products?.products || [];
+  const featured = products?.products.filter(product => product.featured) || [];
+  const all = products?.products || [];
+  const shown = featured.length > 0 ? featured.slice(0, 4) : all.slice(0, 8);
 
   return (
-    <>
-      {/* Featured Products */}
-      {featuredProducts.length > 0 ? (
-        <section className="py-16 relative">
-          <div className="container mx-auto px-4">
-            <div className="flex items-center gap-3 mb-8">
-              <TrendingUp className="w-6 h-6 text-primary" />
-              <h2 className="text-3xl font-bold">Featured Products</h2>
+    <section className="relative py-12">
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <div className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-cyan-300">
+              {featured.length > 0 ? <TrendingUp className="h-4 w-4" /> : <Package className="h-4 w-4" />} Featured selection
             </div>
-
-            {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="h-96 rounded-xl bg-card border border-border animate-pulse" />
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {featuredProducts.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} hideFeaturedBadge />
-                ))}
-              </div>
-            )}
+            <h3 className="text-3xl font-black text-white">Popular upgrades</h3>
           </div>
-        </section>
-      ) : null}
-
-      {/* All Products */}
-      <section className="py-16 relative">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-3xl font-bold">All Products</h2>
-            <Link href="/shop" className="text-primary hover:text-primary/80 font-medium flex items-center gap-2">
-              View All
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="h-96 rounded-xl bg-card border border-border animate-pulse" />
-              ))}
-            </div>
-          ) : allProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {allProducts.slice(0, 8).map((product) => (
-                <ProductCard key={product.id} product={product} hideFeaturedBadge />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-muted">No products available at the moment.</p>
-            </div>
-          )}
+          <Link href="/shop" className="hidden items-center gap-2 font-bold text-cyan-300 hover:text-cyan-200 sm:flex">View all <ArrowRight className="h-4 w-4" /></Link>
         </div>
-      </section>
-    </>
+
+        {isLoading ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[...Array(6)].map((_, i) => <div key={i} className="h-[420px] animate-pulse rounded-2xl border border-border bg-card" />)}
+          </div>
+        ) : shown.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {shown.map(product => <ProductCard key={product.id} product={product} hideFeaturedBadge />)}
+          </div>
+        ) : (
+          <div className="cloud-panel rounded-2xl py-16 text-center text-muted">Products will appear here when they are available.</div>
+        )}
+      </div>
+    </section>
   );
 }
