@@ -60,13 +60,17 @@ export function StoreShowcase() {
           loop
           playsInline
           preload="metadata"
-          poster="/images/cloudy-battlefield.svg"
+          poster="/images/cloudy-rust-4k.svg"
         >
           <source src="/videos/cloudy-rust-bg.mp4" type="video/mp4" />
           <source src="/videos/cloudy-rust-bg.webm" type="video/webm" />
         </video>
 
-        <div className={styles.fallback} aria-hidden="true" />
+        <div
+          className={styles.fallback}
+          style={{ backgroundImage: "url('/images/cloudy-rust-4k.svg')" }}
+          aria-hidden="true"
+        />
         <div className={styles.blue} aria-hidden="true" />
         <div className={styles.vignette} aria-hidden="true" />
         <div className={styles.grid} aria-hidden="true" />
