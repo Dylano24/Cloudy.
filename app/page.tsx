@@ -1,132 +1,131 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowRight,
-  Check,
-  Crosshair,
+  CheckCircle2,
+  Clock3,
+  Copy,
   Gamepad2,
-  LockKeyhole,
+  MessageCircle,
+  Server,
   ShieldCheck,
   Sparkles,
   Zap,
 } from 'lucide-react';
 import { ProductsGrid } from '@/components/home/products-grid';
+import { WipeCountdown } from '@/components/home/wipe-countdown';
 
-const advantages = [
-  [Zap, 'Instant delivery', 'Fast delivery through the Cloudy store system.'],
-  [ShieldCheck, 'Secure checkout', 'Tip4Serv-powered checkout and account linking.'],
-  [Gamepad2, 'Built for Rust', 'Ranks, kits and perks made for Cloudy players.'],
+const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
+
+const features = [
+  [Zap, 'Fast delivery', 'Packages are prepared for automatic Tip4Serv delivery.'],
+  [ShieldCheck, 'Secure checkout', 'Payments and product delivery stay handled by Tip4Serv.'],
+  [Gamepad2, 'Made for Rust', 'Ranks, kits and perks designed around the Cloudy server.'],
 ] as const;
 
 export default function HomePage() {
   return (
-    <div className="cloudy-home">
-      <section className="cloudy-hero">
-        <div className="cloudy-hero-media" />
-        <div className="cloudy-hero-blue" />
-        <div className="cloudy-hero-vignette" />
-        <div className="cloudy-scanlines" />
+    <div className="cloudy-home-v2">
+      <section className="cloudy-landing-hero">
+        <div className="cloudy-landing-scene" aria-hidden="true" />
+        <div className="cloudy-landing-tint" aria-hidden="true" />
+        <div className="cloudy-landing-noise" aria-hidden="true" />
 
-        <div className="cloudy-shell cloudy-hero-grid">
-          <div className="cloudy-hero-copy">
-            <div className="cloudy-eyebrow">
-              <Crosshair size={15} />
-              Official Cloudy Rust Server
-            </div>
-
-            <div className="cloudy-hero-logo-row">
-              <div className="cloudy-big-c"><span>C</span></div>
-              <div className="cloudy-logo-lines">
-                <span>Premium Rust</span>
-                <span>Store Experience</span>
-              </div>
-            </div>
-
-            <h1 className="cloudy-main-title">
-              <span>Welcome to</span>
-              <strong>Cloudy</strong>
-            </h1>
-
-            <p className="cloudy-hero-text">
-              Enter the battlefield. Upgrade your Rust experience with exclusive ranks,
-              kits and premium perks built for the Cloudy community.
-            </p>
-
-            <div className="cloudy-actions">
-              <Link href="/shop" className="cloudy-button cloudy-primary">
-                Explore store <ArrowRight size={19} />
-              </Link>
-              <a href="https://discord.gg/QnWNz2dKCE" className="cloudy-button cloudy-secondary">
-                Join Discord
-              </a>
-            </div>
-
-            <div className="cloudy-mini-stats">
-              <div><strong>RUST</strong><span>Game server</span></div>
-              <div><strong>FAST</strong><span>Delivery</span></div>
-              <div><strong>SECURE</strong><span>Checkout</span></div>
-              <div><strong>PREMIUM</strong><span>Experience</span></div>
-            </div>
+        <div className="cloudy-landing-inner">
+          <div className="cloudy-landing-badge">
+            <Sparkles size={14} />
+            Welcome to Cloudy Rust
           </div>
 
-          <aside className="cloudy-command-card">
-            <div className="cloudy-command-top">
-              <div>
-                <span>Cloudy Network</span>
-                <h2>Battlefield Store</h2>
-              </div>
-              <div className="cloudy-live"><i /> ACTIVE</div>
-            </div>
+          <div className="cloudy-landing-logo">
+            <span className="cloudy-logo-halo" />
+            <Image src="/images/cloudy-c.svg" alt="Cloudy C logo" width={170} height={170} priority />
+          </div>
 
-            <div className="cloudy-command-logo">C</div>
+          <h1>
+            <span>CLOUDY</span>
+            <strong>RUST</strong>
+          </h1>
 
-            <div className="cloudy-command-data">
-              <div><span>SERVER</span><strong>Cloudy Main</strong></div>
-              <div><span>REGION</span><strong>Europe</strong></div>
-              <div><span>GAME</span><strong>Rust</strong></div>
-            </div>
+          <p className="cloudy-landing-subtitle">
+            Premium Rust gameplay, custom progression and a community-first experience.
+            Built to look clean, feel fast and grow with the server.
+          </p>
 
-            <div className="cloudy-command-feature">
-              <LockKeyhole size={18} />
-              <div>
-                <strong>Protected purchases</strong>
-                <span>Secure Cloudy store checkout</span>
-              </div>
-            </div>
-
-            <Link href="/shop" className="cloudy-command-button">
-              Open Cloudy Store <ArrowRight size={18} />
+          <div className="cloudy-landing-actions">
+            <Link href="/shop" className="cloudy-cta-primary">
+              Open Store <ArrowRight size={18} />
             </Link>
-          </aside>
+            <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-cta-secondary">
+              <MessageCircle size={18} /> Join Discord
+            </a>
+          </div>
+
+          <div className="cloudy-scroll-hint">
+            <span />
+            Scroll to explore
+          </div>
         </div>
       </section>
 
-      <section className="cloudy-section">
-        <div className="cloudy-shell cloudy-intro">
-          <div>
-            <span className="cloudy-section-label"><Sparkles size={15} /> Cloudy Experience</span>
-            <h2>Built for players.<br /><span>Designed to stand out.</span></h2>
-          </div>
+      <section className="cloudy-content-section cloudy-wipe-section" id="server">
+        <div className="cloudy-section-heading">
+          <span><Clock3 size={15} /> Next server wipe</span>
+          <h2>COUNTDOWN TO THE NEXT WIPE</h2>
+          <p>This countdown is temporary and can later be connected to your real Rust wipe schedule.</p>
+        </div>
 
-          <div className="cloudy-intro-copy">
-            <p>
-              Cloudy combines a premium Rust server experience with a clean,
-              fast and professionally designed store.
-            </p>
-            <div className="cloudy-checks">
-              {['Premium ranks and kits', 'Fast package delivery', 'Secure checkout flow', 'Exclusive Cloudy perks'].map(item => (
-                <div key={item}><span><Check size={14} /></span>{item}</div>
-              ))}
+        <WipeCountdown />
+
+        <div className="cloudy-server-grid">
+          <article className="cloudy-server-card">
+            <div className="cloudy-server-card-top">
+              <span className="cloudy-server-icon"><Server size={23} /></span>
+              <span className="cloudy-status-pill cloudy-status-pending">Setup</span>
             </div>
-          </div>
+            <h3>Cloudy Main</h3>
+            <p>Primary Cloudy Rust server. Live player data will appear here once the game server is connected.</p>
+            <div className="cloudy-server-meta">
+              <div><span>Region</span><strong>EU</strong></div>
+              <div><span>Game</span><strong>Rust</strong></div>
+              <div><span>Connection</span><strong>Coming soon</strong></div>
+            </div>
+            <button type="button" className="cloudy-copy-button" disabled>
+              <Copy size={16} /> Server IP after integration
+            </button>
+          </article>
+
+          <article className="cloudy-server-card cloudy-server-card-accent">
+            <div className="cloudy-server-card-top">
+              <span className="cloudy-server-icon"><ShieldCheck size={23} /></span>
+              <span className="cloudy-status-pill">Cloudy</span>
+            </div>
+            <h3>Built for the community</h3>
+            <p>Clean progression, premium perks and a storefront that stays connected to your Tip4Serv products.</p>
+            <ul className="cloudy-server-list">
+              <li><CheckCircle2 size={17} /> Custom store experience</li>
+              <li><CheckCircle2 size={17} /> Tip4Serv checkout ready</li>
+              <li><CheckCircle2 size={17} /> Nitrado/server integration ready</li>
+            </ul>
+            <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-server-link">
+              Join the community <ArrowRight size={17} />
+            </a>
+          </article>
         </div>
       </section>
 
-      <section className="cloudy-section cloudy-feature-section">
-        <div className="cloudy-shell cloudy-feature-grid">
-          {advantages.map(([Icon, title, text], index) => (
-            <article className="cloudy-feature-card" key={title}>
-              <b>0{index + 1}</b>
-              <div className="cloudy-feature-icon"><Icon size={24} /></div>
+      <section className="cloudy-content-section cloudy-feature-zone">
+        <div className="cloudy-section-heading">
+          <span>Why Cloudy</span>
+          <h2>BUILT TO FEEL PREMIUM</h2>
+          <p>The visual system is based on your own dark Rust design, rebuilt with Cloudy blue branding.</p>
+        </div>
+
+        <div className="cloudy-feature-grid-v2">
+          {features.map(([Icon, title, text], index) => (
+            <article key={title} className="cloudy-feature-v2">
+              <span className="cloudy-feature-index">0{index + 1}</span>
+              <div className="cloudy-feature-symbol"><Icon size={24} /></div>
               <h3>{title}</h3>
               <p>{text}</p>
             </article>
@@ -134,92 +133,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="products" className="cloudy-store-section">
-        <div className="cloudy-store-glow" />
-        <div className="cloudy-shell">
-          <div className="cloudy-store-heading">
-            <span>Cloudy Store</span>
-            <h2>Choose your <strong>upgrade</strong></h2>
-            <p>Select your rank, kit or upgrade and take your Cloudy experience to the next level.</p>
-          </div>
+      <section className="cloudy-store-zone" id="store">
+        <div className="cloudy-store-ambient" aria-hidden="true" />
+        <div className="cloudy-section-heading cloudy-store-title-v2">
+          <span>Cloudy Store</span>
+          <h2>CHOOSE YOUR UPGRADE</h2>
+          <p>Your real Tip4Serv products remain the source of truth for the shop.</p>
         </div>
         <ProductsGrid />
       </section>
 
-      <section className="cloudy-section">
-        <div className="cloudy-shell cloudy-premium-grid">
-          <div className="cloudy-premium-image">
-            <div className="cloudy-premium-overlay" />
-            <div className="cloudy-premium-crosshair"><Crosshair size={54} /></div>
+      <section className="cloudy-content-section cloudy-community-zone">
+        <div className="cloudy-community-card">
+          <div className="cloudy-community-logo">
+            <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={92} height={92} />
           </div>
-
-          <div className="cloudy-premium-content">
-            <span className="cloudy-section-label"><Crosshair size={15} /> Dominate the battlefield</span>
-            <h2>More than<br />just a store.</h2>
-            <p>
-              Your Cloudy rank is part of your full Rust experience. Unlock perks,
-              support the server and stand out from the rest of the battlefield.
-            </p>
-
-            <div className="cloudy-premium-points">
-              {[
-                ['01', 'Exclusive rewards', 'Access perks available only to Cloudy supporters.'],
-                ['02', 'Fast delivery', 'Purchases are processed through the store system.'],
-                ['03', 'Community focused', 'Every purchase helps support the Cloudy server.'],
-              ].map(([n, title, text]) => (
-                <div key={n}>
-                  <span>{n}</span>
-                  <div><strong>{title}</strong><p>{text}</p></div>
-                </div>
-              ))}
-            </div>
-
-            <Link href="/shop" className="cloudy-button cloudy-primary">
-              View all packages <ArrowRight size={19} />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="cloudy-section cloudy-faq-section">
-        <div className="cloudy-shell">
-          <div className="cloudy-store-heading">
-            <span>Support</span>
-            <h2>Frequently asked <strong>questions</strong></h2>
-          </div>
-
-          <div className="cloudy-faq">
-            <details open>
-              <summary>When do I receive my purchase?</summary>
-              <p>Purchases are normally delivered after successful payment and correct account identification.</p>
-            </details>
-            <details>
-              <summary>What if I bought the wrong package?</summary>
-              <p>Purchases are your responsibility. Select the correct package and link the correct account before checkout.</p>
-            </details>
-            <details>
-              <summary>What if my purchase does not arrive?</summary>
-              <p>Open a ticket in the Cloudy Discord with your order information so support can investigate it.</p>
-            </details>
-          </div>
-        </div>
-      </section>
-
-      <section className="cloudy-final">
-        <div className="cloudy-final-bg" />
-        <div className="cloudy-shell cloudy-final-content">
-          <div className="cloudy-final-c">C</div>
-          <span>Ready for Cloudy?</span>
-          <h2>Enter the battlefield.</h2>
-          <p>Choose your upgrade and become part of the Cloudy Rust community.</p>
-          <div className="cloudy-actions cloudy-final-actions">
-            <Link href="/shop" className="cloudy-button cloudy-primary">
-              Open store <ArrowRight size={19} />
-            </Link>
-            <a href="https://discord.gg/QnWNz2dKCE" className="cloudy-button cloudy-secondary">
-              Join Discord
-            </a>
-          </div>
+          <span>Cloudy Rust Community</span>
+          <h2>READY TO JOIN?</h2>
+          <p>Join Discord for announcements, wipe information, support and the latest Cloudy updates.</p>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-cta-primary">
+            <MessageCircle size={18} /> Join Discord
+          </a>
         </div>
       </section>
     </div>
