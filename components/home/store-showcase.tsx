@@ -17,7 +17,7 @@ const packages = [
       '1x Timed Explosive Charge (C4)',
       '4x Satchel Charges',
       '1,000 HQM',
-      '2 extra homes',
+      '24h claim cooldown',
     ],
   },
   {
@@ -34,6 +34,7 @@ const packages = [
       '8x Rockets',
       '2,500 HQM',
       '1x Auto Turret',
+      '24h claim cooldown',
     ],
   },
   {
@@ -49,7 +50,7 @@ const packages = [
       '4,000 HQM',
       'Turret ammo & electrical parts',
       'Medical combat supplies',
-      '36h kit cooldown',
+      '24h claim cooldown',
     ],
   },
 ] as const;
@@ -88,6 +89,7 @@ export function StoreShowcase() {
           <p>
             Every player already gets the free kit and blueprints. Cloudy upgrades focus on
             high-value weapons, explosives, HQM, turrets and serious raid or defense power.
+            Every package can be claimed once every 24 hours.
           </p>
           <div className={styles.heroActions}>
             <Link href="/shop" className="cloudy-cta-primary">
@@ -104,7 +106,10 @@ export function StoreShowcase() {
         <div className={styles.rankHeading}>
           <span>Survive Build Dominate</span>
           <h3>CHOOSE YOUR LOADOUT</h3>
-          <p>Free kit and blueprints are already standard. These packages focus on combat, boom, HQM and base defense.</p>
+          <p>
+            Free kit and blueprints are already standard. These packages focus on combat, boom,
+            HQM and base defense, with a 24-hour claim cooldown on every package.
+          </p>
         </div>
 
         <div className={styles.rankGrid}>
