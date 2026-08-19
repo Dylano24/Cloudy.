@@ -12,7 +12,7 @@ import {
   Sparkles,
   Zap,
 } from 'lucide-react';
-import { ProductsGrid } from '@/components/home/products-grid';
+import { StoreShowcase } from '@/components/home/store-showcase';
 import { WipeCountdown } from '@/components/home/wipe-countdown';
 
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
@@ -133,15 +133,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="cloudy-store-zone" id="store">
-        <div className="cloudy-store-ambient" aria-hidden="true" />
-        <div className="cloudy-section-heading cloudy-store-title-v2">
-          <span>Cloudy Store</span>
-          <h2>CHOOSE YOUR UPGRADE</h2>
-          <p>Your real Tip4Serv products remain the source of truth for the shop.</p>
-        </div>
-        <ProductsGrid />
-      </section>
+      <StoreShowcase />
 
       <section className="cloudy-content-section cloudy-community-zone">
         <div className="cloudy-community-card">
