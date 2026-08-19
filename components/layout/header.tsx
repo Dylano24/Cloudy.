@@ -31,7 +31,7 @@ export function Header(_props: HeaderProps) {
           </span>
           <span className="cloudy-brand-copy">
             <strong>CLOUDY RUST</strong>
-            <small>Premium Rust Network</small>
+            <small>Survive Build Dominate</small>
           </span>
         </Link>
 
