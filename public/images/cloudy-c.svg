@@ -3,26 +3,29 @@
     <radialGradient id="bg" cx="36%" cy="25%" r="78%">
       <stop offset="0" stop-color="#252a31"/>
       <stop offset="0.60" stop-color="#181b20"/>
-      <stop offset="1" stop-color="#0b0e12"/>
+      <stop offset="1" stop-color="#0a0d11"/>
     </radialGradient>
-    <filter id="ringGlow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="8" result="blur"/>
+    <filter id="blueGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    <filter id="whiteSoft" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#ffffff" flood-opacity="0.08"/>
+    </filter>
   </defs>
 
-  <!-- Dark Discord-style badge -->
-  <circle cx="256" cy="256" r="244" fill="url(#bg)" stroke="#10151b" stroke-width="12"/>
+  <circle cx="256" cy="256" r="245" fill="url(#bg)" stroke="#080b0f" stroke-width="10"/>
 
-  <!-- Permanent Cloudy blue ring: always visible everywhere the logo is used -->
-  <circle cx="256" cy="256" r="235" fill="none" stroke="#27baff" stroke-opacity="0.88" stroke-width="4" filter="url(#ringGlow)"/>
-  <circle cx="256" cy="256" r="220" fill="none" stroke="#7bdcff" stroke-opacity="0.12" stroke-width="2"/>
+  <!-- Permanent Cloudy blue outline -->
+  <circle cx="256" cy="256" r="235" fill="none" stroke="#22b8ff" stroke-width="5" stroke-opacity="0.95" filter="url(#blueGlow)"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#8cddff" stroke-width="2" stroke-opacity="0.15"/>
 
-  <!-- Sharper Cloudy C based on the Discord brand mark -->
-  <path fill="#ffffff" d="M389 146H249c-95 0-162 49-162 122 0 53 34 97 91 120l39-55c-42-13-67-37-67-70 0-41 38-68 100-68h98l41-49Z"/>
-  <path fill="#ffffff" d="M178 346 329 249h71l-98 77h-70l-54 39Z"/>
-  <path fill="#171a1f" d="M214 222h107l-55 38-76 26c-8-8-13-18-13-30 0-16 10-29 25-34Z"/>
+  <!-- C traced from the Cloudy Discord avatar reference -->
+  <g fill="#ffffff" filter="url(#whiteSoft)">
+    <path d="M384 153.6H219L199.1 159.3L173.5 173.5L145.1 204.8L133.7 227.6L128 247.5V261.7L125.2 264.5L130.8 307.2L145.1 338.5L170.7 366.9L179.2 372.6H184.9L196.3 358.4L193.4 361.2L190.6 355.6L207.6 338.5L250.3 307.2L207.6 324.3L193.4 310L187.7 298.7L184.9 275.9L182 273.1L184.9 250.3L193.4 230.4L213.3 210.5L238.9 199.1H341.3L384 153.6Z"/>
+    <path d="M184.9 389.7L199.1 381.2L224.7 389.7H327.1L335.6 372.6L355.6 352.7L381.2 341.3H241.8L216.2 355.6L184.9 389.7Z"/>
+  </g>
 </svg>
