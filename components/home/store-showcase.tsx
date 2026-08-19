@@ -9,6 +9,7 @@ const packages = [
     subtitle: 'Starter access',
     icon: Star,
     badge: 'Entry',
+    featured: false,
     features: ['Starter kit access', 'Queue priority', 'Cloudy supporter tag', 'Exclusive starter perks'],
   },
   {
@@ -24,6 +25,7 @@ const packages = [
     subtitle: 'Top tier status',
     icon: Crown,
     badge: 'Top Tier',
+    featured: false,
     features: ['Legend kit access', 'Highest queue priority', 'Premium server perks', 'Maximum Cloudy status'],
   },
 ] as const;
