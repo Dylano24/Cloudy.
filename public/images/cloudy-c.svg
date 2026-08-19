@@ -1,21 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Cloudy C logo">
   <defs>
-    <radialGradient id="bg" cx="38%" cy="28%" r="78%">
-      <stop offset="0" stop-color="#25272d"/>
-      <stop offset="0.62" stop-color="#1d1f24"/>
-      <stop offset="1" stop-color="#17191e"/>
+    <radialGradient id="bg" cx="36%" cy="25%" r="78%">
+      <stop offset="0" stop-color="#252a31"/>
+      <stop offset="0.60" stop-color="#181b20"/>
+      <stop offset="1" stop-color="#0b0e12"/>
     </radialGradient>
+    <filter id="ringGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
 
-  <circle cx="256" cy="256" r="248" fill="url(#bg)"/>
+  <!-- Dark Discord-style badge -->
+  <circle cx="256" cy="256" r="244" fill="url(#bg)" stroke="#10151b" stroke-width="12"/>
 
-  <!-- Cloudy C: broad upper hook with the sharp lower slash used by the Discord brand mark -->
-  <path
-    fill="#ffffff"
-    d="M386 143H247c-91 0-157 49-157 121 0 54 34 101 91 124l40-51c-43-14-69-41-69-77 0-42 38-70 96-70h99l39-47Z"
-  />
-  <path
-    fill="#ffffff"
-    d="M180 352 326 257h50l-78 61h-55l-63 46Z"
-  />
+  <!-- Permanent Cloudy blue ring: always visible everywhere the logo is used -->
+  <circle cx="256" cy="256" r="235" fill="none" stroke="#27baff" stroke-opacity="0.88" stroke-width="4" filter="url(#ringGlow)"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#7bdcff" stroke-opacity="0.12" stroke-width="2"/>
+
+  <!-- Sharper Cloudy C based on the Discord brand mark -->
+  <path fill="#ffffff" d="M389 146H249c-95 0-162 49-162 122 0 53 34 97 91 120l39-55c-42-13-67-37-67-70 0-41 38-68 100-68h98l41-49Z"/>
+  <path fill="#ffffff" d="M178 346 329 249h71l-98 77h-70l-54 39Z"/>
+  <path fill="#171a1f" d="M214 222h107l-55 38-76 26c-8-8-13-18-13-30 0-16 10-29 25-34Z"/>
 </svg>
