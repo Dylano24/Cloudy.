@@ -6,10 +6,15 @@ import { Menu, MessageCircle, ShoppingCart, X } from 'lucide-react';
 import { useCart } from '@/hooks/use-cart';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import type { Store } from '@/lib/schemas';
 
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
 
-export function Header() {
+interface HeaderProps {
+  initialStore?: Store | null;
+}
+
+export function Header(_props: HeaderProps) {
   const cart = useCart();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -39,7 +44,8 @@ export function Header() {
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
           {links.map(link => {
-            const active = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href.split('#')[0]);
+            const baseHref = link.href.split('#')[0];
+            const active = link.href === '/' ? pathname === '/' : pathname.startsWith(baseHref);
             return (
               <Link key={link.href} href={link.href} className={active ? 'active' : ''}>
                 {link.label}
