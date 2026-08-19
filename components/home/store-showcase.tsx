@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, Check, Crown, Shield, Star } from 'lucide-react';
 import { ProductsGrid } from '@/components/home/products-grid';
+import styles from './store-showcase.module.css';
 
 const packages = [
   {
@@ -29,10 +30,10 @@ const packages = [
 
 export function StoreShowcase() {
   return (
-    <section className="cloudy-store-showcase" id="store">
-      <div className="cloudy-store-video-hero">
+    <section className={styles.showcase} id="store">
+      <div className={styles.hero}>
         <video
-          className="cloudy-store-video"
+          className={styles.video}
           autoPlay
           muted
           loop
@@ -44,20 +45,20 @@ export function StoreShowcase() {
           <source src="/videos/cloudy-rust-bg.webm" type="video/webm" />
         </video>
 
-        <div className="cloudy-store-video-fallback" aria-hidden="true" />
-        <div className="cloudy-store-video-blue" aria-hidden="true" />
-        <div className="cloudy-store-video-vignette" aria-hidden="true" />
-        <div className="cloudy-store-video-grid" aria-hidden="true" />
+        <div className={styles.fallback} aria-hidden="true" />
+        <div className={styles.blue} aria-hidden="true" />
+        <div className={styles.vignette} aria-hidden="true" />
+        <div className={styles.grid} aria-hidden="true" />
 
-        <div className="cloudy-store-video-content">
-          <span className="cloudy-store-eyebrow">Cloudy premium store</span>
+        <div className={styles.heroContent}>
+          <span className={styles.eyebrow}>Cloudy premium store</span>
           <h2>
             DOMINATE THE <span>BATTLEFIELD</span>
           </h2>
           <p>
             Upgrade your Cloudy experience with premium ranks, kits and perks. Built with a cinematic Rust look and the blue Cloudy identity.
           </p>
-          <div className="cloudy-store-video-actions">
+          <div className={styles.heroActions}>
             <Link href="/shop" className="cloudy-cta-primary">
               Browse Store <ArrowRight size={18} />
             </Link>
@@ -68,28 +69,28 @@ export function StoreShowcase() {
         </div>
       </div>
 
-      <div className="cloudy-store-shell" id="cloudy-vip">
-        <div className="cloudy-rank-heading">
+      <div className={styles.shell} id="cloudy-vip">
+        <div className={styles.rankHeading}>
           <span>Cloudy ranks</span>
           <h3>CHOOSE YOUR STATUS</h3>
           <p>Renegade-inspired presentation, rebuilt as a unique Cloudy blue store experience.</p>
         </div>
 
-        <div className="cloudy-rank-grid">
+        <div className={styles.rankGrid}>
           {packages.map(({ title, subtitle, icon: Icon, badge, features, featured }) => (
-            <article key={title} className={`cloudy-rank-card${featured ? ' is-featured' : ''}`}>
-              {featured && <div className="cloudy-rank-ribbon">Recommended</div>}
-              <div className="cloudy-rank-topline">
+            <article key={title} className={`${styles.rankCard}${featured ? ` ${styles.featured}` : ''}`}>
+              {featured && <div className={styles.ribbon}>Recommended</div>}
+              <div className={styles.topline}>
                 <span>{badge}</span>
                 <b>CLOUDY</b>
               </div>
-              <div className="cloudy-rank-emblem">
-                <span className="cloudy-rank-c">C</span>
+              <div className={styles.emblem}>
+                <span className={styles.rankC}>C</span>
                 <Icon size={30} />
               </div>
               <h4>{title}</h4>
               <p>{subtitle}</p>
-              <div className="cloudy-rank-divider" />
+              <div className={styles.divider} />
               <ul>
                 {features.map((feature) => (
                   <li key={feature}>
@@ -98,15 +99,15 @@ export function StoreShowcase() {
                   </li>
                 ))}
               </ul>
-              <Link href="/shop" className="cloudy-rank-button">
+              <Link href="/shop" className={styles.rankButton}>
                 View Package <ArrowRight size={16} />
               </Link>
             </article>
           ))}
         </div>
 
-        <div className="cloudy-real-products">
-          <div className="cloudy-real-products-heading">
+        <div className={styles.products}>
+          <div className={styles.productsHeading}>
             <span>Live catalogue</span>
             <h3>ALL CLOUDY PACKAGES</h3>
             <p>Your actual Tip4Serv products stay connected below these showcase cards.</p>
