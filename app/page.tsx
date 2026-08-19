@@ -88,7 +88,7 @@ export default function HomePage() {
               <span className="cloudy-status-pill cloudy-status-pending">Setup</span>
             </div>
             <h3>Cloudy Main</h3>
-            <p>Primary Cloudy Rust server</p>
+            <p>Primary Cloudy server</p>
             <div className="cloudy-server-meta">
               <div><span>Region</span><strong>EU</strong></div>
               <div><span>Game</span><strong>Rust</strong></div>
