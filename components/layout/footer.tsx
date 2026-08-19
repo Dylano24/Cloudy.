@@ -23,12 +23,8 @@ export function Footer({ initialStore }: FooterProps) {
               <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={45} height={45} />
               <div>
                 <strong>CLOUDY RUST</strong>
-                <small>Survive Build Dominate</small>
               </div>
             </div>
-            <p className="cloudy-footer-copy">
-              Survive Build Dominate. Rust combat, raids, defense and a custom storefront powered by Tip4Serv.
-            </p>
           </div>
 
           <div>
@@ -52,7 +48,6 @@ export function Footer({ initialStore }: FooterProps) {
 
         <div className="cloudy-footer-bottom">
           <span>© {new Date().getFullYear()} Cloudy Rust. All rights reserved.</span>
-          <span>Survive Build Dominate</span>
         </div>
       </div>
     </footer>
