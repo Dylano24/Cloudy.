@@ -27,7 +27,11 @@ export default function HomePage() {
   return (
     <div className="cloudy-home-v2">
       <section className="cloudy-landing-hero">
-        <div className="cloudy-landing-scene" aria-hidden="true" />
+        <div
+          className="cloudy-landing-scene"
+          style={{ backgroundImage: "url('/images/cloudy-rust-4k.svg')" }}
+          aria-hidden="true"
+        />
         <div className="cloudy-landing-tint" aria-hidden="true" />
         <div className="cloudy-landing-noise" aria-hidden="true" />
 
