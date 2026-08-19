@@ -1,32 +1,51 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, Check, Crown, Shield, Star } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { ProductsGrid } from '@/components/home/products-grid';
 import styles from './store-showcase.module.css';
 
 const packages = [
   {
     title: 'VIP',
-    subtitle: 'Starter access',
-    icon: Star,
-    badge: 'Entry',
+    subtitle: 'Starter Rust rank',
+    badge: 'Monthly Rank',
     featured: false,
-    features: ['Starter kit access', 'Queue priority', 'Cloudy supporter tag', 'Exclusive starter perks'],
+    features: [
+      'Queue Skip priority',
+      'VIP daily kit',
+      '2 extra homes',
+      'Furnace Splitter access',
+      'Skinbox access',
+      'Faster crafting queue',
+    ],
   },
   {
     title: 'ELITE',
-    subtitle: 'The popular choice',
-    icon: Shield,
-    badge: 'Most Popular',
+    subtitle: 'High-tier Rust rank',
+    badge: 'Includes VIP',
     featured: true,
-    features: ['Elite kit access', 'Higher queue priority', 'Exclusive Cloudy perks', 'Extra in-game rewards'],
+    features: [
+      'Everything included in VIP',
+      'Higher Queue Skip priority',
+      'Elite PvP kit',
+      '5 extra homes',
+      '/remove building tool',
+      'Quick Smelt access',
+    ],
   },
   {
-    title: 'LEGEND',
-    subtitle: 'Top tier status',
-    icon: Crown,
-    badge: 'Top Tier',
+    title: 'BASE DEFENDER',
+    subtitle: 'Raid defense loadout',
+    badge: 'Utility Kit',
     featured: false,
-    features: ['Legend kit access', 'Highest queue priority', 'Premium server perks', 'Maximum Cloudy status'],
+    features: [
+      'HQM and armored building supplies',
+      'Garage doors and code locks',
+      'Shotgun traps with ammunition',
+      'Meds and combat supplies',
+      'Raid defense utilities',
+      '36h kit cooldown',
+    ],
   },
 ] as const;
 
@@ -58,7 +77,8 @@ export function StoreShowcase() {
             DOMINATE THE <span>BATTLEFIELD</span>
           </h2>
           <p>
-            Upgrade your Cloudy experience with premium ranks, kits and perks. Built with a cinematic Rust look and the blue Cloudy identity.
+            Upgrade your Cloudy experience with Rust-focused ranks, queue priority,
+            combat kits and quality-of-life perks built for the server.
           </p>
           <div className={styles.heroActions}>
             <Link href="/shop" className="cloudy-cta-primary">
@@ -73,26 +93,37 @@ export function StoreShowcase() {
 
       <div className={styles.shell} id="cloudy-vip">
         <div className={styles.rankHeading}>
-          <span>Cloudy ranks</span>
-          <h3>CHOOSE YOUR STATUS</h3>
-          <p>Renegade-inspired presentation, rebuilt as a unique Cloudy blue store experience.</p>
+          <span>Cloudy Rust upgrades</span>
+          <h3>CHOOSE YOUR LOADOUT</h3>
+          <p>Rust-focused ranks and utility kits with a clean Cloudy blue presentation.</p>
         </div>
 
         <div className={styles.rankGrid}>
-          {packages.map(({ title, subtitle, icon: Icon, badge, features, featured }) => (
+          {packages.map(({ title, subtitle, badge, features, featured }) => (
             <article key={title} className={`${styles.rankCard}${featured ? ` ${styles.featured}` : ''}`}>
-              {featured && <div className={styles.ribbon}>Recommended</div>}
+              {featured && <div className={styles.ribbon}>Cloudy Recommended</div>}
+
               <div className={styles.topline}>
                 <span>{badge}</span>
-                <b>CLOUDY</b>
+                <b>CLOUDY RUST</b>
               </div>
+
               <div className={styles.emblem}>
-                <span className={styles.rankC}>C</span>
-                <Icon size={30} />
+                <div className={styles.logoBadge}>
+                  <Image
+                    src="/images/cloudy-c.svg"
+                    alt="Cloudy C"
+                    width={82}
+                    height={82}
+                    className={styles.logoImage}
+                  />
+                </div>
               </div>
+
               <h4>{title}</h4>
               <p>{subtitle}</p>
               <div className={styles.divider} />
+
               <ul>
                 {features.map((feature) => (
                   <li key={feature}>
@@ -101,6 +132,7 @@ export function StoreShowcase() {
                   </li>
                 ))}
               </ul>
+
               <Link href="/shop" className={styles.rankButton}>
                 View Package <ArrowRight size={16} />
               </Link>
