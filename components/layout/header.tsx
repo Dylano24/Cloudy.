@@ -22,13 +22,6 @@ export function Header(_props: HeaderProps) {
 
   useEffect(() => setMounted(true), []);
 
-  const links = [
-    { href: '/', label: 'Home' },
-    { href: '/#server', label: 'Server' },
-    { href: '/terms', label: 'Rules' },
-    { href: '/shop', label: 'Store' },
-  ];
-
   return (
     <header className="cloudy-header">
       <div className="cloudy-header-inner">
@@ -43,15 +36,10 @@ export function Header(_props: HeaderProps) {
         </Link>
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
-          {links.map(link => {
-            const baseHref = link.href.split('#')[0];
-            const active = link.href === '/' ? pathname === '/' : pathname.startsWith(baseHref);
-            return (
-              <Link key={link.href} href={link.href} className={active ? 'active' : ''}>
-                {link.label}
-              </Link>
-            );
-          })}
+          <Link href="/" className={pathname === '/' ? 'active' : ''}>Home</Link>
+          <Link href="/#server">Server</Link>
+          <Link href="/terms" className={pathname.startsWith('/terms') ? 'active' : ''}>Rules</Link>
+          <Link href="/shop" className={pathname.startsWith('/shop') || pathname.startsWith('/product') ? 'active' : ''}>Store</Link>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -73,9 +61,10 @@ export function Header(_props: HeaderProps) {
 
       {open && (
         <nav className="cloudy-mobile-menu">
-          {links.map(link => (
-            <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>{link.label}</Link>
-          ))}
+          <Link href="/" onClick={() => setOpen(false)}>Home</Link>
+          <Link href="/#server" onClick={() => setOpen(false)}>Server</Link>
+          <Link href="/terms" onClick={() => setOpen(false)}>Rules</Link>
+          <Link href="/shop" onClick={() => setOpen(false)}>Store</Link>
           <Link href="/cart" onClick={() => setOpen(false)}>Cart</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
         </nav>
