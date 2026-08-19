@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { ProductsGrid } from '@/components/home/products-grid';
-import styles from './store-showcase.module.css';
+import styles from './store-showcase-v2.module.css';
 
 const packages = [
   {
