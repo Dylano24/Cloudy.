@@ -20,7 +20,7 @@ const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
 const features = [
   [Zap, 'Fast delivery', 'Packages are prepared for automatic Tip4Serv delivery.'],
   [ShieldCheck, 'Secure checkout', 'Payments and product delivery stay handled by Tip4Serv.'],
-  [Gamepad2, 'Made for Rust', 'Ranks, kits and perks designed around the Cloudy server.'],
+  [Gamepad2, 'Made for Rust', 'Combat, raid and defense upgrades designed around Cloudy.'],
 ] as const;
 
 export default function HomePage() {
@@ -29,7 +29,7 @@ export default function HomePage() {
       <section className="cloudy-landing-hero">
         <div
           className="cloudy-landing-scene"
-          style={{ backgroundImage: "url('/images/cloudy-rust-4k.svg')" }}
+          style={{ backgroundImage: "url('/images/rust-user-background.jpg')" }}
           aria-hidden="true"
         />
         <div className="cloudy-landing-tint" aria-hidden="true" />
@@ -38,7 +38,7 @@ export default function HomePage() {
         <div className="cloudy-landing-inner">
           <div className="cloudy-landing-badge">
             <Sparkles size={14} />
-            Welcome to Cloudy Rust
+            Survive Build Dominate
           </div>
 
           <div className="cloudy-landing-logo">
@@ -52,8 +52,8 @@ export default function HomePage() {
           </h1>
 
           <p className="cloudy-landing-subtitle">
-            Premium Rust gameplay, custom progression and a community-first experience.
-            Built to look clean, feel fast and grow with the server.
+            Survive Build Dominate on a Rust server built around combat, raids, defense
+            and a clean progression experience.
           </p>
 
           <div className="cloudy-landing-actions">
@@ -104,12 +104,12 @@ export default function HomePage() {
               <span className="cloudy-server-icon"><ShieldCheck size={23} /></span>
               <span className="cloudy-status-pill">Cloudy</span>
             </div>
-            <h3>Built for the community</h3>
-            <p>Clean progression, premium perks and a storefront that stays connected to your Tip4Serv products.</p>
+            <h3>Survive Build Dominate</h3>
+            <p>Clean progression, high-value combat upgrades and a storefront connected to your Tip4Serv products.</p>
             <ul className="cloudy-server-list">
-              <li><CheckCircle2 size={17} /> Custom store experience</li>
+              <li><CheckCircle2 size={17} /> Combat and raid focused upgrades</li>
               <li><CheckCircle2 size={17} /> Tip4Serv checkout ready</li>
-              <li><CheckCircle2 size={17} /> Nitrado/server integration ready</li>
+              <li><CheckCircle2 size={17} /> Server integration ready</li>
             </ul>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-server-link">
               Join the community <ArrowRight size={17} />
@@ -120,9 +120,9 @@ export default function HomePage() {
 
       <section className="cloudy-content-section cloudy-feature-zone">
         <div className="cloudy-section-heading">
-          <span>Why Cloudy</span>
+          <span>Survive Build Dominate</span>
           <h2>BUILT TO FEEL PREMIUM</h2>
-          <p>The visual system is based on your own dark Rust design, rebuilt with Cloudy blue branding.</p>
+          <p>Cloudy keeps the dark Rust atmosphere and pushes it through a clean blue visual identity.</p>
         </div>
 
         <div className="cloudy-feature-grid-v2">
@@ -144,7 +144,7 @@ export default function HomePage() {
           <div className="cloudy-community-logo">
             <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={92} height={92} />
           </div>
-          <span>Cloudy Rust Community</span>
+          <span>Survive Build Dominate</span>
           <h2>READY TO JOIN?</h2>
           <p>Join Discord for announcements, wipe information, support and the latest Cloudy updates.</p>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-cta-primary">
