@@ -7,43 +7,48 @@ import styles from './store-showcase-v2.module.css';
 const packages = [
   {
     title: 'VIP',
-    subtitle: 'Starter Rust rank',
-    badge: 'Monthly Rank',
+    subtitle: 'Combat & raid starter',
+    badge: 'Combat Rank',
     featured: false,
     features: [
       'Queue Skip priority',
-      'VIP daily kit',
+      'Semi-Automatic Rifle loadout',
+      'Thompson loadout',
+      '1x Timed Explosive Charge (C4)',
+      '4x Satchel Charges',
+      '1,000 HQM',
       '2 extra homes',
-      'Furnace Splitter access',
-      'Skinbox access',
-      'Faster crafting queue',
     ],
   },
   {
     title: 'ELITE',
-    subtitle: 'High-tier Rust rank',
-    badge: 'Includes VIP',
+    subtitle: 'High-tier raid rank',
+    badge: 'Raid Rank',
     featured: true,
     features: [
       'Everything included in VIP',
       'Higher Queue Skip priority',
-      'Elite PvP kit',
-      '5 extra homes',
-      '/remove building tool',
-      'Quick Smelt access',
+      'Assault Rifle (AK) loadout',
+      'MP5 loadout',
+      '4x Timed Explosive Charges (C4)',
+      '8x Rockets',
+      '2,500 HQM',
+      '1x Auto Turret',
     ],
   },
   {
     title: 'BASE DEFENDER',
-    subtitle: 'Raid defense loadout',
-    badge: 'Utility Kit',
+    subtitle: 'Fortified base defense',
+    badge: 'Defense Kit',
     featured: false,
     features: [
-      'HQM and armored building supplies',
-      'Garage doors and code locks',
-      'Shotgun traps with ammunition',
-      'Meds and combat supplies',
-      'Raid defense utilities',
+      '2x Auto Turrets',
+      '4x Shotgun Traps',
+      '2x Armored Doors',
+      '4x Garage Doors',
+      '4,000 HQM',
+      'Turret ammo & electrical parts',
+      'Medical combat supplies',
       '36h kit cooldown',
     ],
   },
@@ -60,7 +65,7 @@ export function StoreShowcase() {
           loop
           playsInline
           preload="metadata"
-          poster="/images/cloudy-rust-4k.svg"
+          poster="/images/rust-user-background.jpg"
         >
           <source src="/videos/cloudy-rust-bg.mp4" type="video/mp4" />
           <source src="/videos/cloudy-rust-bg.webm" type="video/webm" />
@@ -68,7 +73,7 @@ export function StoreShowcase() {
 
         <div
           className={styles.fallback}
-          style={{ backgroundImage: "url('/images/cloudy-rust-4k.svg')" }}
+          style={{ backgroundImage: "url('/images/rust-user-background.jpg')" }}
           aria-hidden="true"
         />
         <div className={styles.blue} aria-hidden="true" />
@@ -76,13 +81,13 @@ export function StoreShowcase() {
         <div className={styles.grid} aria-hidden="true" />
 
         <div className={styles.heroContent}>
-          <span className={styles.eyebrow}>Cloudy premium store</span>
+          <span className={styles.eyebrow}>Survive Build Dominate</span>
           <h2>
             DOMINATE THE <span>BATTLEFIELD</span>
           </h2>
           <p>
-            Upgrade your Cloudy experience with Rust-focused ranks, queue priority,
-            combat kits and quality-of-life perks built for the server.
+            Every player already gets the free kit and blueprints. Cloudy upgrades focus on
+            high-value weapons, explosives, HQM, turrets and serious raid or defense power.
           </p>
           <div className={styles.heroActions}>
             <Link href="/shop" className="cloudy-cta-primary">
@@ -97,9 +102,9 @@ export function StoreShowcase() {
 
       <div className={styles.shell} id="cloudy-vip">
         <div className={styles.rankHeading}>
-          <span>Cloudy Rust upgrades</span>
+          <span>Survive Build Dominate</span>
           <h3>CHOOSE YOUR LOADOUT</h3>
-          <p>Rust-focused ranks and utility kits with a clean Cloudy blue presentation.</p>
+          <p>Free kit and blueprints are already standard. These packages focus on combat, boom, HQM and base defense.</p>
         </div>
 
         <div className={styles.rankGrid}>
@@ -109,7 +114,7 @@ export function StoreShowcase() {
 
               <div className={styles.topline}>
                 <span>{badge}</span>
-                <b>CLOUDY RUST</b>
+                <b>SURVIVE BUILD DOMINATE</b>
               </div>
 
               <div className={styles.emblem}>
@@ -146,7 +151,7 @@ export function StoreShowcase() {
 
         <div className={styles.products}>
           <div className={styles.productsHeading}>
-            <span>Live catalogue</span>
+            <span>Survive Build Dominate</span>
             <h3>ALL CLOUDY PACKAGES</h3>
             <p>Your actual Tip4Serv products stay connected below these showcase cards.</p>
           </div>
