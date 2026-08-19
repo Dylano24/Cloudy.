@@ -6,9 +6,9 @@ import styles from './store-showcase-v2.module.css';
 
 const packages = [
   {
-    title: 'VIP',
-    subtitle: 'Combat & raid starter',
-    badge: 'Combat Rank',
+    title: 'BASIC',
+    subtitle: 'Essential combat starter',
+    badge: 'Starter Rank',
     featured: false,
     features: [
       'Queue Skip priority',
@@ -17,16 +17,19 @@ const packages = [
       '1x C4',
       '4x Satchel Charges',
       '1,000 HQM',
+      '15,000 Wood',
+      '15,000 Stone',
+      'Medical combat supplies',
       '24h claim cooldown',
     ],
   },
   {
-    title: 'ELITE',
-    subtitle: 'High-tier raid rank',
+    title: 'VIP',
+    subtitle: 'High-value raid rank',
     badge: 'Raid Rank',
     featured: true,
     features: [
-      'Everything included in VIP',
+      'Everything included in BASIC',
       'Higher Queue Skip priority',
       'Assault Rifle (AK) loadout',
       'MP5 loadout',
@@ -34,20 +37,31 @@ const packages = [
       '8x Rockets',
       '2,500 HQM',
       '1x Auto Turret',
+      '25,000 Wood',
+      '25,000 Stone',
+      'Medical combat supplies',
       '24h claim cooldown',
     ],
   },
   {
-    title: 'BASE DEFENDER',
-    subtitle: 'Fortified base defense',
-    badge: 'Defense Kit',
+    title: 'ULTIMATE',
+    subtitle: 'Maximum raid & defense power',
+    badge: 'Ultimate Rank',
     featured: false,
     features: [
+      'Everything included in VIP',
+      'Highest Queue Skip priority',
+      'Assault Rifle (AK) loadout',
+      'MP5 loadout',
+      '6x C4',
+      '12x Rockets',
+      '4,000 HQM',
       '2x Auto Turrets',
       '4x Shotgun Traps',
       '2x Armored Doors',
       '4x Garage Doors',
-      '4,000 HQM',
+      '30,000 Wood',
+      '30,000 Stone',
       'Turret ammo & electrical parts',
       'Medical combat supplies',
       '24h claim cooldown',
@@ -108,7 +122,7 @@ export function StoreShowcase() {
           <h3>CHOOSE YOUR LOADOUT</h3>
           <p>
             Free kit and blueprints are already standard. These packages focus on combat, boom,
-            HQM and base defense, with a 24-hour claim cooldown on every package.
+            HQM, resources and base defense, with a 24-hour claim cooldown on every package.
           </p>
         </div>
 
