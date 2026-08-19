@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" role="img" aria-label="Cloudy Rust survival battlefield">
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#07111f"/>
+    <stop offset=".45" stop-color="#0b2036"/>
+    <stop offset="1" stop-color="#07111a"/>
+  </linearGradient>
+  <radialGradient id="horizon" cx="70%" cy="38%" r="55%">
+    <stop offset="0" stop-color="#58c8ff" stop-opacity=".28"/>
+    <stop offset=".35" stop-color="#1b79c9" stop-opacity=".12"/>
+    <stop offset="1" stop-color="#07111f" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#111d27"/>
+    <stop offset="1" stop-color="#03070b"/>
+  </linearGradient>
+  <linearGradient id="blueWash" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#071524" stop-opacity=".15"/>
+    <stop offset=".48" stop-color="#0e78c6" stop-opacity=".12"/>
+    <stop offset="1" stop-color="#00111e" stop-opacity=".48"/>
+  </linearGradient>
+  <filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="28"/></filter>
+  <filter id="glow" x="-200%" y="-200%" width="400%" height="400%"><feGaussianBlur stdDeviation="18" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="grain" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="2" stitchTiles="stitch" result="n"/><feColorMatrix in="n" type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .065"/></feComponentTransfer></filter>
+  <linearGradient id="fog" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9bdfff" stop-opacity="0"/><stop offset=".45" stop-color="#8fd8ff" stop-opacity=".10"/><stop offset="1" stop-color="#9bdfff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect width="3840" height="2160" fill="url(#sky)"/>
+<rect width="3840" height="2160" fill="url(#horizon)"/>
+<ellipse cx="2830" cy="650" rx="520" ry="310" fill="#1b8edc" opacity=".10" filter="url(#soft)"/>
+<path d="M0 360 C420 220 760 390 1090 310 S1810 190 2190 340 S3030 430 3840 260 V0 H0Z" fill="#0c1622" opacity=".72"/>
+<path d="M0 560 C490 390 860 540 1240 470 S2020 380 2460 520 S3250 640 3840 460 V210 C3300 300 2990 250 2590 200 S1740 270 1390 230 S500 210 0 300Z" fill="#19314a" opacity=".34"/>
+<path d="M280 490 C780 300 1190 420 1570 360 S2240 300 2750 490" fill="none" stroke="#83d6ff" stroke-opacity=".08" stroke-width="90" filter="url(#soft)"/>
+<path d="M0 1260 390 970 700 1140 1080 790 1430 1090 1870 760 2200 1070 2650 830 3030 1110 3450 880 3840 1110 V1500 H0Z" fill="#0b1723"/>
+<path d="M0 1335 520 1090 930 1220 1310 950 1670 1210 2070 980 2470 1210 2920 1000 3290 1190 3840 990 V1530 H0Z" fill="#0f2333" opacity=".8"/>
+<g stroke="#243847" stroke-width="20" fill="none" opacity=".88">
+  <path d="M490 720 370 1450M490 720l120 730M420 930h140M395 1120h190M365 1300h250"/>
+  <path d="M3290 760 3175 1480M3290 760l115 720M3220 960h140M3195 1150h190M3165 1330h250"/>
+  <path d="M610 860 C1450 760 2420 780 3290 890" stroke-width="10"/>
+  <path d="M585 935 C1450 840 2420 860 3310 965" stroke-width="8"/>
+</g>
+<g fill="#071019" stroke="#253d50" stroke-width="9">
+  <path d="M2580 750h180l-34 650h-112z"/>
+  <rect x="2628" y="660" width="85" height="98" rx="8"/>
+  <path d="M2670 660v-150" stroke="#2d526d" stroke-width="18"/>
+  <path d="M2380 1020h130v390h-130z"/>
+  <path d="M2445 1020v-250" stroke="#2a495d" stroke-width="16"/>
+  <path d="M3040 1010h160v420h-160z"/>
+  <path d="M3120 1010V650" stroke="#2b4d65" stroke-width="16"/>
+  <path d="M3075 825h90" stroke="#2b4d65" stroke-width="14"/>
+  <ellipse cx="2220" cy="1285" rx="210" ry="76"/>
+  <rect x="2010" y="1280" width="420" height="160"/>
+  <ellipse cx="2220" cy="1440" rx="210" ry="70"/>
+  <path d="M3440 1050q210-150 330 20-170 90-330-20z"/>
+  <path d="M3605 1075l-40 290"/>
+  <path d="M3520 1365h190"/>
+</g>
+<g stroke="#1b3446" stroke-width="18" fill="none">
+  <path d="M1070 820v650M1070 850h620M1630 850l-300 190M1615 850v300"/>
+  <path d="M1605 1150h35v110h-35z" fill="#0a1520"/>
+  <path d="M1880 970v500M1880 990h410M2250 990l-210 150"/>
+</g>
+<g fill="#0a141d" stroke="#23394a" stroke-width="10">
+  <path d="M1110 1225h620v330h-620z"/>
+  <path d="M1180 1120h470l80 105h-620z"/>
+  <rect x="1260" y="1320" width="150" height="235"/>
+  <rect x="1465" y="1300" width="165" height="95"/>
+  <path d="M1020 1450h800v170h-800z"/>
+  <rect x="900" y="1110" width="150" height="510"/>
+  <path d="M860 1110h230l-48-95H905z"/>
+  <rect x="930" y="1210" width="90" height="70"/>
+  <path d="M975 1015V900" stroke="#2b5068" stroke-width="14"/>
+  <path d="M975 900l80 50M975 900l-80 50" stroke="#2b5068" stroke-width="12"/>
+</g>
+<path d="M520 1460h860v320H520z" fill="#081018" stroke="#1e3444" stroke-width="10"/>
+<path d="M600 1510h190v270H600zM850 1510h190v270H850zM1100 1510h190v270h-190z" fill="#0d1b26" stroke="#254255" stroke-width="8"/>
+<path d="M2400 1510h720v300h-720z" fill="#081018" stroke="#1f3849" stroke-width="10"/>
+<path d="M2480 1560h210v250h-210zM2750 1560h290v250h-290z" fill="#0d1b26" stroke="#27475b" stroke-width="8"/>
+<path d="M0 1580 C520 1480 920 1560 1370 1510 S2280 1510 2720 1555 S3400 1480 3840 1560 V2160H0Z" fill="url(#ground)"/>
+<path d="M0 1790 C740 1680 1290 1810 1960 1730 S3200 1690 3840 1790" fill="none" stroke="#28465a" stroke-opacity=".35" stroke-width="8"/>
+<g fill="#0b1117"><path d="M0 1980 410 1810 670 1875 910 2160H0Z"/><path d="M2860 2160 3140 1870 3470 1780 3840 1900V2160Z"/><path d="M1910 2160 2140 1940 2410 1965 2670 2160Z"/></g>
+<g fill="#63d7ff" filter="url(#glow)"><circle cx="975" cy="902" r="8"/><circle cx="2670" cy="512" r="7"/><circle cx="3120" cy="654" r="7"/></g>
+<rect x="0" y="1250" width="3840" height="610" fill="url(#fog)" opacity=".7"/>
+<rect width="3840" height="2160" fill="url(#blueWash)"/>
+<rect width="3840" height="2160" fill="none" stroke="#000" stroke-opacity=".45" stroke-width="220"/>
+<rect width="3840" height="2160" filter="url(#grain)" opacity=".55"/>
+</svg>
