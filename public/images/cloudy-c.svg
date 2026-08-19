@@ -1,23 +1,21 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Cloudy C logo">
   <defs>
-    <radialGradient id="bg" cx="35%" cy="25%" r="80%">
-      <stop offset="0" stop-color="#131820"/>
-      <stop offset="0.55" stop-color="#05070b"/>
-      <stop offset="1" stop-color="#000"/>
+    <radialGradient id="bg" cx="38%" cy="28%" r="78%">
+      <stop offset="0" stop-color="#25272d"/>
+      <stop offset="0.62" stop-color="#1d1f24"/>
+      <stop offset="1" stop-color="#17191e"/>
     </radialGradient>
-    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#dff8ff"/>
-      <stop offset="0.35" stop-color="#ffffff"/>
-      <stop offset="0.72" stop-color="#8de4ff"/>
-      <stop offset="1" stop-color="#4b87ff"/>
-    </linearGradient>
-    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="7" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
   </defs>
-  <circle cx="256" cy="256" r="244" fill="url(#bg)" stroke="#1b2734" stroke-width="12"/>
-  <circle cx="256" cy="256" r="151" fill="none" stroke="#3ec7ff" stroke-opacity=".16" stroke-width="100" stroke-linecap="round" stroke-dasharray="690 270" transform="rotate(48 256 256)" filter="url(#glow)"/>
-  <circle cx="256" cy="256" r="151" fill="none" stroke="url(#ring)" stroke-width="82" stroke-linecap="round" stroke-dasharray="690 270" transform="rotate(48 256 256)"/>
-  <circle cx="256" cy="256" r="107" fill="none" stroke="#06080b" stroke-width="20" stroke-linecap="round" stroke-dasharray="690 270" transform="rotate(48 256 256)" opacity=".78"/>
+
+  <circle cx="256" cy="256" r="248" fill="url(#bg)"/>
+
+  <!-- Cloudy C: broad upper hook with the sharp lower slash used by the Discord brand mark -->
+  <path
+    fill="#ffffff"
+    d="M386 143H247c-91 0-157 49-157 121 0 54 34 101 91 124l40-51c-43-14-69-41-69-77 0-42 38-70 96-70h99l39-47Z"
+  />
+  <path
+    fill="#ffffff"
+    d="M180 352 326 257h50l-78 61h-55l-63 46Z"
+  />
 </svg>
