@@ -17,8 +17,8 @@ import { WipeCountdown } from '@/components/home/wipe-countdown';
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
 
 const features = [
-  [Zap, 'Fast delivery', 'Packages are prepared for automatic Tip4Serv delivery.'],
-  [ShieldCheck, 'Secure checkout', 'Payments and product delivery stay handled by Tip4Serv.'],
+  [Zap, 'Fast delivery', 'Packages are being prepared for reliable automatic server delivery.'],
+  [ShieldCheck, 'Secure checkout', 'Checkout will only go live after the official Cloudy payment setup is ready.'],
   [Gamepad2, 'Made for Rust', 'Combat, raid and defense upgrades designed around Cloudy.'],
 ] as const;
 
@@ -104,10 +104,10 @@ export default function HomePage() {
               <span className="cloudy-status-pill">Cloudy</span>
             </div>
             <h3>Survive Build Dominate</h3>
-            <p>Clean progression, high-value combat upgrades and a storefront connected to your Tip4Serv products.</p>
+            <p>Clean progression, high-value combat upgrades and a storefront that will connect to the official Cloudy server setup.</p>
             <ul className="cloudy-server-list">
               <li><CheckCircle2 size={17} /> Combat and raid focused upgrades</li>
-              <li><CheckCircle2 size={17} /> Tip4Serv checkout ready</li>
+              <li><CheckCircle2 size={17} /> Secure checkout coming soon</li>
               <li><CheckCircle2 size={17} /> Server integration coming soon</li>
             </ul>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-server-link">
