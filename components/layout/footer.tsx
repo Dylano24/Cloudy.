@@ -2,18 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useStore } from '@/hooks/use-api';
-import type { Store } from '@/lib/schemas';
 
-interface FooterProps {
-  initialStore?: Store | null;
-}
+const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
 
-export function Footer({ initialStore }: FooterProps) {
-  const { data: fetchedStore } = useStore();
-  const store = fetchedStore || initialStore;
-  const discord = store?.social_medias?.discord || 'https://discord.gg/QnWNz2dKCE';
-
+export function Footer() {
   return (
     <footer className="cloudy-footer">
       <div className="cloudy-footer-inner">
@@ -33,14 +25,13 @@ export function Footer({ initialStore }: FooterProps) {
               <Link href="/">Home</Link>
               <Link href="/#server">Server</Link>
               <Link href="/shop">Store</Link>
-              <Link href="/cart">Cart</Link>
             </div>
           </div>
 
           <div>
             <div className="cloudy-footer-title">Community</div>
             <div className="cloudy-footer-links">
-              <a href={discord} target="_blank" rel="noreferrer">Discord</a>
+              <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
               <Link href="/terms">Terms of Service</Link>
             </div>
           </div>
