@@ -1,9 +1,9 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
+const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 export function Footer() {
   return (
@@ -12,9 +12,9 @@ export function Footer() {
         <div className="cloudy-footer-grid">
           <div>
             <div className="cloudy-footer-brand">
-              <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={45} height={45} />
+              <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={45} height={45} />
               <div>
-                <strong>CLOUDY RUST</strong>
+                <strong>CLOUDY INC.</strong>
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@ export function Footer() {
         </div>
 
         <div className="cloudy-footer-bottom">
-          <span>© {new Date().getFullYear()} Cloudy Rust. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} Cloudy Inc. All rights reserved.</span>
         </div>
       </div>
     </footer>
