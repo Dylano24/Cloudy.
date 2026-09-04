@@ -100,11 +100,11 @@ export function StoreShowcase() {
           <p>
             Every player already gets the free kit and blueprints. Cloudy upgrades focus on
             high-value weapons, explosives, HQM, turrets and serious raid or defense power.
-            Every package can be claimed once every 24 hours.
+            Every package is planned around a 24-hour claim cooldown.
           </p>
           <div className={styles.heroActions}>
             <Link href="/shop" className="cloudy-cta-primary">
-              Browse Store <ArrowRight size={18} />
+              Store Status <ArrowRight size={18} />
             </Link>
             <a href="#cloudy-vip" className="cloudy-cta-secondary">
               View Ranks
@@ -118,8 +118,8 @@ export function StoreShowcase() {
           <span>Survive Build Dominate</span>
           <h3>CHOOSE YOUR LOADOUT</h3>
           <p>
-            Free kit and blueprints are already standard. These packages focus on combat, boom,
-            HQM, resources and base defense, with a 24-hour claim cooldown on every package.
+            Free kit and blueprints are already standard. These planned packages focus on combat,
+            boom, HQM, resources and base defense, with a 24-hour claim cooldown on every package.
           </p>
         </div>
 
@@ -159,7 +159,7 @@ export function StoreShowcase() {
               </ul>
 
               <Link href="/shop" className={styles.rankButton}>
-                View Package <ArrowRight size={16} />
+                Store not live yet <ArrowRight size={16} />
               </Link>
             </article>
           ))}
@@ -169,7 +169,7 @@ export function StoreShowcase() {
           <div className={styles.productsHeading}>
             <span>Survive Build Dominate</span>
             <h3>ALL CLOUDY PACKAGES</h3>
-            <p>Your actual Tip4Serv products stay connected below these showcase cards.</p>
+            <p>The live product catalog will appear here after the official store integration is ready.</p>
           </div>
           <ProductsGrid />
         </div>
