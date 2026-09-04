@@ -1,8 +1,9 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
 import { ProductsGrid } from '@/components/home/products-grid';
 import styles from './store-showcase-v2.module.css';
+
+const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 const packages = [
   {
@@ -135,9 +136,9 @@ export function StoreShowcase() {
 
               <div className={styles.emblem}>
                 <div className={styles.logoBadge}>
-                  <Image
-                    src="/images/cloudy-c.svg"
-                    alt="Cloudy C"
+                  <img
+                    src={CLOUDY_LOGO_URL}
+                    alt="Cloudy"
                     width={82}
                     height={82}
                     className={styles.logoImage}
