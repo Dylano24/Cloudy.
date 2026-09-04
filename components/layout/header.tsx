@@ -1,12 +1,12 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { Menu, MessageCircle, X } from 'lucide-react';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
+const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 export function Header() {
   const pathname = usePathname();
@@ -17,10 +17,10 @@ export function Header() {
       <div className="cloudy-header-inner">
         <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Rust home">
           <span className="cloudy-logo-orbit">
-            <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={48} height={48} priority />
+            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={48} height={48} />
           </span>
           <span className="cloudy-brand-copy">
-            <strong>CLOUDY RUST</strong>
+            <strong>CLOUDY</strong>
             <small>Survive Build Dominate</small>
           </span>
         </Link>
