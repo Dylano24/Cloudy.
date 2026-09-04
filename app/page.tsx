@@ -4,7 +4,6 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock3,
-  Copy,
   Gamepad2,
   MessageCircle,
   Server,
@@ -52,8 +51,8 @@ export default function HomePage() {
           </h1>
 
           <p className="cloudy-landing-subtitle">
-            Survive Build Dominate on a Rust server built around combat, raids, defense
-            and a clean progression experience.
+            Cloudy is being prepared as a Rust experience built around combat, raids,
+            defense and clean progression.
           </p>
 
           <div className="cloudy-landing-actions">
@@ -74,9 +73,9 @@ export default function HomePage() {
 
       <section className="cloudy-content-section cloudy-wipe-section" id="server">
         <div className="cloudy-section-heading">
-          <span><Clock3 size={15} /> Next server wipe</span>
-          <h2>COUNTDOWN TO THE NEXT WIPE</h2>
-          <p>This countdown is temporary and can later be connected to your real Rust wipe schedule.</p>
+          <span><Clock3 size={15} /> Coming soon</span>
+          <h2>SERVER SETUP IN PROGRESS</h2>
+          <p>No wipe schedule has been set yet. Live wipe information will appear here after the server is ready.</p>
         </div>
 
         <WipeCountdown />
@@ -85,17 +84,17 @@ export default function HomePage() {
           <article className="cloudy-server-card">
             <div className="cloudy-server-card-top">
               <span className="cloudy-server-icon"><Server size={23} /></span>
-              <span className="cloudy-status-pill cloudy-status-pending">Setup</span>
+              <span className="cloudy-status-pill cloudy-status-pending">Coming soon</span>
             </div>
-            <h3>Cloudy Main</h3>
-            <p>Primary Cloudy server</p>
+            <h3>Cloudy Rust server</h3>
+            <p>Server setup in progress</p>
             <div className="cloudy-server-meta">
-              <div><span>Region</span><strong>EU</strong></div>
+              <div><span>Status</span><strong>Coming soon</strong></div>
               <div><span>Game</span><strong>Rust</strong></div>
-              <div><span>Connection</span><strong>Coming soon</strong></div>
+              <div><span>Connection</span><strong>Not available yet</strong></div>
             </div>
             <button type="button" className="cloudy-copy-button" disabled>
-              <Copy size={16} /> Server IP after integration
+              Server IP coming soon
             </button>
           </article>
 
@@ -109,7 +108,7 @@ export default function HomePage() {
             <ul className="cloudy-server-list">
               <li><CheckCircle2 size={17} /> Combat and raid focused upgrades</li>
               <li><CheckCircle2 size={17} /> Tip4Serv checkout ready</li>
-              <li><CheckCircle2 size={17} /> Server integration ready</li>
+              <li><CheckCircle2 size={17} /> Server integration coming soon</li>
             </ul>
             <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-server-link">
               Join the community <ArrowRight size={17} />
