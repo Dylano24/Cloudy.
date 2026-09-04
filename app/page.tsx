@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -15,6 +14,7 @@ import { StoreShowcase } from '@/components/home/store-showcase';
 import { WipeCountdown } from '@/components/home/wipe-countdown';
 
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
+const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 const features = [
   [Zap, 'Fast delivery', 'Packages are being prepared for reliable automatic server delivery.'],
@@ -42,7 +42,7 @@ export default function HomePage() {
 
           <div className="cloudy-landing-logo">
             <span className="cloudy-logo-halo" />
-            <Image src="/images/cloudy-c.svg" alt="Cloudy C logo" width={170} height={170} priority />
+            <img src={CLOUDY_LOGO_URL} alt="Cloudy logo" width={170} height={170} />
           </div>
 
           <h1>
@@ -141,7 +141,7 @@ export default function HomePage() {
       <section className="cloudy-content-section cloudy-community-zone">
         <div className="cloudy-community-card">
           <div className="cloudy-community-logo">
-            <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={92} height={92} />
+            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={92} height={92} />
           </div>
           <span>Survive Build Dominate</span>
           <h2>READY TO JOIN?</h2>
