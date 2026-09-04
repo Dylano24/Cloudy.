@@ -1,8 +1,8 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft, MessageCircle, ShieldCheck, Wrench } from 'lucide-react';
 
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
+const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 export default function ShopPage() {
   return (
@@ -10,7 +10,7 @@ export default function ShopPage() {
       <div className="mx-auto max-w-3xl">
         <div className="cloud-panel overflow-hidden rounded-3xl border border-border bg-card/70 p-8 text-center shadow-2xl sm:p-12">
           <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl border border-primary/30 bg-primary/10">
-            <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={66} height={66} priority />
+            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={66} height={66} />
           </div>
 
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-primary">
