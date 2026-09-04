@@ -2,25 +2,15 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Menu, MessageCircle, ShoppingCart, X } from 'lucide-react';
-import { useCart } from '@/hooks/use-cart';
-import { useEffect, useState } from 'react';
+import { Menu, MessageCircle, X } from 'lucide-react';
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import type { Store } from '@/lib/schemas';
 
 const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
 
-interface HeaderProps {
-  initialStore?: Store | null;
-}
-
-export function Header(_props: HeaderProps) {
-  const cart = useCart();
+export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
 
   return (
     <header className="cloudy-header">
@@ -39,15 +29,10 @@ export function Header(_props: HeaderProps) {
           <Link href="/" className={pathname === '/' ? 'active' : ''}>Home</Link>
           <Link href="/#server">Server</Link>
           <Link href="/terms" className={pathname.startsWith('/terms') ? 'active' : ''}>Rules</Link>
-          <Link href="/shop" className={pathname.startsWith('/shop') || pathname.startsWith('/product') ? 'active' : ''}>Store</Link>
+          <Link href="/shop" className={pathname.startsWith('/shop') || pathname.startsWith('/product') || pathname.startsWith('/cart') || pathname.startsWith('/checkout') ? 'active' : ''}>Store</Link>
         </nav>
 
         <div className="cloudy-header-actions">
-          <Link href="/cart" className="cloudy-header-cart" aria-label="Shopping cart">
-            <ShoppingCart size={18} />
-            {mounted && cart.getItemCount() > 0 && <b>{cart.getItemCount()}</b>}
-          </Link>
-
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-discord-button">
             <MessageCircle size={18} />
             Join Discord
@@ -65,7 +50,6 @@ export function Header(_props: HeaderProps) {
           <Link href="/#server" onClick={() => setOpen(false)}>Server</Link>
           <Link href="/terms" onClick={() => setOpen(false)}>Rules</Link>
           <Link href="/shop" onClick={() => setOpen(false)}>Store</Link>
-          <Link href="/cart" onClick={() => setOpen(false)}>Cart</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
         </nav>
       )}
