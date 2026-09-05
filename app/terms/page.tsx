@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const sections = [
   {
@@ -46,6 +47,9 @@ export default function TermsPage() {
           <p>
             These terms apply to the Cloudy community, Rust servers, website, online store and related services.
           </p>
+          <Link href="/" className="cloudy-cta-secondary">
+            Back to Cloudy
+          </Link>
         </header>
 
         <div className="cloudy-terms-list">
