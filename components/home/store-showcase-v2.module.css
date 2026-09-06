@@ -3,7 +3,7 @@
   margin-top: 20px;
   padding-bottom: 110px;
   background:
-    radial-gradient(circle at 50% 0%, rgba(35, 135, 255, .11), transparent 34rem),
+    radial-gradient(circle at 50% 0%, rgba(35, 135, 255, .13), transparent 34rem),
     linear-gradient(180deg, #05080d 0%, #02060b 100%);
   overflow: hidden;
 }
@@ -19,8 +19,8 @@
   isolation: isolate;
 }
 
-.video,
 .fallback,
+.heroMotion,
 .blue,
 .vignette,
 .grid {
@@ -31,43 +31,53 @@
   pointer-events: none;
 }
 
-.video {
-  z-index: -6;
-  object-fit: cover;
-  filter: saturate(.65) brightness(.58) contrast(1.08);
-}
-
 .fallback {
   z-index: -7;
-  background: url('/images/cloudy-battlefield.svg') center 50% / cover no-repeat;
-  transform: scale(1.035);
-  animation: fallbackMove 18s ease-in-out infinite alternate;
+  background-position: center 46%;
+  background-size: cover;
+  transform: scale(1.12);
+  animation: battlefieldPan 8s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+  filter: saturate(.78) brightness(.72) contrast(1.13);
+  will-change: transform, background-position;
+}
+
+.heroMotion {
+  z-index: -6;
+  opacity: .62;
+  background:
+    radial-gradient(circle at 78% 39%, rgba(112, 211, 255, .22) 0 2%, transparent 16%),
+    radial-gradient(circle at 64% 54%, rgba(44, 127, 255, .20), transparent 22%),
+    linear-gradient(110deg, transparent 25%, rgba(136, 227, 255, .08) 47%, transparent 66%);
+  animation: lightSweep 5.8s ease-in-out infinite alternate;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
 }
 
 .blue {
   z-index: -5;
   background:
-    linear-gradient(90deg, rgba(2, 7, 14, .97) 0%, rgba(4, 19, 39, .84) 38%, rgba(6, 34, 64, .40) 66%, rgba(2, 7, 14, .90) 100%),
-    linear-gradient(180deg, rgba(13, 117, 255, .30), rgba(2, 8, 18, .30)),
-    radial-gradient(circle at 73% 34%, rgba(63, 202, 255, .34), transparent 24rem);
+    linear-gradient(90deg, rgba(2, 7, 14, .95) 0%, rgba(4, 19, 39, .74) 36%, rgba(6, 34, 64, .26) 66%, rgba(2, 7, 14, .84) 100%),
+    linear-gradient(180deg, rgba(13, 117, 255, .24), rgba(2, 8, 18, .20)),
+    radial-gradient(circle at 73% 34%, rgba(63, 202, 255, .30), transparent 24rem);
   mix-blend-mode: screen;
 }
 
 .vignette {
   z-index: -4;
   background:
-    linear-gradient(180deg, rgba(2, 6, 12, .05), rgba(2, 7, 14, .74) 78%, #02060b 100%),
-    radial-gradient(ellipse at center, transparent 25%, rgba(1, 4, 9, .30) 57%, rgba(1, 4, 9, .88) 100%);
+    linear-gradient(180deg, rgba(2, 6, 12, .02), rgba(2, 7, 14, .66) 78%, #02060b 100%),
+    radial-gradient(ellipse at center, transparent 28%, rgba(1, 4, 9, .22) 58%, rgba(1, 4, 9, .84) 100%);
 }
 
 .grid {
   z-index: -3;
-  opacity: .18;
+  opacity: .16;
   background-image:
     linear-gradient(rgba(99, 205, 255, .09) 1px, transparent 1px),
     linear-gradient(90deg, rgba(99, 205, 255, .09) 1px, transparent 1px);
   background-size: 70px 70px;
   mask-image: linear-gradient(90deg, rgba(0,0,0,.55), transparent 68%);
+  animation: gridDrift 9s linear infinite;
 }
 
 .heroContent {
@@ -127,7 +137,7 @@
 }
 
 .shell {
-  width: min(1220px, calc(100% - 34px));
+  width: min(1380px, calc(100% - 34px));
   margin: -92px auto 0;
   position: relative;
   z-index: 3;
@@ -168,55 +178,46 @@
 
 .rankGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
   align-items: stretch;
 }
 
 .rankCard {
   position: relative;
   overflow: hidden;
-  min-height: 570px;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(98, 191, 240, .14);
-  border-radius: 18px;
+  min-height: 650px;
+  border: 1px solid rgba(98, 191, 240, .16);
+  border-radius: 20px;
   background: linear-gradient(145deg, rgba(13, 24, 39, .97), rgba(5, 10, 18, .99));
-  box-shadow: inset 0 1px rgba(255,255,255,.035), 0 28px 70px rgba(0,0,0,.30);
-  transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  box-shadow: inset 0 1px rgba(255,255,255,.04), 0 30px 82px rgba(0,0,0,.34);
+  transition: transform .24s ease, border-color .24s ease, box-shadow .24s ease;
+  isolation: isolate;
 }
 
 .rankCard::before {
   content: '';
   position: absolute;
-  top: -160px;
-  right: -120px;
-  width: 320px;
-  height: 320px;
-  border-radius: 50%;
-  background: #2d9bf1;
-  opacity: .07;
-  filter: blur(70px);
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(54, 170, 255, .05), transparent 28%, rgba(2, 7, 14, .30));
+  pointer-events: none;
 }
 
 .rankCard:hover {
-  transform: translateY(-7px);
-  border-color: rgba(112, 216, 255, .36);
-  box-shadow: 0 32px 80px rgba(0,0,0,.42), 0 0 40px rgba(37,132,231,.07);
+  transform: translateY(-8px);
+  border-color: rgba(112, 216, 255, .40);
+  box-shadow: 0 36px 92px rgba(0,0,0,.44), 0 0 50px rgba(37,132,231,.09);
 }
 
 .featured {
-  padding-top: 60px;
-  border-color: rgba(112, 216, 255, .33);
-  background:
-    radial-gradient(circle at 50% 0%, rgba(36, 151, 236, .15), transparent 16rem),
-    linear-gradient(145deg, rgba(13, 29, 49, .98), rgba(4, 10, 19, 1));
-  box-shadow: 0 32px 90px rgba(0,0,0,.44), 0 0 40px rgba(47, 154, 255, .08);
+  border-color: rgba(112, 216, 255, .38);
+  box-shadow: 0 34px 96px rgba(0,0,0,.46), 0 0 46px rgba(47, 154, 255, .11);
 }
 
 .ribbon {
   position: absolute;
+  z-index: 8;
   top: 0;
   left: 0;
   right: 0;
@@ -235,9 +236,79 @@
   box-shadow: 0 8px 24px rgba(35, 142, 255, .18);
 }
 
+.cardScene {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 255px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.featured .cardScene {
+  top: 36px;
+}
+
+.cardSceneImage,
+.cardSceneGray,
+.cardSceneShade,
+.cardScan {
+  position: absolute;
+  inset: 0;
+}
+
+.cardSceneImage {
+  background-image: url('/images/rust-user-background.jpg');
+  background-repeat: no-repeat;
+  background-size: 150%;
+  filter: grayscale(.48) saturate(.62) brightness(.72) contrast(1.15);
+  transform: scale(1.14);
+  animation: cardCombatMove 6.4s cubic-bezier(.45, 0, .55, 1) infinite alternate;
+  will-change: transform, background-position;
+}
+
+.sceneOne .cardSceneImage { background-position: 28% 44%; animation-delay: -.8s; }
+.sceneTwo .cardSceneImage { background-position: 52% 40%; animation-delay: -2.1s; }
+.sceneThree .cardSceneImage { background-position: 72% 48%; animation-delay: -3.4s; }
+.sceneFour .cardSceneImage { background-position: 88% 46%; animation-delay: -4.7s; }
+
+.cardSceneGray {
+  background:
+    linear-gradient(135deg, rgba(218, 226, 232, .18), rgba(96, 110, 124, .08) 48%, transparent 75%),
+    linear-gradient(180deg, rgba(232, 237, 240, .08), rgba(10, 18, 28, .05));
+  mix-blend-mode: screen;
+}
+
+.cardSceneShade {
+  background:
+    linear-gradient(180deg, rgba(4, 8, 12, .02) 0%, rgba(4, 9, 15, .14) 45%, rgba(5, 10, 18, .96) 100%),
+    linear-gradient(90deg, rgba(2, 7, 12, .46), transparent 38%, rgba(2, 7, 12, .18));
+}
+
+.cardScan {
+  left: -38%;
+  width: 32%;
+  background: linear-gradient(90deg, transparent, rgba(176, 233, 255, .12), transparent);
+  transform: skewX(-12deg);
+  animation: scanAcross 4.8s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+.cardContent {
+  position: relative;
+  z-index: 3;
+  min-height: 650px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.featured .cardContent {
+  padding-top: 58px;
+}
+
 .topline {
   position: relative;
-  z-index: 2;
+  z-index: 4;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -247,9 +318,10 @@
 .topline span {
   padding: 7px 10px;
   border-radius: 999px;
-  border: 1px solid rgba(105, 202, 255, .15);
-  background: rgba(255,255,255,.025);
-  color: #8edfff;
+  border: 1px solid rgba(196, 233, 247, .24);
+  background: rgba(7, 13, 20, .44);
+  backdrop-filter: blur(10px);
+  color: #e3f7ff;
   font-size: 8px;
   font-weight: 950;
   letter-spacing: .15em;
@@ -257,87 +329,54 @@
 }
 
 .topline b {
-  color: rgba(126, 212, 250, .40);
-  font-size: 9px;
+  color: rgba(228, 240, 246, .56);
+  font-size: 8px;
   font-weight: 950;
-  letter-spacing: .18em;
+  letter-spacing: .16em;
   white-space: nowrap;
+  text-shadow: 0 1px 10px rgba(0,0,0,.35);
 }
 
-.emblem {
-  position: relative;
-  width: 106px;
-  height: 106px;
-  margin: 31px auto 23px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(102, 207, 255, .19);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(46, 162, 238, .12), rgba(5, 14, 25, .62) 62%, transparent 64%);
-  box-shadow: 0 0 42px rgba(49, 166, 241, .12);
+.sceneSpacer {
+  height: 175px;
+  flex: 0 0 auto;
 }
 
-.emblem::before,
-.emblem::after {
-  content: '';
-  position: absolute;
-  inset: -7px;
-  border-radius: 50%;
-  border: 1px solid rgba(104, 209, 255, .08);
-}
-
-.emblem::after {
-  inset: 8px;
-}
-
-.logoBadge {
-  position: relative;
-  z-index: 2;
-  width: 82px;
-  height: 82px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-  background: #1d1f24;
-  box-shadow: 0 10px 30px rgba(0,0,0,.34), 0 0 24px rgba(80, 195, 255, .10);
-}
-
-.logoImage {
-  width: 82px;
-  height: 82px;
-  object-fit: contain;
+.featured .sceneSpacer {
+  height: 168px;
 }
 
 .rankCard h4 {
-  min-height: 58px;
+  min-height: 62px;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 6px;
   text-align: center;
   color: #f8fcff;
-  font-size: clamp(24px, 2vw, 30px);
-  line-height: 1;
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: .98;
   font-weight: 1000;
   letter-spacing: -.035em;
+  text-wrap: balance;
+  text-shadow: 0 6px 28px rgba(0,0,0,.5);
 }
 
-.rankCard > p {
-  margin-top: 5px;
+.rankCard > .cardContent > p {
+  margin-top: 4px;
   text-align: center;
-  color: #6e8193;
-  font-size: 10px;
+  color: #8799a9;
+  font-size: 9px;
   font-weight: 800;
-  letter-spacing: .08em;
+  letter-spacing: .09em;
   text-transform: uppercase;
 }
 
 .divider {
   width: 100%;
   height: 1px;
-  margin: 20px 0;
-  background: linear-gradient(90deg, transparent, rgba(103, 198, 244, .20), transparent);
+  margin: 18px 0;
+  background: linear-gradient(90deg, transparent, rgba(139, 212, 245, .24), transparent);
 }
 
 .rankCard ul {
@@ -345,37 +384,36 @@
   padding: 0;
   margin: 0;
   display: grid;
-  gap: 11px;
+  gap: 10px;
 }
 
 .rankCard li {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  color: #aabac8;
-  font-size: 11px;
-  line-height: 1.45;
+  gap: 9px;
+  color: #b5c2cc;
+  font-size: 10px;
+  line-height: 1.4;
 }
 
 .rankCard li svg {
   flex: 0 0 auto;
   margin-top: 1px;
-  color: #65d7ff;
+  color: #77dcff;
 }
 
 .rankButton {
   min-height: 47px;
-  margin-top: auto;
-  padding-top: 14px;
-  padding-bottom: 14px;
+  margin-top: 22px;
+  padding: 14px 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 1px solid rgba(103, 207, 255, .20);
+  border: 1px solid rgba(103, 207, 255, .22);
   border-radius: 10px;
   color: #e9faff;
-  background: linear-gradient(135deg, rgba(34, 144, 219, .13), rgba(59, 95, 210, .13));
+  background: linear-gradient(135deg, rgba(34, 144, 219, .15), rgba(59, 95, 210, .14));
   font-size: 9px;
   font-weight: 950;
   letter-spacing: .13em;
@@ -385,8 +423,8 @@
 
 .rankButton:hover {
   transform: translateY(-2px);
-  border-color: rgba(103, 218, 255, .46);
-  background: linear-gradient(135deg, rgba(42, 164, 238, .20), rgba(69, 106, 229, .20));
+  border-color: rgba(103, 218, 255, .48);
+  background: linear-gradient(135deg, rgba(42, 164, 238, .22), rgba(69, 106, 229, .22));
 }
 
 .products {
@@ -401,17 +439,50 @@
   text-align: center;
 }
 
-@keyframes fallbackMove {
-  from { transform: scale(1.035) translate3d(-.4%, -.25%, 0); }
-  to { transform: scale(1.075) translate3d(.55%, .35%, 0); }
+@keyframes battlefieldPan {
+  0% { transform: scale(1.11) translate3d(-1.7%, -.8%, 0); background-position: 45% 46%; }
+  50% { transform: scale(1.16) translate3d(.8%, .2%, 0); background-position: 54% 43%; }
+  100% { transform: scale(1.13) translate3d(1.9%, .9%, 0); background-position: 60% 48%; }
+}
+
+@keyframes lightSweep {
+  from { transform: translate3d(-3%, -1%, 0) scale(1.02); opacity: .46; }
+  to { transform: translate3d(4%, 2%, 0) scale(1.08); opacity: .78; }
+}
+
+@keyframes gridDrift {
+  from { background-position: 0 0, 0 0; }
+  to { background-position: 0 70px, 70px 0; }
+}
+
+@keyframes cardCombatMove {
+  0% { transform: scale(1.14) translate3d(-2.5%, -1%, 0); }
+  45% { transform: scale(1.20) translate3d(1.5%, .6%, 0); }
+  100% { transform: scale(1.16) translate3d(3%, 1.2%, 0); }
+}
+
+@keyframes scanAcross {
+  0%, 16% { transform: translateX(-180%) skewX(-12deg); opacity: 0; }
+  25% { opacity: .65; }
+  66% { opacity: .25; }
+  76%, 100% { transform: translateX(520%) skewX(-12deg); opacity: 0; }
+}
+
+@media (max-width: 1180px) {
+  .rankGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rankCard, .cardContent { min-height: 620px; }
 }
 
 @media (max-width: 980px) {
-  .rankGrid { grid-template-columns: 1fr; }
   .shell { margin-top: -45px; }
   .hero { min-height: 560px; }
   .heroContent { padding: 85px 0; }
-  .rankCard { min-height: 0; }
+}
+
+@media (max-width: 700px) {
+  .rankGrid { grid-template-columns: 1fr; }
+  .rankCard, .cardContent { min-height: 0; }
+  .sceneSpacer { height: 185px; }
 }
 
 @media (max-width: 640px) {
@@ -422,5 +493,21 @@
   .heroContent { padding: 70px 0; }
   .heroContent h2 { font-size: clamp(3rem, 17vw, 4.7rem); }
   .heroActions { flex-direction: column; align-items: stretch; }
-  .topline b { font-size: 8px; }
+  .topline b { font-size: 7px; }
+  .cardScene { height: 245px; }
+  .featured .cardScene { top: 36px; }
+  .sceneSpacer { height: 178px; }
+  .featured .sceneSpacer { height: 174px; }
+  .cardContent { padding: 18px; }
+  .featured .cardContent { padding-top: 54px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fallback,
+  .heroMotion,
+  .grid,
+  .cardSceneImage,
+  .cardScan {
+    animation: none;
+  }
 }
