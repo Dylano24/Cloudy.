@@ -3,14 +3,13 @@ import { ArrowRight, Check } from 'lucide-react';
 import { ProductsGrid } from '@/components/home/products-grid';
 import styles from './store-showcase-v2.module.css';
 
-const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
-
 const packages = [
   {
-    title: 'BASIC',
-    subtitle: 'Essential combat starter',
-    badge: 'Starter Rank',
+    title: 'STARTER',
+    subtitle: 'Fast start. Clean pressure.',
+    badge: 'Starter',
     featured: false,
+    sceneClass: styles.sceneOne,
     features: [
       'Queue Skip priority',
       'Semi-Automatic Rifle loadout',
@@ -25,11 +24,12 @@ const packages = [
   },
   {
     title: 'VIP',
-    subtitle: 'High-value raid rank',
-    badge: 'Raid Rank',
+    subtitle: 'High-value raid pressure.',
+    badge: 'VIP',
     featured: true,
+    sceneClass: styles.sceneTwo,
     features: [
-      'Everything included in BASIC',
+      'Everything included in Starter',
       'Higher Queue Skip priority',
       'Assault Rifle (AK) loadout',
       'MP5 loadout',
@@ -43,10 +43,11 @@ const packages = [
     ],
   },
   {
-    title: 'ULTIMATE',
-    subtitle: 'Maximum raid & defense power',
-    badge: 'Ultimate Rank',
+    title: 'ELITE',
+    subtitle: 'Maximum offensive power.',
+    badge: 'Elite',
     featured: false,
+    sceneClass: styles.sceneThree,
     features: [
       'Everything included in VIP',
       'Highest Queue Skip priority',
@@ -56,11 +57,27 @@ const packages = [
       '12x Rockets',
       '4,000 HQM',
       '2x Auto Turrets',
+      '30,000 Basic Building Materials',
+      'Medical combat supplies',
+      '24h claim cooldown',
+    ],
+  },
+  {
+    title: 'BASE DEFENDER',
+    subtitle: 'Built to hold the line.',
+    badge: 'Defense',
+    featured: false,
+    sceneClass: styles.sceneFour,
+    features: [
+      'Defense-focused loadout',
+      'High Queue Skip priority',
+      '2x Auto Turrets',
       '4x Shotgun Traps',
       '2x Armored Doors',
       '4x Garage Doors',
-      '30,000 Basic Building Materials',
+      '3,000 HQM',
       'Turret ammo & electrical parts',
+      '25,000 Basic Building Materials',
       'Medical combat supplies',
       '24h claim cooldown',
     ],
@@ -71,24 +88,12 @@ export function StoreShowcase() {
   return (
     <section className={styles.showcase} id="store">
       <div className={styles.hero}>
-        <video
-          className={styles.video}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster="/images/rust-user-background.jpg"
-        >
-          <source src="/videos/cloudy-rust-bg.mp4" type="video/mp4" />
-          <source src="/videos/cloudy-rust-bg.webm" type="video/webm" />
-        </video>
-
         <div
           className={styles.fallback}
           style={{ backgroundImage: "url('/images/rust-user-background.jpg')" }}
           aria-hidden="true"
         />
+        <div className={styles.heroMotion} aria-hidden="true" />
         <div className={styles.blue} aria-hidden="true" />
         <div className={styles.vignette} aria-hidden="true" />
         <div className={styles.grid} aria-hidden="true" />
@@ -99,16 +104,15 @@ export function StoreShowcase() {
             DOMINATE THE <span>BATTLEFIELD</span>
           </h2>
           <p>
-            Every player already gets the free kit and blueprints. Cloudy upgrades focus on
-            high-value weapons, explosives, HQM, turrets and serious raid or defense power.
-            Every package is planned around a 24-hour claim cooldown.
+            Cloudy upgrades are built around real raid pressure, fast recovery and stronger defense.
+            Pick the loadout that matches the way you play and take it into the next fight.
           </p>
           <div className={styles.heroActions}>
             <Link href="/shop" className="cloudy-cta-primary">
-              Store Status <ArrowRight size={18} />
+              Open Store <ArrowRight size={18} />
             </Link>
             <a href="#cloudy-vip" className="cloudy-cta-secondary">
-              View Ranks
+              View Kits
             </a>
           </div>
         </div>
@@ -116,52 +120,50 @@ export function StoreShowcase() {
 
       <div className={styles.shell} id="cloudy-vip">
         <div className={styles.rankHeading}>
-          <span>Survive Build Dominate</span>
+          <span>Cloudy Kits</span>
           <h3>CHOOSE YOUR LOADOUT</h3>
           <p>
-            Free kit and blueprints are already standard. These planned packages focus on combat,
-            boom, HQM, resources and base defense, with a 24-hour claim cooldown on every package.
+            Four clear paths: start fast, raid harder, push elite fights or lock your base down.
           </p>
         </div>
 
         <div className={styles.rankGrid}>
-          {packages.map(({ title, subtitle, badge, features, featured }) => (
+          {packages.map(({ title, subtitle, badge, features, featured, sceneClass }) => (
             <article key={title} className={`${styles.rankCard}${featured ? ` ${styles.featured}` : ''}`}>
               {featured && <div className={styles.ribbon}>Cloudy Recommended</div>}
 
-              <div className={styles.topline}>
-                <span>{badge}</span>
-                <b>SURVIVE BUILD DOMINATE</b>
+              <div className={`${styles.cardScene} ${sceneClass}`} aria-hidden="true">
+                <div className={styles.cardSceneImage} />
+                <div className={styles.cardSceneGray} />
+                <div className={styles.cardSceneShade} />
+                <div className={styles.cardScan} />
               </div>
 
-              <div className={styles.emblem}>
-                <div className={styles.logoBadge}>
-                  <img
-                    src={CLOUDY_LOGO_URL}
-                    alt="Cloudy"
-                    width={82}
-                    height={82}
-                    className={styles.logoImage}
-                  />
+              <div className={styles.cardContent}>
+                <div className={styles.topline}>
+                  <span>{badge}</span>
+                  <b>LIVE LOADOUT</b>
                 </div>
+
+                <div className={styles.sceneSpacer} />
+
+                <h4>{title}</h4>
+                <p>{subtitle}</p>
+                <div className={styles.divider} />
+
+                <ul>
+                  {features.map((feature) => (
+                    <li key={feature}>
+                      <Check size={15} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link href="/shop" className={styles.rankButton}>
+                  View kit <ArrowRight size={16} />
+                </Link>
               </div>
-
-              <h4>{title}</h4>
-              <p>{subtitle}</p>
-              <div className={styles.divider} />
-
-              <ul>
-                {features.map((feature) => (
-                  <li key={feature}>
-                    <Check size={15} />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Link href="/shop" className={styles.rankButton}>
-                Store not live yet <ArrowRight size={16} />
-              </Link>
             </article>
           ))}
         </div>
@@ -170,7 +172,7 @@ export function StoreShowcase() {
           <div className={styles.productsHeading}>
             <span>Survive Build Dominate</span>
             <h3>ALL CLOUDY PACKAGES</h3>
-            <p>The live product catalog will appear here after the official store integration is ready.</p>
+            <p>The full Cloudy catalog is shown below.</p>
           </div>
           <ProductsGrid />
         </div>
