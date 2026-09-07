@@ -5,7 +5,7 @@ import { Menu, MessageCircle, X } from 'lucide-react';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
-const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
+const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 export function Header() {
