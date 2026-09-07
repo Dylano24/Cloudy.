@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const LEGACY_SITE = 'https://cloudy-store-l5gnmyiqr-cloudystore.vercel.app';
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
@@ -16,6 +18,19 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.z9y7-tip4serv.com',
       },
     ],
+  },
+  async rewrites() {
+    return {
+      beforeFiles: [
+        { source: '/store.css', destination: `${LEGACY_SITE}/store.css` },
+        { source: '/layout.css', destination: `${LEGACY_SITE}/layout.css` },
+        { source: '/games.js', destination: `${LEGACY_SITE}/games.js` },
+        { source: '/catalog.js', destination: `${LEGACY_SITE}/catalog.js` },
+        { source: '/store.js', destination: `${LEGACY_SITE}/store.js` },
+        { source: '/clouds.js', destination: `${LEGACY_SITE}/clouds.js` },
+        { source: '/assets/:path*', destination: `${LEGACY_SITE}/assets/:path*` },
+      ],
+    };
   },
 };
 
