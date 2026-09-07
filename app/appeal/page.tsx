@@ -124,7 +124,7 @@ export default function AppealPage() {
 
               <form className={styles.form} onSubmit={submitAppeal}>
                 <label className={styles.field}>
-                  <span className={styles.label}>What option are you appealing?</span>
+                  <span className={styles.label}>What action are you appealing?</span>
                   <select className={styles.select} name="action" required defaultValue="">
                     <option value="" disabled>Select an option</option>
                     {scope === 'discord' && <option value="Mute">Mute</option>}
