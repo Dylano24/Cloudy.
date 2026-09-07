@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-const DISCORD_URL = 'https://discord.gg/QnWNz2dKCE';
+const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 export function Footer() {
@@ -24,7 +24,6 @@ export function Footer() {
             <div className="cloudy-footer-links">
               <Link href="/">Home</Link>
               <Link href="/#server">Server</Link>
-              <Link href="/shop">Store</Link>
             </div>
           </div>
 
