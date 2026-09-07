@@ -68,21 +68,22 @@ export default function AppealPage() {
   return (
     <main className={styles.page}>
       <div className={styles.wrap}>
+        <div className={styles.formTop}>
+          <a href="/" className={styles.backButton}><ChevronLeft size={15} /> Home</a>
+          <a href="/appeal" className={styles.contextPill}>Ban appeal</a>
+        </div>
+
         <header className={styles.hero}>
           <span className={styles.eyebrow}><ShieldAlert size={15} /> Cloudy appeals</span>
           <h1>Mute / Ban appeal</h1>
-          <p>
-            If you believe your punishment was unfair or deserves to be reconsidered, you may submit an appeal below.
-          </p>
+          <p>If you believe your punishment was unfair or deserves to be reconsidered, you may submit an appeal below.</p>
         </header>
 
         <section className={styles.panel}>
           {!scope && !submitted && (
             <div className={styles.panelInner}>
               <h2 className={styles.selectionTitle}>What is your appeal related to?</h2>
-              <p className={styles.selectionText}>
-                Select the platform your punishment applies to before continuing to the appeal questions.
-              </p>
+              <p className={styles.selectionText}>Select the platform your punishment applies to before continuing.</p>
 
               <div className={styles.scopeGrid}>
                 <button type="button" className={styles.scopeButton} onClick={() => setScope('discord')}>
@@ -113,10 +114,7 @@ export default function AppealPage() {
 
               <div className={styles.intro}>
                 <h2>Mute / Ban appeal</h2>
-                <p>
-                  Please answer every question honestly and provide as much relevant information as possible. False information,
-                  manipulation, or abusive behavior towards the staff team may result in your appeal being denied.
-                </p>
+                <p>Please answer every question honestly and provide as much relevant information as possible. False information, manipulation, or abusive behavior towards the staff team may result in your appeal being denied.</p>
               </div>
 
               <form className={styles.form} onSubmit={submitAppeal}>
@@ -130,17 +128,21 @@ export default function AppealPage() {
                   </select>
                 </label>
 
-                <label className={styles.field}>
-                  <span className={styles.labelRow}><span className={styles.label}>What is your Discord username / ID?</span><span className={styles.required}>Required</span></span>
-                  <span className={styles.help}>Please provide your current Discord username or User ID.</span>
-                  <input className={styles.input} name="discordIdentity" required maxLength={100} autoComplete="off" />
-                </label>
+                {scope === 'discord' && (
+                  <label className={styles.field}>
+                    <span className={styles.labelRow}><span className={styles.label}>What is your Discord username / ID?</span><span className={styles.required}>Required</span></span>
+                    <span className={styles.help}>Please provide your current Discord username or User ID.</span>
+                    <input className={styles.input} name="discordIdentity" required maxLength={100} autoComplete="off" />
+                  </label>
+                )}
 
-                <label className={styles.field}>
-                  <span className={styles.labelRow}><span className={styles.label}>What is your Gamertag?</span><span className={styles.required}>Required</span></span>
-                  <span className={styles.help}>Please provide the username you use in-game.</span>
-                  <input className={styles.input} name="gamertag" required maxLength={100} autoComplete="off" />
-                </label>
+                {scope === 'rust' && (
+                  <label className={styles.field}>
+                    <span className={styles.labelRow}><span className={styles.label}>What is your Gamertag?</span><span className={styles.required}>Required</span></span>
+                    <span className={styles.help}>Please provide the username you use in-game.</span>
+                    <input className={styles.input} name="gamertag" required maxLength={100} autoComplete="off" />
+                  </label>
+                )}
 
                 <label className={styles.field}>
                   <span className={styles.labelRow}><span className={styles.label}>What is your email address?</span><span className={styles.required}>Required</span></span>
@@ -151,37 +153,37 @@ export default function AppealPage() {
                 <label className={styles.field}>
                   <span className={styles.labelRow}><span className={styles.label}>Why were you muted/banned?</span><span className={styles.required}>Required</span></span>
                   <span className={styles.help}>Please explain what happened from your perspective.</span>
-                  <textarea className={styles.textarea} name="punishmentReason" required maxLength={2000} />
+                  <textarea className={styles.textarea} name="punishmentReason" required maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.labelRow}><span className={styles.label}>Do you believe the punishment was justified?</span><span className={styles.required}>Required</span></span>
                   <span className={styles.help}>Explain why you believe the punishment was or was not justified.</span>
-                  <textarea className={styles.textarea} name="punishmentJustified" required maxLength={2000} />
+                  <textarea className={styles.textarea} name="punishmentJustified" required maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.labelRow}><span className={styles.label}>Why should your appeal be accepted?</span><span className={styles.required}>Required</span></span>
                   <span className={styles.help}>Explain why you believe your punishment should be removed or reconsidered.</span>
-                  <textarea className={styles.textarea} name="acceptanceReason" required maxLength={2000} />
+                  <textarea className={styles.textarea} name="acceptanceReason" required maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.labelRow}><span className={styles.label}>What will you do differently if your appeal is accepted?</span><span className={styles.required}>Required</span></span>
                   <span className={styles.help}>Please explain how you intend to avoid repeating the situation.</span>
-                  <textarea className={styles.textarea} name="futureChanges" required maxLength={2000} />
+                  <textarea className={styles.textarea} name="futureChanges" required maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.labelRow}><span className={styles.label}>Do you have any evidence supporting your appeal?</span><span className={styles.optional}>Optional</span></span>
-                  <span className={styles.help}>You may provide links to screenshots, videos, messages, or any other relevant evidence.</span>
-                  <textarea className={styles.textarea} name="evidence" maxLength={2000} />
+                  <span className={styles.help}>You may provide links to screenshots, videos, messages, or other relevant evidence.</span>
+                  <textarea className={styles.textarea} name="evidence" maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.labelRow}><span className={styles.label}>Is there anything else you would like the staff team to know?</span><span className={styles.optional}>Optional</span></span>
-                  <span className={styles.help}>Provide any additional information, context, or evidence that may help us review your appeal.</span>
-                  <textarea className={styles.textarea} name="additionalInfo" maxLength={2000} />
+                  <span className={styles.help}>Provide any additional information or context that may help us review your appeal.</span>
+                  <textarea className={styles.textarea} name="additionalInfo" maxLength={1000} />
                 </label>
 
                 {error && <div className={styles.error} role="alert">{error}</div>}
@@ -201,12 +203,8 @@ export default function AppealPage() {
             <div className={styles.success}>
               <span className={styles.successIcon}><CheckCircle2 size={34} /></span>
               <h2>Appeal submitted</h2>
-              <p>
-                Your appeal has been successfully submitted. Our staff team will review your appeal and make a decision based on the information provided.
-              </p>
-              <p>
-                You will receive an email notification once a decision has been made. You can also keep an eye on your ban or timeout status, which will be automatically updated if your appeal is accepted.
-              </p>
+              <p>Your appeal has been successfully submitted. Our staff team will review your appeal and make a decision based on the information provided.</p>
+              <p>You will receive an email notification once a decision has been made. You can also keep an eye on your ban or timeout status, which will be automatically updated if your appeal is accepted.</p>
               <p>Please do not submit multiple appeals for the same punishment. Thank you for your patience.</p>
               {appealId && <span className={styles.appealId}>Appeal ID: {appealId}</span>}
               <p className={styles.successFooter}>Cloudy Inc. staff team</p>
