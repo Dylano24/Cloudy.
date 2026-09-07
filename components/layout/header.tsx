@@ -28,9 +28,7 @@ export function Header() {
         <nav className="cloudy-header-nav" aria-label="Main navigation">
           <Link href="/" className={pathname === '/' ? 'active' : ''}>Home</Link>
           <Link href="/#server">Server</Link>
-          <Link href="/terms" className={pathname.startsWith('/terms') ? 'active' : ''}>Rules</Link>
           <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''}>Appeal</Link>
-          <Link href="/shop" className={pathname.startsWith('/shop') || pathname.startsWith('/product') || pathname.startsWith('/cart') || pathname.startsWith('/checkout') ? 'active' : ''}>Store</Link>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -49,9 +47,7 @@ export function Header() {
         <nav className="cloudy-mobile-menu">
           <Link href="/" onClick={() => setOpen(false)}>Home</Link>
           <Link href="/#server" onClick={() => setOpen(false)}>Server</Link>
-          <Link href="/terms" onClick={() => setOpen(false)}>Rules</Link>
           <Link href="/appeal" onClick={() => setOpen(false)}>Appeal</Link>
-          <Link href="/shop" onClick={() => setOpen(false)}>Store</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
         </nav>
       )}
