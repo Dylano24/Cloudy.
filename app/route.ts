@@ -4,7 +4,7 @@ const DISCORD_EMOJI_URL = 'https://cdn.discordapp.com/emojis/1543287452410716160
 export const dynamic = 'force-dynamic';
 
 function updateHomeNavigation(html: string) {
-  const navigation = `<div class="top-links policy-top-links"><a class="is-active" href="/" aria-current="page">Home</a><a href="/#server">Server</a><a href="/terms">Rules</a><a href="/appeal">Appeal</a><a href="/shop">Store</a></div>`;
+  const navigation = `<div class="top-links policy-top-links"><a class="is-active" href="/" aria-current="page">Home</a><a href="/#server">Server</a><a href="/appeal">Appeal</a></div>`;
   return html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div>/, navigation);
 }
 
@@ -23,7 +23,7 @@ function injectHomeStyles(html: string) {
 .reference-topbar .policy-top-links a:hover,.reference-topbar .policy-top-links a.is-active{color:#fff!important;background:#181818!important}
 .reference-topbar .policy-top-links a.is-active:after{content:"";position:absolute;left:14px;right:14px;bottom:3px;height:1px;background:#f0f0f0;box-shadow:0 0 8px rgba(255,255,255,.18)}
 .reference-topbar .top-actions{position:absolute;right:0;display:flex;align-items:center}
-.discord-link .discord-icon{display:grid;place-items:center;overflow:hidden}
+.discord-link .discord-icon{display:grid;place-items:center;overflow:hidden;background:#000!important;border-radius:50%!important}
 .discord-link .discord-custom-emoji{width:30px;height:30px;display:block;object-fit:contain}
 @media(max-width:760px){.reference-topbar{justify-content:flex-start!important;overflow-x:auto}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:none}.reference-topbar .policy-top-links a{padding:10px 11px!important;font-size:10px!important}}
 </style>`;
