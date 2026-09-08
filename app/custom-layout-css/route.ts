@@ -230,39 +230,6 @@ html body .cloudy-hero-logo-shell::before{
   animation:none!important;
 }
 
-/* Flashy rotating intro border: red base with narrow white highlights, flat dark interior. */
-html body .cloudy-intro-card{
-  --cloudy-intro-angle:0deg;
-  position:relative!important;
-  overflow:hidden!important;
-  border:2px solid transparent!important;
-  background:
-    linear-gradient(#060606,#060606) padding-box,
-    conic-gradient(
-      from var(--cloudy-intro-angle),
-      #ff3434 0deg 42deg,
-      #fff 48deg 54deg,
-      #ff3434 60deg 132deg,
-      #fff 138deg 144deg,
-      #ff3434 150deg 222deg,
-      #fff 228deg 234deg,
-      #ff3434 240deg 312deg,
-      #fff 318deg 324deg,
-      #ff3434 330deg 360deg
-    ) border-box!important;
-  box-shadow:0 0 12px rgba(255,45,45,.48),0 0 28px rgba(255,35,35,.18)!important;
-  filter:none!important;
-  animation:cloudy-intro-border-rotate 2.7s linear infinite!important;
-}
-html body .cloudy-intro-card::before,
-html body .cloudy-intro-card::after{
-  content:none!important;
-  display:none!important;
-}
-@keyframes cloudy-intro-border-rotate{
-  to{--cloudy-intro-angle:360deg}
-}
-
 /* No accent line under HOME or across the navigation bar. */
 html body .reference-topbar{
   border-bottom:0!important;
