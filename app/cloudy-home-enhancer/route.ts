@@ -46,8 +46,8 @@ const enhancer = String.raw`
       .cloudy-store-feature p{margin:13px 0 0;max-width:670px;color:#aaaab0;font-size:15px;line-height:1.7}\
       .cloudy-store-tags{margin-top:18px;color:#d9d9dd;font-size:12px;font-weight:750;letter-spacing:.08em}\
       .cloudy-pay-grid,.cloudy-purpose-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}\
-      .cloudy-pay-card,.cloudy-purpose-card{padding:28px 26px;min-height:190px;box-sizing:border-box;position:relative;overflow:hidden}\
-      .cloudy-pay-card:before,.cloudy-purpose-card:before{content:"";position:absolute;left:0;top:0;width:74px;height:2px;background:linear-gradient(90deg,#ff3434,#fff);box-shadow:0 0 12px rgba(255,52,52,.7)}\
+      .cloudy-pay-card{padding:28px 26px;min-height:190px;box-sizing:border-box;position:relative;overflow:hidden}\
+      .cloudy-pay-card:before{content:"";position:absolute;left:0;top:0;width:74px;height:2px;background:linear-gradient(90deg,#ff3434,#fff);box-shadow:0 0 12px rgba(255,52,52,.7)}\
       .cloudy-v2-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:50%;margin-bottom:22px;background:rgba(110,0,0,.18);border:1px solid rgba(255,60,60,.14);color:#ff4545;font-size:20px;font-weight:900}\
       .cloudy-pay-card h3,.cloudy-purpose-card h3{margin:0;color:#fff;font-size:15px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}\
       .cloudy-pay-card p,.cloudy-purpose-card p{margin:11px 0 0;color:#a9a9ae;font-size:13px;line-height:1.65}\
@@ -56,9 +56,18 @@ const enhancer = String.raw`
       .cloudy-community-card{padding:48px;display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;background:radial-gradient(circle at 88% 50%,rgba(140,0,0,.20),transparent 34%),linear-gradient(180deg,rgba(13,13,14,.94),rgba(5,5,6,.97))}\
       .cloudy-community-card h2{margin:0;color:#fff;font-size:32px;font-weight:950;letter-spacing:.06em;text-transform:uppercase}\
       .cloudy-community-card p{margin:14px 0 0;max-width:720px;color:#aaaab0;font-size:15px;line-height:1.7}\
-      .cloudy-purpose-grid{grid-template-columns:repeat(4,minmax(0,1fr))}\
-      .cloudy-purpose-card{min-height:220px}\
-      .cloudy-purpose-number{position:absolute;right:18px;top:14px;color:rgba(255,255,255,.035);font-size:60px;font-weight:950;line-height:1}\
+      .cloudy-purpose-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}\
+      .cloudy-purpose-card{position:relative;isolation:isolate;min-height:252px;padding:30px 28px 28px;box-sizing:border-box;overflow:hidden;border:1px solid rgba(255,255,255,.09)!important;border-radius:18px!important;background:radial-gradient(circle at 92% 8%,rgba(180,0,0,.12),transparent 31%),linear-gradient(180deg,rgba(15,15,17,.98),rgba(5,5,6,.99))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 22px 52px rgba(0,0,0,.36),0 0 0 1px rgba(255,255,255,.012)!important;transition:transform .30s cubic-bezier(.2,.7,.2,1),border-color .30s ease,box-shadow .30s ease,background .30s ease}\
+      .cloudy-purpose-card:before{content:"";position:absolute;z-index:4;left:0;top:0;width:46%;height:2px;background:linear-gradient(90deg,transparent 0%,#ff3030 34%,#fff 50%,#ff3030 66%,transparent 100%);box-shadow:0 0 8px rgba(255,255,255,.72),0 0 17px rgba(255,45,45,.66),0 0 30px rgba(180,0,0,.34);transform:translate3d(-145%,0,0);animation:cloudy-purpose-sweep 4.3s linear infinite;will-change:transform}\
+      .cloudy-purpose-card:after{content:"";position:absolute;z-index:3;inset:0;padding:1px;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.34),rgba(255,255,255,.035) 24%,rgba(255,52,52,.16) 52%,rgba(255,255,255,.03) 77%,rgba(255,70,70,.22));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.72}\
+      .cloudy-purpose-card:hover{transform:translateY(-6px);border-color:rgba(255,70,70,.34)!important;background:radial-gradient(circle at 92% 8%,rgba(210,0,0,.17),transparent 34%),linear-gradient(180deg,rgba(18,18,20,.99),rgba(6,6,7,1))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.065),0 28px 62px rgba(0,0,0,.5),0 0 28px rgba(255,42,42,.10),0 0 0 1px rgba(255,54,54,.055)!important}\
+      .cloudy-purpose-card:hover:after{opacity:1}\
+      .cloudy-purpose-icon{position:relative;z-index:5;width:58px;height:58px;display:grid;place-items:center;margin-bottom:22px;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.075),transparent 48%),linear-gradient(180deg,rgba(105,0,0,.34),rgba(32,0,0,.25));border:1px solid rgba(255,65,65,.22);box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 0 22px rgba(255,35,35,.075);transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}\
+      .cloudy-purpose-icon svg{width:27px;height:27px;fill:none;stroke:#ff4141;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(255,42,42,.28))}\
+      .cloudy-purpose-card:hover .cloudy-purpose-icon{transform:translateY(-2px) scale(1.04);border-color:rgba(255,78,78,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 26px rgba(255,38,38,.15)}\
+      .cloudy-purpose-card h3{position:relative;z-index:5;margin-top:0!important;font-size:16px!important;letter-spacing:.09em!important}\
+      .cloudy-purpose-card p{position:relative;z-index:5;margin-top:12px!important;color:#b1b1b6!important;font-size:13px!important;line-height:1.7!important}\
+      @keyframes cloudy-purpose-sweep{0%{transform:translate3d(-145%,0,0)}100%{transform:translate3d(320%,0,0)}}\
       .cloudy-future-card{padding:52px 54px;text-align:center}\
       .cloudy-future-card h2{margin:0;color:#fff;font-size:34px;font-weight:950;letter-spacing:.07em;text-transform:uppercase}\
       .cloudy-future-card p{margin:18px auto 0;max-width:780px;color:#adadb2;font-size:15px;line-height:1.8}\
@@ -69,8 +78,8 @@ const enhancer = String.raw`
       .cloudy-final-line span:last-child{color:#ff4545}\
       .cloudy-v2-reveal{opacity:0;transform:translateY(16px);transition:opacity .58s ease,transform .58s cubic-bezier(.2,.7,.2,1)}.cloudy-v2-reveal.is-visible{opacity:1;transform:none}\
       @media(max-width:900px){.game-home .game-tabs{grid-template-columns:1fr!important}.cloudy-coming-card{min-height:300px}.cloudy-store-feature,.cloudy-community-card{grid-template-columns:1fr;text-align:center}.cloudy-store-feature p,.cloudy-community-card p{margin-left:auto;margin-right:auto}.cloudy-pay-grid{grid-template-columns:1fr}.cloudy-purpose-grid{grid-template-columns:repeat(2,1fr)}}\
-      @media(max-width:640px){.cloudy-v2-section{margin-top:60px}.cloudy-v2-heading h2{font-size:26px}.cloudy-store-feature,.cloudy-community-card,.cloudy-future-card{padding:30px 22px}.cloudy-purpose-grid{grid-template-columns:1fr}.cloudy-final-line{gap:18px;flex-direction:column;margin-top:54px}.cloudy-stats{grid-template-columns:1fr}.cloudy-stat:not(:last-child){border-right:0;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:22px}.cloudy-cinematic-hero .cloudy-one-community{font-size:14px!important}.game-home .game-tab .game-cover{height:340px!important}}\
-      @media(prefers-reduced-motion:reduce){.cloudy-v2-reveal{opacity:1!important;transform:none!important;transition:none!important}}';
+      @media(max-width:640px){.cloudy-v2-section{margin-top:60px}.cloudy-v2-heading h2{font-size:26px}.cloudy-store-feature,.cloudy-community-card,.cloudy-future-card{padding:30px 22px}.cloudy-purpose-grid{grid-template-columns:1fr}.cloudy-purpose-card{min-height:auto;padding:28px 24px}.cloudy-final-line{gap:18px;flex-direction:column;margin-top:54px}.cloudy-stats{grid-template-columns:1fr}.cloudy-stat:not(:last-child){border-right:0;border-bottom:1px solid rgba(255,255,255,.06);padding-bottom:22px}.cloudy-cinematic-hero .cloudy-one-community{font-size:14px!important}.game-home .game-tab .game-cover{height:340px!important}}\
+      @media(prefers-reduced-motion:reduce){.cloudy-v2-reveal{opacity:1!important;transform:none!important;transition:none!important}.cloudy-purpose-card:before{animation:none!important;transform:translate3d(115%,0,0)!important}}';
     document.head.appendChild(style);
   }
 
@@ -138,10 +147,10 @@ const enhancer = String.raw`
       <section class="cloudy-v2-section" id="cloudy-purpose">\
         <div class="cloudy-v2-heading cloudy-v2-reveal"><p class="cloudy-v2-eyebrow">Why Cloudy?</p><h2>Made with purpose.</h2></div>\
         <div class="cloudy-purpose-grid">\
-          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><span class="cloudy-purpose-number">01</span><div class="cloudy-v2-icon">Q</div><h3>Quality</h3><p>We focus on creating stable, polished and enjoyable gaming experiences.</p></article>\
-          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><span class="cloudy-purpose-number">02</span><div class="cloudy-v2-icon">C</div><h3>Community</h3><p>Every detail is designed to enhance the player experience</p></article>\
-          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><span class="cloudy-purpose-number">03</span><div class="cloudy-v2-icon">I</div><h3>Innovation</h3><p>We continuously explore new ideas, features and ways to push what’s possible.</p></article>\
-          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><span class="cloudy-purpose-number">04</span><div class="cloudy-v2-icon">P</div><h3>Precision</h3><p>Every decision is carefully considered, with precision built into every element.</p></article>\
+          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><div class="cloudy-purpose-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8 19 5.7v5.1c0 4.9-3.1 8.4-7 10.4-3.9-2-7-5.5-7-10.4V5.7L12 2.8Z"/><path d="m8.7 12 2.1 2.1 4.6-5"/></svg></div><h3>Quality</h3><p>We focus on creating stable, polished and enjoyable gaming experiences.</p></article>\
+          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><div class="cloudy-purpose-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 20v-1.4A5.6 5.6 0 0 1 8.6 13h.8a5.6 5.6 0 0 1 5.6 5.6V20"/><path d="M14.8 14.1c.6-.4 1.3-.6 2.1-.6h.5a3.6 3.6 0 0 1 3.6 3.6V19"/></svg></div><h3>Community</h3><p>Every detail is designed to enhance the player experience</p></article>\
+          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><div class="cloudy-purpose-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.3 2.5 5.2 13h5.7l-1 8.5 8.9-11.7h-6.2l.7-7.3Z"/></svg></div><h3>Innovation</h3><p>We continuously explore new ideas, features and ways to push what’s possible.</p></article>\
+          <article class="cloudy-v2-panel cloudy-purpose-card cloudy-v2-reveal"><div class="cloudy-purpose-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg></div><h3>Precision</h3><p>Every decision is carefully considered, with precision built into every element.</p></article>\
         </div>\
       </section>\
       <section class="cloudy-v2-section" id="cloudy-future">\
