@@ -1,12 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { LogIn, Menu, ShoppingBag, X } from 'lucide-react';
+import { LogIn, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 const BASKET_KEY = 'cloudy-basket-v1';
+
+function HomeBasketIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="22"
+      height="22"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 7h14l1 14H4L5 7Z M9 8V6a3 3 0 0 1 6 0v2" />
+    </svg>
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -49,6 +67,7 @@ export function Header() {
           color: #f1f1f1;
           font-size: 14px;
           transition: border-color .2s, background .2s;
+          overflow: visible;
         }
         .cloudy-shared-basket:hover {
           border-color: #aeaeae;
@@ -67,16 +86,14 @@ export function Header() {
         }
         @media (max-width: 760px) {
           .cloudy-shared-basket {
-            width: 42px;
             min-width: 42px;
+            width: 42px;
             height: 42px;
             min-height: 42px;
             padding: 0;
-            gap: 0;
             justify-content: center;
           }
-          .cloudy-shared-basket-label,
-          .cloudy-shared-basket-count {
+          .cloudy-shared-basket-label {
             display: none;
           }
         }
@@ -105,7 +122,7 @@ export function Header() {
             className="cloudy-shared-basket"
             aria-label={`Open basket, ${basketCount} saved ${basketCount === 1 ? 'product' : 'products'}`}
           >
-            <ShoppingBag size={20} />
+            <HomeBasketIcon />
             <span className="cloudy-shared-basket-label">Basket</span>
             <span className="cloudy-shared-basket-count">{basketCount}</span>
           </Link>
