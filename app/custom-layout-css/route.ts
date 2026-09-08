@@ -32,12 +32,15 @@ html body .cloudy-intro-card::after{
   display:none!important;
 }
 
-/* Footer only: clearly moving white highlights travel continuously from right to left over a permanent red base. */
+/* Footer only: brighter flashy white highlights move continuously from right to left over a permanent red base. */
 html body .cloudy-footer-glow{
   position:absolute!important;
   overflow:hidden!important;
   background:#ff3434!important;
-  box-shadow:0 0 12px rgba(255,40,40,.72),0 0 4px rgba(255,255,255,.12)!important;
+  box-shadow:
+    0 0 10px rgba(255,40,40,.82),
+    0 0 20px rgba(255,28,28,.38),
+    0 0 5px rgba(255,255,255,.20)!important;
   animation:none!important;
 }
 html body .cloudy-footer-glow::before{
@@ -46,31 +49,34 @@ html body .cloudy-footer-glow::before{
   top:0!important;
   bottom:0!important;
   left:0!important;
-  width:calc(100% + 520px)!important;
+  width:calc(100% + 620px)!important;
   display:block!important;
   pointer-events:none!important;
   background:repeating-linear-gradient(90deg,
     transparent 0px,
-    transparent 174px,
-    rgba(255,72,72,.18) 188px,
-    rgba(255,255,255,.28) 198px,
-    rgba(255,255,255,.72) 206px,
-    #ffffff 212px,
-    #ffffff 218px,
-    rgba(255,255,255,.72) 224px,
-    rgba(255,255,255,.28) 232px,
-    rgba(255,72,72,.18) 242px,
-    transparent 256px,
-    transparent 520px
+    transparent 132px,
+    rgba(255,52,52,.22) 150px,
+    rgba(255,105,105,.42) 164px,
+    rgba(255,255,255,.62) 174px,
+    #ffffff 184px,
+    #ffffff 204px,
+    rgba(255,255,255,.92) 214px,
+    rgba(255,255,255,.46) 226px,
+    rgba(255,70,70,.28) 242px,
+    transparent 260px,
+    transparent 620px
   )!important;
-  background-size:520px 100%!important;
-  filter:drop-shadow(0 0 4px rgba(255,255,255,.62)) drop-shadow(0 0 7px rgba(255,44,44,.48))!important;
+  background-size:620px 100%!important;
+  filter:
+    drop-shadow(0 0 5px rgba(255,255,255,.95))
+    drop-shadow(0 0 10px rgba(255,255,255,.58))
+    drop-shadow(0 0 14px rgba(255,35,35,.75))!important;
   will-change:transform!important;
   animation:cloudy-footer-right-to-left 2.8s linear infinite!important;
 }
 @keyframes cloudy-footer-right-to-left{
   from{transform:translate3d(0,0,0)}
-  to{transform:translate3d(-520px,0,0)}
+  to{transform:translate3d(-620px,0,0)}
 }
 `;
 
