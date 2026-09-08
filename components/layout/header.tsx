@@ -2,19 +2,86 @@
 
 import Link from 'next/link';
 import { LogIn, Menu, ShoppingBag, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
+const BASKET_KEY = 'cloudy-basket-v1';
 
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [basketCount, setBasketCount] = useState(0);
 
   const navLabelStyle = { textTransform: 'none' as const };
 
+  useEffect(() => {
+    const readBasketCount = () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(BASKET_KEY) || '[]');
+        setBasketCount(Array.isArray(saved) ? new Set(saved).size : 0);
+      } catch {
+        setBasketCount(0);
+      }
+    };
+
+    readBasketCount();
+    window.addEventListener('storage', readBasketCount);
+    window.addEventListener('focus', readBasketCount);
+    return () => {
+      window.removeEventListener('storage', readBasketCount);
+      window.removeEventListener('focus', readBasketCount);
+    };
+  }, []);
+
   return (
     <header className="cloudy-header">
+      <style>{`
+        .cloudy-shared-basket {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          min-height: 42px;
+          padding: 8px 12px;
+          border: 1px solid #3f3f3f;
+          border-radius: 6px;
+          background: #212121;
+          color: #f1f1f1;
+          font-size: 14px;
+          transition: border-color .2s, background .2s;
+        }
+        .cloudy-shared-basket:hover {
+          border-color: #aeaeae;
+          background: #262626;
+        }
+        .cloudy-shared-basket-count {
+          min-width: 21px;
+          padding: 0 6px;
+          border-radius: 4px;
+          background: #ededed;
+          color: #111;
+          font-size: 12px;
+          font-weight: 800;
+          line-height: 1.6;
+          text-align: center;
+        }
+        @media (max-width: 760px) {
+          .cloudy-shared-basket {
+            width: 42px;
+            min-width: 42px;
+            height: 42px;
+            min-height: 42px;
+            padding: 0;
+            gap: 0;
+            justify-content: center;
+          }
+          .cloudy-shared-basket-label,
+          .cloudy-shared-basket-count {
+            display: none;
+          }
+        }
+      `}</style>
+
       <div className="cloudy-header-inner">
         <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Rust home">
           <span className="cloudy-logo-orbit">
@@ -33,8 +100,14 @@ export function Header() {
         </nav>
 
         <div className="cloudy-header-actions">
-          <Link href="/?open=basket" className="cloudy-header-cart" aria-label="Basket">
+          <Link
+            href="/?open=basket"
+            className="cloudy-shared-basket"
+            aria-label={`Open basket, ${basketCount} saved ${basketCount === 1 ? 'product' : 'products'}`}
+          >
             <ShoppingBag size={20} />
+            <span className="cloudy-shared-basket-label">Basket</span>
+            <span className="cloudy-shared-basket-count">{basketCount}</span>
           </Link>
 
           <button
