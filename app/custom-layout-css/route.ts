@@ -146,65 +146,86 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   }
 }
 
-/* Background only: darker neutral monochrome CSS clouds. */
-.site-clouds{
-  background:#030303!important;
-}
-.cloud-layer-far{
-  display:block!important;
-  inset:-20%!important;
-  opacity:.50!important;
-  filter:blur(44px)!important;
-  mix-blend-mode:normal!important;
+/* Game-neutral homepage atmosphere. Higher specificity intentionally overrides the inline cinematic Rust background. */
+html body .site-clouds{
   background:
-    radial-gradient(ellipse at 8% 18%,rgba(245,246,247,.10) 0%,rgba(180,184,188,.04) 28%,transparent 55%),
-    radial-gradient(ellipse at 31% 34%,rgba(225,228,230,.08) 0%,rgba(164,169,173,.03) 30%,transparent 57%),
-    radial-gradient(ellipse at 55% 20%,rgba(242,243,244,.07) 0%,rgba(174,178,182,.028) 29%,transparent 56%),
-    radial-gradient(ellipse at 79% 35%,rgba(229,232,234,.085) 0%,rgba(168,173,177,.032) 30%,transparent 58%),
-    radial-gradient(ellipse at 96% 17%,rgba(242,243,244,.07) 0%,rgba(172,176,180,.028) 28%,transparent 55%),
-    radial-gradient(ellipse at 19% 78%,rgba(218,221,224,.065) 0%,rgba(151,156,161,.024) 30%,transparent 58%),
-    radial-gradient(ellipse at 50% 82%,rgba(236,238,240,.07) 0%,rgba(163,168,172,.028) 30%,transparent 57%),
-    radial-gradient(ellipse at 84% 76%,rgba(222,226,229,.075) 0%,rgba(155,160,165,.026) 30%,transparent 59%)!important;
-  background-color:#030303!important;
-  animation:cloudy-bank-drift 56s ease-in-out infinite alternate!important;
-  will-change:transform;
+    linear-gradient(180deg,rgba(2,2,3,.90) 0%,rgba(4,4,5,.94) 36%,rgba(3,3,4,.97) 72%,#020202 100%),
+    linear-gradient(90deg,rgba(0,0,0,.52),rgba(255,255,255,.012) 34%,rgba(255,255,255,.012) 66%,rgba(0,0,0,.52))!important;
+  background-color:#020202!important;
 }
-.cloud-layer-near{
+html body .site-clouds::before{
+  content:''!important;
+  position:absolute!important;
+  inset:-14%!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse at 8% 20%,rgba(240,242,244,.08) 0%,rgba(165,169,173,.025) 30%,transparent 58%),
+    radial-gradient(ellipse at 31% 38%,rgba(225,228,231,.065) 0%,rgba(150,154,158,.022) 31%,transparent 59%),
+    radial-gradient(ellipse at 58% 21%,rgba(245,246,247,.055) 0%,rgba(165,168,172,.020) 30%,transparent 57%),
+    radial-gradient(ellipse at 82% 36%,rgba(226,229,232,.07) 0%,rgba(153,157,161,.022) 31%,transparent 60%),
+    radial-gradient(ellipse at 21% 79%,rgba(220,223,226,.055) 0%,rgba(145,149,153,.018) 30%,transparent 59%),
+    radial-gradient(ellipse at 51% 81%,rgba(236,238,240,.06) 0%,rgba(157,161,165,.020) 30%,transparent 58%),
+    radial-gradient(ellipse at 86% 76%,rgba(222,225,228,.055) 0%,rgba(148,152,156,.018) 30%,transparent 60%)!important;
+  filter:blur(46px)!important;
+  opacity:.54!important;
+  animation:cloudy-neutral-drift 64s ease-in-out infinite alternate!important;
+}
+html body .cloud-layer-far{
   display:block!important;
   inset:-24%!important;
-  opacity:.16!important;
-  filter:blur(62px)!important;
-  mix-blend-mode:normal!important;
+  opacity:.22!important;
+  filter:blur(58px)!important;
+  mix-blend-mode:screen!important;
   background:
-    radial-gradient(ellipse at 14% 48%,rgba(255,255,255,.095) 0%,rgba(193,197,200,.036) 28%,transparent 56%),
-    radial-gradient(ellipse at 40% 63%,rgba(234,236,238,.08) 0%,rgba(177,181,185,.03) 29%,transparent 57%),
-    radial-gradient(ellipse at 66% 45%,rgba(248,249,249,.085) 0%,rgba(186,190,194,.032) 28%,transparent 56%),
-    radial-gradient(ellipse at 89% 60%,rgba(228,231,233,.075) 0%,rgba(166,171,175,.028) 29%,transparent 58%)!important;
-  background-color:transparent!important;
-  animation:cloudy-bank-drift-near 68s ease-in-out infinite alternate!important;
-  will-change:transform;
+    radial-gradient(ellipse at 12% 30%,rgba(255,255,255,.09) 0%,rgba(190,194,198,.025) 30%,transparent 58%),
+    radial-gradient(ellipse at 39% 18%,rgba(230,232,234,.07) 0%,rgba(170,174,178,.020) 31%,transparent 58%),
+    radial-gradient(ellipse at 68% 31%,rgba(248,249,250,.06) 0%,rgba(176,180,184,.018) 30%,transparent 57%),
+    radial-gradient(ellipse at 92% 20%,rgba(232,234,236,.055) 0%,rgba(168,172,176,.016) 30%,transparent 59%)!important;
+  animation:cloudy-neutral-far 72s ease-in-out infinite alternate!important;
 }
-.site-clouds::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:linear-gradient(180deg,rgba(0,0,0,.46) 0%,rgba(0,0,0,.20) 42%,rgba(0,0,0,.24) 68%,rgba(0,0,0,.50) 100%)!important;
+html body .cloud-layer-near{
+  display:block!important;
+  inset:-28%!important;
+  opacity:.10!important;
+  filter:blur(76px)!important;
+  mix-blend-mode:screen!important;
+  background:
+    radial-gradient(ellipse at 17% 78%,rgba(255,255,255,.08) 0%,rgba(190,194,198,.020) 30%,transparent 58%),
+    radial-gradient(ellipse at 52% 72%,rgba(232,234,236,.065) 0%,rgba(170,174,178,.018) 31%,transparent 60%),
+    radial-gradient(ellipse at 86% 76%,rgba(244,245,246,.055) 0%,rgba(176,180,184,.016) 30%,transparent 59%)!important;
+  animation:cloudy-neutral-near 84s ease-in-out infinite alternate!important;
 }
-@keyframes cloudy-bank-drift{
+html body .site-clouds::after{
+  content:''!important;
+  position:absolute!important;
+  inset:0!important;
+  pointer-events:none!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.08) 34%,rgba(0,0,0,.12) 68%,rgba(0,0,0,.44) 100%)!important;
+}
+html body .cloudy-cinematic-hero::before{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+@keyframes cloudy-neutral-drift{
+  from{transform:translate3d(-2.2%,-1%,0) scale(1.03)}
+  to{transform:translate3d(2.6%,1.4%,0) scale(1.07)}
+}
+@keyframes cloudy-neutral-far{
   from{transform:translate3d(-2.5%,-1%,0) scale(1.04)}
-  to{transform:translate3d(3%,1.8%,0) scale(1.08)}
+  to{transform:translate3d(3%,1.5%,0) scale(1.08)}
 }
-@keyframes cloudy-bank-drift-near{
-  from{transform:translate3d(2.5%,1.5%,0) scale(1.07)}
-  to{transform:translate3d(-3%,-1%,0) scale(1.04)}
+@keyframes cloudy-neutral-near{
+  from{transform:translate3d(2.2%,1.2%,0) scale(1.06)}
+  to{transform:translate3d(-2.7%,-1%,0) scale(1.03)}
 }
 @media(max-width:780px){
-  .cloud-layer-far{inset:-28% -48%!important;opacity:.44!important;filter:blur(38px)!important}
-  .cloud-layer-near{inset:-30% -52%!important;opacity:.13!important;filter:blur(52px)!important}
+  html body .cloud-layer-far{inset:-32% -52%!important;opacity:.18!important;filter:blur(50px)!important}
+  html body .cloud-layer-near{inset:-34% -56%!important;opacity:.08!important;filter:blur(66px)!important}
 }
 @media(prefers-reduced-motion:reduce){
-  .game-home::before,.cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
+  .game-home::before,html body .site-clouds::before,html body .cloud-layer-far,html body .cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
 }
 `;
 
