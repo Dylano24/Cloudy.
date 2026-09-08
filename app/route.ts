@@ -15,6 +15,12 @@ function updateHomeDiscordEmoji(html: string) {
   );
 }
 
+function removeHiddenLegalLinks(html: string) {
+  return html
+    .replace(/<a href="\/legal#privacy">Privacy Policy<\/a>/g, '')
+    .replace(/<a href="\/legal#notice">Legal Notice<\/a>/g, '');
+}
+
 function injectHomeStyles(html: string) {
   const styles = `<style>
 .reference-topbar{position:relative;min-height:78px;display:flex;align-items:center;justify-content:center!important;border:0!important;border-radius:0!important;background:#080808!important;box-shadow:none!important}
@@ -38,6 +44,7 @@ export async function GET() {
     let html = await response.text();
     html = updateHomeNavigation(html);
     html = updateHomeDiscordEmoji(html);
+    html = removeHiddenLegalLinks(html);
     html = injectHomeStyles(html);
 
     return new Response(html, {
