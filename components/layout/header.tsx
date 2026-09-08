@@ -75,26 +75,57 @@ export function Header() {
         }
         .cloudy-shared-basket-count {
           min-width: 21px;
+          height: 21px;
           padding: 0 6px;
           border-radius: 4px;
           background: #ededed;
           color: #111;
+          display: grid;
+          place-items: center;
           font-size: 12px;
           font-weight: 800;
-          line-height: 1.6;
+          line-height: 1;
           text-align: center;
         }
         @media (max-width: 760px) {
+          .cloudy-header-actions {
+            gap: 8px;
+          }
           .cloudy-shared-basket {
-            min-width: 42px;
-            width: 42px;
+            width: auto;
+            min-width: 0;
             height: 42px;
             min-height: 42px;
-            padding: 0;
+            padding: 0 3px;
+            gap: 8px;
             justify-content: center;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+          }
+          .cloudy-shared-basket:hover {
+            border-color: transparent;
+            background: transparent;
           }
           .cloudy-shared-basket-label {
             display: none;
+          }
+          .cloudy-shared-basket-count {
+            width: 34px;
+            min-width: 34px;
+            height: 34px;
+            padding: 0;
+            border-radius: 999px;
+            font-size: 13px;
+            line-height: 1;
+          }
+          .cloudy-mobile-button {
+            width: 36px;
+            height: 42px;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
           }
         }
       `}</style>
