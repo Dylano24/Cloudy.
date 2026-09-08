@@ -31,14 +31,18 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   display:flex;
   align-items:center;
   justify-content:center;
-  min-height:40px;
-  padding:8px 18px;
-  border-radius:6px;
+  justify-self:end;
+  align-self:start;
+  width:max-content;
+  min-height:30px;
+  padding:5px 11px;
+  border-radius:5px;
   background:#252525;
   color:#f5f5f5;
-  font-size:14px;
+  font-size:12px;
   font-weight:600;
-  line-height:1.4;
+  line-height:1.3;
+  white-space:nowrap;
 }
 .server-panel #server-list:has(.server-empty) .server-empty{
   grid-column:1;
@@ -59,9 +63,9 @@ const CLOUDY_LAYOUT_OVERRIDES = `
     row-gap:8px!important;
   }
   .server-panel #server-list:has(.server-empty)::before{
-    min-height:38px;
-    padding:7px 14px;
-    font-size:13px;
+    min-height:28px;
+    padding:4px 9px;
+    font-size:12px;
   }
   .server-panel #server-list:has(.server-empty) .outline-button{
     padding:9px 12px!important;
