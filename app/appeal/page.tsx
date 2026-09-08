@@ -72,7 +72,7 @@ export default function AppealPage() {
       <div className={styles.wrap}>
         <div className={styles.formTop}>
           <a href="/" className={styles.backButton}><ChevronLeft size={15} /> Home</a>
-          <a href="/appeal" className={styles.contextPill}>Ban appeal</a>
+          <a href="/appeal" className={styles.contextPill}>Appeal</a>
         </div>
 
         <header className={styles.hero}>
