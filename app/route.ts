@@ -1,4 +1,5 @@
 const LEGACY_SITE = 'https://cloudy-store-l5gnmyiqr-cloudystore.vercel.app';
+const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 const DISCORD_EMOJI_URL = 'https://cdn.discordapp.com/emojis/1543287452410716160.gif?size=96&quality=lossless';
 
 export const dynamic = 'force-dynamic';
@@ -23,6 +24,21 @@ function updateHomeLegalLinks(html: string) {
     .replace(/Terms of Sale/g, 'Terms of sale');
 }
 
+function replaceHomeFooter(html: string) {
+  const footer = `<footer class="cloudy-shared-footer">
+    <div class="cloudy-shared-footer-inner">
+      <div class="cloudy-shared-footer-grid">
+        <div class="cloudy-shared-footer-brand"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width="45" height="45"><strong>CLOUDY INC.</strong></div>
+        <div><div class="cloudy-shared-footer-title">Navigation</div><div class="cloudy-shared-footer-links"><a href="/">Home</a><a href="/#server">Server</a></div></div>
+        <div><div class="cloudy-shared-footer-title">Community</div><div class="cloudy-shared-footer-links"><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">Discord</a></div></div>
+        <div><div class="cloudy-shared-footer-title">Information</div><div class="cloudy-shared-footer-links"><a href="/appeal">Appeal form</a><a href="/legal#terms">Terms of service</a><a href="/legal#sales">Terms of sale</a></div></div>
+      </div>
+      <div class="cloudy-shared-footer-bottom">© 2026 Cloudy Inc. All rights reserved.</div>
+    </div>
+  </footer>`;
+  return html.replace(/<footer[\s\S]*?<\/footer>/, footer);
+}
+
 function injectHomeStyles(html: string) {
   const styles = `<style>
 .reference-topbar{position:relative;min-height:78px;display:flex;align-items:center;justify-content:center!important;border:0!important;border-radius:0!important;background:#080808!important;box-shadow:none!important}
@@ -33,7 +49,25 @@ function injectHomeStyles(html: string) {
 .reference-topbar .top-actions{position:absolute;right:0;display:flex;align-items:center}
 .discord-link .discord-icon{display:grid;place-items:center;overflow:hidden;background:#000!important;border-radius:50%!important}
 .discord-link .discord-custom-emoji{width:30px;height:30px;display:block;object-fit:contain}
-@media(max-width:760px){.reference-topbar{justify-content:flex-start!important;overflow-x:auto}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:none}.reference-topbar .policy-top-links a{padding:10px 11px!important;font-size:10px!important}}
+.cloudy-shared-footer{background:#080808!important;border-top:1px solid #1f1f1f!important;color:#9f9f9f!important}
+.cloudy-shared-footer-inner{width:min(1320px,calc(100% - 36px));margin:0 auto;padding:48px 0 30px}
+.cloudy-shared-footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:54px;align-items:start}
+.cloudy-shared-footer-brand{display:flex;align-items:center;gap:12px;color:#f3f3f3}
+.cloudy-shared-footer-brand img{width:45px;height:45px;object-fit:contain}
+.cloudy-shared-footer-brand strong{font-size:16px;font-weight:900;letter-spacing:.04em}
+.cloudy-shared-footer-title{margin-bottom:16px;color:#a6a6a6;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.cloudy-shared-footer-links{display:flex;flex-direction:column;gap:12px}
+.cloudy-shared-footer-links a{color:#9f9f9f!important;font-size:14px;text-decoration:none}
+.cloudy-shared-footer-links a:hover{color:#fff!important}
+.cloudy-shared-footer-bottom{margin-top:42px;padding-top:24px;border-top:1px solid #1f1f1f;color:#8d8d8d;font-size:13px}
+@media(max-width:760px){
+.reference-topbar{justify-content:flex-start!important;overflow-x:auto}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:none}.reference-topbar .policy-top-links a{padding:10px 11px!important;font-size:10px!important}
+.cloudy-shared-footer-inner{width:calc(100% - 40px);padding:40px 0 34px}
+.cloudy-shared-footer-grid{grid-template-columns:1fr;gap:34px}
+.cloudy-shared-footer-brand{margin-bottom:4px}
+.cloudy-shared-footer-title{margin-bottom:14px}
+.cloudy-shared-footer-bottom{margin-top:36px}
+}
 </style>`;
   return html.replace('</head>', `${styles}</head>`);
 }
@@ -47,6 +81,7 @@ export async function GET() {
     html = updateHomeNavigation(html);
     html = updateHomeDiscordEmoji(html);
     html = updateHomeLegalLinks(html);
+    html = replaceHomeFooter(html);
     html = injectHomeStyles(html);
 
     return new Response(html, {
