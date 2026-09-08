@@ -96,52 +96,67 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   }
 }
 
-/* Background only: public silver cloud texture, visible to every visitor. */
+/* Background only: neutral monochrome CSS clouds. No external image asset. */
 .site-clouds{
-  background:#060606!important;
+  background:#070707!important;
 }
 .cloud-layer-far{
-  inset:-10%!important;
-  opacity:.88!important;
-  filter:brightness(.92) contrast(1.08)!important;
-  background-image:url('/images/cloudy-cloud-background.svg')!important;
-  background-repeat:no-repeat!important;
-  background-size:cover!important;
-  background-position:50% 48%!important;
-  animation:cloudy-real-drift 46s ease-in-out infinite alternate!important;
+  display:block!important;
+  inset:-20%!important;
+  opacity:.78!important;
+  filter:blur(34px)!important;
+  mix-blend-mode:normal!important;
+  background:
+    radial-gradient(42% 23% at 8% 21%,rgba(245,246,247,.16) 0 26%,rgba(184,188,191,.07) 42%,transparent 67%),
+    radial-gradient(34% 22% at 28% 31%,rgba(222,225,227,.13) 0 28%,rgba(170,174,178,.055) 47%,transparent 70%),
+    radial-gradient(39% 24% at 51% 18%,rgba(242,243,244,.12) 0 24%,rgba(180,184,188,.05) 46%,transparent 69%),
+    radial-gradient(36% 25% at 73% 37%,rgba(226,229,231,.14) 0 27%,rgba(173,177,181,.06) 47%,transparent 71%),
+    radial-gradient(38% 24% at 94% 23%,rgba(241,242,243,.13) 0 25%,rgba(177,181,184,.055) 46%,transparent 68%),
+    radial-gradient(44% 27% at 17% 74%,rgba(214,218,221,.11) 0 24%,rgba(154,159,164,.045) 48%,transparent 71%),
+    radial-gradient(42% 26% at 47% 82%,rgba(236,238,240,.12) 0 25%,rgba(168,173,177,.05) 47%,transparent 70%),
+    radial-gradient(45% 27% at 83% 73%,rgba(219,223,226,.13) 0 24%,rgba(159,164,168,.05) 48%,transparent 72%)!important;
+  background-color:#070707!important;
+  animation:cloudy-bank-drift 50s ease-in-out infinite alternate!important;
+  will-change:transform;
 }
 .cloud-layer-near{
   display:block!important;
-  inset:-18%!important;
-  opacity:.28!important;
-  filter:blur(2px) brightness(.92)!important;
-  mix-blend-mode:screen!important;
-  background-image:url('/images/cloudy-cloud-background.svg')!important;
-  background-repeat:no-repeat!important;
-  background-size:cover!important;
-  background-position:18% 78%!important;
-  animation:cloudy-real-drift-near 58s ease-in-out infinite alternate!important;
+  inset:-24%!important;
+  opacity:.34!important;
+  filter:blur(52px)!important;
+  mix-blend-mode:normal!important;
+  background:
+    radial-gradient(33% 20% at 16% 48%,rgba(255,255,255,.18) 0 25%,rgba(196,199,202,.07) 44%,transparent 68%),
+    radial-gradient(30% 19% at 38% 61%,rgba(232,234,236,.15) 0 26%,rgba(181,185,188,.06) 45%,transparent 69%),
+    radial-gradient(35% 21% at 62% 45%,rgba(249,250,250,.16) 0 24%,rgba(190,194,197,.065) 44%,transparent 68%),
+    radial-gradient(32% 20% at 86% 59%,rgba(226,229,231,.14) 0 25%,rgba(170,175,179,.055) 46%,transparent 70%)!important;
+  background-color:transparent!important;
+  animation:cloudy-bank-drift-near 64s ease-in-out infinite alternate!important;
+  will-change:transform;
 }
 .site-clouds::after{
   content:'';
   position:absolute;
   inset:0;
-  background:radial-gradient(ellipse at 50% 30%,transparent 0%,rgba(0,0,0,.10) 50%,rgba(0,0,0,.32) 100%),linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.04) 45%,rgba(0,0,0,.20));
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.06) 36%,rgba(0,0,0,.08) 68%,rgba(0,0,0,.30) 100%),
+    radial-gradient(circle at 50% 44%,transparent 0 38%,rgba(0,0,0,.12) 72%,rgba(0,0,0,.28) 100%);
 }
-@keyframes cloudy-real-drift{
-  from{transform:translate3d(-2%,1%,0) scale(1.04)}
-  to{transform:translate3d(3%,-2%,0) scale(1.10)}
+@keyframes cloudy-bank-drift{
+  from{transform:translate3d(-3%,-1.5%,0) scale(1.05)}
+  to{transform:translate3d(3.5%,2%,0) scale(1.09)}
 }
-@keyframes cloudy-real-drift-near{
-  from{transform:translate3d(4%,3%,0) scale(1.12)}
-  to{transform:translate3d(-4%,-2%,0) scale(1.05)}
+@keyframes cloudy-bank-drift-near{
+  from{transform:translate3d(3%,2%,0) scale(1.08)}
+  to{transform:translate3d(-3.5%,-1.5%,0) scale(1.04)}
 }
 @media(max-width:780px){
-  .cloud-layer-far{inset:-12% -34%!important;opacity:.78!important;background-position:38% 50%!important}
-  .cloud-layer-near{inset:-20% -38%!important;opacity:.22!important;background-position:24% 76%!important}
+  .cloud-layer-far{inset:-28% -48%!important;opacity:.68!important;filter:blur(30px)!important}
+  .cloud-layer-near{inset:-30% -52%!important;opacity:.27!important;filter:blur(44px)!important}
 }
 @media(prefers-reduced-motion:reduce){
-  .cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important}
+  .cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
 }
 `;
 
