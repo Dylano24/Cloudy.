@@ -8,6 +8,7 @@ function updateLegalPage(html: string) {
 
   let updated = html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div><a class="legal-home"[\s\S]*?<\/a>/, nav);
   updated = updated.replace(/<p class="overline">Cloudy legal<\/p>\s*<h1>Policies & information<\/h1>/, '');
+  updated = updated.replace(/<p class="legal-intro">[\s\S]*?<\/p>/, '');
 
   updated = updated.replace(
     '<nav class="legal-jump" aria-label="Documents"><a href="#terms">Terms of Service</a><a href="#sales">Terms of Sale</a><a href="#privacy">Privacy Policy</a><a href="#notice">Legal Notice</a></nav>',
