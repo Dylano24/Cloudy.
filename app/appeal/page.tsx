@@ -5,9 +5,7 @@ import { useState } from 'react';
 import {
   CheckCircle2,
   ChevronLeft,
-  Gamepad2,
   LoaderCircle,
-  MessageCircle,
   ShieldAlert,
 } from 'lucide-react';
 import styles from './appeal.module.css';
@@ -113,7 +111,12 @@ export default function AppealPage() {
                   <ChevronLeft size={15} /> Change selection
                 </button>
                 <span className={styles.contextPill}>
-                  {scope === 'discord' ? <MessageCircle size={13} /> : <Gamepad2 size={13} />}
+                  <img
+                    src={scope === 'discord' ? DISCORD_APPEAL_EMOJI : RUST_APPEAL_EMOJI}
+                    alt=""
+                    aria-hidden="true"
+                    style={{ width: 16, height: 16, display: 'block', objectFit: 'contain' }}
+                  />
                   {scope === 'discord' ? 'Discord appeal' : 'Rust server appeal'}
                 </span>
               </div>
