@@ -4,7 +4,7 @@ const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 export const dynamic = 'force-dynamic';
 
 function updateLegalPage(html: string) {
-  const nav = `<div class="top-links policy-top-links"><a href="/">HOME</a><a href="/appeal">BAN APPEAL</a><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">SUPPORT</a></div><div class="legal-actions"><button class="legal-back-button" type="button" onclick="history.back()" aria-label="Go back">← BACK</button><a class="legal-home" href="/" aria-label="Back to Cloudy"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="" width="36" height="36"><span>CLOUDY</span></a></div>`;
+  const nav = `<div class="top-links policy-top-links"><a href="/">HOME</a><a href="/appeal">APPEAL FORM</a><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">SUPPORT</a></div><div class="legal-actions"><button class="legal-back-button" type="button" onclick="history.back()" aria-label="Go back">← BACK</button><a class="legal-home" href="/" aria-label="Back to Cloudy"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="" width="36" height="36"><span>CLOUDY</span></a></div>`;
 
   let updated = html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div><a class="legal-home"[\s\S]*?<\/a>/, nav);
 
