@@ -96,42 +96,42 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   }
 }
 
-/* Background only: neutral monochrome CSS clouds. No external image asset. */
+/* Background only: neutral monochrome CSS clouds. No image asset, no oval/vignette shapes. */
 .site-clouds{
   background:#070707!important;
 }
 .cloud-layer-far{
   display:block!important;
   inset:-20%!important;
-  opacity:.78!important;
-  filter:blur(34px)!important;
+  opacity:.72!important;
+  filter:blur(42px)!important;
   mix-blend-mode:normal!important;
   background:
-    radial-gradient(42% 23% at 8% 21%,rgba(245,246,247,.16) 0 26%,rgba(184,188,191,.07) 42%,transparent 67%),
-    radial-gradient(34% 22% at 28% 31%,rgba(222,225,227,.13) 0 28%,rgba(170,174,178,.055) 47%,transparent 70%),
-    radial-gradient(39% 24% at 51% 18%,rgba(242,243,244,.12) 0 24%,rgba(180,184,188,.05) 46%,transparent 69%),
-    radial-gradient(36% 25% at 73% 37%,rgba(226,229,231,.14) 0 27%,rgba(173,177,181,.06) 47%,transparent 71%),
-    radial-gradient(38% 24% at 94% 23%,rgba(241,242,243,.13) 0 25%,rgba(177,181,184,.055) 46%,transparent 68%),
-    radial-gradient(44% 27% at 17% 74%,rgba(214,218,221,.11) 0 24%,rgba(154,159,164,.045) 48%,transparent 71%),
-    radial-gradient(42% 26% at 47% 82%,rgba(236,238,240,.12) 0 25%,rgba(168,173,177,.05) 47%,transparent 70%),
-    radial-gradient(45% 27% at 83% 73%,rgba(219,223,226,.13) 0 24%,rgba(159,164,168,.05) 48%,transparent 72%)!important;
+    radial-gradient(ellipse at 8% 18%,rgba(245,246,247,.14) 0%,rgba(180,184,188,.06) 28%,transparent 55%),
+    radial-gradient(ellipse at 31% 34%,rgba(225,228,230,.11) 0%,rgba(164,169,173,.045) 30%,transparent 57%),
+    radial-gradient(ellipse at 55% 20%,rgba(242,243,244,.10) 0%,rgba(174,178,182,.04) 29%,transparent 56%),
+    radial-gradient(ellipse at 79% 35%,rgba(229,232,234,.12) 0%,rgba(168,173,177,.05) 30%,transparent 58%),
+    radial-gradient(ellipse at 96% 17%,rgba(242,243,244,.10) 0%,rgba(172,176,180,.04) 28%,transparent 55%),
+    radial-gradient(ellipse at 19% 78%,rgba(218,221,224,.09) 0%,rgba(151,156,161,.035) 30%,transparent 58%),
+    radial-gradient(ellipse at 50% 82%,rgba(236,238,240,.10) 0%,rgba(163,168,172,.04) 30%,transparent 57%),
+    radial-gradient(ellipse at 84% 76%,rgba(222,226,229,.10) 0%,rgba(155,160,165,.04) 30%,transparent 59%)!important;
   background-color:#070707!important;
-  animation:cloudy-bank-drift 50s ease-in-out infinite alternate!important;
+  animation:cloudy-bank-drift 56s ease-in-out infinite alternate!important;
   will-change:transform;
 }
 .cloud-layer-near{
   display:block!important;
   inset:-24%!important;
-  opacity:.34!important;
-  filter:blur(52px)!important;
+  opacity:.25!important;
+  filter:blur(60px)!important;
   mix-blend-mode:normal!important;
   background:
-    radial-gradient(33% 20% at 16% 48%,rgba(255,255,255,.18) 0 25%,rgba(196,199,202,.07) 44%,transparent 68%),
-    radial-gradient(30% 19% at 38% 61%,rgba(232,234,236,.15) 0 26%,rgba(181,185,188,.06) 45%,transparent 69%),
-    radial-gradient(35% 21% at 62% 45%,rgba(249,250,250,.16) 0 24%,rgba(190,194,197,.065) 44%,transparent 68%),
-    radial-gradient(32% 20% at 86% 59%,rgba(226,229,231,.14) 0 25%,rgba(170,175,179,.055) 46%,transparent 70%)!important;
+    radial-gradient(ellipse at 14% 48%,rgba(255,255,255,.14) 0%,rgba(193,197,200,.055) 28%,transparent 56%),
+    radial-gradient(ellipse at 40% 63%,rgba(234,236,238,.12) 0%,rgba(177,181,185,.045) 29%,transparent 57%),
+    radial-gradient(ellipse at 66% 45%,rgba(248,249,249,.13) 0%,rgba(186,190,194,.05) 28%,transparent 56%),
+    radial-gradient(ellipse at 89% 60%,rgba(228,231,233,.11) 0%,rgba(166,171,175,.04) 29%,transparent 58%)!important;
   background-color:transparent!important;
-  animation:cloudy-bank-drift-near 64s ease-in-out infinite alternate!important;
+  animation:cloudy-bank-drift-near 68s ease-in-out infinite alternate!important;
   will-change:transform;
 }
 .site-clouds::after{
@@ -139,21 +139,19 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   position:absolute;
   inset:0;
   pointer-events:none;
-  background:
-    linear-gradient(180deg,rgba(0,0,0,.28) 0%,rgba(0,0,0,.06) 36%,rgba(0,0,0,.08) 68%,rgba(0,0,0,.30) 100%),
-    radial-gradient(circle at 50% 44%,transparent 0 38%,rgba(0,0,0,.12) 72%,rgba(0,0,0,.28) 100%);
+  background:linear-gradient(180deg,rgba(0,0,0,.20) 0%,rgba(0,0,0,.04) 42%,rgba(0,0,0,.07) 68%,rgba(0,0,0,.24) 100%)!important;
 }
 @keyframes cloudy-bank-drift{
-  from{transform:translate3d(-3%,-1.5%,0) scale(1.05)}
-  to{transform:translate3d(3.5%,2%,0) scale(1.09)}
+  from{transform:translate3d(-2.5%,-1%,0) scale(1.04)}
+  to{transform:translate3d(3%,1.8%,0) scale(1.08)}
 }
 @keyframes cloudy-bank-drift-near{
-  from{transform:translate3d(3%,2%,0) scale(1.08)}
-  to{transform:translate3d(-3.5%,-1.5%,0) scale(1.04)}
+  from{transform:translate3d(2.5%,1.5%,0) scale(1.07)}
+  to{transform:translate3d(-3%,-1%,0) scale(1.04)}
 }
 @media(max-width:780px){
-  .cloud-layer-far{inset:-28% -48%!important;opacity:.68!important;filter:blur(30px)!important}
-  .cloud-layer-near{inset:-30% -52%!important;opacity:.27!important;filter:blur(44px)!important}
+  .cloud-layer-far{inset:-28% -48%!important;opacity:.62!important;filter:blur(36px)!important}
+  .cloud-layer-near{inset:-30% -52%!important;opacity:.20!important;filter:blur(50px)!important}
 }
 @media(prefers-reduced-motion:reduce){
   .cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
@@ -170,7 +168,7 @@ export async function GET() {
       status: 200,
       headers: {
         'Content-Type': 'text/css; charset=utf-8',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Cache-Control': 'no-store, max-age=0',
       },
     });
   } catch (error) {
@@ -179,7 +177,7 @@ export async function GET() {
       status: 200,
       headers: {
         'Content-Type': 'text/css; charset=utf-8',
-        'Cache-Control': 'public, max-age=0, must-revalidate',
+        'Cache-Control': 'no-store, max-age=0',
       },
     });
   }
