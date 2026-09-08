@@ -16,7 +16,6 @@ function updateHomeActions(html: string) {
   </div>
   <div class="cloudy-home-menu" id="cloudy-home-menu" hidden>
     <button type="button" id="account-open">Login</button>
-    <button type="button" id="cloudy-home-menu-basket">Basket</button>
   </div>`;
   return html.replace(/<div class="top-actions">[\s\S]*?<\/div>/, actions);
 }
@@ -95,7 +94,6 @@ function injectHomeInteractions(html: string) {
     const toggle=document.getElementById('cloudy-home-menu-toggle');
     const menu=document.getElementById('cloudy-home-menu');
     const basket=document.getElementById('basket-open');
-    const menuBasket=document.getElementById('cloudy-home-menu-basket');
     if(toggle&&menu){
       toggle.addEventListener('click',function(){
         const next=menu.hasAttribute('hidden');
@@ -103,7 +101,6 @@ function injectHomeInteractions(html: string) {
         toggle.setAttribute('aria-expanded',String(next));
       });
     }
-    if(menuBasket&&basket) menuBasket.addEventListener('click',function(){menu&&menu.setAttribute('hidden','');basket.click();});
     const open=new URLSearchParams(location.search).get('open');
     if(open==='basket'&&basket) setTimeout(function(){basket.click();},50);
     if(open==='account'){
