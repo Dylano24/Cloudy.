@@ -7,6 +7,7 @@ function updateLegalPage(html: string) {
   const nav = `<div class="top-links policy-top-links"><a href="/">HOME</a><a href="/appeal">APPEAL FORM</a><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">SUPPORT</a></div><div class="legal-actions"><button class="legal-back-button" type="button" onclick="history.back()" aria-label="Go back">← BACK</button><a class="legal-home" href="/" aria-label="Back to Cloudy"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="" width="36" height="36"><span>CLOUDY</span></a></div>`;
 
   let updated = html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div><a class="legal-home"[\s\S]*?<\/a>/, nav);
+  updated = updated.replace(/<p class="overline">Cloudy legal<\/p>\s*<h1>Policies & information<\/h1>/, '');
 
   updated = updated.replace(
     '<nav class="legal-jump" aria-label="Documents"><a href="#terms">Terms of Service</a><a href="#sales">Terms of Sale</a><a href="#privacy">Privacy Policy</a><a href="#notice">Legal Notice</a></nav>',
