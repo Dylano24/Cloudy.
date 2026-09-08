@@ -9,6 +9,18 @@ function updateHomeNavigation(html: string) {
   return html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div>/, navigation);
 }
 
+function updateHomeActions(html: string) {
+  const actions = `<div class="top-actions cloudy-home-actions">
+    <button class="basket-button" id="basket-open" aria-label="Open basket"><svg><use href="#i-bag"/></svg><span class="basket-label">Basket</span><span id="basket-count">0</span></button>
+    <button class="icon-button cloudy-home-menu-toggle" id="cloudy-home-menu-toggle" type="button" aria-label="Menu" aria-expanded="false"><span aria-hidden="true">☰</span></button>
+  </div>
+  <div class="cloudy-home-menu" id="cloudy-home-menu" hidden>
+    <button type="button" id="account-open">Login</button>
+    <button type="button" id="cloudy-home-menu-basket">Basket</button>
+  </div>`;
+  return html.replace(/<div class="top-actions">[\s\S]*?<\/div>/, actions);
+}
+
 function updateHomeDiscordEmoji(html: string) {
   return html.replace(
     /(<a class="discord-link"[\s\S]*?<span class="discord-icon" aria-hidden="true">)[\s\S]*?(<\/span><span><strong>Discord<\/strong><small>Join us<\/small><\/span><\/a>)/,
@@ -46,7 +58,11 @@ function injectHomeStyles(html: string) {
 .reference-topbar .policy-top-links a{position:relative;padding:11px 15px!important;border-radius:9px;color:#9b9b9b!important;background:transparent!important;font-size:11px!important;font-weight:850!important;letter-spacing:.09em!important;text-transform:none!important;transition:.2s ease!important}
 .reference-topbar .policy-top-links a:hover,.reference-topbar .policy-top-links a.is-active{color:#fff!important;background:#181818!important}
 .reference-topbar .policy-top-links a.is-active:after{content:"";position:absolute;left:14px;right:14px;bottom:3px;height:1px;background:#f0f0f0;box-shadow:0 0 8px rgba(255,255,255,.18)}
-.reference-topbar .top-actions{position:absolute;right:0;display:flex;align-items:center}
+.reference-topbar .top-actions{position:absolute;right:0;display:flex;align-items:center;gap:8px}
+.cloudy-home-menu-toggle{font-size:21px!important;line-height:1!important}
+.cloudy-home-menu{position:absolute;top:68px;right:0;z-index:80;min-width:170px;padding:8px;background:#0b0b0b;border:1px solid #303030;border-radius:10px;box-shadow:0 18px 40px rgba(0,0,0,.45)}
+.cloudy-home-menu button{width:100%;padding:12px 13px;border:0;border-radius:7px;background:transparent;color:#d8d8d8;text-align:left;font:inherit;font-size:13px;cursor:pointer}
+.cloudy-home-menu button:hover{background:#171717;color:#fff}
 .discord-link .discord-icon{display:grid;place-items:center;overflow:hidden;background:#000!important;border-radius:50%!important}
 .discord-link .discord-custom-emoji{width:30px;height:30px;display:block;object-fit:contain}
 .cloudy-shared-footer{background:#080808!important;border-top:1px solid #1f1f1f!important;color:#9f9f9f!important}
@@ -61,7 +77,7 @@ function injectHomeStyles(html: string) {
 .cloudy-shared-footer-links a:hover{color:#fff!important}
 .cloudy-shared-footer-bottom{margin-top:42px;padding-top:24px;border-top:1px solid #1f1f1f;color:#8d8d8d;font-size:13px}
 @media(max-width:760px){
-.reference-topbar{justify-content:flex-start!important;overflow-x:auto}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:none}.reference-topbar .policy-top-links a{padding:10px 11px!important;font-size:10px!important}
+.reference-topbar{justify-content:flex-start!important;overflow:visible!important;padding-right:92px!important}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:flex!important;right:8px!important}.reference-topbar .policy-top-links a{padding:10px 9px!important;font-size:9px!important}.reference-topbar .basket-label{display:none!important}.reference-topbar .basket-button{min-width:42px!important;width:42px!important;padding:0!important}.cloudy-home-menu{right:8px!important}
 .cloudy-shared-footer-inner{width:calc(100% - 40px);padding:40px 0 34px}
 .cloudy-shared-footer-grid{grid-template-columns:1fr;gap:34px}
 .cloudy-shared-footer-brand{margin-bottom:4px}
@@ -72,6 +88,35 @@ function injectHomeStyles(html: string) {
   return html.replace('</head>', `${styles}</head>`);
 }
 
+function injectHomeInteractions(html: string) {
+  const script = `<script>
+(function(){
+  function initCloudyHeader(){
+    const toggle=document.getElementById('cloudy-home-menu-toggle');
+    const menu=document.getElementById('cloudy-home-menu');
+    const basket=document.getElementById('basket-open');
+    const menuBasket=document.getElementById('cloudy-home-menu-basket');
+    if(toggle&&menu){
+      toggle.addEventListener('click',function(){
+        const next=menu.hasAttribute('hidden');
+        if(next) menu.removeAttribute('hidden'); else menu.setAttribute('hidden','');
+        toggle.setAttribute('aria-expanded',String(next));
+      });
+    }
+    if(menuBasket&&basket) menuBasket.addEventListener('click',function(){menu&&menu.setAttribute('hidden','');basket.click();});
+    const open=new URLSearchParams(location.search).get('open');
+    if(open==='basket'&&basket) setTimeout(function(){basket.click();},50);
+    if(open==='account'){
+      const account=document.getElementById('account-open');
+      if(account) setTimeout(function(){account.click();},50);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initCloudyHeader); else initCloudyHeader();
+})();
+</script>`;
+  return html.replace('</body>', `${script}</body>`);
+}
+
 export async function GET() {
   try {
     const response = await fetch(`${LEGACY_SITE}/`, { cache: 'no-store' });
@@ -79,10 +124,12 @@ export async function GET() {
 
     let html = await response.text();
     html = updateHomeNavigation(html);
+    html = updateHomeActions(html);
     html = updateHomeDiscordEmoji(html);
     html = updateHomeLegalLinks(html);
     html = replaceHomeFooter(html);
     html = injectHomeStyles(html);
+    html = injectHomeInteractions(html);
 
     return new Response(html, {
       status: 200,
