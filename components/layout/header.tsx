@@ -17,7 +17,7 @@ export function Header() {
       <div className="cloudy-header-inner">
         <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Rust home">
           <span className="cloudy-logo-orbit">
-            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={48} height={48} />
+            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={48} height={48} style={{ transform: 'translateY(-4px)' }} />
           </span>
           <span className="cloudy-brand-copy">
             <strong>CLOUDY</strong>
