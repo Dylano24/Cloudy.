@@ -399,24 +399,6 @@ main > *,
   transition: filter .35s ease, transform .35s ease;
 }
 
-.cloudy-cta-primary,
-.cloudy-cta-secondary {
-  position: relative;
-  overflow: hidden;
-}
-
-.cloudy-cta-primary::after,
-.cloudy-cta-secondary::after {
-  content: "";
-  position: absolute;
-  inset: -70% auto -70% -55%;
-  width: 30%;
-  pointer-events: none;
-  background: linear-gradient(100deg, transparent, rgba(255,255,255,.13), transparent);
-  transform: skewX(-18deg);
-  transition: left .62s ease;
-}
-
 @media (hover: hover) {
   .cloud-panel:hover {
     transform: translateY(-3px);
@@ -431,10 +413,6 @@ main > *,
     transform: translateY(-1px);
   }
 
-  .cloudy-cta-primary:hover::after,
-  .cloudy-cta-secondary:hover::after {
-    left: 135%;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -454,8 +432,4 @@ main > *,
     transform: none !important;
   }
 
-  .cloudy-cta-primary::after,
-  .cloudy-cta-secondary::after {
-    display: none !important;
-  }
 }
