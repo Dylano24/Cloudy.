@@ -4,7 +4,7 @@ const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 export const dynamic = 'force-dynamic';
 
 function updateLegalPage(html: string) {
-  const nav = `<div class="top-links policy-top-links"><a href="/">HOME</a><a href="/appeal">APPEAL FORM</a><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">SUPPORT</a></div><div class="legal-actions"><button class="legal-back-button" type="button" onclick="history.back()" aria-label="Go back">← BACK</button><a class="legal-home" href="/" aria-label="Back to Cloudy"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="" width="36" height="36"><span>CLOUDY</span></a></div>`;
+  const nav = `<div class="top-links policy-top-links"><a href="/">Home</a><a href="/appeal">Appeal form</a><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">Support</a></div><div class="legal-actions"><button class="legal-back-button" type="button" onclick="history.back()" aria-label="Go back">← BACK</button><a class="legal-home" href="/" aria-label="Back to Cloudy"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="" width="36" height="36"><span>CLOUDY</span></a></div>`;
 
   let updated = html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div><a class="legal-home"[\s\S]*?<\/a>/, nav);
   updated = updated.replace(/<p class="overline">Cloudy legal<\/p>\s*<h1>Policies & information<\/h1>/, '');
@@ -26,7 +26,7 @@ function updateLegalPage(html: string) {
     html,body{background:#090909!important;color:#f3f3f3!important}
     .legal-page,.site-header,.solid-header,.reference-topbar,.legal-main,.legal-shell,.site-footer{background:#090909!important}
     .reference-topbar{border-color:#2b2b2b!important;box-shadow:none!important}
-    .policy-top-links a{color:#d7d7d7!important;text-transform:uppercase!important;font-weight:800!important;letter-spacing:.04em}
+    .policy-top-links a{color:#d7d7d7!important;text-transform:none!important;font-weight:800!important;letter-spacing:.04em}
     .policy-top-links a:hover{color:#fff!important;background:#171717!important}
     .legal-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
     .legal-back-button{background:#111!important;border:1px solid #3a3a3a!important;color:#ddd!important;border-radius:6px;padding:9px 12px;font-size:13px;text-transform:uppercase}
