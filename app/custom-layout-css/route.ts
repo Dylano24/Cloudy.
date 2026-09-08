@@ -221,7 +221,7 @@ html body .cloudy-cinematic-hero::before{
   to{transform:translate3d(-2.7%,-1%,0) scale(1.03)}
 }
 
-/* Intro cleanup: flat interior, seamless animated red-white lines above and below, no hero spark dot. */
+/* Intro cleanup: flat interior, continuously circulating red-white lines, no hero spark dot. */
 html body .cloudy-hero-logo-shell::before{
   content:none!important;
   display:none!important;
@@ -247,15 +247,25 @@ html body .cloudy-intro-card::after{
   height:2px!important;
   z-index:2!important;
   pointer-events:none!important;
-  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 70px,#ffffff 105px,#ff3434 140px,#b90000 210px,#ff3434 280px)!important;
+  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
   background-size:280px 100%!important;
-  animation:cloudy-intro-line-flow 2.8s linear infinite!important;
+  will-change:background-position!important;
 }
-html body .cloudy-intro-card::before{top:0!important}
-html body .cloudy-intro-card::after{bottom:0!important}
-@keyframes cloudy-intro-line-flow{
+html body .cloudy-intro-card::before{
+  top:0!important;
+  animation:cloudy-intro-line-forward 2.35s linear infinite!important;
+}
+html body .cloudy-intro-card::after{
+  bottom:0!important;
+  animation:cloudy-intro-line-reverse 2.35s linear infinite!important;
+}
+@keyframes cloudy-intro-line-forward{
   from{background-position:0 0}
   to{background-position:280px 0}
+}
+@keyframes cloudy-intro-line-reverse{
+  from{background-position:0 0}
+  to{background-position:-280px 0}
 }
 
 @media(max-width:780px){
