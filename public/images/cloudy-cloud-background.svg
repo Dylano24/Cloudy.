@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="clouds" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0045 0.009" numOctaves="5" seed="21" result="noise"/>
+      <feGaussianBlur in="noise" stdDeviation="10" result="soft"/>
+      <feColorMatrix in="soft" type="matrix" values="
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 2.2 -0.72" result="alphaCloud"/>
+      <feComponentTransfer in="alphaCloud" result="shaped">
+        <feFuncR type="linear" slope="0.78" intercept="0.12"/>
+        <feFuncG type="linear" slope="0.80" intercept="0.13"/>
+        <feFuncB type="linear" slope="0.84" intercept="0.16"/>
+        <feFuncA type="gamma" amplitude="1.1" exponent="1.15" offset="0"/>
+      </feComponentTransfer>
+    </filter>
+    <radialGradient id="leftGlow" cx="0" cy="0" r="1" gradientTransform="translate(330 380) scale(600 470)">
+      <stop offset="0" stop-color="#c7ccd1" stop-opacity="0.26"/>
+      <stop offset="0.5" stop-color="#8f969d" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="rightGlow" cx="0" cy="0" r="1" gradientTransform="translate(1590 700) scale(650 500)">
+      <stop offset="0" stop-color="#d3d7db" stop-opacity="0.20"/>
+      <stop offset="0.55" stop-color="#8d949b" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#050505" stop-opacity="0.18"/>
+      <stop offset="0.48" stop-color="#050505" stop-opacity="0.02"/>
+      <stop offset="1" stop-color="#050505" stop-opacity="0.30"/>
+    </linearGradient>
+    <mask id="edgeMask">
+      <rect width="1920" height="1080" fill="#fff"/>
+      <ellipse cx="960" cy="515" rx="650" ry="350" fill="#000" opacity="0.68"/>
+    </mask>
+  </defs>
+  <rect width="1920" height="1080" fill="#070707"/>
+  <rect width="1920" height="1080" fill="url(#leftGlow)"/>
+  <rect width="1920" height="1080" fill="url(#rightGlow)"/>
+  <g mask="url(#edgeMask)" opacity="0.92">
+    <rect x="-120" y="-80" width="2160" height="1240" fill="#b8bec4" filter="url(#clouds)" opacity="0.58"/>
+  </g>
+  <g opacity="0.34" filter="url(#clouds)">
+    <ellipse cx="220" cy="785" rx="430" ry="300" fill="#c9cdd1"/>
+    <ellipse cx="1735" cy="240" rx="390" ry="280" fill="#d0d4d8"/>
+  </g>
+  <rect width="1920" height="1080" fill="url(#vignette)"/>
+</svg>
