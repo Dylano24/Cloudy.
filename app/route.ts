@@ -76,7 +76,7 @@ function injectHomeStyles(html: string) {
 .cloudy-shared-footer-links a:hover{color:#fff!important}
 .cloudy-shared-footer-bottom{margin-top:42px;padding-top:24px;border-top:1px solid #1f1f1f;color:#8d8d8d;font-size:13px}
 @media(max-width:760px){
-.reference-topbar{justify-content:flex-start!important;overflow:visible!important;padding-right:92px!important}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:flex!important;right:8px!important}.reference-topbar .policy-top-links a{padding:10px 9px!important;font-size:9px!important}.reference-topbar .basket-label{display:none!important}.reference-topbar .basket-button{min-width:42px!important;width:42px!important;padding:0!important}.reference-topbar #basket-count{display:grid!important;place-items:center!important;box-sizing:border-box!important;line-height:1!important;padding-top:1px!important}.cloudy-home-menu{right:8px!important}
+.reference-topbar{justify-content:flex-start!important;overflow:visible!important;padding-right:92px!important}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:flex!important;right:8px!important;overflow:visible!important}.reference-topbar .policy-top-links a{padding:10px 9px!important;font-size:9px!important}.reference-topbar .basket-label{display:none!important}.reference-topbar .basket-button{min-width:0!important;width:auto!important;padding:0 2px!important;gap:8px!important;display:flex!important;align-items:center!important;overflow:visible!important;background:transparent!important;border:0!important}.reference-topbar #basket-count{display:grid!important;place-items:center!important;box-sizing:border-box!important;width:30px!important;min-width:30px!important;height:30px!important;padding:1px 0 0!important;border-radius:999px!important;line-height:1!important}.cloudy-home-menu{right:8px!important}
 .cloudy-shared-footer-inner{width:calc(100% - 40px);padding:40px 0 34px}
 .cloudy-shared-footer-grid{grid-template-columns:1fr;gap:34px}
 .cloudy-shared-footer-brand{margin-bottom:4px}
@@ -90,8 +90,8 @@ function injectHomeStyles(html: string) {
 .product-art img{filter:drop-shadow(0 0 10px rgba(255,255,255,.12));transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .4s ease}
 .product-art:after{content:"";position:absolute;inset:-40% auto -40% -65%;width:42%;pointer-events:none;background:linear-gradient(105deg,transparent,rgba(255,255,255,.13),transparent);transform:skewX(-16deg);transition:left .72s cubic-bezier(.2,.7,.2,1)}
 .hero-logo,.cloudy-shared-footer-brand img{filter:drop-shadow(0 0 13px rgba(255,255,255,.16))!important;transition:filter .35s ease,transform .35s ease}
-.detail-button,.save-button,.games-back,.basket-button,.discord-link,.cloudy-home-menu button{position:relative;overflow:hidden}
-.detail-button:after,.games-back:after,.basket-button:after,.discord-link:after,.cloudy-home-menu button:after{content:"";position:absolute;top:-80%;bottom:-80%;left:-55%;width:30%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.13),transparent);transform:skewX(-18deg);transition:left .6s ease}
+.detail-button,.save-button,.games-back,.discord-link,.cloudy-home-menu button{position:relative;overflow:hidden}
+.detail-button:after,.games-back:after,.discord-link:after,.cloudy-home-menu button:after{content:"";position:absolute;top:-80%;bottom:-80%;left:-55%;width:30%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.13),transparent);transform:skewX(-18deg);transition:left .6s ease}
 .product-dialog[open],.basket-dialog[open],.account-dialog[open]{animation:cloudy-dialog-in .24s cubic-bezier(.2,.72,.2,1)}
 .product-dialog::backdrop,.basket-dialog::backdrop,.account-dialog::backdrop{animation:cloudy-backdrop-in .22s ease both}
 .cloud-layer-far{animation-duration:82s!important}
@@ -107,11 +107,11 @@ function injectHomeStyles(html: string) {
 .product-card:hover .product-art img{transform:scale(1.045);filter:drop-shadow(0 0 15px rgba(255,255,255,.2))}
 .product-card:hover .product-art:after{left:130%}
 .hero-logo:hover{filter:drop-shadow(0 0 18px rgba(255,255,255,.23))!important;transform:translateY(-1px)}
-.detail-button:hover:after,.games-back:hover:after,.basket-button:hover:after,.discord-link:hover:after,.cloudy-home-menu button:hover:after{left:135%}
+.detail-button:hover:after,.games-back:hover:after,.discord-link:hover:after,.cloudy-home-menu button:hover:after{left:135%}
 }
 @media(prefers-reduced-motion:reduce){
 .product-card,.product-art img,.hero-logo,.cloudy-shared-footer-brand img,.luxury-reveal{animation:none!important;transition:none!important;transform:none!important}
-.product-art:after,.detail-button:after,.games-back:after,.basket-button:after,.discord-link:after,.cloudy-home-menu button:after{display:none!important}
+.product-art:after,.detail-button:after,.games-back:after,.discord-link:after,.cloudy-home-menu button:after{display:none!important}
 .cloud-layer-far,.cloud-layer-near{animation:none!important}
 }
 </style>`;
@@ -144,7 +144,6 @@ function injectHomeInteractions(html: string) {
 </script>`;
   return html.replace('</body>', `${script}</body>`);
 }
-
 
 function injectLuxuryMotion(html: string) {
   const script = `<script>
