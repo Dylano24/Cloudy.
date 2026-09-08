@@ -31,8 +31,13 @@ export function Footer() {
             <div className="cloudy-footer-title">Community</div>
             <div className="cloudy-footer-links">
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
-              <Link href="/appeal">Mute / Ban appeal</Link>
+            </div>
+
+            <div className="cloudy-footer-title" style={{ marginTop: '18px' }}>Information</div>
+            <div className="cloudy-footer-links">
+              <Link href="/appeal">Appeal Form</Link>
               <Link href="/legal#terms">Terms of Service</Link>
+              <Link href="/legal#sales">Terms of Sale</Link>
             </div>
           </div>
         </div>
