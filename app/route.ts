@@ -4,7 +4,7 @@ const DISCORD_EMOJI_URL = 'https://cdn.discordapp.com/emojis/1543287452410716160
 export const dynamic = 'force-dynamic';
 
 function updateHomeNavigation(html: string) {
-  const navigation = `<div class="top-links policy-top-links"><a class="is-active" href="/" aria-current="page">Home</a><a href="/#server">Server</a><a href="/appeal">Appeal Form</a></div>`;
+  const navigation = `<div class="top-links policy-top-links"><a class="is-active" href="/" aria-current="page">Home</a><a href="/#server">Server</a><a href="/appeal">Appeal form</a></div>`;
   return html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div>/, navigation);
 }
 
@@ -15,17 +15,19 @@ function updateHomeDiscordEmoji(html: string) {
   );
 }
 
-function removeHiddenLegalLinks(html: string) {
+function updateHomeLegalLinks(html: string) {
   return html
     .replace(/<a href="\/legal#privacy">Privacy Policy<\/a>/g, '')
-    .replace(/<a href="\/legal#notice">Legal Notice<\/a>/g, '');
+    .replace(/<a href="\/legal#notice">Legal Notice<\/a>/g, '')
+    .replace(/Terms of Service/g, 'Terms of service')
+    .replace(/Terms of Sale/g, 'Terms of sale');
 }
 
 function injectHomeStyles(html: string) {
   const styles = `<style>
 .reference-topbar{position:relative;min-height:78px;display:flex;align-items:center;justify-content:center!important;border:0!important;border-radius:0!important;background:#080808!important;box-shadow:none!important}
 .reference-topbar .policy-top-links{display:flex!important;align-items:center;justify-content:center;gap:4px!important;margin:0 auto!important;padding:0!important;border:0!important;background:transparent!important}
-.reference-topbar .policy-top-links a{position:relative;padding:11px 15px!important;border-radius:9px;color:#9b9b9b!important;background:transparent!important;font-size:11px!important;font-weight:850!important;letter-spacing:.09em!important;text-transform:uppercase!important;transition:.2s ease!important}
+.reference-topbar .policy-top-links a{position:relative;padding:11px 15px!important;border-radius:9px;color:#9b9b9b!important;background:transparent!important;font-size:11px!important;font-weight:850!important;letter-spacing:.09em!important;text-transform:none!important;transition:.2s ease!important}
 .reference-topbar .policy-top-links a:hover,.reference-topbar .policy-top-links a.is-active{color:#fff!important;background:#181818!important}
 .reference-topbar .policy-top-links a.is-active:after{content:"";position:absolute;left:14px;right:14px;bottom:3px;height:1px;background:#f0f0f0;box-shadow:0 0 8px rgba(255,255,255,.18)}
 .reference-topbar .top-actions{position:absolute;right:0;display:flex;align-items:center}
@@ -44,7 +46,7 @@ export async function GET() {
     let html = await response.text();
     html = updateHomeNavigation(html);
     html = updateHomeDiscordEmoji(html);
-    html = removeHiddenLegalLinks(html);
+    html = updateHomeLegalLinks(html);
     html = injectHomeStyles(html);
 
     return new Response(html, {
