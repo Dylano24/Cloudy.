@@ -32,7 +32,7 @@ html body .cloudy-intro-card::after{
   display:none!important;
 }
 
-/* Footer only: smooth red/white moving highlights with a permanent red base and no visible reset seam. */
+/* Footer only: clearly moving white highlights travel continuously from right to left over a permanent red base. */
 html body .cloudy-footer-glow{
   position:absolute!important;
   overflow:hidden!important;
@@ -43,7 +43,10 @@ html body .cloudy-footer-glow{
 html body .cloudy-footer-glow::before{
   content:''!important;
   position:absolute!important;
-  inset:0!important;
+  top:0!important;
+  bottom:0!important;
+  left:0!important;
+  width:calc(100% + 520px)!important;
   display:block!important;
   pointer-events:none!important;
   background:repeating-linear-gradient(90deg,
@@ -62,12 +65,12 @@ html body .cloudy-footer-glow::before{
   )!important;
   background-size:520px 100%!important;
   filter:drop-shadow(0 0 4px rgba(255,255,255,.62)) drop-shadow(0 0 7px rgba(255,44,44,.48))!important;
-  will-change:background-position!important;
-  animation:cloudy-footer-sweep-fixed 2.8s linear infinite!important;
+  will-change:transform!important;
+  animation:cloudy-footer-right-to-left 2.8s linear infinite!important;
 }
-@keyframes cloudy-footer-sweep-fixed{
-  from{background-position:0 0}
-  to{background-position:520px 0}
+@keyframes cloudy-footer-right-to-left{
+  from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(-520px,0,0)}
 }
 `;
 
