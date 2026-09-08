@@ -12,6 +12,8 @@ export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
+  const navLabelStyle = { textTransform: 'none' as const };
+
   return (
     <header className="cloudy-header">
       <div className="cloudy-header-inner">
@@ -26,9 +28,9 @@ export function Header() {
         </Link>
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
-          <Link href="/" className={pathname === '/' ? 'active' : ''}>Home</Link>
-          <Link href="/#server">Server</Link>
-          <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''}>Appeal Form</Link>
+          <Link href="/" className={pathname === '/' ? 'active' : ''} style={navLabelStyle}>Home</Link>
+          <Link href="/#server" style={navLabelStyle}>Server</Link>
+          <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''} style={navLabelStyle}>Appeal form</Link>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -47,7 +49,7 @@ export function Header() {
         <nav className="cloudy-mobile-menu">
           <Link href="/" onClick={() => setOpen(false)}>Home</Link>
           <Link href="/#server" onClick={() => setOpen(false)}>Server</Link>
-          <Link href="/appeal" onClick={() => setOpen(false)}>Appeal Form</Link>
+          <Link href="/appeal" onClick={() => setOpen(false)}>Appeal form</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
         </nav>
       )}
