@@ -220,12 +220,50 @@ html body .cloudy-cinematic-hero::before{
   from{transform:translate3d(2.2%,1.2%,0) scale(1.06)}
   to{transform:translate3d(-2.7%,-1%,0) scale(1.03)}
 }
+
+/* Intro cleanup: flat interior, seamless animated red-white lines above and below, no hero spark dot. */
+html body .cloudy-hero-logo-shell::before{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+  animation:none!important;
+}
+html body .cloudy-intro-card{
+  position:relative!important;
+  overflow:hidden!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  background:#060606!important;
+  box-shadow:none!important;
+  filter:none!important;
+  animation:none!important;
+}
+html body .cloudy-intro-card::before,
+html body .cloudy-intro-card::after{
+  content:''!important;
+  position:absolute!important;
+  left:0!important;
+  right:0!important;
+  height:2px!important;
+  z-index:2!important;
+  pointer-events:none!important;
+  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 70px,#ffffff 105px,#ff3434 140px,#b90000 210px,#ff3434 280px)!important;
+  background-size:280px 100%!important;
+  animation:cloudy-intro-line-flow 2.8s linear infinite!important;
+}
+html body .cloudy-intro-card::before{top:0!important}
+html body .cloudy-intro-card::after{bottom:0!important}
+@keyframes cloudy-intro-line-flow{
+  from{background-position:0 0}
+  to{background-position:280px 0}
+}
+
 @media(max-width:780px){
   html body .cloud-layer-far{inset:-32% -52%!important;opacity:.18!important;filter:blur(50px)!important}
   html body .cloud-layer-near{inset:-34% -56%!important;opacity:.08!important;filter:blur(66px)!important}
 }
 @media(prefers-reduced-motion:reduce){
-  .game-home::before,html body .site-clouds::before,html body .cloud-layer-far,html body .cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
+  .game-home::before,html body .site-clouds::before,html body .cloud-layer-far,html body .cloud-layer-near,html body .cloudy-intro-card::before,html body .cloudy-intro-card::after{animation:none!important;transform:none!important;will-change:auto!important}
 }
 `;
 
