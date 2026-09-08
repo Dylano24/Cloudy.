@@ -76,7 +76,7 @@ function injectHomeStyles(html: string) {
 .cloudy-shared-footer-links a:hover{color:#fff!important}
 .cloudy-shared-footer-bottom{margin-top:42px;padding-top:24px;border-top:1px solid #1f1f1f;color:#8d8d8d;font-size:13px}
 @media(max-width:760px){
-.reference-topbar{justify-content:flex-start!important;overflow:visible!important;padding-right:92px!important}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:flex!important;right:8px!important}.reference-topbar .policy-top-links a{padding:10px 9px!important;font-size:9px!important}.reference-topbar .basket-label{display:none!important}.reference-topbar .basket-button{min-width:42px!important;width:42px!important;padding:0!important}.cloudy-home-menu{right:8px!important}
+.reference-topbar{justify-content:flex-start!important;overflow:visible!important;padding-right:92px!important}.reference-topbar .policy-top-links{justify-content:flex-start;margin:0!important}.reference-topbar .top-actions{display:flex!important;right:8px!important}.reference-topbar .policy-top-links a{padding:10px 9px!important;font-size:9px!important}.reference-topbar .basket-label{display:none!important}.reference-topbar .basket-button{min-width:42px!important;width:42px!important;padding:0!important}.reference-topbar #basket-count{display:grid!important;place-items:center!important;box-sizing:border-box!important;line-height:1!important;padding-top:1px!important}.cloudy-home-menu{right:8px!important}
 .cloudy-shared-footer-inner{width:calc(100% - 40px);padding:40px 0 34px}
 .cloudy-shared-footer-grid{grid-template-columns:1fr;gap:34px}
 .cloudy-shared-footer-brand{margin-bottom:4px}
