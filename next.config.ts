@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
     return {
       beforeFiles: [
         { source: '/store.css', destination: `${LEGACY_SITE}/store.css` },
-        { source: '/layout.css', destination: `${LEGACY_SITE}/layout.css` },
+        { source: '/layout.css', destination: '/custom-layout-css' },
         { source: '/games.js', destination: `${LEGACY_SITE}/games.js` },
         { source: '/catalog.js', destination: `${LEGACY_SITE}/catalog.js` },
         { source: '/store.js', destination: `${LEGACY_SITE}/store.js` },
