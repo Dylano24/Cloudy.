@@ -56,6 +56,21 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   margin:0!important;
 }
 
+/* Company introduction: text only, before game selection. */
+.game-home::before{
+  content:'Cloudy Inc. is a gaming company focused on developing and operating within the gaming industry, currently starting with Rust game servers, alongside digital products and services, a dedicated website, and a community that bring our services and platform together.';
+  display:block;
+  width:min(760px,100%);
+  margin:4px auto 28px;
+  color:#a9a9ad;
+  font-size:16px;
+  font-weight:400;
+  line-height:1.55;
+  text-align:center;
+  letter-spacing:0;
+  white-space:normal;
+}
+
 @media(max-width:520px){
   .server-panel #server-list:has(.server-empty){
     grid-template-columns:minmax(0,1fr) auto!important;
@@ -70,6 +85,14 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   .server-panel #server-list:has(.server-empty) .outline-button{
     padding:9px 12px!important;
     font-size:13px!important;
+  }
+  .game-home::before{
+    width:100%;
+    margin:2px auto 24px;
+    padding:0 14px;
+    box-sizing:border-box;
+    font-size:14px;
+    line-height:1.55;
   }
 }
 
