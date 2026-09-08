@@ -32,12 +32,12 @@ html body .cloudy-intro-card::after{
   display:none!important;
 }
 
-/* Footer: permanent red base with a clearly moving white highlight, seamless with no black reset gap. */
+/* Footer only: smooth red/white moving highlights with a permanent red base and no visible reset seam. */
 html body .cloudy-footer-glow{
   position:absolute!important;
   overflow:hidden!important;
   background:#ff3434!important;
-  box-shadow:0 0 12px rgba(255,40,40,.70)!important;
+  box-shadow:0 0 12px rgba(255,40,40,.72),0 0 4px rgba(255,255,255,.12)!important;
   animation:none!important;
 }
 html body .cloudy-footer-glow::before{
@@ -48,21 +48,26 @@ html body .cloudy-footer-glow::before{
   pointer-events:none!important;
   background:repeating-linear-gradient(90deg,
     transparent 0px,
-    transparent 132px,
-    rgba(255,255,255,.22) 138px,
-    #ffffff 146px,
-    #ffffff 154px,
-    rgba(255,255,255,.22) 162px,
-    transparent 168px,
-    transparent 360px
+    transparent 174px,
+    rgba(255,72,72,.18) 188px,
+    rgba(255,255,255,.28) 198px,
+    rgba(255,255,255,.72) 206px,
+    #ffffff 212px,
+    #ffffff 218px,
+    rgba(255,255,255,.72) 224px,
+    rgba(255,255,255,.28) 232px,
+    rgba(255,72,72,.18) 242px,
+    transparent 256px,
+    transparent 520px
   )!important;
-  background-size:360px 100%!important;
+  background-size:520px 100%!important;
+  filter:drop-shadow(0 0 4px rgba(255,255,255,.62)) drop-shadow(0 0 7px rgba(255,44,44,.48))!important;
   will-change:background-position!important;
   animation:cloudy-footer-sweep-fixed 2.8s linear infinite!important;
 }
 @keyframes cloudy-footer-sweep-fixed{
   from{background-position:0 0}
-  to{background-position:360px 0}
+  to{background-position:520px 0}
 }
 `;
 
