@@ -75,11 +75,11 @@ const CLOUDY_LAYOUT_OVERRIDES = `
 
 /* Background only: visible, soft white/grey cloud motion. */
 .site-clouds{
-  background:#090909!important;
+  background:#080808!important;
 }
 .cloud-layer-far{
   inset:-22%!important;
-  opacity:.72!important;
+  opacity:.64!important;
   filter:blur(46px)!important;
   background:
     radial-gradient(ellipse at 18% 34%,rgba(255,255,255,.11) 0%,rgba(220,224,228,.045) 24%,transparent 47%),
@@ -90,7 +90,7 @@ const CLOUDY_LAYOUT_OVERRIDES = `
 .cloud-layer-near{
   display:block!important;
   inset:-25%!important;
-  opacity:.30!important;
+  opacity:.26!important;
   filter:blur(64px)!important;
   mix-blend-mode:screen!important;
   background:
@@ -107,8 +107,8 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   to{transform:translate3d(-4%,-2%,0) scale(1.03)}
 }
 @media(max-width:780px){
-  .cloud-layer-far{inset:-28% -44%!important;opacity:.60!important}
-  .cloud-layer-near{inset:-30% -48%!important;opacity:.24!important}
+  .cloud-layer-far{inset:-28% -44%!important;opacity:.54!important}
+  .cloud-layer-near{inset:-30% -48%!important;opacity:.20!important}
 }
 @media(prefers-reduced-motion:reduce){
   .cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important}
