@@ -83,6 +83,37 @@ function injectHomeStyles(html: string) {
 .cloudy-shared-footer-title{margin-bottom:14px}
 .cloudy-shared-footer-bottom{margin-top:36px}
 }
+
+/* Subtle luxury motion — visual only */
+.product-card{transition:transform .38s cubic-bezier(.2,.7,.2,1),border-color .38s ease,box-shadow .38s ease;will-change:transform}
+.product-art{overflow:hidden}
+.product-art img{filter:drop-shadow(0 0 10px rgba(255,255,255,.12));transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .4s ease}
+.product-art:after{content:"";position:absolute;inset:-40% auto -40% -65%;width:42%;pointer-events:none;background:linear-gradient(105deg,transparent,rgba(255,255,255,.13),transparent);transform:skewX(-16deg);transition:left .72s cubic-bezier(.2,.7,.2,1)}
+.hero-logo,.cloudy-shared-footer-brand img{filter:drop-shadow(0 0 13px rgba(255,255,255,.16))!important;transition:filter .35s ease,transform .35s ease}
+.detail-button,.save-button,.games-back,.basket-button,.discord-link,.cloudy-home-menu button{position:relative;overflow:hidden}
+.detail-button:after,.games-back:after,.basket-button:after,.discord-link:after,.cloudy-home-menu button:after{content:"";position:absolute;top:-80%;bottom:-80%;left:-55%;width:30%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.13),transparent);transform:skewX(-18deg);transition:left .6s ease}
+.product-dialog[open],.basket-dialog[open],.account-dialog[open]{animation:cloudy-dialog-in .24s cubic-bezier(.2,.72,.2,1)}
+.product-dialog::backdrop,.basket-dialog::backdrop,.account-dialog::backdrop{animation:cloudy-backdrop-in .22s ease both}
+.cloud-layer-far{animation-duration:82s!important}
+.cloud-layer-near{animation-duration:58s!important}
+.luxury-motion-ready .luxury-reveal{opacity:0;transform:translateY(14px);transition:opacity .58s ease,transform .58s cubic-bezier(.2,.7,.2,1)}
+.luxury-motion-ready .luxury-reveal.is-visible{opacity:1;transform:none}
+#basket-count.cloudy-basket-pulse{animation:cloudy-basket-pulse .42s cubic-bezier(.2,.8,.2,1)}
+@keyframes cloudy-dialog-in{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes cloudy-backdrop-in{from{background:rgba(0,0,0,0)}to{background:rgba(0,0,0,.72)}}
+@keyframes cloudy-basket-pulse{0%,100%{transform:scale(1)}45%{transform:scale(1.13);box-shadow:0 0 16px rgba(255,255,255,.22)}}
+@media(hover:hover){
+.product-card:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.2);box-shadow:0 24px 50px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.035)}
+.product-card:hover .product-art img{transform:scale(1.045);filter:drop-shadow(0 0 15px rgba(255,255,255,.2))}
+.product-card:hover .product-art:after{left:130%}
+.hero-logo:hover{filter:drop-shadow(0 0 18px rgba(255,255,255,.23))!important;transform:translateY(-1px)}
+.detail-button:hover:after,.games-back:hover:after,.basket-button:hover:after,.discord-link:hover:after,.cloudy-home-menu button:hover:after{left:135%}
+}
+@media(prefers-reduced-motion:reduce){
+.product-card,.product-art img,.hero-logo,.cloudy-shared-footer-brand img,.luxury-reveal{animation:none!important;transition:none!important;transform:none!important}
+.product-art:after,.detail-button:after,.games-back:after,.basket-button:after,.discord-link:after,.cloudy-home-menu button:after{display:none!important}
+.cloud-layer-far,.cloud-layer-near{animation:none!important}
+}
 </style>`;
   return html.replace('</head>', `${styles}</head>`);
 }
@@ -114,6 +145,40 @@ function injectHomeInteractions(html: string) {
   return html.replace('</body>', `${script}</body>`);
 }
 
+
+function injectLuxuryMotion(html: string) {
+  const script = `<script>
+(function(){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function initLuxuryMotion(){
+    document.body.classList.add('luxury-motion-ready');
+    const targets=document.querySelectorAll('.store-navigation,#game-panel,.kit-panel,.product-card,.cloudy-shared-footer');
+    targets.forEach(function(element){element.classList.add('luxury-reveal');});
+    if('IntersectionObserver' in window){
+      const observer=new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}
+        });
+      },{threshold:.08,rootMargin:'0px 0px -24px'});
+      targets.forEach(function(element){observer.observe(element);});
+    }else{
+      targets.forEach(function(element){element.classList.add('is-visible');});
+    }
+    const basketCount=document.getElementById('basket-count');
+    if(basketCount&&'MutationObserver' in window){
+      new MutationObserver(function(){
+        basketCount.classList.remove('cloudy-basket-pulse');
+        void basketCount.offsetWidth;
+        basketCount.classList.add('cloudy-basket-pulse');
+      }).observe(basketCount,{childList:true,characterData:true,subtree:true});
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initLuxuryMotion); else initLuxuryMotion();
+})();
+</script>`;
+  return html.replace('</body>', `${script}</body>`);
+}
+
 export async function GET() {
   try {
     const response = await fetch(`${LEGACY_SITE}/`, { cache: 'no-store' });
@@ -127,6 +192,7 @@ export async function GET() {
     html = replaceHomeFooter(html);
     html = injectHomeStyles(html);
     html = injectHomeInteractions(html);
+    html = injectLuxuryMotion(html);
 
     return new Response(html, {
       status: 200,
