@@ -28,7 +28,7 @@ export function Header() {
         <nav className="cloudy-header-nav" aria-label="Main navigation">
           <Link href="/" className={pathname === '/' ? 'active' : ''}>Home</Link>
           <Link href="/#server">Server</Link>
-          <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''}>Appeal</Link>
+          <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''}>Appeal Form</Link>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -47,7 +47,7 @@ export function Header() {
         <nav className="cloudy-mobile-menu">
           <Link href="/" onClick={() => setOpen(false)}>Home</Link>
           <Link href="/#server" onClick={() => setOpen(false)}>Server</Link>
-          <Link href="/appeal" onClick={() => setOpen(false)}>Appeal</Link>
+          <Link href="/appeal" onClick={() => setOpen(false)}>Appeal Form</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
         </nav>
       )}
