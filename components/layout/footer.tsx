@@ -35,9 +35,9 @@ export function Footer() {
 
             <div className="cloudy-footer-title" style={{ marginTop: '18px' }}>Information</div>
             <div className="cloudy-footer-links">
-              <Link href="/appeal">Appeal Form</Link>
-              <Link href="/legal#terms">Terms of Service</Link>
-              <Link href="/legal#sales">Terms of Sale</Link>
+              <Link href="/appeal">Appeal form</Link>
+              <Link href="/legal#terms">Terms of service</Link>
+              <Link href="/legal#sales">Terms of sale</Link>
             </div>
           </div>
         </div>
