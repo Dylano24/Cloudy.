@@ -4,7 +4,7 @@ const DISCORD_EMOJI_URL = 'https://cdn.discordapp.com/emojis/1543287452410716160
 export const dynamic = 'force-dynamic';
 
 function updateHomeNavigation(html: string) {
-  const navigation = `<div class="top-links policy-top-links"><a class="is-active" href="/" aria-current="page">Home</a><a href="/#server">Server</a><a href="/appeal">Appeal</a></div>`;
+  const navigation = `<div class="top-links policy-top-links"><a class="is-active" href="/" aria-current="page">Home</a><a href="/#server">Server</a><a href="/appeal">Appeal Form</a></div>`;
   return html.replace(/<div class="top-links policy-top-links">[\s\S]*?<\/div>/, navigation);
 }
 
