@@ -12,8 +12,13 @@ function updateLegalPage(html: string) {
 
   updated = updated.replace(
     '<nav class="legal-jump" aria-label="Documents"><a href="#terms">Terms of Service</a><a href="#sales">Terms of Sale</a><a href="#privacy">Privacy Policy</a><a href="#notice">Legal Notice</a></nav>',
-    '<nav class="legal-jump" aria-label="Documents"><a href="/legal#terms" data-legal-tab="terms">Terms of Service</a><a href="/legal#sales" data-legal-tab="sales">Terms of Sale</a><a href="/legal#privacy" data-legal-tab="privacy">Privacy Policy</a><a href="/legal#notice" data-legal-tab="notice">Legal Notice</a></nav>',
+    '<nav class="legal-jump" aria-label="Documents"><a href="/legal#terms" data-legal-tab="terms">Terms of Service</a><a href="/legal#sales" data-legal-tab="sales">Terms of Sale</a></nav>',
   );
+
+  updated = updated.replace(/<section id="privacy">[\s\S]*?<\/section>/, '');
+  updated = updated.replace(/<section id="notice">[\s\S]*?<\/section>/, '');
+  updated = updated.replace(/<a href="#privacy">Privacy Policy<\/a>/g, '');
+  updated = updated.replace(/<a href="#notice">Legal Notice<\/a>/g, '');
 
   updated = updated.replace('</head>', `<style>
     html,body{background:#090909!important;color:#f3f3f3!important}
@@ -28,10 +33,9 @@ function updateLegalPage(html: string) {
     .legal-jump{display:flex;flex-wrap:wrap;gap:10px}
     .legal-jump a{background:#101010!important;border:1px solid #3a3a3a!important;color:#e6e6e6!important}
     .legal-jump a:hover,.legal-jump a.is-active{background:#1b1b1b!important;border-color:#737373!important;color:#fff!important}
-    .legal-intro,.legal-document,#privacy,#notice{background:#0d0d0d!important;border-color:#333!important;color:#d6d6d6!important}
-    .legal-document,#privacy,#notice{display:none}
-    .legal-document.is-active,#privacy.is-active,#notice.is-active{display:block}
-    .legal-document h2,.legal-document h3,#privacy h2,#notice h2{color:#f5f5f5!important}
+    .legal-document{background:#0d0d0d!important;border-color:#333!important;color:#d6d6d6!important;display:none}
+    .legal-document.is-active{display:block}
+    .legal-document h2,.legal-document h3{color:#f5f5f5!important}
     .policy-clause{border-color:#2f2f2f!important}
     .compact-footer .footer-bottom{display:flex;align-items:center;gap:20px}
     .compact-footer .footer-bottom>div{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:18px;flex-wrap:wrap}
@@ -42,7 +46,7 @@ function updateLegalPage(html: string) {
 
   updated = updated.replace('</body>', `<script>
     (function () {
-      const allowed = ['terms', 'sales', 'privacy', 'notice'];
+      const allowed = ['terms', 'sales'];
       function showLegalDocument() {
         const requested = window.location.hash.replace('#', '');
         const active = allowed.includes(requested) ? requested : 'terms';
