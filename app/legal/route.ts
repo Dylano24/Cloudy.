@@ -3,6 +3,20 @@ const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 
 export const dynamic = 'force-dynamic';
 
+function sharedFooter() {
+  return `<footer class="cloudy-shared-footer">
+    <div class="cloudy-shared-footer-inner">
+      <div class="cloudy-shared-footer-grid">
+        <div class="cloudy-shared-footer-brand"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width="45" height="45"><strong>CLOUDY INC.</strong></div>
+        <div><div class="cloudy-shared-footer-title">Navigation</div><div class="cloudy-shared-footer-links"><a href="/">Home</a><a href="/#server">Server</a></div></div>
+        <div><div class="cloudy-shared-footer-title">Community</div><div class="cloudy-shared-footer-links"><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">Discord</a></div></div>
+        <div><div class="cloudy-shared-footer-title">Information</div><div class="cloudy-shared-footer-links"><a href="/appeal">Appeal form</a><a href="/legal#terms">Terms of service</a><a href="/legal#sales">Terms of sale</a></div></div>
+      </div>
+      <div class="cloudy-shared-footer-bottom">© 2026 Cloudy Inc. All rights reserved.</div>
+    </div>
+  </footer>`;
+}
+
 function updateLegalPage(html: string) {
   const nav = `<div class="top-links policy-top-links"><a href="/">Home</a><a href="/appeal">Appeal form</a><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">Support</a></div><div class="legal-actions"><button class="legal-back-button" type="button" onclick="history.back()" aria-label="Go back">← BACK</button><a class="legal-home" href="/" aria-label="Back to Cloudy"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="" width="36" height="36"><span>CLOUDY</span></a></div>`;
 
@@ -21,6 +35,7 @@ function updateLegalPage(html: string) {
   updated = updated.replace(/<section id="notice">[\s\S]*?<\/section>/, '');
   updated = updated.replace(/<a href="#privacy">Privacy Policy<\/a>/g, '');
   updated = updated.replace(/<a href="#notice">Legal Notice<\/a>/g, '');
+  updated = updated.replace(/<footer[\s\S]*?<\/footer>/, sharedFooter());
 
   updated = updated.replace('</head>', `<style>
     html,body{background:#090909!important;color:#f3f3f3!important}
@@ -39,11 +54,25 @@ function updateLegalPage(html: string) {
     .legal-document.is-active{display:block}
     .legal-document h2,.legal-document h3{color:#f5f5f5!important}
     .policy-clause{border-color:#2f2f2f!important}
-    .compact-footer .footer-bottom{display:flex;align-items:center;gap:20px}
-    .compact-footer .footer-bottom>div{margin-left:auto;display:flex;align-items:center;justify-content:flex-end;gap:18px;flex-wrap:wrap}
-    .compact-footer .footer-bottom>div a{display:inline-block;white-space:nowrap;color:#bdbdbd!important}
-    .compact-footer .footer-bottom>div a:hover{color:#fff!important}
-    @media(max-width:780px){.legal-actions{gap:8px}.legal-home span{display:none}.compact-footer .footer-bottom{align-items:flex-start}.compact-footer .footer-bottom>div{margin-left:0;justify-content:flex-start}}
+    .cloudy-shared-footer{background:#080808!important;border-top:1px solid #1f1f1f!important;color:#9f9f9f!important}
+    .cloudy-shared-footer-inner{width:min(1320px,calc(100% - 36px));margin:0 auto;padding:48px 0 30px}
+    .cloudy-shared-footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:54px;align-items:start}
+    .cloudy-shared-footer-brand{display:flex;align-items:center;gap:12px;color:#f3f3f3}
+    .cloudy-shared-footer-brand img{width:45px;height:45px;object-fit:contain}
+    .cloudy-shared-footer-brand strong{font-size:16px;font-weight:900;letter-spacing:.04em}
+    .cloudy-shared-footer-title{margin-bottom:16px;color:#a6a6a6;font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+    .cloudy-shared-footer-links{display:flex;flex-direction:column;gap:12px}
+    .cloudy-shared-footer-links a{color:#9f9f9f!important;font-size:14px;text-decoration:none}
+    .cloudy-shared-footer-links a:hover{color:#fff!important}
+    .cloudy-shared-footer-bottom{margin-top:42px;padding-top:24px;border-top:1px solid #1f1f1f;color:#8d8d8d;font-size:13px}
+    @media(max-width:780px){
+      .legal-actions{gap:8px}.legal-home span{display:none}
+      .cloudy-shared-footer-inner{width:calc(100% - 40px);padding:40px 0 34px}
+      .cloudy-shared-footer-grid{grid-template-columns:1fr;gap:34px}
+      .cloudy-shared-footer-brand{margin-bottom:4px}
+      .cloudy-shared-footer-title{margin-bottom:14px}
+      .cloudy-shared-footer-bottom{margin-top:36px}
+    }
   </style></head>`);
 
   updated = updated.replace('</body>', `<script>
