@@ -56,8 +56,14 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   margin:0!important;
 }
 
-/* Company introduction callout: white/red line treatment only. */
+/* Company introduction callout: faster animated white/red border with luxury glow. */
+@property --cloudy-intro-angle{
+  syntax:'<angle>';
+  inherits:false;
+  initial-value:0deg;
+}
 .game-home::before{
+  --cloudy-intro-angle:0deg;
   content:'Cloudy Inc. is a gaming company focused on developing and operating within the gaming industry, currently starting with Rust game servers, alongside digital products and services, a dedicated website, and a community that bring our services and platform together.';
   display:block;
   width:min(920px,calc(100% - 32px));
@@ -67,16 +73,52 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   border:1px solid transparent;
   border-radius:16px;
   background:
-    linear-gradient(rgba(8,8,8,.94),rgba(8,8,8,.94)) padding-box,
-    linear-gradient(90deg,rgba(255,255,255,.72),rgba(255,255,255,.18) 28%,rgba(185,0,0,.88) 50%,rgba(255,255,255,.18) 72%,rgba(255,255,255,.72)) border-box;
-  box-shadow:0 0 0 1px rgba(255,255,255,.025),0 0 24px rgba(170,0,0,.14),inset 0 1px rgba(255,255,255,.035);
-  color:#b9b9bd;
+    linear-gradient(rgba(7,7,7,.96),rgba(7,7,7,.96)) padding-box,
+    conic-gradient(
+      from var(--cloudy-intro-angle),
+      rgba(255,255,255,.96) 0deg,
+      rgba(255,255,255,.98) 36deg,
+      rgba(255,70,70,.98) 88deg,
+      rgba(190,0,0,1) 132deg,
+      rgba(255,255,255,.96) 205deg,
+      rgba(255,110,110,.96) 272deg,
+      rgba(255,255,255,.96) 360deg
+    ) border-box;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.035),
+    0 0 20px rgba(255,255,255,.07),
+    0 0 30px rgba(185,0,0,.22),
+    0 0 54px rgba(255,32,32,.13),
+    inset 0 1px rgba(255,255,255,.045);
+  color:#c5c5c9;
   font-size:16px;
   font-weight:400;
   line-height:1.6;
   text-align:center;
   letter-spacing:0;
   white-space:normal;
+  animation:cloudy-intro-spin 2.8s linear infinite,cloudy-intro-flash 1.45s ease-in-out infinite;
+}
+@keyframes cloudy-intro-spin{
+  to{--cloudy-intro-angle:360deg}
+}
+@keyframes cloudy-intro-flash{
+  0%,100%{
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.035),
+      0 0 20px rgba(255,255,255,.07),
+      0 0 30px rgba(185,0,0,.22),
+      0 0 54px rgba(255,32,32,.13),
+      inset 0 1px rgba(255,255,255,.045);
+  }
+  50%{
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.07),
+      0 0 26px rgba(255,255,255,.12),
+      0 0 42px rgba(220,0,0,.32),
+      0 0 72px rgba(255,45,45,.20),
+      inset 0 1px rgba(255,255,255,.07);
+  }
 }
 
 @media(max-width:520px){
@@ -162,7 +204,7 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   .cloud-layer-near{inset:-30% -52%!important;opacity:.13!important;filter:blur(52px)!important}
 }
 @media(prefers-reduced-motion:reduce){
-  .cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
+  .game-home::before,.cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
 }
 `;
 
