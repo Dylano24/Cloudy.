@@ -28,9 +28,9 @@ export function Header() {
         </Link>
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
-          <Link href="/" className={pathname === '/' ? 'active' : ''} style={navLabelStyle}>Home</Link>
-          <Link href="/#server" style={navLabelStyle}>Server</Link>
-          <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''} style={navLabelStyle}>Appeal form</Link>
+          <Link href="/" className={pathname === '/' ? 'active' : ''} style={navLabelStyle}>HOME</Link>
+          <Link href="/#server" style={navLabelStyle}>SERVER</Link>
+          <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''} style={navLabelStyle}>APPEAL FORM</Link>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -47,9 +47,9 @@ export function Header() {
 
       {open && (
         <nav className="cloudy-mobile-menu">
-          <Link href="/" onClick={() => setOpen(false)}>Home</Link>
-          <Link href="/#server" onClick={() => setOpen(false)}>Server</Link>
-          <Link href="/appeal" onClick={() => setOpen(false)}>Appeal form</Link>
+          <Link href="/" onClick={() => setOpen(false)}>HOME</Link>
+          <Link href="/#server" onClick={() => setOpen(false)}>SERVER</Link>
+          <Link href="/appeal" onClick={() => setOpen(false)}>APPEAL FORM</Link>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
         </nav>
       )}
