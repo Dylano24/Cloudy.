@@ -102,6 +102,7 @@ export function Header() {
             border: 0;
             border-radius: 0;
             background: transparent;
+            overflow: visible;
           }
           .cloudy-shared-basket:hover {
             border-color: transparent;
@@ -148,15 +149,15 @@ export function Header() {
         </nav>
 
         <div className="cloudy-header-actions">
-          <Link
-            href="/?open=basket"
+          <a
+            href="/#basket"
             className="cloudy-shared-basket"
             aria-label={`Open basket, ${basketCount} saved ${basketCount === 1 ? 'product' : 'products'}`}
           >
             <HomeBasketIcon />
             <span className="cloudy-shared-basket-label">Basket</span>
             <span className="cloudy-shared-basket-count">{basketCount}</span>
-          </Link>
+          </a>
 
           <button
             type="button"
