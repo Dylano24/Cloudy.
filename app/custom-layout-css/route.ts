@@ -230,7 +230,7 @@ html body .cloudy-hero-logo-shell::before{
   animation:none!important;
 }
 
-/* Restore the original rotating intro border, but keep the interior completely flat and dark. */
+/* Flashy rotating intro border: red base with narrow white highlights, flat dark interior. */
 html body .cloudy-intro-card{
   --cloudy-intro-angle:0deg;
   position:relative!important;
@@ -240,19 +240,19 @@ html body .cloudy-intro-card{
     linear-gradient(#060606,#060606) padding-box,
     conic-gradient(
       from var(--cloudy-intro-angle),
-      #ff3434 0deg 48deg,
-      #ffffff 48deg 70deg,
-      #ff3434 70deg 128deg,
-      #ffffff 128deg 150deg,
-      #ff3434 150deg 208deg,
-      #ffffff 208deg 230deg,
-      #ff3434 230deg 288deg,
-      #ffffff 288deg 310deg,
-      #ff3434 310deg 360deg
+      #ff3434 0deg 42deg,
+      #fff 48deg 54deg,
+      #ff3434 60deg 132deg,
+      #fff 138deg 144deg,
+      #ff3434 150deg 222deg,
+      #fff 228deg 234deg,
+      #ff3434 240deg 312deg,
+      #fff 318deg 324deg,
+      #ff3434 330deg 360deg
     ) border-box!important;
-  box-shadow:none!important;
+  box-shadow:0 0 12px rgba(255,45,45,.48),0 0 28px rgba(255,35,35,.18)!important;
   filter:none!important;
-  animation:cloudy-intro-border-rotate 3s linear infinite!important;
+  animation:cloudy-intro-border-rotate 2.7s linear infinite!important;
 }
 html body .cloudy-intro-card::before,
 html body .cloudy-intro-card::after{
@@ -277,32 +277,34 @@ html body .reference-topbar::after{
   animation:none!important;
 }
 
-/* Choose your game keeps a red line with a bright white flash travelling left to right. */
+/* Choose your game accent lines stay plain red. */
 html body .store-navigation h2::before,
 html body .store-navigation h2::after,
 html body .store-navigation::before{
-  background:linear-gradient(90deg,#ff3434 0%,#ff3434 34%,#ffffff 46%,#ffffff 54%,#ff3434 66%,#ff3434 100%)!important;
-  background-size:260% 100%!important;
-  background-repeat:repeat-x!important;
+  background:#ff3434!important;
+  background-image:none!important;
   transform:none!important;
-  box-shadow:0 0 10px rgba(255,45,45,.42),0 0 8px rgba(255,255,255,.30)!important;
-  animation:cloudy-choose-white-flash 2.1s linear infinite!important;
-}
-@keyframes cloudy-choose-white-flash{
-  from{background-position:100% 0}
-  to{background-position:-160% 0}
+  box-shadow:0 0 10px rgba(255,45,45,.38)!important;
+  animation:none!important;
 }
 
-/* Footer keeps its existing seamless red-white movement. */
+/* Footer: red line with seamless moving white highlights, never a black reset gap. */
 html body .cloudy-footer-glow{
-  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
-  background-size:280px 100%!important;
-  box-shadow:0 0 12px rgba(255,40,40,.55)!important;
-  animation:cloudy-accent-flow 2.35s linear infinite!important;
+  background:repeating-linear-gradient(90deg,
+    #ff3434 0px,
+    #ff3434 132px,
+    #ffffff 146px,
+    #ffffff 154px,
+    #ff3434 168px,
+    #ff3434 360px
+  )!important;
+  background-size:360px 100%!important;
+  box-shadow:0 0 12px rgba(255,40,40,.65),0 0 8px rgba(255,255,255,.18)!important;
+  animation:cloudy-footer-highlight-flow 2.8s linear infinite!important;
 }
-@keyframes cloudy-accent-flow{
+@keyframes cloudy-footer-highlight-flow{
   from{background-position:0 0}
-  to{background-position:280px 0}
+  to{background-position:360px 0}
 }
 
 @media(max-width:780px){
