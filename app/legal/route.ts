@@ -12,9 +12,11 @@ function updateLegalPage(html: string) {
 
   updated = updated.replace(
     '<nav class="legal-jump" aria-label="Documents"><a href="#terms">Terms of Service</a><a href="#sales">Terms of Sale</a><a href="#privacy">Privacy Policy</a><a href="#notice">Legal Notice</a></nav>',
-    '<nav class="legal-jump" aria-label="Documents"><a href="/legal#terms" data-legal-tab="terms">Terms of Service</a><a href="/legal#sales" data-legal-tab="sales">Terms of Sale</a></nav>',
+    '<nav class="legal-jump" aria-label="Documents"><a href="/legal#terms" data-legal-tab="terms">Terms of service</a><a href="/legal#sales" data-legal-tab="sales">Terms of sale</a></nav>',
   );
 
+  updated = updated.replace(/Terms of Service/g, 'Terms of service');
+  updated = updated.replace(/Terms of Sale/g, 'Terms of sale');
   updated = updated.replace(/<section id="privacy">[\s\S]*?<\/section>/, '');
   updated = updated.replace(/<section id="notice">[\s\S]*?<\/section>/, '');
   updated = updated.replace(/<a href="#privacy">Privacy Policy<\/a>/g, '');
