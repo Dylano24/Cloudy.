@@ -41,8 +41,8 @@ function replaceHomeFooter(html: string) {
       <div class="cloudy-shared-footer-grid">
         <div class="cloudy-shared-footer-brand"><img src="/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width="45" height="45"><strong>CLOUDY INC.</strong></div>
         <div><div class="cloudy-shared-footer-title">Navigation</div><div class="cloudy-shared-footer-links"><a href="/">Home</a><a href="/#server">Server</a></div></div>
-        <div><div class="cloudy-shared-footer-title">Community</div><div class="cloudy-shared-footer-links"><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">Discord</a></div></div>
-        <div><div class="cloudy-shared-footer-title">Information</div><div class="cloudy-shared-footer-links"><a href="/appeal">Appeal form</a><a href="/legal#terms">Terms of service</a><a href="/legal#sales">Terms of sale</a></div></div>
+        <div><div class="cloudy-shared-footer-title">Community</div><div class="cloudy-shared-footer-links"><a href="${DISCORD_URL}" target="_blank" rel="noopener noreferrer">Discord</a><a href="/appeal">Appeal form</a></div></div>
+        <div><div class="cloudy-shared-footer-title">Information</div><div class="cloudy-shared-footer-links"><a href="/legal#terms">Terms of service</a><a href="/legal#sales">Terms of sale</a></div></div>
       </div>
       <div class="cloudy-shared-footer-bottom">© 2026 Cloudy Inc. All rights reserved.</div>
     </div>
