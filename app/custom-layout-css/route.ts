@@ -96,15 +96,15 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   }
 }
 
-/* Background only: actual silver cloud texture, darkened to match the current site. */
+/* Background only: public silver cloud texture, visible to every visitor. */
 .site-clouds{
   background:#060606!important;
 }
 .cloud-layer-far{
   inset:-10%!important;
-  opacity:.76!important;
-  filter:brightness(.72) contrast(1.06)!important;
-  background-image:url('/assets/cloudy-silver-clouds.png')!important;
+  opacity:.88!important;
+  filter:brightness(.92) contrast(1.08)!important;
+  background-image:url('/images/cloudy-cloud-background.svg')!important;
   background-repeat:no-repeat!important;
   background-size:cover!important;
   background-position:50% 48%!important;
@@ -113,10 +113,10 @@ const CLOUDY_LAYOUT_OVERRIDES = `
 .cloud-layer-near{
   display:block!important;
   inset:-18%!important;
-  opacity:.24!important;
-  filter:blur(2px) brightness(.68)!important;
+  opacity:.28!important;
+  filter:blur(2px) brightness(.92)!important;
   mix-blend-mode:screen!important;
-  background-image:url('/assets/cloudy-silver-clouds.png')!important;
+  background-image:url('/images/cloudy-cloud-background.svg')!important;
   background-repeat:no-repeat!important;
   background-size:cover!important;
   background-position:18% 78%!important;
@@ -126,7 +126,7 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   content:'';
   position:absolute;
   inset:0;
-  background:radial-gradient(ellipse at 50% 30%,transparent 0%,rgba(0,0,0,.12) 48%,rgba(0,0,0,.42) 100%),linear-gradient(180deg,rgba(0,0,0,.20),rgba(0,0,0,.10) 45%,rgba(0,0,0,.28));
+  background:radial-gradient(ellipse at 50% 30%,transparent 0%,rgba(0,0,0,.10) 50%,rgba(0,0,0,.32) 100%),linear-gradient(180deg,rgba(0,0,0,.10),rgba(0,0,0,.04) 45%,rgba(0,0,0,.20));
 }
 @keyframes cloudy-real-drift{
   from{transform:translate3d(-2%,1%,0) scale(1.04)}
@@ -137,8 +137,8 @@ const CLOUDY_LAYOUT_OVERRIDES = `
   to{transform:translate3d(-4%,-2%,0) scale(1.05)}
 }
 @media(max-width:780px){
-  .cloud-layer-far{inset:-12% -34%!important;opacity:.66!important;background-position:38% 50%!important}
-  .cloud-layer-near{inset:-20% -38%!important;opacity:.18!important;background-position:24% 76%!important}
+  .cloud-layer-far{inset:-12% -34%!important;opacity:.78!important;background-position:38% 50%!important}
+  .cloud-layer-near{inset:-20% -38%!important;opacity:.22!important;background-position:24% 76%!important}
 }
 @media(prefers-reduced-motion:reduce){
   .cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important}
