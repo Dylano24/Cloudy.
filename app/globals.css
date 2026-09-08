@@ -359,3 +359,103 @@ button, a { -webkit-tap-highlight-color: transparent; }
   .cloudy-server-meta { grid-template-columns:1fr; }
   .cloudy-footer-bottom { flex-direction:column; }
 }
+
+
+/* Subtle luxury finish for native Next.js pages */
+@keyframes cloudy-page-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes cloudy-soft-pulse {
+  0%, 100% { transform: scale(1); }
+  45% { transform: scale(1.08); box-shadow: 0 0 16px rgba(255,255,255,.18); }
+}
+
+.cloudy-header,
+main > *,
+.cloudy-footer {
+  animation: cloudy-page-in .48s cubic-bezier(.2,.7,.2,1) both;
+}
+
+.cloud-panel,
+.cloudy-header,
+.cloudy-footer,
+.cloudy-cta-primary,
+.cloudy-cta-secondary,
+.cloudy-shared-basket,
+.cloudy-mobile-button {
+  transition:
+    transform .3s cubic-bezier(.2,.7,.2,1),
+    border-color .3s ease,
+    background-color .3s ease,
+    box-shadow .3s ease,
+    filter .3s ease;
+}
+
+.cloudy-header img[alt="Cloudy"],
+.cloudy-footer img[alt="Cloudy"],
+.cloud-panel img[alt="Cloudy"] {
+  filter: drop-shadow(0 0 12px rgba(255,255,255,.15));
+  transition: filter .35s ease, transform .35s ease;
+}
+
+.cloudy-cta-primary,
+.cloudy-cta-secondary {
+  position: relative;
+  overflow: hidden;
+}
+
+.cloudy-cta-primary::after,
+.cloudy-cta-secondary::after {
+  content: "";
+  position: absolute;
+  inset: -70% auto -70% -55%;
+  width: 30%;
+  pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.13), transparent);
+  transform: skewX(-18deg);
+  transition: left .62s ease;
+}
+
+@media (hover: hover) {
+  .cloud-panel:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,.17);
+    box-shadow: 0 24px 54px rgba(0,0,0,.28);
+  }
+
+  .cloudy-header img[alt="Cloudy"]:hover,
+  .cloudy-footer img[alt="Cloudy"]:hover,
+  .cloud-panel img[alt="Cloudy"]:hover {
+    filter: drop-shadow(0 0 18px rgba(255,255,255,.22));
+    transform: translateY(-1px);
+  }
+
+  .cloudy-cta-primary:hover::after,
+  .cloudy-cta-secondary:hover::after {
+    left: 135%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloudy-header,
+  main > *,
+  .cloudy-footer,
+  .cloud-panel,
+  .cloudy-header img[alt="Cloudy"],
+  .cloudy-footer img[alt="Cloudy"],
+  .cloud-panel img[alt="Cloudy"],
+  .cloudy-cta-primary,
+  .cloudy-cta-secondary,
+  .cloudy-shared-basket,
+  .cloudy-mobile-button {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+
+  .cloudy-cta-primary::after,
+  .cloudy-cta-secondary::after {
+    display: none !important;
+  }
+}
