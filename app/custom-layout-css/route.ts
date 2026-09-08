@@ -3,36 +3,30 @@ import { GET as getBaseCss } from './base';
 export const dynamic = 'force-dynamic';
 
 const FINAL_VISUAL_OVERRIDES = `
-/* Keep the exact 33816109 rotating red/white intro border, but remove only the pulsing/moving interior glow. */
+/* Keep the exact 33816109 intro border and its rotation, but stop the extra pulse/glow animation inside the card. */
 html body .cloudy-intro-card{
   animation:cloudy-intro-spin 2.8s linear infinite!important;
   filter:none!important;
-  box-shadow:
-    0 0 22px rgba(255,255,255,.07),
-    0 0 36px rgba(185,0,0,.26),
-    0 0 72px rgba(255,30,30,.12)!important;
 }
 
-/* Footer top bar gets the same red/white flashy movement, with a permanent red base so it never resets to black. */
+/* Make the footer bar use the same red/white palette and motion feel as the intro border. */
 html body .cloudy-footer-glow{
-  background:
-    linear-gradient(90deg,
-      transparent 0%,
-      transparent 36%,
-      rgba(255,255,255,.18) 42%,
-      #ffffff 48%,
-      #ffffff 52%,
-      rgba(255,255,255,.18) 58%,
-      transparent 64%,
-      transparent 100%
-    ) 0 0 / 360px 100% repeat-x,
-    #ff3434!important;
-  box-shadow:0 0 12px rgba(255,40,40,.70),0 0 9px rgba(255,255,255,.18)!important;
-  animation:cloudy-footer-highlight-flow-final 2.8s linear infinite!important;
+  background:linear-gradient(90deg,
+    #ffffff 0% 8%,
+    #ff4c4c 14%,
+    #a60000 22%,
+    #ffffff 34% 48%,
+    #ff2c2c 58%,
+    #7a0000 66%,
+    #ffffff 78% 92%,
+    #ff3b3b 100%
+  ) 0 0 / 420px 100% repeat-x!important;
+  box-shadow:0 0 12px rgba(255,40,40,.70)!important;
+  animation:cloudy-footer-match-intro 2.8s linear infinite!important;
 }
-@keyframes cloudy-footer-highlight-flow-final{
+@keyframes cloudy-footer-match-intro{
   from{background-position:0 0}
-  to{background-position:360px 0}
+  to{background-position:420px 0}
 }
 `;
 
