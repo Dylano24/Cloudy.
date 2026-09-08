@@ -27,7 +27,7 @@ const nextConfig: NextConfig = {
         { source: '/games.js', destination: `${LEGACY_SITE}/games.js` },
         { source: '/catalog.js', destination: `${LEGACY_SITE}/catalog.js` },
         { source: '/store.js', destination: `${LEGACY_SITE}/store.js` },
-        { source: '/clouds.js', destination: `${LEGACY_SITE}/clouds.js` },
+        { source: '/clouds.js', destination: '/cloudy-home-enhancer' },
         { source: '/assets/:path*', destination: `${LEGACY_SITE}/assets/:path*` },
       ],
     };
