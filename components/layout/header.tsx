@@ -68,9 +68,6 @@ export function Header() {
           <Link href="/?open=account" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
             <LogIn size={17} /> LOGIN
           </Link>
-          <Link href="/?open=basket" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
-            <ShoppingBag size={17} /> BASKET
-          </Link>
         </nav>
       )}
     </header>
