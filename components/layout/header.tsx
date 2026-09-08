@@ -111,12 +111,12 @@ export function Header() {
             display: none;
           }
           .cloudy-shared-basket-count {
-            width: 34px;
-            min-width: 34px;
-            height: 34px;
+            width: 30px;
+            min-width: 30px;
+            height: 30px;
             padding: 0;
             border-radius: 999px;
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1;
           }
           .cloudy-mobile-button {
