@@ -73,7 +73,15 @@ function updateLegalPage(html: string) {
       .cloudy-shared-footer-title{margin-bottom:14px}
       .cloudy-shared-footer-bottom{margin-top:36px}
     }
-  </style></head>`);
+  
+    /* Subtle luxury motion — visual only */
+    .legal-home img,.cloudy-shared-footer-brand img{filter:drop-shadow(0 0 12px rgba(255,255,255,.15));transition:filter .35s ease,transform .35s ease}
+    .legal-document.is-active{animation:cloudy-legal-in .42s cubic-bezier(.2,.7,.2,1)}
+    .legal-jump a,.legal-back-button,.cloudy-shared-footer-links a{transition:color .25s ease,background-color .25s ease,border-color .25s ease,transform .25s ease,box-shadow .25s ease}
+    @keyframes cloudy-legal-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    @media(hover:hover){.legal-jump a:hover,.legal-back-button:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(0,0,0,.22)}.legal-home:hover img{filter:drop-shadow(0 0 18px rgba(255,255,255,.22));transform:translateY(-1px)}}
+    @media(prefers-reduced-motion:reduce){.legal-document.is-active,.legal-home img,.cloudy-shared-footer-brand img,.legal-jump a,.legal-back-button,.cloudy-shared-footer-links a{animation:none!important;transition:none!important;transform:none!important}}
+</style></head>`);
 
   updated = updated.replace('</body>', `<script>
     (function () {
