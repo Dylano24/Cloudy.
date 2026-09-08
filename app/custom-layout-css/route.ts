@@ -263,48 +263,37 @@ html body .cloudy-intro-card::after{
   to{--cloudy-intro-angle:360deg}
 }
 
-/* Remove the small active underline under HOME. The full navigation bar gets the moving accent instead. */
+/* No accent line under HOME or across the navigation bar. */
 html body .reference-topbar{
   border-bottom:0!important;
   overflow:visible!important;
 }
-html body .reference-topbar .policy-top-links a.is-active::after{
+html body .reference-topbar .policy-top-links a.is-active::after,
+html body .reference-topbar::after{
   content:none!important;
   display:none!important;
   background:none!important;
   box-shadow:none!important;
-}
-html body .reference-topbar::after{
-  content:''!important;
-  position:absolute!important;
-  left:0!important;
-  right:0!important;
-  bottom:0!important;
-  height:2px!important;
-  pointer-events:none!important;
-  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
-  background-size:280px 100%!important;
-  box-shadow:0 0 10px rgba(255,45,45,.34)!important;
-  animation:cloudy-accent-flow 2.35s linear infinite!important;
+  animation:none!important;
 }
 
-/* Every Choose your game accent moves left to right without transparent/reset gaps. */
+/* Choose your game keeps a red line with a bright white flash travelling left to right. */
 html body .store-navigation h2::before,
-html body .store-navigation h2::after{
-  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
-  background-size:280px 100%!important;
-  transform:none!important;
-  box-shadow:0 0 10px rgba(255,45,45,.28)!important;
-  animation:cloudy-accent-flow 2.35s linear infinite!important;
-}
+html body .store-navigation h2::after,
 html body .store-navigation::before{
-  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
-  background-size:280px 100%!important;
-  box-shadow:0 0 10px rgba(255,45,45,.42)!important;
-  animation:cloudy-accent-flow 2.35s linear infinite!important;
+  background:linear-gradient(90deg,#ff3434 0%,#ff3434 34%,#ffffff 46%,#ffffff 54%,#ff3434 66%,#ff3434 100%)!important;
+  background-size:260% 100%!important;
+  background-repeat:repeat-x!important;
+  transform:none!important;
+  box-shadow:0 0 10px rgba(255,45,45,.42),0 0 8px rgba(255,255,255,.30)!important;
+  animation:cloudy-choose-white-flash 2.1s linear infinite!important;
+}
+@keyframes cloudy-choose-white-flash{
+  from{background-position:100% 0}
+  to{background-position:-160% 0}
 }
 
-/* Footer bar uses the same seamless pattern so no black section appears on reset. */
+/* Footer keeps its existing seamless red-white movement. */
 html body .cloudy-footer-glow{
   background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
   background-size:280px 100%!important;
