@@ -1,11 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, MessageCircle, X } from 'lucide-react';
+import { LogIn, Menu, ShoppingBag, X } from 'lucide-react';
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 
-const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
 
 export function Header() {
@@ -34,23 +33,44 @@ export function Header() {
         </nav>
 
         <div className="cloudy-header-actions">
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-discord-button">
-            <MessageCircle size={18} />
-            Join Discord
-          </a>
+          <Link href="/?open=basket" className="cloudy-header-cart" aria-label="Basket">
+            <ShoppingBag size={20} />
+          </Link>
 
-          <button type="button" onClick={() => setOpen(!open)} className="cloudy-mobile-button" aria-label="Menu">
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="cloudy-mobile-button"
+            aria-label="Menu"
+            aria-expanded={open}
+            style={{ display: 'grid', placeItems: 'center' }}
+          >
             {open ? <X /> : <Menu />}
           </button>
         </div>
       </div>
 
       {open && (
-        <nav className="cloudy-mobile-menu">
-          <Link href="/" onClick={() => setOpen(false)}>HOME</Link>
-          <Link href="/#server" onClick={() => setOpen(false)}>SERVER</Link>
-          <Link href="/appeal" onClick={() => setOpen(false)}>APPEAL FORM</Link>
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Join Discord</a>
+        <nav
+          className="cloudy-mobile-menu"
+          aria-label="Account menu"
+          style={{
+            display: 'block',
+            position: 'absolute',
+            top: '78px',
+            right: '18px',
+            minWidth: '180px',
+            zIndex: 120,
+            border: '1px solid rgba(255,255,255,.10)',
+            borderRadius: '10px',
+          }}
+        >
+          <Link href="/?open=account" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+            <LogIn size={17} /> LOGIN
+          </Link>
+          <Link href="/?open=basket" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+            <ShoppingBag size={17} /> BASKET
+          </Link>
         </nav>
       )}
     </header>
