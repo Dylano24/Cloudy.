@@ -72,6 +72,47 @@ const CLOUDY_LAYOUT_OVERRIDES = `
     font-size:13px!important;
   }
 }
+
+/* Background only: visible, soft white/grey cloud motion. */
+.site-clouds{
+  background:#090909!important;
+}
+.cloud-layer-far{
+  inset:-22%!important;
+  opacity:.72!important;
+  filter:blur(46px)!important;
+  background:
+    radial-gradient(ellipse at 18% 34%,rgba(255,255,255,.11) 0%,rgba(220,224,228,.045) 24%,transparent 47%),
+    radial-gradient(ellipse at 58% 22%,rgba(235,238,240,.085) 0%,rgba(210,214,218,.035) 23%,transparent 45%),
+    radial-gradient(ellipse at 82% 68%,rgba(255,255,255,.09) 0%,rgba(225,228,230,.04) 22%,transparent 44%)!important;
+  animation:cloudy-soft-drift 38s ease-in-out infinite alternate!important;
+}
+.cloud-layer-near{
+  display:block!important;
+  inset:-25%!important;
+  opacity:.30!important;
+  filter:blur(64px)!important;
+  mix-blend-mode:screen!important;
+  background:
+    radial-gradient(ellipse at 30% 72%,rgba(255,255,255,.10) 0%,transparent 40%),
+    radial-gradient(ellipse at 76% 38%,rgba(230,233,235,.08) 0%,transparent 38%)!important;
+  animation:cloudy-soft-drift-near 52s ease-in-out infinite alternate!important;
+}
+@keyframes cloudy-soft-drift{
+  from{transform:translate3d(-3%,-2%,0) scale(1.04)}
+  to{transform:translate3d(4%,3%,0) scale(1.10)}
+}
+@keyframes cloudy-soft-drift-near{
+  from{transform:translate3d(3%,2%,0) scale(1.08)}
+  to{transform:translate3d(-4%,-2%,0) scale(1.03)}
+}
+@media(max-width:780px){
+  .cloud-layer-far{inset:-28% -44%!important;opacity:.60!important}
+  .cloud-layer-near{inset:-30% -48%!important;opacity:.24!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .cloud-layer-far,.cloud-layer-near{animation:none!important;transform:none!important}
+}
 `;
 
 export async function GET() {
