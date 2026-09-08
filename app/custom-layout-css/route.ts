@@ -221,7 +221,7 @@ html body .cloudy-cinematic-hero::before{
   to{transform:translate3d(-2.7%,-1%,0) scale(1.03)}
 }
 
-/* Intro cleanup: flat interior, continuously circulating red-white lines, no hero spark dot. */
+/* Unified moving red-white accent system. */
 html body .cloudy-hero-logo-shell::before{
   content:none!important;
   display:none!important;
@@ -229,43 +229,91 @@ html body .cloudy-hero-logo-shell::before{
   box-shadow:none!important;
   animation:none!important;
 }
+
+/* Restore the original rotating intro border, but keep the interior completely flat and dark. */
 html body .cloudy-intro-card{
+  --cloudy-intro-angle:0deg;
   position:relative!important;
   overflow:hidden!important;
-  border:1px solid rgba(255,255,255,.12)!important;
-  background:#060606!important;
+  border:2px solid transparent!important;
+  background:
+    linear-gradient(#060606,#060606) padding-box,
+    conic-gradient(
+      from var(--cloudy-intro-angle),
+      #ff3434 0deg 48deg,
+      #ffffff 48deg 70deg,
+      #ff3434 70deg 128deg,
+      #ffffff 128deg 150deg,
+      #ff3434 150deg 208deg,
+      #ffffff 208deg 230deg,
+      #ff3434 230deg 288deg,
+      #ffffff 288deg 310deg,
+      #ff3434 310deg 360deg
+    ) border-box!important;
   box-shadow:none!important;
   filter:none!important;
-  animation:none!important;
+  animation:cloudy-intro-border-rotate 3s linear infinite!important;
 }
 html body .cloudy-intro-card::before,
 html body .cloudy-intro-card::after{
+  content:none!important;
+  display:none!important;
+}
+@keyframes cloudy-intro-border-rotate{
+  to{--cloudy-intro-angle:360deg}
+}
+
+/* Remove the small active underline under HOME. The full navigation bar gets the moving accent instead. */
+html body .reference-topbar{
+  border-bottom:0!important;
+  overflow:visible!important;
+}
+html body .reference-topbar .policy-top-links a.is-active::after{
+  content:none!important;
+  display:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+html body .reference-topbar::after{
   content:''!important;
   position:absolute!important;
   left:0!important;
   right:0!important;
+  bottom:0!important;
   height:2px!important;
-  z-index:2!important;
   pointer-events:none!important;
   background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
   background-size:280px 100%!important;
-  will-change:background-position!important;
+  box-shadow:0 0 10px rgba(255,45,45,.34)!important;
+  animation:cloudy-accent-flow 2.35s linear infinite!important;
 }
-html body .cloudy-intro-card::before{
-  top:0!important;
-  animation:cloudy-intro-line-forward 2.35s linear infinite!important;
+
+/* Every Choose your game accent moves left to right without transparent/reset gaps. */
+html body .store-navigation h2::before,
+html body .store-navigation h2::after{
+  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
+  background-size:280px 100%!important;
+  transform:none!important;
+  box-shadow:0 0 10px rgba(255,45,45,.28)!important;
+  animation:cloudy-accent-flow 2.35s linear infinite!important;
 }
-html body .cloudy-intro-card::after{
-  bottom:0!important;
-  animation:cloudy-intro-line-reverse 2.35s linear infinite!important;
+html body .store-navigation::before{
+  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
+  background-size:280px 100%!important;
+  box-shadow:0 0 10px rgba(255,45,45,.42)!important;
+  animation:cloudy-accent-flow 2.35s linear infinite!important;
 }
-@keyframes cloudy-intro-line-forward{
+
+/* Footer bar uses the same seamless pattern so no black section appears on reset. */
+html body .cloudy-footer-glow{
+  background:repeating-linear-gradient(90deg,#ff3434 0,#ff3434 72px,#ffffff 72px,#ffffff 100px,#ff3434 100px,#ff3434 180px,#ffffff 180px,#ffffff 208px,#ff3434 208px,#ff3434 280px)!important;
+  background-size:280px 100%!important;
+  box-shadow:0 0 12px rgba(255,40,40,.55)!important;
+  animation:cloudy-accent-flow 2.35s linear infinite!important;
+}
+@keyframes cloudy-accent-flow{
   from{background-position:0 0}
   to{background-position:280px 0}
-}
-@keyframes cloudy-intro-line-reverse{
-  from{background-position:0 0}
-  to{background-position:-280px 0}
 }
 
 @media(max-width:780px){
@@ -273,7 +321,7 @@ html body .cloudy-intro-card::after{
   html body .cloud-layer-near{inset:-34% -56%!important;opacity:.08!important;filter:blur(66px)!important}
 }
 @media(prefers-reduced-motion:reduce){
-  .game-home::before,html body .site-clouds::before,html body .cloud-layer-far,html body .cloud-layer-near,html body .cloudy-intro-card::before,html body .cloudy-intro-card::after{animation:none!important;transform:none!important;will-change:auto!important}
+  .game-home::before,html body .site-clouds::before,html body .cloud-layer-far,html body .cloud-layer-near{animation:none!important;transform:none!important;will-change:auto!important}
 }
 `;
 
