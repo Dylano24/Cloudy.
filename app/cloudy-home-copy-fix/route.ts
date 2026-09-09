@@ -18,7 +18,15 @@ const copyFix = String.raw`
     if (tagline) tagline.innerHTML = 'Perfected through detail. <strong>Designed for excellence.</strong>';
 
     const heroBonus = document.querySelector('.cloudy-user-copy-bonus');
-    if (heroBonus) heroBonus.textContent = 'Cloudy creates and operates unique gaming experiences across the games you love.';
+    if (heroBonus) heroBonus.remove();
+
+    const heroBonusStyleId = 'cloudy-hide-hero-bonus';
+    if (!document.getElementById(heroBonusStyleId)) {
+      const heroBonusStyle = document.createElement('style');
+      heroBonusStyle.id = heroBonusStyleId;
+      heroBonusStyle.textContent = '.cloudy-user-copy-bonus{display:none!important}';
+      document.head.appendChild(heroBonusStyle);
+    }
 
     setText('.cloudy-intro-card p', 'Cloudy creates and operates dedicated gaming experiences, bringing together immersive servers, active communities and in-game services');
 
