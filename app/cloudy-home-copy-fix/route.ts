@@ -48,7 +48,8 @@ const copyFix = String.raw`
       document.head.appendChild(style);
     }
 
-    setText('.cloudy-store-feature .cloudy-v2-eyebrow', 'Cloudy Store');
+    const storeEyebrow = document.querySelector('.cloudy-store-feature .cloudy-v2-eyebrow');
+    if (storeEyebrow) storeEyebrow.remove();
     setText('.cloudy-store-feature h2', 'Enhance your experience.');
     setText('.cloudy-store-feature > div > p:not(.cloudy-v2-eyebrow)', 'From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.');
     setText('.cloudy-store-tags', 'Kits • In-game services • Exclusive features');
