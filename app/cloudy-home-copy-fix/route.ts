@@ -55,8 +55,15 @@ const copyFix = String.raw`
     setText('.cloudy-store-tags', 'Kits • In-game services • Exclusive features');
 
     setText('#cloudy-payments .cloudy-v2-eyebrow', 'Secure payments');
-    const paymentSub = document.querySelector('#cloudy-payments .cloudy-v2-heading > p:not(.cloudy-v2-eyebrow)');
-    if (paymentSub) paymentSub.remove();
+    let paymentSub = document.querySelector('#cloudy-payments .cloudy-v2-heading > p:not(.cloudy-v2-eyebrow)');
+    if (!paymentSub) {
+      const paymentHeader = document.querySelector('#cloudy-payments .cloudy-v2-heading');
+      if (paymentHeader) {
+        paymentSub = document.createElement('p');
+        paymentHeader.appendChild(paymentSub);
+      }
+    }
+    if (paymentSub) paymentSub.textContent = 'simple, secure and reliable checkout';
 
     const payments = [...document.querySelectorAll('.cloudy-pay-card')];
     const paymentCopy = {
