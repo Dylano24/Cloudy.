@@ -32,11 +32,9 @@ const copyFix = String.raw`
     if (!document.getElementById(unwantedHeadingStyleId)) {
       const unwantedHeadingStyle = document.createElement('style');
       unwantedHeadingStyle.id = unwantedHeadingStyleId;
-      unwantedHeadingStyle.textContent = '.cloudy-store-feature h2,#cloudy-payments .cloudy-v2-heading h2{display:none!important}';
+      unwantedHeadingStyle.textContent = '#cloudy-payments .cloudy-v2-heading h2{display:none!important}';
       document.head.appendChild(unwantedHeadingStyle);
     }
-    const storeHeading = document.querySelector('.cloudy-store-feature h2');
-    if (storeHeading) storeHeading.remove();
     const paymentHeading = document.querySelector('#cloudy-payments .cloudy-v2-heading h2');
     if (paymentHeading) paymentHeading.remove();
 
@@ -51,6 +49,7 @@ const copyFix = String.raw`
     }
 
     setText('.cloudy-store-feature .cloudy-v2-eyebrow', 'Cloudy Store');
+    setText('.cloudy-store-feature h2', 'Enhance your experience.');
     setText('.cloudy-store-feature > div > p:not(.cloudy-v2-eyebrow)', 'From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.');
     setText('.cloudy-store-tags', 'Kits • In-game services • Exclusive features');
 
