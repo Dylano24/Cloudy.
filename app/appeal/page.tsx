@@ -132,6 +132,7 @@ export default function AppealPage() {
                     <option value="" disabled>Select an option</option>
                     {scope === 'discord' && <option value="Mute">Mute</option>}
                     <option value="Ban">Ban</option>
+                    <option value="Other">Other</option>
                   </select>
                 </label>
 
