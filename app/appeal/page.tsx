@@ -135,21 +135,17 @@ export default function AppealPage() {
                   </select>
                 </label>
 
-                {scope === 'discord' && (
-                  <label className={styles.field}>
+                <label className={styles.field}>
                     <span className={styles.label}>What is your Discord username / ID?</span>
                     <span className={styles.help}>Please provide your current Discord username or User ID.</span>
-                    <input className={styles.input} name="discordIdentity" required placeholder="Required" maxLength={100} autoComplete="off" />
+                    <input className={styles.input} name="discordIdentity" required={scope === 'discord'} placeholder={scope === 'discord' ? 'Required' : 'Optional'} maxLength={100} autoComplete="off" />
                   </label>
-                )}
 
-                {scope === 'rust' && (
-                  <label className={styles.field}>
+                <label className={styles.field}>
                     <span className={styles.label}>What is your Gamertag?</span>
                     <span className={styles.help}>Please provide the username you use in-game.</span>
-                    <input className={styles.input} name="gamertag" required placeholder="Required" maxLength={100} autoComplete="off" />
+                    <input className={styles.input} name="gamertag" required={scope === 'rust'} placeholder={scope === 'rust' ? 'Required' : 'Optional'} maxLength={100} autoComplete="off" />
                   </label>
-                )}
 
                 <label className={styles.field}>
                   <span className={styles.label}>What is your email address?</span>
@@ -183,7 +179,7 @@ export default function AppealPage() {
 
                 <label className={styles.field}>
                   <span className={styles.label}>Do you have any evidence supporting your appeal?</span>
-                  <span className={styles.help}>You may provide links to screenshots, videos, messages, or other relevant evidence.</span>
+                  <span className={styles.help}>You may provide screenshots, videos, messages, or any other relevant evidence.</span>
                   <textarea className={styles.textarea} name="evidence" placeholder="Optional" maxLength={1000} />
                 </label>
 
@@ -211,7 +207,7 @@ export default function AppealPage() {
               <span className={styles.successIcon}><CheckCircle2 size={34} /></span>
               <h2>Appeal submitted</h2>
               <p>Your appeal has been successfully submitted. Our staff team will review your appeal and make a decision based on the information provided.</p>
-              <p>You will receive an email notification once a decision has been made. You can also keep an eye on your ban or timeout status, which will be automatically updated if your appeal is accepted.</p>
+              <p>You will receive an email notification once a decision has been made. You can also keep an eye on your sanction status, which will be automatically updated if your appeal is accepted.</p>
               <p>Please do not submit multiple appeals for the same punishment. Thank you for your patience.</p>
               {appealId && <span className={styles.appealId}>Appeal ID: {appealId}</span>}
               <p className={styles.successFooter}>Cloudy Inc. staff team</p>
@@ -222,3 +218,4 @@ export default function AppealPage() {
     </main>
   );
 }
+
