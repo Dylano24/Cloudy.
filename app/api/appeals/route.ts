@@ -5,7 +5,7 @@ const BOT_APPEALS_URL = 'https://cloudy-production-b24f.up.railway.app/api/appea
 
 const appealSchema = z.object({
   scope: z.enum(['discord', 'rust']),
-  action: z.enum(['Mute', 'Ban']),
+  action: z.enum(['Mute', 'Ban', 'Other']),
   discordIdentity: z.string().trim().max(100).optional().default(''),
   gamertag: z.string().trim().max(100).optional().default(''),
   email: z.string().trim().email().max(254),
@@ -16,8 +16,8 @@ const appealSchema = z.object({
   evidence: z.string().trim().max(1000).optional().default(''),
   additionalInfo: z.string().trim().max(1000).optional().default(''),
 }).superRefine((appeal, ctx) => {
-  if (appeal.scope === 'rust' && appeal.action !== 'Ban') {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['action'], message: 'Rust appeals are for bans only.' });
+  if (appeal.scope === 'rust' && appeal.action === 'Mute') {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['action'], message: 'Rust appeals support Ban or Other.' });
   }
   if (appeal.scope === 'discord' && !appeal.discordIdentity) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['discordIdentity'], message: 'Discord username / ID is required.' });
