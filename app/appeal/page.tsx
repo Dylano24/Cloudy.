@@ -91,14 +91,14 @@ export default function AppealPage() {
                     <img className={styles.scopeEmoji} src={DISCORD_APPEAL_EMOJI} alt="" aria-hidden="true" />
                   </span>
                   <strong>Discord</strong>
-                  <span>Appeal a mute, ban or other punishment from the Cloudy Discord community.</span>
+                  <span>Appeal a mute or ban from the Cloudy Discord community.</span>
                 </button>
                 <button type="button" className={styles.scopeButton} onClick={() => setScope('rust')}>
                   <span className={styles.scopeIcon}>
                     <img className={styles.scopeEmoji} src={RUST_APPEAL_EMOJI} alt="" aria-hidden="true" />
                   </span>
                   <strong>Rust server</strong>
-                  <span>Appeal a ban or other punishment from the Cloudy Rust server.</span>
+                  <span>Appeal a ban from the Cloudy Rust server.</span>
                 </button>
               </div>
             </div>
@@ -132,7 +132,6 @@ export default function AppealPage() {
                     <option value="" disabled>Select an option</option>
                     {scope === 'discord' && <option value="Mute">Mute</option>}
                     <option value="Ban">Ban</option>
-                    <option value="Other">Other</option>
                   </select>
                 </label>
 
