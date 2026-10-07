@@ -1488,3 +1488,24 @@ body {
     width: min(250px, calc(100vw - 20px)) !important;
   }
 }
+
+
+/* ================= RUST ART VISIBILITY + SUBMIT COPY FIX ================= */
+.cloudy-classic-game-card {
+  background-color: #090909 !important;
+  background-size: cover !important;
+  background-position: center 42% !important;
+  background-repeat: no-repeat !important;
+}
+.cloudy-classic-game-card::before {
+  background:
+    linear-gradient(90deg,
+      rgba(0,0,0,.68) 0%,
+      rgba(0,0,0,.44) 34%,
+      rgba(0,0,0,.17) 63%,
+      rgba(0,0,0,.04) 100%),
+    linear-gradient(0deg,
+      rgba(0,0,0,.48) 0%,
+      rgba(0,0,0,.07) 58%,
+      rgba(0,0,0,.01) 100%) !important;
+}
