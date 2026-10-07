@@ -10,6 +10,7 @@ export default function Page() {
           <p className="max-w-2xl text-sm leading-7 text-muted">Cloudy’s official Terms of Sale will be published here once the final sales terms are approved.</p>
           <span className="mt-6 inline-flex rounded-full border border-white/10 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.16em] text-muted">Coming soon</span>
         </section>
+        <p className="mt-8 text-center text-[10px] font-bold uppercase tracking-[0.14em] text-muted">Last updated 07.10.2026 at 18h17</p>
         <Link href="/legal" className="cloudy-cta-secondary mt-8">Back to legal</Link>
       </div>
     </main>
