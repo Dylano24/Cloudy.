@@ -83,7 +83,7 @@ export default function AppealPage() {
 
         <header className={styles.hero}>
           <span className={styles.eyebrow}><ShieldAlert size={15} /> Cloudy support</span>
-          <h1>Request an appeal</h1>
+          <h1>Request a review</h1>
           <p>If you believe the moderation action taken against you was unfair or should be reconsidered, you may submit an appeal below.</p>
         </header>
 
