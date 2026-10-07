@@ -56,7 +56,7 @@ export function Header() {
           </span>
           <span className="cloudy-brand-copy">
             <strong>CLOUDY INC.</strong>
-            <small>BUILD. COMPETE. DOMINATE.</small>
+            <small>QUALITY. INNOVATION. PERFORMANCE.</small>
           </span>
         </Link>
 
@@ -74,7 +74,7 @@ export function Header() {
             <BasketIcon />
             <span className="cloudy-shared-basket-count">{basketCount}</span>
           </Link>
-          <button type="button" onClick={() => setOpen(!open)} className="cloudy-mobile-button" aria-label="Menu" aria-expanded={open}>
+          <button type="button" onClick={() => setOpen(!open)} className="cloudy-mobile-button cloudy-desktop-menu-button" aria-label="Menu" aria-expanded={open}>
             {open ? <X /> : <Menu />}
           </button>
         </div>
