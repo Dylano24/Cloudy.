@@ -174,13 +174,13 @@ export default function AppealPage() {
                 <label className={styles.field}>
                   <span className={styles.label}>What is your Discord username / ID?</span>
                   <span className={styles.help}>Please provide your current Discord username or User ID.</span>
-                  <input className={styles.input} name="discordIdentity" required={scope === 'discord'} placeholder={scope === 'discord' ? 'Required' : 'Optional'} maxLength={100} autoComplete="off" />
+                  <input className={styles.input} name="discordIdentity" required placeholder="Required" maxLength={100} autoComplete="off" />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>What is your Gamertag?</span>
-                  <span className={styles.help}>Please provide the username you use in-game.</span>
-                  <input className={styles.input} name="gamertag" required={scope === 'rust'} placeholder={scope === 'rust' ? 'Required' : 'Optional'} maxLength={100} autoComplete="off" />
+                  <span className={styles.help}>Please provide the username you use in game.</span>
+                  <input className={styles.input} name="gamertag" required placeholder="Required" maxLength={100} autoComplete="off" />
                 </label>
 
                 <label className={styles.field}>

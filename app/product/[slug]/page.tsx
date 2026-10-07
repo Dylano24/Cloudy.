@@ -1028,7 +1028,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                   {product.period_num && product.duration_periodicity && (
                     <p className="text-xs text-muted">
                       {subscriptionType === 'onetime' 
-                        ? 'One-time purchase with interval: ' + (product.period_num > 1 ? product.period_num + ' ' : '') + product.duration_periodicity + (product.period_num > 1 ? 's' : '')
+                        ? 'One time purchase with interval: ' + (product.period_num > 1 ? product.period_num + ' ' : '') + product.duration_periodicity + (product.period_num > 1 ? 's' : '')
                         : 'Renews every ' + (product.period_num > 1 ? product.period_num + ' ' : '') + product.duration_periodicity + (product.period_num > 1 ? 's' : '')
                       }
                     </p>

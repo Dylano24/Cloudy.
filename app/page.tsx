@@ -17,7 +17,7 @@ export default function HomePage() {
         <p className="cloudy-classic-tagline">Perfected through detail. <strong>Designed for excellence.</strong></p>
         <p className="cloudy-classic-hero-copy">
           Cloudy creates and operates dedicated gaming experiences, bringing together immersive servers,
-          active communities and in-game services.
+          active communities and in game services.
         </p>
       </section>
 

@@ -7,15 +7,15 @@ const sections = [
   },
   {
     title: "2. Digital products and services",
-    body: "All products available through our store are digital services provided online.\n\nThese products may include, but are not limited to:\n\nSubscriptions;\nEquipment, items, or content directly usable in-game;\nDigital rewards;\nAny other virtual service or benefit related to our services.\n\nDigital products are not physical goods and do not involve the delivery of any real-world items.",
+    body: "All products available through our store are digital services provided online.\n\nThese products may include, but are not limited to:\n\nSubscriptions;\nEquipment, items, or content directly usable in game;\nDigital rewards;\nAny other virtual service or benefit related to our services.\n\nDigital products are not physical goods and do not involve the delivery of any real world items.",
   },
   {
     title: "3. Payments and Delivery",
     body: "Payments are processed through the payment providers available on our store.\n\nOnce payment has been successfully completed, the purchased digital product or service is normally delivered immediately through our Services, except in the event of a technical issue, processing error, or any other situation beyond our reasonable control.\n\nDelivery also requires that the user has correctly linked their account or provided the information necessary for the purchased service to function properly.\n\nThe user is responsible for ensuring that the information provided during the purchase is accurate.",
   },
   {
-    title: "4. One-time purchases",
-    body: "Some products available in our store may be offered as one-time purchases, requiring a single payment without automatic renewal.\n\nThese products may include, without limitation, permanent access, passes, equipment, items, or any other digital content available through our Services.\n\nOnce the purchase has been completed and the product has been delivered, the user retains access to this content according to the conditions defined at the time of purchase, except in cases where changes are necessary for technical, security, maintenance, service evolution reasons, or in cases of abuse, fraud, or violation of our Terms or Rules.\n\nA one-time purchase does not constitute a subscription and does not involve recurring payments.",
+    title: "4. One time purchases",
+    body: "Some products available in our store may be offered as one time purchases, requiring a single payment without automatic renewal.\n\nThese products may include, without limitation, permanent access, passes, equipment, items, or any other digital content available through our Services.\n\nOnce the purchase has been completed and the product has been delivered, the user retains access to this content according to the conditions defined at the time of purchase, except in cases where changes are necessary for technical, security, maintenance, service evolution reasons, or in cases of abuse, fraud, or violation of our Terms or Rules.\n\nA one time purchase does not constitute a subscription and does not involve recurring payments.",
   },
   {
     title: "5. Subscriptions and Cancellation",
@@ -23,7 +23,7 @@ const sections = [
   },
   {
     title: "6. Refund policy",
-    body: "All purchases made through our store concern digital services provided online.\n\nOne-time purchases as well as subscriptions are delivered electronically through our Services. Once a digital product, content, virtual equipment, benefit, or access has been delivered or activated, refunds are generally not available, except where required by applicable law.\n\nBy completing a purchase, the user acknowledges that the service may begin immediately after payment and accepts that the digital nature of the product may limit the possibility of cancellation or refund.\n\nNothing in these Store Terms limits mandatory consumer rights that cannot legally be excluded.",
+    body: "All purchases made through our store concern digital services provided online.\n\nOne time purchases as well as subscriptions are delivered electronically through our Services. Once a digital product, content, virtual equipment, benefit, or access has been delivered or activated, refunds are generally not available, except where required by applicable law.\n\nBy completing a purchase, the user acknowledges that the service may begin immediately after payment and accepts that the digital nature of the product may limit the possibility of cancellation or refund.\n\nNothing in these Store Terms limits mandatory consumer rights that cannot legally be excluded.",
   },
   {
     title: "7. Fraud, Abuse and Payment disputes",
@@ -35,7 +35,7 @@ const sections = [
   },
   {
     title: "9. Limitation of liability",
-    body: "We shall not be held responsible for any temporary loss of access to purchased products, services, or benefits resulting from technical issues, server maintenance, game updates, platform-related issues, or circumstances beyond our reasonable control.\n\nWe do not guarantee that certain features, benefits, or content will remain permanently available if changes are required for technical, operational, or security reasons.",
+    body: "We shall not be held responsible for any temporary loss of access to purchased products, services, or benefits resulting from technical issues, server maintenance, game updates, platform related issues, or circumstances beyond our reasonable control.\n\nWe do not guarantee that certain features, benefits, or content will remain permanently available if changes are required for technical, operational, or security reasons.",
   }
 ];
 

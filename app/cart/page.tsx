@@ -234,7 +234,7 @@ export default function CartPage() {
                     )}
                     {item.product.subscription && item.subscriptionType === 'onetime' && (
                       <p className="text-xs text-muted">
-                        One-time purchase - {item.product.period_num} {item.product.duration_periodicity}
+                        One time purchase · {item.product.period_num} {item.product.duration_periodicity}
                         {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
                       </p>
                     )}
