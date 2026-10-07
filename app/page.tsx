@@ -84,8 +84,7 @@ export default function HomePage() {
         <section className="cloudy-restored-payments" aria-label="Secure payments">
           <div className="cloudy-classic-heading">
             <span>SECURE PAYMENTS</span>
-            <h2>A Higher Standard of Gaming.</h2>
-            <p>Simple, secure and reliable checkout.</p>
+            <h2>Simple, secure and reliable checkout.</h2>
           </div>
           <div className="cloudy-restored-pay-grid">
             <article><span className="cloudy-restored-pay-icon">✓</span><h3>Secure Checkout</h3><p>Protected payment processing.</p></article>
@@ -100,7 +99,7 @@ export default function HomePage() {
         <section className="cloudy-classic-feature cloudy-classic-community">
           <div>
             <span className="cloudy-classic-eyebrow">THE CLOUDY COMMUNITY</span>
-            <h2>One community.</h2>
+            <h2>Cloudy community.</h2>
             <p>Join Cloudy on Discord for server updates, community news and support.</p>
           </div>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-classic-button">Join Discord <ArrowRight size={15} /></a>
