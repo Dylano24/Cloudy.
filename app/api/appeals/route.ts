@@ -6,10 +6,11 @@ const BOT_APPEALS_URL = 'https://cloudy-production-b24f.up.railway.app/api/appea
 const appealSchema = z.object({
   scope: z.enum(['discord', 'rust']),
   action: z.enum(['Mute', 'Ban', 'Other']),
+  otherAction: z.string().trim().max(100).optional().default(''),
   discordIdentity: z.string().trim().max(100).optional().default(''),
   gamertag: z.string().trim().max(100).optional().default(''),
   email: z.string().trim().email().max(254),
-  punishmentReason: z.string().trim().min(1).max(1000),
+  punishmentReason: z.string().trim().min(1).max(1200),
   punishmentJustified: z.string().trim().min(1).max(1000),
   acceptanceReason: z.string().trim().min(1).max(1000),
   futureChanges: z.string().trim().min(1).max(1000),
@@ -17,7 +18,10 @@ const appealSchema = z.object({
   additionalInfo: z.string().trim().max(1000).optional().default(''),
 }).superRefine((appeal, ctx) => {
   if (appeal.scope === 'rust' && appeal.action === 'Mute') {
-    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['action'], message: 'Rust appeals support Ban or Other.' });
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['action'], message: 'Rust reviews support Ban or Other.' });
+  }
+  if (appeal.action === 'Other' && !appeal.otherAction) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['otherAction'], message: 'Please describe the moderation action you received.' });
   }
   if (appeal.scope === 'discord' && !appeal.discordIdentity) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['discordIdentity'], message: 'Discord username / ID is required.' });
@@ -52,7 +56,7 @@ export async function POST(request: Request) {
     if (!response.ok) {
       console.error('[Appeals] Cloudy bot rejected submission', response.status, result);
       return NextResponse.json(
-        { error: result?.error || 'Your appeal could not be delivered to staff. Please try again in a moment.' },
+        { error: result?.error || 'Your review request could not be delivered to staff. Please try again in a moment.' },
         { status: response.status >= 400 && response.status < 500 ? response.status : 502 },
       );
     }
@@ -61,7 +65,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('[Appeals] Submission failed', error);
     return NextResponse.json(
-      { error: 'Your appeal could not be submitted. Please try again in a moment.' },
+      { error: 'Your review request could not be submitted. Please try again in a moment.' },
       { status: 500 },
     );
   }

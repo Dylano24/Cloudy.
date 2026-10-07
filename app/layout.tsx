@@ -1,25 +1,25 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Anton, Manrope } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 
-const inter = Inter({ variable: "--font-sans", subsets: ["latin"] });
-const CLOUDY_LOGO_URL = "https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif";
+const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-display" });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Cloudy | Rust Store",
-  description: "The official Cloudy Rust website for server information, ranks and future store access.",
+  title: "Cloudy Inc. — Where Games Meet Quality",
+  description: "Cloudy Inc. is a gaming company creating and operating gaming projects, digital services and community experiences.",
   icons: {
-    icon: CLOUDY_LOGO_URL,
-    shortcut: CLOUDY_LOGO_URL,
+    icon: "/images/cloudy-c.svg",
+    shortcut: "/images/cloudy-c.svg",
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={inter.variable + " antialiased"} suppressHydrationWarning>
+      <body className={`${anton.variable} ${manrope.variable} antialiased`} suppressHydrationWarning>
         <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-1">{children}</main>
