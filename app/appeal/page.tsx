@@ -242,7 +242,7 @@ export default function AppealPage() {
             <div className={styles.success}>
               <span className={styles.successIcon}><CheckCircle2 size={34} /></span>
               <h2>Appeal submitted</h2>
-              <p>Your review request has been successfully submitted. Our staff team will review the information provided and make a decision.</p>
+              <p>Your review request has been successfully submitted. Our staff team will review your appeal and make a decision based on the information provided.</p>
               <p>You will receive an email notification once a decision has been made. You can also keep an eye on your sanction status, which will be automatically updated if your appeal is accepted.</p>
               <p>Please do not submit multiple appeals for the same moderation action. Thank you for your patience.</p>
               {appealId && <span className={styles.appealId}>Appeal ID: {appealId}</span>}
