@@ -6,13 +6,14 @@ import { Footer } from "@/components/layout/footer";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-display" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
+const CLOUDY_LOGO_URL = "https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif";
 
 export const metadata: Metadata = {
   title: "Cloudy Inc. — Where Games Meet Quality",
   description: "Cloudy Inc. is a gaming company creating and operating gaming projects, digital services and community experiences.",
   icons: {
-    icon: "/images/cloudy-c.svg",
-    shortcut: "/images/cloudy-c.svg",
+    icon: CLOUDY_LOGO_URL,
+    shortcut: CLOUDY_LOGO_URL,
   },
 };
 

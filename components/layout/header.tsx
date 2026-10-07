@@ -5,6 +5,7 @@ import { LogIn, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
+const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 const BASKET_KEY = 'cloudy-basket-v1';
 
@@ -51,7 +52,7 @@ export function Header() {
       <div className="cloudy-header-inner">
         <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Inc. home">
           <span className="cloudy-logo-orbit">
-            <img src="/images/cloudy-c.svg" alt="" width={48} height={48} />
+            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={48} height={48} />
           </span>
           <span className="cloudy-brand-copy">
             <strong>CLOUDY INC.</strong>

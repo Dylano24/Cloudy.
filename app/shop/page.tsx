@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ArrowLeft, MessageCircle, ShieldCheck, Wrench } from 'lucide-react';
 
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
-const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
+const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 
 export default function ShopPage() {
   return (
