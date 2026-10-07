@@ -126,7 +126,7 @@ export default function AppealPage() {
                     aria-hidden="true"
                     style={{ width: 16, height: 16, display: 'block', objectFit: 'contain' }}
                   />
-                  {scope === 'discord' ? 'Discord appeal' : 'Rust appeal'}
+                  {scope === 'discord' ? 'Discord appeal' : 'Rust server appeal'}
                 </span>
               </div>
 
