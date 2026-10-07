@@ -208,7 +208,7 @@ export default function AppealPage() {
                 </label>
 
                 <label className={styles.field}>
-                  <span className={styles.label}>What will you do differently if your review is accepted?</span>
+                  <span className={styles.label}>What will you do differently if your appeal is accepted?</span>
                   <span className={styles.help}>Please explain how you intend to avoid repeating the situation.</span>
                   <textarea className={styles.textarea} name="futureChanges" required placeholder="Required" maxLength={1000} />
                 </label>
