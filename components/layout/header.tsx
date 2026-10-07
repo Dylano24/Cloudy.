@@ -5,22 +5,12 @@ import { LogIn, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
-const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
+const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 const BASKET_KEY = 'cloudy-basket-v1';
 
-function HomeBasketIcon() {
+function BasketIcon() {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      width="22"
-      height="22"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M5 7h14l1 14H4L5 7Z M9 8V6a3 3 0 0 1 6 0v2" />
     </svg>
   );
@@ -31,8 +21,6 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [basketCount, setBasketCount] = useState(0);
 
-  const navLabelStyle = { textTransform: 'none' as const };
-
   useEffect(() => {
     const readBasketCount = () => {
       try {
@@ -42,7 +30,6 @@ export function Header() {
         setBasketCount(0);
       }
     };
-
     readBasketCount();
     window.addEventListener('storage', readBasketCount);
     window.addEventListener('focus', readBasketCount);
@@ -52,142 +39,54 @@ export function Header() {
     };
   }, []);
 
+  const nav = [
+    ['HOME', '/'],
+    ['SERVER', '/#games'],
+    ['STORE', '/shop'],
+    ['APPEAL FORM', '/appeal'],
+  ] as const;
+
   return (
     <header className="cloudy-header">
-      <style>{`
-        .cloudy-shared-basket {
-          display: flex;
-          align-items: center;
-          gap: 9px;
-          min-height: 42px;
-          padding: 8px 12px;
-          border: 1px solid #3f3f3f;
-          border-radius: 6px;
-          background: #212121;
-          color: #f1f1f1;
-          font-size: 14px;
-          transition: border-color .2s, background .2s;
-          overflow: visible;
-        }
-        .cloudy-shared-basket:hover {
-          border-color: #aeaeae;
-          background: #262626;
-        }
-        .cloudy-shared-basket-count {
-          min-width: 21px;
-          height: 21px;
-          padding: 0 6px;
-          border-radius: 4px;
-          background: #ededed;
-          color: #111;
-          display: grid;
-          place-items: center;
-          font-size: 12px;
-          font-weight: 800;
-          line-height: 1;
-          text-align: center;
-        }
-        @media (max-width: 760px) {
-          .cloudy-header-actions {
-            gap: 8px;
-          }
-          .cloudy-shared-basket {
-            width: auto;
-            min-width: 0;
-            height: 42px;
-            min-height: 42px;
-            padding: 0 3px;
-            gap: 8px;
-            justify-content: center;
-            border: 0;
-            border-radius: 0;
-            background: transparent;
-            overflow: visible;
-          }
-          .cloudy-shared-basket:hover {
-            border-color: transparent;
-            background: transparent;
-          }
-          .cloudy-shared-basket-label {
-            display: none;
-          }
-          .cloudy-shared-basket-count {
-            width: 30px;
-            min-width: 30px;
-            height: 30px;
-            padding: 0;
-            border-radius: 999px;
-            font-size: 12px;
-            line-height: 1;
-          }
-          .cloudy-mobile-button {
-            width: 36px;
-            height: 42px;
-            padding: 0;
-            border: 0;
-            border-radius: 0;
-            background: transparent;
-          }
-        }
-      `}</style>
-
       <div className="cloudy-header-inner">
-        <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Rust home">
+        <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Inc. home">
           <span className="cloudy-logo-orbit">
-            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={48} height={48} style={{ transform: 'translateY(-2px)' }} />
+            <img src="/images/cloudy-c.svg" alt="" width={48} height={48} />
           </span>
           <span className="cloudy-brand-copy">
-            <strong>CLOUDY</strong>
-            <small>Survive Build Dominate</small>
+            <strong>CLOUDY INC.</strong>
+            <small>Quality. Innovation. Performance.</small>
           </span>
         </Link>
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
-          <Link href="/" className={pathname === '/' ? 'active' : ''} style={navLabelStyle}>HOME</Link>
-          <Link href="/#server" style={navLabelStyle}>SERVER</Link>
-          <Link href="/appeal" className={pathname.startsWith('/appeal') ? 'active' : ''} style={navLabelStyle}>APPEAL FORM</Link>
+          {nav.map(([label, href]) => (
+            <Link key={href} href={href} className={pathname === href || (href === '/appeal' && pathname.startsWith('/appeal')) ? 'active' : ''}>
+              {label}
+            </Link>
+          ))}
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer">DISCORD</a>
         </nav>
 
         <div className="cloudy-header-actions">
-          <a
-            href="/#basket"
-            className="cloudy-shared-basket"
-            aria-label={`Open basket, ${basketCount} saved ${basketCount === 1 ? 'product' : 'products'}`}
-          >
-            <HomeBasketIcon />
+          <a href="/#basket" className="cloudy-shared-basket" aria-label={`Open basket, ${basketCount} saved products`}>
+            <BasketIcon />
             <span className="cloudy-shared-basket-label">Basket</span>
             <span className="cloudy-shared-basket-count">{basketCount}</span>
           </a>
-
-          <button
-            type="button"
-            onClick={() => setOpen(!open)}
-            className="cloudy-mobile-button"
-            aria-label="Menu"
-            aria-expanded={open}
-            style={{ display: 'grid', placeItems: 'center' }}
-          >
+          <button type="button" onClick={() => setOpen(!open)} className="cloudy-mobile-button" aria-label="Menu" aria-expanded={open} style={{ display: 'grid', placeItems: 'center' }}>
             {open ? <X /> : <Menu />}
           </button>
         </div>
       </div>
 
       {open && (
-        <nav
-          className="cloudy-mobile-menu"
-          aria-label="Account menu"
-          style={{
-            display: 'block',
-            position: 'absolute',
-            top: '78px',
-            right: '18px',
-            minWidth: '180px',
-            zIndex: 120,
-            border: '1px solid rgba(255,255,255,.10)',
-            borderRadius: '10px',
-          }}
-        >
-          <Link href="/?open=account" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+        <nav className="cloudy-mobile-menu" aria-label="Mobile navigation" style={{ display: 'block' }}>
+          {nav.map(([label, href]) => (
+            <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>
+          ))}
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>DISCORD</a>
+          <Link href="/?open=account" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             <LogIn size={17} /> LOGIN
           </Link>
         </nav>
