@@ -42,10 +42,10 @@ export default function TermsPage() {
       <div className="cloudy-terms-wrap">
         <header className="cloudy-terms-head">
           <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={80} height={80} />
-          <span>Cloudy Rust</span>
+          <span>Cloudy Inc.</span>
           <h1>Terms of Service</h1>
           <p>
-            These terms apply to the Cloudy community, Rust servers, website, online store and related services.
+            These terms apply to the Cloudy community, game servers, website, online store and related services.
           </p>
           <Link href="/" className="cloudy-cta-secondary">
             Back to Cloudy

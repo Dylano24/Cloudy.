@@ -22,6 +22,7 @@ export function Footer() {
               <Link href="/#games">Server</Link>
               <Link href="/shop">Store</Link>
               <Link href="/appeal">Appeal form</Link>
+              <Link href="/support">Support &amp; Help</Link>
             </div>
           </div>
 
@@ -33,8 +34,10 @@ export function Footer() {
 
             <div className="cloudy-footer-title" style={{ marginTop: 18 }}>Information</div>
             <div className="cloudy-footer-links">
-              <Link href="/legal#terms">Terms of service</Link>
-              <Link href="/legal#sales">Terms of sale</Link>
+              <Link href="/terms">Terms of service</Link>
+              <Link href="/terms-of-sale">Terms of sale</Link>
+              <Link href="/privacy-policy">Privacy policy</Link>
+              <Link href="/legal-notice">Legal notice</Link>
             </div>
           </div>
         </div>
