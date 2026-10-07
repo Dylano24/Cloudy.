@@ -10,9 +10,21 @@ const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-displ
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
 const CLOUDY_LOGO_URL = "https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif";
 
+const SITE_TITLE = "Cloudy Inc. Where games meet quality";
+const SITE_DESCRIPTION = "Cloudy Inc. is a gaming company creating and operating gaming projects, digital services and community experiences.";
+
 export const metadata: Metadata = {
-  title: "Cloudy Inc. — Where Games Meet Quality",
-  description: "Cloudy Inc. is a gaming company creating and operating gaming projects, digital services and community experiences.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
   icons: {
     icon: CLOUDY_LOGO_URL,
     shortcut: CLOUDY_LOGO_URL,
