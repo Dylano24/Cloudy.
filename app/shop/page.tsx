@@ -1,197 +1,338 @@
-import Link from 'next/link';
-import {
-  ArrowLeft,
-  ArrowRight,
-  Gamepad2,
-  MessageCircle,
-  Search,
-  Server,
-  ShieldCheck,
-  ShoppingBag,
-  Sparkles,
-} from 'lucide-react';
+'use client';
 
-const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
-const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
-
-const kits = [
-  { id: '01', title: 'KIT 01', tag: 'STARTER', description: 'Coming soon' },
-  { id: '02', title: 'KIT 02', tag: 'UPGRADE', description: 'Coming soon' },
-  { id: '03', title: 'KIT 03', tag: 'PREMIUM', description: 'Coming soon' },
-] as const;
+import { useProducts, useCategories, useStore } from '@/hooks/use-api';
+import { useCart } from '@/hooks/use-cart';
+import { ProductCard } from '@/components/product/product-card';
+import { Package, Filter, AlertCircle, RefreshCcw, Loader2, Search } from 'lucide-react';
+import Image from 'next/image';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import type { Category } from '@/lib/schemas';
 
 export default function ShopPage() {
+  const cart = useCart();
+  const { data: store } = useStore();
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const observerTarget = useRef<HTMLDivElement>(null);
+  const processedDataRef = useRef<{ page: number; category: number | null; ids: string }>({ page: 0, category: null, ids: '' });
+  
+  useEffect(() => {
+    cart.clearIfExpired();
+  }, []);
+
+  const { data: categories, error: categoriesError } = useCategories();
+  const { data: products, isLoading, error: productsError, refetch } = useProducts({ 
+    page: currentPage, 
+    maxPage: 50, 
+    onlyEnabled: true,
+    category: selectedCategory ?? undefined,
+  });
+
+  const selectedCategoryData = categories?.categories.find(c => c.id === selectedCategory);
+
+  // Group categories by parent
+  const categoriesByParent = categories?.categories.reduce((acc, cat) => {
+    const parentId = cat.parent_id ?? 0;
+    if (!acc[parentId]) acc[parentId] = [];
+    acc[parentId].push(cat);
+    return acc;
+  }, {} as Record<number, typeof categories.categories>);
+
+  // Reset when category changes
+  useEffect(() => {
+    setCurrentPage(1);
+    setAllProducts([]);
+    setHasMore(true);
+    processedDataRef.current = { page: 0, category: selectedCategory, ids: '' };
+  }, [selectedCategory]);
+
+  const renderCategoryButton = (category: Category) => {
+    const isSelected = selectedCategory === category.id;
+
+    return (
+      <button
+        key={category.id}
+        onClick={() => setSelectedCategory(category.id)}
+        className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-lg border transition-all cursor-pointer ${
+          isSelected
+            ? 'bg-primary text-background border-primary glow-primary'
+            : 'bg-card border-border hover:border-primary hover:-translate-y-0.5'
+        }`}
+      >
+        <div className="relative w-10 h-10 rounded-md overflow-hidden bg-muted/50">
+          {category.image ? (
+            <Image
+              src={category.image}
+              alt={`${category.name} cover`}
+              fill
+              sizes="120px"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          ) : (
+            <div className={`absolute inset-0 flex items-center justify-center ${isSelected ? 'text-background/70' : 'text-muted'}`}>
+              <Package className="w-4 h-4" />
+            </div>
+          )}
+        </div>
+        <span className="text-sm font-medium leading-tight">{category.name}</span>
+      </button>
+    );
+  };
+
+  // Append new products when data arrives
+  useEffect(() => {
+    // Skip if loading, error, or no products
+    if (isLoading || productsError || !products?.products) {
+      return;
+    }
+    
+    // Check if products array is empty
+    if (products.products.length === 0) {
+      setHasMore(false);
+      return;
+    }
+    
+    // Create a unique identifier for this data
+    const dataIds = products.products.map(p => p.id).join(',');
+    const dataSignature = { page: currentPage, category: selectedCategory, ids: dataIds };
+    
+    // Skip if we've already processed this exact data
+    if (
+      processedDataRef.current.page === dataSignature.page &&
+      processedDataRef.current.category === dataSignature.category &&
+      processedDataRef.current.ids === dataSignature.ids
+    ) {
+      return;
+    }
+    
+    // Mark this data as processed
+    processedDataRef.current = dataSignature;
+    
+    // Update products - use callback to avoid race conditions
+    setAllProducts(prev => {
+      if (currentPage === 1) {
+        return products.products;
+      }
+      
+      // For subsequent pages, filter out any duplicates
+      const existingIds = new Set(prev.map(p => p.id));
+      const newProducts = products.products.filter(p => !existingIds.has(p.id));
+      
+      // If no new products, keep the previous state
+      if (newProducts.length === 0) {
+        return prev;
+      }
+      
+      return [...prev, ...newProducts];
+    });
+    
+    // Only has more if we got a full page of products
+    setHasMore(products.products.length === 50);
+  }, [isLoading, productsError, products?.products, currentPage, selectedCategory]);
+
+  // Infinite scroll observer
+  const handleLoadMore = useCallback(() => {
+    if (!isLoading && !productsError && hasMore) {
+      setCurrentPage(prev => prev + 1);
+    }
+  }, [isLoading, productsError, hasMore]);
+
+  useEffect(() => {
+    // Only set up observer if we have products loaded
+    if (allProducts.length === 0 || !hasMore || isLoading) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isLoading && hasMore) {
+          setCurrentPage(prev => prev + 1);
+        }
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: '200px'
+      }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [allProducts.length, isLoading, hasMore]);
+
   return (
-    <div className="min-h-screen bg-[#07090d] text-white">
-      <section className="relative overflow-hidden border-b border-white/10">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url('/images/rust-user-background.jpg')" }}
-          aria-hidden="true"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,9,13,.42),#07090d_92%)]" aria-hidden="true" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(37,99,235,.16),transparent_52%)]" aria-hidden="true" />
-
-        <div className="relative mx-auto max-w-7xl px-4 pb-14 pt-10 sm:px-6 lg:px-8 lg:pb-20">
-          <div className="mb-12 flex items-center justify-between gap-4">
-            <Link href="/" className="inline-flex items-center gap-2 text-sm font-semibold text-white/65 transition hover:text-white">
-              <ArrowLeft size={17} /> Back to Cloudy
-            </Link>
-            <a
-              href={DISCORD_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.045] px-4 py-2.5 text-sm font-semibold text-white transition hover:border-red-400/40 hover:bg-red-500/10"
-            >
-              <MessageCircle size={17} /> Join Discord
-            </a>
-          </div>
-
-          <div className="max-w-3xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-red-400/20 bg-red-500/10 px-3.5 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-red-300">
-              <Sparkles size={13} /> RUST
-            </div>
-            <div className="mb-5 flex items-center gap-4">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-black/35 shadow-2xl shadow-red-950/20">
-                <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={46} height={46} />
-              </div>
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/45">Cloudy Inc.</p>
-                <h1 className="text-4xl font-black tracking-[-0.04em] sm:text-6xl">RUST STORE</h1>
-              </div>
-            </div>
-            <p className="max-w-2xl text-base leading-7 text-white/60 sm:text-lg">
-              Select Rust, choose a server and browse the available Cloudy kits.
-            </p>
-          </div>
+    <div className="cloudy-rust-store-page min-h-screen">
+      <section className="cloudy-rust-store-hero">
+        <img src="/images/rust-user-background.jpg" alt="" aria-hidden="true" className="cloudy-rust-store-hero-image" />
+        <div className="cloudy-rust-store-hero-shade" aria-hidden="true" />
+        <div className="cloudy-rust-store-hero-copy">
+          <span>RUST</span>
+          <h1>RUST STORE</h1>
         </div>
       </section>
-
-      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <section className="mb-14">
-          <div className="mb-6 flex items-end justify-between gap-5">
-            <div>
-              <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-red-300">
-                <Gamepad2 size={15} /> Step 01
-              </div>
-              <h2 className="text-3xl font-black tracking-[-0.03em] sm:text-4xl">CHOOSE YOUR GAME</h2>
-              <p className="mt-2 text-sm text-white/45">Rust is the first Cloudy project.</p>
-            </div>
+      <div className="container mx-auto px-4 py-12">
+        {/* Filters */}
+        {categoriesError && (
+          <div className="mb-4 flex items-center gap-2 rounded-lg border border-border bg-red-500/10 p-3 text-sm text-red-400">
+            <AlertCircle className="w-4 h-4" />
+            <span>Could not load categories. Showing all products.</span>
           </div>
+        )}
 
-          <button
-            type="button"
-            className="group relative w-full overflow-hidden rounded-3xl border border-red-400/30 bg-[#0c1018] text-left shadow-2xl shadow-black/30 sm:max-w-xl"
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center opacity-35 transition duration-500 group-hover:scale-[1.02] group-hover:opacity-45"
-              style={{ backgroundImage: "url('/images/rust-user-background.jpg')" }}
-              aria-hidden="true"
+        {/* Search Bar */}
+        <div className="mb-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted" />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-lg bg-card border border-border focus:border-primary focus:outline-none transition-colors"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-[#0b0e14] via-[#0b0e14]/90 to-transparent" aria-hidden="true" />
-            <div className="relative flex min-h-44 items-end justify-between gap-5 p-6 sm:p-7">
-              <div>
-                <span className="mb-3 inline-flex rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300">Selected</span>
-                <h3 className="text-3xl font-black">RUST</h3>
-                <p className="mt-1 text-sm text-white/50">Rust</p>
-              </div>
-              <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-black/30 text-red-300">
-                <ArrowRight size={19} />
-              </div>
-            </div>
-          </button>
-        </section>
-
-        <section>
-          <div className="mb-6 flex flex-col justify-between gap-5 md:flex-row md:items-end">
-            <div>
-              <div className="mb-2 flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-red-300">
-                <Server size={15} /> Step 02
-              </div>
-              <h2 className="text-3xl font-black tracking-[-0.03em] sm:text-4xl">SERVERS & KITS</h2>
-              <p className="mt-2 text-sm text-white/45">Rust is selected. Kit contents and pricing can be filled in when you are ready.</p>
-            </div>
-
-            <div className="relative w-full md:max-w-xs">
-              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-white/30" />
-              <input
-                type="search"
-                placeholder="Search kits"
-                className="w-full rounded-xl border border-white/10 bg-white/[0.035] py-3 pl-10 pr-4 text-sm text-white outline-none transition placeholder:text-white/25 focus:border-red-400/40 focus:bg-red-500/[0.04]"
-              />
-            </div>
           </div>
+        </div>
 
-          <div className="mb-6 rounded-2xl border border-white/10 bg-white/[0.025] p-4 sm:p-5">
-            <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-              <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-red-400/20 bg-red-500/10 text-red-300">
-                  <Server size={20} />
-                </div>
-                <div>
-                  <h3 className="font-bold">Rust Server</h3>
-                  <p className="text-sm text-white/40">Server information will appear here when available.</p>
-                </div>
+        {/* Category Filters */}
+
+        {categories && categories.categories.length > 0 ? (
+          <>
+            <div className="mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <Filter className="w-5 h-5 text-primary" />
+                <h2 className="text-lg font-semibold">Categories</h2>
               </div>
-              <span className="w-fit rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-white/45">Coming soon</span>
-            </div>
-          </div>
-
-          <div className="grid gap-5 md:grid-cols-3">
-            {kits.map((kit) => (
-              <article
-                key={kit.id}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0e14] transition duration-300 hover:-translate-y-1 hover:border-red-400/30 hover:shadow-2xl hover:shadow-red-950/20"
-              >
-                <div className="relative h-44 overflow-hidden border-b border-white/10">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center grayscale opacity-50 transition duration-500 group-hover:scale-105 group-hover:opacity-60"
-                    style={{ backgroundImage: "url('/images/rust-user-background.jpg')" }}
-                    aria-hidden="true"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0b0e14] via-[#0b0e14]/30 to-transparent" aria-hidden="true" />
-                  <span className="absolute left-5 top-5 text-5xl font-black tracking-[-0.08em] text-white/15">{kit.id}</span>
-                  <span className="absolute right-5 top-5 rounded-full border border-white/10 bg-black/35 px-2.5 py-1 text-[9px] font-black tracking-[0.18em] text-white/60 backdrop-blur">{kit.tag}</span>
-                </div>
-
-                <div className="p-6">
-                  <h3 className="text-2xl font-black">{kit.title}</h3>
-                  <p className="mt-2 min-h-12 text-sm leading-6 text-white/45">{kit.description}</p>
-                  <div className="my-5 h-px bg-white/8" />
-                  <div className="mb-5 flex items-center gap-2 text-xs font-semibold text-white/45">
-                    <ShieldCheck size={15} className="text-red-300" /> Official Cloudy package
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-lg border transition-all cursor-pointer ${
+                    selectedCategory === null
+                      ? 'bg-primary text-background border-primary glow-primary'
+                      : 'bg-card border-border hover:border-primary hover:-translate-y-0.5'
+                  }`}
+                >
+                  <div className="relative w-10 h-10 rounded-md bg-muted/50 flex items-center justify-center">
+                    <Filter className="w-4 h-4" />
                   </div>
-                  <button
-                    type="button"
-                    disabled
-                    className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 text-sm font-bold text-white/35"
-                  >
-                    <ShoppingBag size={16} /> Coming soon
-                  </button>
-                </div>
-              </article>
+                  All Products
+                </button>
+                
+                {/* Show top-level categories OR subcategories if in a parent category */}
+                {(() => {
+                  // Check if selected category has subcategories
+                  const hasSubcategories = 
+                    selectedCategory !== null && 
+                    selectedCategoryData && 
+                    categoriesByParent?.[selectedCategory] && 
+                    categoriesByParent[selectedCategory]!.length > 0;
+                  
+                  // Check if selected category is itself a subcategory
+                  const isSubcategory = selectedCategoryData?.parent_id && selectedCategoryData.parent_id !== 0;
+                  const parentId = isSubcategory ? selectedCategoryData.parent_id : null;
+                  
+                  // If selected category has subcategories OR is a subcategory, show the subcategories
+                  if (hasSubcategories && selectedCategory !== null) {
+                    return categoriesByParent[selectedCategory]!.filter(cat => !cat.hide).map(renderCategoryButton);
+                  } else if (isSubcategory && parentId && categoriesByParent?.[parentId]) {
+                    // Show siblings (other subcategories of the same parent)
+                    return categoriesByParent[parentId]!.filter(cat => !cat.hide).map(renderCategoryButton);
+                  }
+                  
+                  // Otherwise show top-level categories
+                  return categoriesByParent?.[0]?.filter(cat => !cat.hide).map(renderCategoryButton);
+                })()}
+              </div>
+            </div>
+          </>
+        ) : null}
+
+        {/* Product Grid */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="h-96 rounded-xl bg-card border border-border animate-pulse" />
             ))}
           </div>
-        </section>
-
-        <section className="mt-14 rounded-3xl border border-red-400/15 bg-[linear-gradient(135deg,rgba(37,99,235,.10),rgba(255,255,255,.02))] p-6 sm:p-8">
-          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-center">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-red-300">Cloudy Community</p>
-              <h2 className="mt-2 text-2xl font-black">Need help or store information?</h2>
-              <p className="mt-2 text-sm text-white/45">Join Discord for support, announcements and Cloudy updates.</p>
+        ) : productsError ? (
+          <div className="rounded-xl border border-border bg-red-500/10 p-6 text-red-400 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5" />
+              <p className="font-semibold">Could not load products.</p>
             </div>
-            <a
-              href={DISCORD_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-500 px-5 py-3 text-sm font-black text-white transition hover:bg-red-400"
+            <button
+              onClick={() => refetch()}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary transition-colors text-sm cursor-pointer"
             >
-              <MessageCircle size={17} /> Join Discord
-            </a>
+              <RefreshCcw className="w-4 h-4" />
+              Retry
+            </button>
           </div>
-        </section>
-      </main>
+        ) : allProducts.length > 0 ? (
+          <>
+            {/* Filter results by search query */}
+            {(() => {
+              const filteredProducts = allProducts.filter(product =>
+                product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (product.description && product.description.toLowerCase().includes(searchQuery.toLowerCase()))
+              );
+
+              if (filteredProducts.length === 0) {
+                return (
+                  <div className="text-center py-20">
+                    <Package className="w-16 h-16 text-muted mx-auto mb-4" />
+                    <p className="text-xl text-muted mb-4">No products found matching "{searchQuery}"</p>
+                    <button
+                      onClick={() => setSearchQuery('')}
+                      className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-card border border-border hover:border-primary transition-colors cursor-pointer"
+                    >
+                      Clear search
+                    </button>
+                  </div>
+                );
+              }
+
+              return (
+                <>
+                  <div className="mb-4 text-sm text-muted">
+                    Found {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {filteredProducts.map((product) => (
+                      <ProductCard key={product.id} product={product} hideFeaturedBadge />
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
+            
+            {/* Infinite scroll trigger */}
+            {hasMore && (
+              <div ref={observerTarget} className="flex justify-center py-8">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            )}
+          </>
+        ) : (
+          <div className="text-center py-20">
+            <Package className="w-16 h-16 text-muted mx-auto mb-4" />
+            <p className="text-xl text-muted mb-4">No products found in this category</p>
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-card border border-border hover:border-primary transition-colors cursor-pointer"
+            >
+              Show all products
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

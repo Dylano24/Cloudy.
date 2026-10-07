@@ -80,6 +80,23 @@ export default function HomePage() {
           </div>
         </section>
 
+
+        <section className="cloudy-restored-payments" aria-label="Secure payments">
+          <div className="cloudy-classic-heading">
+            <span>SECURE PAYMENTS</span>
+            <h2>A Higher Standard of Gaming.</h2>
+            <p>Simple, secure and reliable checkout.</p>
+          </div>
+          <div className="cloudy-restored-pay-grid">
+            <article><span className="cloudy-restored-pay-icon">✓</span><h3>Secure Checkout</h3><p>Protected payment processing.</p></article>
+            <article><span className="cloudy-restored-pay-icon">↗</span><h3>Instant Delivery</h3><p>Receive your digital purchases quickly.</p></article>
+            <article><span className="cloudy-restored-pay-icon">◇</span><h3>Trusted Payments</h3><p>Payments handled by secure, established providers.</p></article>
+          </div>
+          <div className="cloudy-restored-payment-brands" aria-label="Payment methods">
+            <span>VISA</span><span>MASTERCARD</span><span>PAYPAL</span><span>APPLE PAY</span><span>GOOGLE PAY</span>
+          </div>
+        </section>
+
         <section className="cloudy-classic-feature cloudy-classic-community">
           <div>
             <span className="cloudy-classic-eyebrow">THE CLOUDY COMMUNITY</span>

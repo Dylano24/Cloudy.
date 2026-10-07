@@ -13,18 +13,6 @@ const legalItems = [
     href: '/terms-of-sale',
     status: 'Coming soon',
   },
-  {
-    title: 'Privacy Policy',
-    description: 'Information about how Cloudy handles privacy and personal data.',
-    href: '/privacy-policy',
-    status: 'Coming soon',
-  },
-  {
-    title: 'Legal Notice',
-    description: 'Company and legal information for the Cloudy platform.',
-    href: '/legal-notice',
-    status: 'Coming soon',
-  },
 ] as const;
 
 export default function LegalPage() {
