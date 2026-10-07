@@ -18,7 +18,7 @@ const IDENTIFIER_LABELS: Record<string, string> = {
   epic_id: 'Epic Games ID',
   eos_id: 'EOS ID',
   fivem_citizen_id: 'FiveM Citizen ID',
-  ingame_username: 'In-Game Username',
+  ingame_username: 'In Game Username',
   rust_username: 'Rust Username',
 };
 
