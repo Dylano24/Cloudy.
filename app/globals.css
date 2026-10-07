@@ -1703,3 +1703,45 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .cloudy-restored-pay-grid article::before { animation: none !important; transform: translateX(115%); }
 }
+
+/* ================= LEGAL PAGES — BLACK THEME ================= */
+.cloudy-terms-page {
+  min-height: 100vh !important;
+  padding: 95px 0 120px !important;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(120,0,0,.05), transparent 30rem),
+    linear-gradient(180deg, #050505 0%, #070707 52%, #030303 100%) !important;
+}
+.cloudy-terms-head img {
+  filter: drop-shadow(0 0 18px rgba(255,255,255,.12)) !important;
+}
+.cloudy-terms-head span {
+  color: #8f8f95 !important;
+}
+.cloudy-terms-head h1 {
+  color: #fff !important;
+}
+.cloudy-terms-head p {
+  color: #929298 !important;
+}
+.cloudy-term-card {
+  border-color: rgba(255,255,255,.10) !important;
+  background:
+    radial-gradient(circle at 94% 8%, rgba(110,0,0,.055), transparent 28%),
+    linear-gradient(145deg, rgba(14,14,15,.98), rgba(6,6,7,.99)) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.025), 0 18px 48px rgba(0,0,0,.30) !important;
+}
+.cloudy-term-card h2 {
+  color: #f1f1f2 !important;
+}
+.cloudy-term-card p {
+  color: #a0a0a6 !important;
+}
+.cloudy-legal-updated {
+  margin: 30px 0 0;
+  text-align: center;
+  color: #707076;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+}

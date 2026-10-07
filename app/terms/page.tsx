@@ -42,7 +42,7 @@ export default function TermsPage() {
         <header className="cloudy-terms-head">
           <img src="https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width={80} height={80} style={{ borderRadius: '50%', objectFit: 'cover' }} />
           <span>Cloudy Inc.</span>
-          <h1>Terms of Service</h1>
+          <h1>Terms of service</h1>
           <p>
             These terms apply to the Cloudy community, game servers, website, online store and related services.
           </p>
@@ -59,7 +59,7 @@ export default function TermsPage() {
             </section>
           ))}
         </div>
-        <p className="mt-8 text-center text-[11px] font-medium tracking-[0.04em] text-muted">Last updated 07 October 2026 · 18:17</p>
+        <p className="cloudy-legal-updated">Last updated 07 October 2026 · 19:11</p>
       </div>
     </main>
   );
