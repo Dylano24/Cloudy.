@@ -136,7 +136,7 @@ export default function AppealPage() {
 
               <form className={styles.form} onSubmit={submitAppeal}>
                 <label className={styles.field}>
-                  <span className={styles.label}>What moderation action are you requesting a review for?</span>
+                  <span className={styles.label}>What action are you appealing?</span>
                   <select
                     className={styles.select}
                     name="action"
