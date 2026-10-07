@@ -13,7 +13,6 @@ export function Footer() {
               <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={50} height={50} />
               <div><strong>CLOUDY INC.</strong></div>
             </Link>
-            <p style={{ marginTop: 16, color: '#8f8f95', fontSize: 12 }}>Quality. Innovation. Performance.</p>
           </div>
 
           <div>
