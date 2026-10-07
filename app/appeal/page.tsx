@@ -78,19 +78,19 @@ export default function AppealPage() {
       <div className={styles.wrap}>
         <div className={styles.formTop}>
           <a href="/" className={styles.backButton}><ChevronLeft size={15} /> Home</a>
-          <a href="/appeal" className={styles.contextPill}>Review</a>
+          <a href="/appeal" className={styles.contextPill}>Appeal</a>
         </div>
 
         <header className={styles.hero}>
           <span className={styles.eyebrow}><ShieldAlert size={15} /> Cloudy support</span>
-          <h1>Request a review</h1>
-          <p>If you believe the moderation action taken against you was unfair or should be reconsidered, you may request a review below.</p>
+          <h1>Request an appeal</h1>
+          <p>If you believe the moderation action taken against you was unfair or should be reconsidered, you may submit an appeal below.</p>
         </header>
 
         <section className={styles.panel}>
           {!scope && !submitted && (
             <div className={styles.panelInner}>
-              <h2 className={styles.selectionTitle}>What is your review related to?</h2>
+              <h2 className={styles.selectionTitle}>What is your appeal related to?</h2>
               <p className={styles.selectionText}>Select the platform where the moderation action was issued before continuing.</p>
 
               <div className={styles.scopeGrid}>
@@ -99,7 +99,7 @@ export default function AppealPage() {
                     <img className={styles.scopeEmoji} src={DISCORD_APPEAL_EMOJI} alt="" aria-hidden="true" />
                   </span>
                   <strong>Discord</strong>
-                  <span>Request a review of a mute, ban, or other moderation action taken within the Cloudy Discord community.</span>
+                  <span>Submit an appeal for a mute, ban, or other moderation action taken within the Cloudy Discord community.</span>
                 </button>
 
                 <button type="button" className={styles.scopeButton} onClick={() => chooseScope('rust')}>
@@ -107,7 +107,7 @@ export default function AppealPage() {
                     <img className={styles.scopeEmoji} src={RUST_APPEAL_EMOJI} alt="" aria-hidden="true" />
                   </span>
                   <strong>Rust server</strong>
-                  <span>Request a review of a ban or other moderation action taken on the Cloudy Rust server.</span>
+                  <span>Submit an appeal for a ban or other moderation action taken on the Cloudy Rust server.</span>
                 </button>
               </div>
             </div>
@@ -126,17 +126,17 @@ export default function AppealPage() {
                     aria-hidden="true"
                     style={{ width: 16, height: 16, display: 'block', objectFit: 'contain' }}
                   />
-                  {scope === 'discord' ? 'Discord review' : 'Rust server review'}
+                  {scope === 'discord' ? 'Discord appeal' : 'Rust appeal'}
                 </span>
               </div>
 
               <div className={styles.intro}>
-                <p>Please answer every question honestly and provide as much relevant information as possible. False information, manipulation, or abusive behavior towards the staff team may result in your review request being denied.</p>
+                <p>Please answer every question honestly and provide as much relevant information as possible. False information, manipulation, or abusive behavior towards the staff team may result in your appeal being denied.</p>
               </div>
 
               <form className={styles.form} onSubmit={submitAppeal}>
                 <label className={styles.field}>
-                  <span className={styles.label}>What moderation action are you requesting a review for?</span>
+                  <span className={styles.label}>What moderation action are you requesting an appeal for?</span>
                   <select
                     className={styles.select}
                     name="action"
@@ -185,7 +185,7 @@ export default function AppealPage() {
 
                 <label className={styles.field}>
                   <span className={styles.label}>What is your email address?</span>
-                  <span className={styles.help}>Please provide a valid email address where you can receive notifications regarding the result of your review.</span>
+                  <span className={styles.help}>Please provide a valid email address where you can receive notifications regarding the result of your appeal.</span>
                   <input className={styles.input} type="email" name="email" required placeholder="Required" maxLength={254} autoComplete="email" />
                 </label>
 
@@ -208,20 +208,20 @@ export default function AppealPage() {
                 </label>
 
                 <label className={styles.field}>
-                  <span className={styles.label}>What will you do differently if your review is accepted?</span>
+                  <span className={styles.label}>What will you do differently if your appeal is accepted?</span>
                   <span className={styles.help}>Please explain how you intend to avoid repeating the situation.</span>
                   <textarea className={styles.textarea} name="futureChanges" required placeholder="Required" maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
-                  <span className={styles.label}>Do you have any evidence supporting your review?</span>
+                  <span className={styles.label}>Do you have any evidence supporting your appeal?</span>
                   <span className={styles.help}>You may provide screenshots, videos, messages, or any other relevant evidence.</span>
                   <textarea className={styles.textarea} name="evidence" placeholder="Optional" maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>Is there anything else you would like the staff team to know?</span>
-                  <span className={styles.help}>Provide any additional information or context that may help us review the moderation action.</span>
+                  <span className={styles.help}>Provide any additional information or context that may help us assess the moderation action.</span>
                   <textarea className={styles.textarea} name="additionalInfo" placeholder="Optional" maxLength={1000} />
                 </label>
 
@@ -242,7 +242,7 @@ export default function AppealPage() {
             <div className={styles.success}>
               <span className={styles.successIcon}><CheckCircle2 size={34} /></span>
               <h2>Appeal submitted</h2>
-              <p>Your review request has been successfully submitted. Our staff team will review the information provided and make a decision.</p>
+              <p>Your appeal has been successfully submitted. Our staff team will assess the information provided and make a decision.</p>
               <p>You will receive an email notification once a decision has been made. You can also keep an eye on your sanction status, which will be automatically updated if your appeal is accepted.</p>
               <p>Please do not submit multiple appeals for the same moderation action. Thank you for your patience.</p>
               {appealId && <span className={styles.appealId}>Appeal ID: {appealId}</span>}
