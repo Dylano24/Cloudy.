@@ -3,7 +3,7 @@ import { ArrowRight, Check } from 'lucide-react';
 import { ProductsGrid } from '@/components/home/products-grid';
 import styles from './store-showcase-v2.module.css';
 
-const CLOUDY_LOGO_URL = 'https://raw.githubusercontent.com/Dylano24/Cloudy/main/assets/cloudy-c-logo-auf-auf.gif';
+const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 
 const packages = [
   {

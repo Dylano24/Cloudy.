@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Link from 'next/link';
 
 const sections = [
@@ -41,7 +40,7 @@ export default function TermsPage() {
     <main className="cloudy-terms-page">
       <div className="cloudy-terms-wrap">
         <header className="cloudy-terms-head">
-          <Image src="/images/cloudy-c.svg" alt="Cloudy C" width={80} height={80} />
+          <img src="https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width={80} height={80} style={{ borderRadius: '50%', objectFit: 'cover' }} />
           <span>Cloudy Inc.</span>
           <h1>Terms of Service</h1>
           <p>
