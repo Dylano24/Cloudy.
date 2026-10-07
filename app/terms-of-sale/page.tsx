@@ -45,7 +45,6 @@ export default function TermsOfSalePage() {
       <div className="cloudy-terms-wrap">
         <header className="cloudy-terms-head">
           <img src="https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width={80} height={80} style={{ borderRadius: '50%', objectFit: 'cover' }} />
-          <span>Cloudy Inc.</span>
           <h1>Terms of sale</h1>
           <Link href="/" className="cloudy-cta-secondary">
             Back to Cloudy
@@ -61,7 +60,7 @@ export default function TermsOfSalePage() {
           ))}
         </div>
 
-        <p className="cloudy-legal-updated">Last updated 07 October 2026 · 19:11</p>
+        <p className="cloudy-legal-updated">Last updated 07 October 2026 · 20:25</p>
       </div>
     </main>
   );
