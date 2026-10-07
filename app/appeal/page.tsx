@@ -156,8 +156,8 @@ export default function AppealPage() {
 
                 {action === 'Other' && (
                   <label className={styles.field}>
-                    <span className={styles.label}>What moderation action did you receive?</span>
-                    <span className={styles.help}>Please describe the moderation action that was issued.</span>
+                    <span className={styles.label}>What moderation action was taken against you?</span>
+                    <span className={styles.help}>Please specify the moderation action you received.</span>
                     <input
                       className={styles.input}
                       name="otherAction"
@@ -228,7 +228,7 @@ export default function AppealPage() {
                 {error && <div className={styles.error} role="alert">{error}</div>}
 
                 <div className={styles.submitRow}>
-                  <span className={styles.submitHint}>Please do not submit multiple review requests for the same moderation action.</span>
+                  <span className={styles.submitHint}>Please do not submit multiple appeals for the same moderation action.</span>
                   <button className={styles.submitButton} type="submit" disabled={submitting}>
                     {submitting && <LoaderCircle className={styles.spinner} size={17} />}
                     {submitting ? 'Submitting...' : 'Submit'}
@@ -244,7 +244,7 @@ export default function AppealPage() {
               <h2>Appeal submitted</h2>
               <p>Your review request has been successfully submitted. Our staff team will review the information provided and make a decision.</p>
               <p>You will receive an email notification once a decision has been made. You can also keep an eye on your sanction status, which will be automatically updated if your appeal is accepted.</p>
-              <p>Please do not submit multiple review requests for the same moderation action. Thank you for your patience.</p>
+              <p>Please do not submit multiple appeals for the same moderation action. Thank you for your patience.</p>
               {appealId && <span className={styles.appealId}>Appeal ID: {appealId}</span>}
               <p className={styles.successFooter}>Cloudy Inc. staff team</p>
             </div>
