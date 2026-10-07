@@ -49,7 +49,7 @@ export default function ShopPage() {
 
           <div className="max-w-3xl">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-red-400/20 bg-red-500/10 px-3.5 py-2 text-[11px] font-black uppercase tracking-[0.22em] text-red-300">
-              <Sparkles size={13} /> Official Cloudy Rust Store
+              <Sparkles size={13} /> RUST
             </div>
             <div className="mb-5 flex items-center gap-4">
               <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-black/35 shadow-2xl shadow-red-950/20">
@@ -57,7 +57,7 @@ export default function ShopPage() {
               </div>
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.3em] text-white/45">Cloudy Inc.</p>
-                <h1 className="text-4xl font-black tracking-[-0.04em] sm:text-6xl">CLOUDY RUST STORE</h1>
+                <h1 className="text-4xl font-black tracking-[-0.04em] sm:text-6xl">RUST STORE</h1>
               </div>
             </div>
             <p className="max-w-2xl text-base leading-7 text-white/60 sm:text-lg">
@@ -93,7 +93,7 @@ export default function ShopPage() {
               <div>
                 <span className="mb-3 inline-flex rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-emerald-300">Selected</span>
                 <h3 className="text-3xl font-black">RUST</h3>
-                <p className="mt-1 text-sm text-white/50">Cloudy Rust</p>
+                <p className="mt-1 text-sm text-white/50">Rust</p>
               </div>
               <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-black/30 text-red-300">
                 <ArrowRight size={19} />
@@ -129,7 +129,7 @@ export default function ShopPage() {
                   <Server size={20} />
                 </div>
                 <div>
-                  <h3 className="font-bold">Cloudy Rust Server</h3>
+                  <h3 className="font-bold">Rust Server</h3>
                   <p className="text-sm text-white/40">Server information will appear here when available.</p>
                 </div>
               </div>

@@ -57,7 +57,7 @@ export default function HomePage() {
               <span className="cloudy-classic-game-badge">RUST</span>
               <div className="cloudy-classic-game-copy">
                 <span>CLOUDY PROJECT</span>
-                <h3>CLOUDY RUST</h3>
+                <h3>RUST</h3>
                 <b>View servers &amp; kits <ArrowRight size={15} /></b>
               </div>
             </Link>
