@@ -13,7 +13,6 @@ export default function HomePage() {
         <div className="cloudy-classic-logo-shell">
           <img src={CLOUDY_LOGO_URL} alt="Cloudy" />
         </div>
-        <p className="cloudy-classic-kicker">CLOUDY INC.</p>
         <h1>CLOUDY</h1>
         <p className="cloudy-classic-tagline">Perfected through detail. <strong>Designed for excellence.</strong></p>
         <p className="cloudy-classic-hero-copy">
@@ -72,15 +71,6 @@ export default function HomePage() {
               </div>
             </article>
           </div>
-        </section>
-
-        <section className="cloudy-classic-feature">
-          <div>
-            <span className="cloudy-classic-eyebrow">CLOUDY STORE</span>
-            <h2>Enhance your experience.</h2>
-            <p>From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.</p>
-          </div>
-          <Link href="/shop" className="cloudy-classic-button">Visit the store <ArrowRight size={15} /></Link>
         </section>
 
         <section className="cloudy-classic-feature cloudy-classic-community">

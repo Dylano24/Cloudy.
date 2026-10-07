@@ -56,7 +56,7 @@ export function Header() {
           </span>
           <span className="cloudy-brand-copy">
             <strong>CLOUDY INC.</strong>
-            <small>Quality. Innovation. Performance.</small>
+            <small>BUILD. COMPETE. DOMINATE.</small>
           </span>
         </Link>
 
@@ -70,12 +70,11 @@ export function Header() {
         </nav>
 
         <div className="cloudy-header-actions">
-          <a href="/#basket" className="cloudy-shared-basket" aria-label={`Open basket, ${basketCount} saved products`}>
+          <Link href="/cart" className="cloudy-shared-basket" aria-label={`Open basket, ${basketCount} saved products`}>
             <BasketIcon />
-            <span className="cloudy-shared-basket-label">Basket</span>
             <span className="cloudy-shared-basket-count">{basketCount}</span>
-          </a>
-          <button type="button" onClick={() => setOpen(!open)} className="cloudy-mobile-button" aria-label="Menu" aria-expanded={open} style={{ display: 'grid', placeItems: 'center' }}>
+          </Link>
+          <button type="button" onClick={() => setOpen(!open)} className="cloudy-mobile-button" aria-label="Menu" aria-expanded={open}>
             {open ? <X /> : <Menu />}
           </button>
         </div>

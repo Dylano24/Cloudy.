@@ -1120,3 +1120,238 @@ body {
   .cloudy-classic-smoke,
   .cloudy-classic-intro { animation: none !important; }
 }
+
+
+/* ================= CLOUDY FINAL POLISH — 2026-10-07 ================= */
+
+/* Header: exact compact controls and approved Rust tagline */
+.cloudy-header-actions {
+  min-width: auto !important;
+  gap: 10px !important;
+}
+.cloudy-brand-copy small {
+  color: #8f8f95 !important;
+  letter-spacing: .17em !important;
+}
+.cloudy-shared-basket {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: grid;
+  place-items: center;
+  padding: 0 !important;
+  border: 1px solid rgba(239,60,60,.30) !important;
+  border-radius: 11px;
+  color: #f3f3f4 !important;
+  background: rgba(255,255,255,.025) !important;
+  box-shadow: inset 0 1px rgba(255,255,255,.04);
+}
+.cloudy-shared-basket:hover {
+  transform: translateY(-1px);
+  border-color: rgba(239,60,60,.72) !important;
+  background: rgba(239,60,60,.055) !important;
+  box-shadow: 0 0 22px rgba(170,0,0,.12), inset 0 1px rgba(255,255,255,.05);
+}
+.cloudy-shared-basket svg {
+  width: 21px;
+  height: 21px;
+}
+.cloudy-shared-basket-count {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 999px;
+  color: #fff !important;
+  background: #c92222 !important;
+  box-shadow: 0 4px 13px rgba(0,0,0,.42);
+  font-size: 9px;
+  font-weight: 950;
+  line-height: 1;
+}
+.cloudy-mobile-button {
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  padding: 0 !important;
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-radius: 11px !important;
+  background: rgba(255,255,255,.025) !important;
+}
+@media (min-width: 901px) {
+  .cloudy-mobile-button { display: none !important; }
+}
+@media (max-width: 900px) {
+  .cloudy-mobile-button { display: grid !important; }
+}
+
+/* Hero: visually center the real Discord Cloudy logo and remove dead spacing */
+.cloudy-classic-hero {
+  padding-top: 66px;
+}
+.cloudy-classic-logo-shell {
+  width: 158px;
+  height: 158px;
+  padding: 3px;
+}
+.cloudy-classic-logo-shell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  transform: translateY(-4%);
+}
+.cloudy-classic-hero h1 {
+  margin-top: 24px !important;
+}
+
+/* Rust project: make the approved Rust background visibly present */
+.cloudy-classic-game-card {
+  background: #080808;
+}
+.cloudy-classic-game-art {
+  opacity: 1 !important;
+  background:
+    linear-gradient(90deg,
+      rgba(0,0,0,.84) 0%,
+      rgba(0,0,0,.58) 34%,
+      rgba(0,0,0,.24) 63%,
+      rgba(0,0,0,.12) 100%),
+    linear-gradient(0deg,
+      rgba(0,0,0,.72) 0%,
+      rgba(0,0,0,.14) 55%,
+      rgba(0,0,0,.06) 100%),
+    url('/images/rust-user-background.jpg') center 42% / cover no-repeat !important;
+  filter: saturate(.92) contrast(1.05) brightness(.98) !important;
+}
+.cloudy-classic-game-card:hover .cloudy-classic-game-art {
+  transform: scale(1.03);
+  filter: saturate(1) contrast(1.06) brightness(1.02) !important;
+}
+
+/* Premium moving red trace around important cards/sections */
+@property --cloudy-trace-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+@keyframes cloudy-trace-spin {
+  to { --cloudy-trace-angle: 360deg; }
+}
+@keyframes cloudy-line-sweep {
+  from { background-position: -160% 0; }
+  to { background-position: 260% 0; }
+}
+
+.cloudy-classic-game-card,
+.cloudy-classic-coming,
+.cloudy-classic-feature,
+.cloudy-classic-future,
+.cloudy-classic-why-grid,
+.cloudy-classic-benefits {
+  position: relative;
+  isolation: isolate;
+}
+
+.cloudy-classic-game-card::after,
+.cloudy-classic-coming::after,
+.cloudy-classic-feature::after,
+.cloudy-classic-future::after,
+.cloudy-classic-why-grid::after,
+.cloudy-classic-benefits::after {
+  content: "";
+  position: absolute;
+  z-index: 12;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background:
+    conic-gradient(
+      from var(--cloudy-trace-angle),
+      transparent 0deg,
+      transparent 238deg,
+      rgba(239,60,60,.12) 260deg,
+      #b91818 282deg,
+      #ef3c3c 298deg,
+      #ff9a9a 306deg,
+      rgba(239,60,60,.20) 316deg,
+      transparent 334deg,
+      transparent 360deg
+    );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: cloudy-trace-spin 7.5s linear infinite;
+  opacity: .88;
+}
+
+.cloudy-classic-coming {
+  border-radius: 14px;
+}
+.cloudy-classic-benefits {
+  border-inline: 1px solid rgba(255,255,255,.045);
+  border-radius: 12px;
+}
+.cloudy-classic-why-grid {
+  border-inline: 1px solid rgba(255,255,255,.045);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* Header and footer accent lines now move instead of sitting still */
+.cloudy-header::after,
+.cloudy-footer::before {
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 34%,
+      rgba(185,24,24,.16) 42%,
+      #ef3c3c 49%,
+      #ffb0b0 51%,
+      #ef3c3c 53%,
+      rgba(185,24,24,.16) 60%,
+      transparent 68%,
+      transparent 100%
+    ) !important;
+  background-size: 220% 100% !important;
+  animation: cloudy-line-sweep 6.5s linear infinite;
+  opacity: .78 !important;
+}
+
+/* Footer: keep the brand clean; the slogan only remains in the copyright line */
+.cloudy-footer-brand {
+  align-items: center;
+}
+
+@media (max-width: 700px) {
+  .cloudy-classic-logo-shell {
+    width: 132px;
+    height: 132px;
+  }
+  .cloudy-classic-hero h1 {
+    margin-top: 20px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cloudy-classic-game-card::after,
+  .cloudy-classic-coming::after,
+  .cloudy-classic-feature::after,
+  .cloudy-classic-future::after,
+  .cloudy-classic-why-grid::after,
+  .cloudy-classic-benefits::after,
+  .cloudy-header::after,
+  .cloudy-footer::before {
+    animation: none !important;
+  }
+}
