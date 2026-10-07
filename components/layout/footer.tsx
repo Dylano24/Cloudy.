@@ -36,8 +36,6 @@ export function Footer() {
             <div className="cloudy-footer-links">
               <Link href="/terms">Terms of service</Link>
               <Link href="/terms-of-sale">Terms of sale</Link>
-              <Link href="/privacy-policy">Privacy policy</Link>
-              <Link href="/legal-notice">Legal notice</Link>
             </div>
           </div>
         </div>
