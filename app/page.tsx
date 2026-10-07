@@ -52,8 +52,16 @@ export default function HomePage() {
           </div>
 
           <div className="cloudy-classic-game-grid">
-            <Link href="/shop" className="cloudy-classic-game-card">
-              <img src="/images/rust-user-background.jpg" alt="" aria-hidden="true" className="cloudy-classic-game-image" />
+            <Link
+              href="/shop"
+              className="cloudy-classic-game-card"
+              style={{
+                backgroundImage: "url('/images/rust-user-background.jpg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center 42%',
+                backgroundRepeat: 'no-repeat',
+              }}
+            >
               <span className="cloudy-classic-game-badge">RUST</span>
               <div className="cloudy-classic-game-copy">
                 <span>CLOUDY PROJECT</span>

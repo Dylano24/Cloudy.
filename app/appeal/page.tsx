@@ -231,7 +231,7 @@ export default function AppealPage() {
                   <span className={styles.submitHint}>Please do not submit multiple review requests for the same moderation action.</span>
                   <button className={styles.submitButton} type="submit" disabled={submitting}>
                     {submitting && <LoaderCircle className={styles.spinner} size={17} />}
-                    {submitting ? 'Submitting...' : 'Submit review'}
+                    {submitting ? 'Submitting...' : 'Submit'}
                   </button>
                 </div>
               </form>
