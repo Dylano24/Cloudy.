@@ -58,7 +58,6 @@ export default function HomePage() {
               <div className="cloudy-classic-game-copy">
                 <span>CLOUDY PROJECT</span>
                 <h3>CLOUDY RUST</h3>
-                <p>BUILD. COMPETE. DOMINATE.</p>
                 <b>View servers &amp; kits <ArrowRight size={15} /></b>
               </div>
             </Link>
