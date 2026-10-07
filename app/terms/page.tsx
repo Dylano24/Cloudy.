@@ -59,7 +59,7 @@ export default function TermsPage() {
             </section>
           ))}
         </div>
-        <p className="mt-8 text-center text-[10px] font-bold uppercase tracking-[0.14em] text-muted">Last updated 07.10.2026 at 18h17</p>
+        <p className="mt-8 text-center text-[11px] font-medium tracking-[0.04em] text-muted">Last updated 07 October 2026 · 18:17</p>
       </div>
     </main>
   );
