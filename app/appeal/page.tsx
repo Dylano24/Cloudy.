@@ -214,7 +214,7 @@ export default function AppealPage() {
                 </label>
 
                 <label className={styles.field}>
-                  <span className={styles.label}>Do you have any evidence supporting your review?</span>
+                  <span className={styles.label}>Do you have any evidence supporting your appeal?</span>
                   <span className={styles.help}>You may provide screenshots, videos, messages, or any other relevant evidence.</span>
                   <textarea className={styles.textarea} name="evidence" placeholder="Optional" maxLength={1000} />
                 </label>
