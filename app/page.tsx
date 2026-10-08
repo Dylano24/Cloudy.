@@ -13,7 +13,6 @@ export default function HomePage() {
         <div className="cloudy-classic-logo-shell">
           <img src={CLOUDY_LOGO_URL} alt="Cloudy" />
         </div>
-        <h1>CLOUDY</h1>
         <p className="cloudy-classic-tagline">Perfected through detail. <strong>Designed for excellence.</strong></p>
         <p className="cloudy-classic-hero-copy">
           Cloudy creates and operates dedicated gaming experiences, bringing together immersive servers,
