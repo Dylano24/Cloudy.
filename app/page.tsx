@@ -62,6 +62,7 @@ export default function HomePage() {
                 backgroundRepeat: 'no-repeat',
               }}
             >
+              <img src="/images/rust-user-background.jpg" alt="" aria-hidden="true" className="cloudy-classic-game-image" />
               <span className="cloudy-classic-game-badge">RUST</span>
               <div className="cloudy-classic-game-copy">
                 <span>CLOUDY PROJECT</span>
