@@ -82,10 +82,9 @@ export function Header() {
 
       {open && (
         <nav className="cloudy-mobile-menu" aria-label="Mobile navigation" style={{ display: 'block' }}>
-          {nav.map(([label, href]) => (
+          {nav.slice(0, 3).map(([label, href]) => (
             <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>
           ))}
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>DISCORD</a>
           <Link href="/?open=account" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             <LogIn size={17} /> LOGIN
           </Link>
