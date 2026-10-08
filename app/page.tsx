@@ -24,8 +24,9 @@ export default function HomePage() {
       <main className="cloudy-classic-wrap">
         <section className="cloudy-classic-intro">
           <p>
-            Cloudy is the parent gaming company. Rust is our first project, supported by digital services,
-            a dedicated website and a community that brings the Cloudy platform together.
+            Cloudy Inc. is a gaming company focused on developing and operating within the gaming industry,
+            currently starting with Rust game servers, alongside digital products and services, a dedicated
+            website, and a community that bring our services and platform together.
           </p>
         </section>
 
