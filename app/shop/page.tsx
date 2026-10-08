@@ -171,7 +171,7 @@ export default function ShopPage() {
   return (
     <div className="cloudy-rust-store-page min-h-screen">
       <section className="cloudy-rust-store-hero">
-        <img src="/images/rust-user-background.jpg" alt="" aria-hidden="true" className="cloudy-rust-store-hero-image" />
+        <img src="/images/cloudy-rust-premium-4k.avif" alt="" aria-hidden="true" className="cloudy-rust-store-hero-image" />
         <div className="cloudy-rust-store-hero-shade" aria-hidden="true" />
         <div className="cloudy-rust-store-hero-copy">
           <span>RUST</span>

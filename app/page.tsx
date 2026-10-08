@@ -56,7 +56,7 @@ export default function HomePage() {
               href="/shop"
               className="cloudy-classic-game-card"
               style={{
-                backgroundImage: "url('/images/cloudy-rust-cinematic.avif')",
+                backgroundImage: "url('/images/cloudy-rust-premium-4k.avif')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center 42%',
                 backgroundRepeat: 'no-repeat',
@@ -66,7 +66,7 @@ export default function HomePage() {
                 className="cloudy-classic-game-image"
                 aria-hidden="true"
                 style={{
-                  backgroundImage: "url('/images/cloudy-rust-cinematic.avif')",
+                  backgroundImage: "url('/images/cloudy-rust-premium-4k.avif')",
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   backgroundRepeat: 'no-repeat',
