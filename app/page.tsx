@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Headphones, ShieldCheck, Users2 } from 'lucide-react';
+import { ArrowRight, Headphones, Shield, ShieldCheck, Users2, Zap } from 'lucide-react';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
@@ -91,8 +91,8 @@ export default function HomePage() {
           </div>
           <div className="cloudy-restored-pay-grid">
             <article><span className="cloudy-restored-pay-icon">✓</span><h3>Secure Checkout</h3><p>Protected payment processing.</p></article>
-            <article><span className="cloudy-restored-pay-icon">↗</span><h3>Instant Delivery</h3><p>Receive your digital purchases quickly.</p></article>
-            <article><span className="cloudy-restored-pay-icon">◇</span><h3>Trusted Payments</h3><p>Payments handled by secure, established providers.</p></article>
+            <article><span className="cloudy-restored-pay-icon"><Zap size={27} strokeWidth={2.4} /></span><h3>Instant Delivery</h3><p>Receive your digital purchases quickly.</p></article>
+            <article><span className="cloudy-restored-pay-icon"><Shield size={27} strokeWidth={2.2} /></span><h3>Trusted Payments</h3><p>Payments handled by secure, established providers.</p></article>
           </div>
         </section>
 
