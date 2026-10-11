@@ -78,7 +78,7 @@ export function Header() {
             if (event.key === 'Escape') setAccountOpen(false);
           }}>
             <button type="button" className={styles.login} aria-expanded={accountOpen} aria-controls="cloudy-account-menu" onClick={() => setAccountOpen(!accountOpen)}>
-              My account
+              Account
             </button>
             {accountOpen && (
               <nav id="cloudy-account-menu" className={styles.accountMenu} aria-label="Account menu">
