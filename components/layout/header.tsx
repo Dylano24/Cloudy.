@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { LogIn, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
+import styles from './header.module.css';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
@@ -41,14 +42,17 @@ export function Header() {
   }, []);
 
   const nav = [
-    ['HOME', '/'],
-    ['SERVER', '/#games'],
-    ['STORE', '/shop'],
-    ['APPEAL FORM', '/appeal'],
+    ['Home', '/'],
+    ['Server', '/#games'],
+    ['Store', '/shop'],
+    ['Support', '/support'],
+    ['Appeal form', '/appeal'],
+    ['Terms of service', '/terms'],
+    ['Terms of sale', '/terms-of-sale'],
   ] as const;
 
   return (
-    <header className="cloudy-header">
+    <header className={`cloudy-header ${styles.header}`}>
       <div className="cloudy-header-inner">
         <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Inc. home">
           <span className="cloudy-logo-orbit">
@@ -66,7 +70,7 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer">DISCORD</a>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -82,9 +86,10 @@ export function Header() {
 
       {open && (
         <nav className="cloudy-mobile-menu" aria-label="Mobile navigation" style={{ display: 'block' }}>
-          {nav.slice(0, 3).map(([label, href]) => (
+          {nav.map(([label, href]) => (
             <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>
           ))}
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>Discord</a>
           <Link href="/?open=account" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             <LogIn size={17} /> LOGIN
           </Link>
