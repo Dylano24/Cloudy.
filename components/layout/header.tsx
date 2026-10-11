@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { LogIn } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
@@ -73,7 +72,7 @@ export function Header() {
             <span className="cloudy-shared-basket-count">{basketCount}</span>
           </Link>
           <Link href="/?open=account" className={styles.login}>
-            <LogIn size={17} /> Login
+            Login
           </Link>
         </div>
       </div>
