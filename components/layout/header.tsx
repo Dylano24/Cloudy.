@@ -43,12 +43,8 @@ export function Header() {
 
   const nav = [
     ['Homepage', '/'],
-    ['Server', '/#games'],
     ['Store', '/shop'],
-    ['Support', '/support'],
-    ['Appeal form', '/appeal'],
-    ['Terms of service', '/terms'],
-    ['Terms of sale', '/terms-of-sale'],
+    ['Appeal', '/appeal'],
   ] as const;
 
   return (
@@ -65,18 +61,12 @@ export function Header() {
         </Link>
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
-          {nav.filter(([, href]) => href === '/' || href === '/shop').map(([label, href]) => (
+          {nav.map(([label, href]) => (
             <Link key={href} href={href} className={pathname === href || (href === '/appeal' && pathname.startsWith('/appeal')) ? 'active' : ''}>
               {label}
             </Link>
           ))}
-          <details className={styles.terms}>
-            <summary className={pathname === '/terms' || pathname === '/terms-of-sale' ? styles.active : ''}>Terms</summary>
-            <div className={styles.termsMenu}>
-              <Link href="/terms">Terms of service</Link>
-              <Link href="/terms-of-sale">Terms of sale</Link>
-            </div>
-          </details>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -92,13 +82,10 @@ export function Header() {
 
       {open && (
         <nav className="cloudy-mobile-menu" aria-label="Mobile navigation" style={{ display: 'block' }}>
-          {nav.map(([label, href]) => (
-            <Link key={href} href={href} onClick={() => setOpen(false)}>{label}</Link>
-          ))}
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer" onClick={() => setOpen(false)}>Discord</a>
           <Link href="/?open=account" onClick={() => setOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-            <LogIn size={17} /> LOGIN
+            <LogIn size={17} /> Login
           </Link>
+          <Link href="/support" onClick={() => setOpen(false)}>Support</Link>
         </nav>
       )}
     </header>
