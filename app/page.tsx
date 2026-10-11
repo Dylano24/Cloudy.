@@ -11,8 +11,12 @@ export default function HomePage() {
       <div className="cloudy-classic-smoke" aria-hidden="true" />
 
       <section className="cloudy-classic-hero">
-        <div className="cloudy-classic-logo-shell">
+        <div className={`cloudy-classic-logo-shell ${styles.logoShell}`}>
           <img src={CLOUDY_LOGO_URL} alt="Cloudy" />
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer" className={styles.discordJoin} aria-label="Join Discord">
+            <img src="https://cdn.discordapp.com/emojis/1543287452410716160.gif?size=96&quality=lossless" alt="" width={30} height={30} aria-hidden="true" />
+            <span>Discord</span>
+          </a>
         </div>
         <p className="cloudy-classic-tagline">Perfected through detail. <strong>Designed for excellence.</strong></p>
       </section>

@@ -35,3 +35,22 @@
   position: relative;
   margin-top: -32px;
 }
+
+.home .logoShell { position: relative; overflow: visible; }
+.discordJoin {
+  position: absolute;
+  right: calc(100% + 56px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.home .discordJoin img { width: 30px; height: 30px; object-fit: contain; }
+@media (max-width: 620px) {
+  .discordJoin { right: calc(100% + 36px); }
+}
