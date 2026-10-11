@@ -74,3 +74,33 @@
 @media (max-width: 900px) {
   .login { padding: 10px 4px; gap: 5px; font-size: 10px; }
 }
+
+.account { position: relative; }
+.login { cursor: pointer; font-family: inherit; }
+.accountMenu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 230px;
+  padding: 8px;
+  border: 1px solid rgba(239,60,60,.3);
+  border-radius: 13px;
+  background: #080809;
+  box-shadow: 0 24px 70px rgba(0,0,0,.56);
+}
+.accountMenu button, .accountMenu a {
+  display: block;
+  width: 100%;
+  padding: 12px 13px;
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  color: #c8c8cc;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  text-align: left;
+}
+.accountMenu button:disabled { opacity: .65; cursor: not-allowed; }
+.accountMenu a { margin-top: 6px; border-top: 1px solid rgba(255,255,255,.1); border-radius: 0 0 8px 8px; }
+.accountMenu a:hover { color: #fff; background: rgba(239,60,60,.06); }
