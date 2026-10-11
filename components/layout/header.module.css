@@ -48,8 +48,7 @@
 @media (max-width: 420px) {
   .header :global(.cloudy-header-inner) { gap: 4px; }
   .header :global(.cloudy-header-nav) { gap: 0; }
-  .header :global(.cloudy-shared-basket),
-  .header :global(.cloudy-desktop-menu-button) {
+  .header :global(.cloudy-shared-basket) {
     width: 34px;
     height: 38px;
     flex-basis: 34px;
@@ -57,22 +56,19 @@
   }
 }
 
-.discordJoin {
-  position: absolute;
-  left: 16px;
-  top: 110px;
+.login {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  padding: 6px;
-  color: #fff;
-  z-index: 10;
+  gap: 9px;
+  padding: 12px 13px;
+  border-radius: 8px;
+  color: #c8c8cc;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.discordJoin img { object-fit: contain; }
-.discordJoin span { font-size: 11px; }
+.login:hover { color: #fff; background: rgba(239,60,60,.06); }
 
-@media (max-width: 620px) {
-  .discordJoin { left: 10px; top: 102px; }
+@media (max-width: 900px) {
+  .login { padding: 10px 4px; gap: 5px; font-size: 10px; }
 }
