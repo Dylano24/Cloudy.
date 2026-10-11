@@ -18,6 +18,7 @@ function BasketIcon() {
 
 export function Header() {
   const pathname = usePathname();
+  const [accountOpen, setAccountOpen] = useState(false);
   const [basketCount, setBasketCount] = useState(0);
 
   useEffect(() => {
@@ -71,9 +72,23 @@ export function Header() {
             <BasketIcon />
             <span className="cloudy-shared-basket-count">{basketCount}</span>
           </Link>
-          <Link href="/?open=account" className={styles.login}>
-            Login
-          </Link>
+          <div className={styles.account} onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setAccountOpen(false);
+          }} onKeyDown={(event) => {
+            if (event.key === 'Escape') setAccountOpen(false);
+          }}>
+            <button type="button" className={styles.login} aria-expanded={accountOpen} aria-controls="cloudy-account-menu" onClick={() => setAccountOpen(!accountOpen)}>
+              My account
+            </button>
+            {accountOpen && (
+              <nav id="cloudy-account-menu" className={styles.accountMenu} aria-label="Account menu">
+                {['My account', 'My orders', 'Favorites', 'Fidelity', 'My information', 'Log off'].map((label) => (
+                  <button key={label} type="button" disabled>{label}</button>
+                ))}
+                <Link href="/?open=account" onClick={() => setAccountOpen(false)}>Login</Link>
+              </nav>
+            )}
+          </div>
         </div>
       </div>
 
