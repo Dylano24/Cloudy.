@@ -30,3 +30,8 @@
   font-weight: 650;
   text-align: center;
 }
+
+.home :global(.cloudy-classic-intro) {
+  position: relative;
+  margin-top: -32px;
+}

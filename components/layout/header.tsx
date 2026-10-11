@@ -8,6 +8,7 @@ import styles from './header.module.css';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
+const DISCORD_EMOJI_URL = 'https://cdn.discordapp.com/emojis/1543287452410716160.gif?size=96&quality=lossless';
 const BASKET_KEY = 'cloudy-basket-v1';
 
 function BasketIcon() {
@@ -66,7 +67,6 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
         </nav>
 
         <div className="cloudy-header-actions">
@@ -88,6 +88,10 @@ export function Header() {
           <Link href="/support" onClick={() => setOpen(false)}>Support</Link>
         </nav>
       )}
+      <a href={DISCORD_URL} target="_blank" rel="noreferrer" className={styles.discordJoin} aria-label="Join Discord">
+        <img src={DISCORD_EMOJI_URL} alt="" width={30} height={30} aria-hidden="true" />
+        <span><strong>Discord</strong><small>Join us</small></span>
+      </a>
     </header>
   );
 }
