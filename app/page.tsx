@@ -15,18 +15,12 @@ export default function HomePage() {
           <img src={CLOUDY_LOGO_URL} alt="Cloudy" />
         </div>
         <p className="cloudy-classic-tagline">Perfected through detail. <strong>Designed for excellence.</strong></p>
-        <p className="cloudy-classic-hero-copy">
-          Cloudy creates and operates dedicated gaming experiences, bringing together immersive servers,
-          active communities and in game services.
-        </p>
       </section>
 
       <div className="cloudy-classic-wrap">
         <section className="cloudy-classic-intro">
           <p>
-            Cloudy Inc. is a gaming company focused on developing and operating within the gaming industry,
-            currently starting with Rust game servers, alongside digital products and services, a dedicated
-            website, and a community that bring our services and platform together.
+            Cloudy creates and operates dedicated gaming experiences, bringing together immersive servers, active communities and in game services.
           </p>
         </section>
 

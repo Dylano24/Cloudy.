@@ -42,7 +42,7 @@ export function Header() {
   }, []);
 
   const nav = [
-    ['Home', '/'],
+    ['Homepage', '/'],
     ['Server', '/#games'],
     ['Store', '/shop'],
     ['Support', '/support'],
@@ -65,12 +65,18 @@ export function Header() {
         </Link>
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
-          {nav.map(([label, href]) => (
+          {nav.filter(([, href]) => href === '/' || href === '/shop').map(([label, href]) => (
             <Link key={href} href={href} className={pathname === href || (href === '/appeal' && pathname.startsWith('/appeal')) ? 'active' : ''}>
               {label}
             </Link>
           ))}
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
+          <details className={styles.terms}>
+            <summary className={pathname === '/terms' || pathname === '/terms-of-sale' ? styles.active : ''}>Terms</summary>
+            <div className={styles.termsMenu}>
+              <Link href="/terms">Terms of service</Link>
+              <Link href="/terms-of-sale">Terms of sale</Link>
+            </div>
+          </details>
         </nav>
 
         <div className="cloudy-header-actions">
