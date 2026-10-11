@@ -1,14 +1,15 @@
 import Link from 'next/link';
+import styles from './footer.module.css';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 
 export function Footer() {
   return (
-    <footer className="cloudy-footer">
+    <footer className={`cloudy-footer ${styles.footer}`}>
       <div className="cloudy-footer-inner">
         <div className="cloudy-footer-grid">
-          <div>
+          <div className={styles.brand}>
             <Link href="/" className="cloudy-footer-brand" aria-label="Cloudy Inc. home">
               <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={50} height={50} />
               <div><strong>CLOUDY INC.</strong></div>
@@ -32,7 +33,10 @@ export function Footer() {
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
             </div>
 
-            <div className="cloudy-footer-title" style={{ marginTop: 18 }}>Information</div>
+          </div>
+
+          <div>
+            <div className="cloudy-footer-title">Information</div>
             <div className="cloudy-footer-links">
               <Link href="/terms">Terms of service</Link>
               <Link href="/terms-of-sale">Terms of sale</Link>
