@@ -1,0 +1,19 @@
+.header :global(.cloudy-header-nav) {
+  flex-wrap: wrap;
+}
+
+.header :global(.cloudy-header-inner) {
+  height: auto;
+  min-height: 92px;
+  padding-block: 12px;
+}
+
+@media (max-width: 1200px) {
+  .header :global(.cloudy-header-nav) {
+    display: none;
+  }
+
+  .header :global(.cloudy-header-actions) {
+    min-width: auto;
+  }
+}
