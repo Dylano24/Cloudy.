@@ -43,12 +43,13 @@ export function Header() {
   }, []);
 
   const nav = [
-    ['Homepage', '/'],
+    ['Home', '/'],
     ['Store', '/shop'],
     ['Appeal', '/appeal'],
   ] as const;
 
   return (
+    <>
     <header className={`cloudy-header ${styles.header}`}>
       <div className="cloudy-header-inner">
         <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Inc. home">
@@ -88,10 +89,11 @@ export function Header() {
           <Link href="/support" onClick={() => setOpen(false)}>Support</Link>
         </nav>
       )}
+    </header>
       <a href={DISCORD_URL} target="_blank" rel="noreferrer" className={styles.discordJoin} aria-label="Join Discord">
         <img src={DISCORD_EMOJI_URL} alt="" width={30} height={30} aria-hidden="true" />
-        <span><strong>Discord</strong><small>Join us</small></span>
+        <span>Discord</span>
       </a>
-    </header>
+    </>
   );
 }
