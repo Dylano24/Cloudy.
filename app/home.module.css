@@ -1,0 +1,32 @@
+.home :global(.cloudy-classic-coming) {
+  grid-template-columns: 1fr;
+}
+
+.home :global(.cloudy-classic-coming) > div {
+  border-left: 0;
+  text-align: center;
+}
+
+.home :global(.cloudy-classic-why-grid) article {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.home :global(.cloudy-classic-why-grid) strong {
+  text-transform: none;
+}
+
+.home :global(.cloudy-classic-why-grid) svg {
+  color: #ef4a4a;
+}
+
+.statement {
+  margin: 56px 0 0;
+  color: #e9e9eb;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 650;
+  text-align: center;
+}
