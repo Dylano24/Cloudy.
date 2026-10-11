@@ -116,13 +116,13 @@ export default function CartPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center py-20">
             <ShoppingCart className="w-24 h-24 text-muted mx-auto mb-6" />
-            <h1 className="text-3xl font-bold mb-4">Your Cart is Empty</h1>
+            <h1 className="text-3xl font-bold mb-4">Your cart is empty</h1>
             <p className="text-muted mb-8">
               Looks like you haven't added any products to your cart yet.
             </p>
             <Link href="/shop">
               <button className="px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 inline-flex items-center gap-2 cursor-pointer">
-                Browse Products
+                Browse products
                 <ArrowRight className="w-5 h-5" />
               </button>
             </Link>
