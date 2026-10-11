@@ -57,6 +57,8 @@
 }
 
 .login {
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.03);
   display: flex;
   align-items: center;
   gap: 9px;

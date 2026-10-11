@@ -7,7 +7,6 @@ import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
-const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 const BASKET_KEY = 'cloudy-basket-v1';
 
 function BasketIcon() {
@@ -44,6 +43,7 @@ export function Header() {
     ['Home', '/'],
     ['Store', '/shop'],
     ['Appeal', '/appeal'],
+    ['Support', '/support'],
   ] as const;
 
   return (
@@ -65,7 +65,6 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
         </nav>
 
         <div className="cloudy-header-actions">
