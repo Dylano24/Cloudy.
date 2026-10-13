@@ -9,7 +9,7 @@ type Message =
   | { role: 'visitor'; text: string }
   | { role: 'assistant'; result: HelpResult };
 
-const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'basket', 'sale-introduction'];
+const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'sale-introduction'];
 
 export function CloudyHelp() {
   const [open, setOpen] = useState(false);
