@@ -1263,8 +1263,8 @@ body {
   to { --cloudy-trace-angle: 360deg; }
 }
 @keyframes cloudy-line-sweep {
-  from { background-position: 100% 0; }
-  to { background-position: 0% 0; }
+  from { background-position: 0% 0; }
+  to { background-position: 100% 0; }
 }
 
 .cloudy-classic-game-card,
