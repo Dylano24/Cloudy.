@@ -5,17 +5,10 @@ import { UserRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
+import { BasketIcon } from '@/components/ui/basket-icon';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const BASKET_KEY = 'cloudy-basket-v1';
-
-function BasketIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 7h14l1 14H4L5 7Z M9 8V6a3 3 0 0 1 6 0v2" />
-    </svg>
-  );
-}
 
 export function Header() {
   const pathname = usePathname();
@@ -69,10 +62,6 @@ export function Header() {
         </nav>
 
         <div className="cloudy-header-actions">
-          <Link href="/cart" className="cloudy-shared-basket" aria-label={`Open basket, ${basketCount} saved products`}>
-            <BasketIcon />
-            <span className="cloudy-shared-basket-count">{basketCount}</span>
-          </Link>
           <div className={styles.account} onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) setAccountOpen(false);
           }} onKeyDown={(event) => {
@@ -90,6 +79,10 @@ export function Header() {
               </nav>
             )}
           </div>
+          <Link href="/cart" className="cloudy-shared-basket" aria-label={`Open basket, ${basketCount} saved products`}>
+            <BasketIcon />
+            <span className="cloudy-shared-basket-count">{basketCount}</span>
+          </Link>
         </div>
       </div>
 

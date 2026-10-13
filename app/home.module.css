@@ -250,3 +250,23 @@
   text-shadow: 0 0 3px rgba(229,27,46,.9), 0 0 14px rgba(229,27,46,.6), 0 0 28px rgba(229,27,46,.25);
 }
 
+
+/* Quiet white titles and solid red icons; retain the existing line motion. */
+.home h2,
+.home h2 span,
+.home :global(.cloudy-restored-pay-grid) h3,
+.home :global(.cloudy-classic-why-grid) strong,
+.home :global(.cloudy-classic-tagline) strong,
+.titleGlow,
+.statement {
+  color: #fff;
+  text-shadow: none;
+  animation: none;
+}
+.home :global(.cloudy-restored-pay-icon),
+.home :global(.cloudy-restored-pay-icon) svg,
+.home :global(.cloudy-classic-why-grid) svg {
+  color: #e51b2e;
+  text-shadow: none;
+  filter: none;
+}
