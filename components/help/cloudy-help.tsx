@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { ArrowUp, ArrowUpRight, MessageCircle, RotateCcw, X } from 'lucide-react';
+import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
 import styles from './cloudy-help.module.css';
 
@@ -84,19 +84,19 @@ export function CloudyHelp() {
       {open && (
         <section id="cloudy-help-panel" className={styles.panel} role="dialog" aria-modal="false" aria-labelledby="cloudy-help-title">
           <header className={styles.header}>
-            <span className={styles.brandIcon}><MessageCircle size={21} aria-hidden="true" /></span>
+            <span className={styles.brandIcon}><Bot size={21} aria-hidden="true" /></span>
             <div className={styles.brandCopy}>
-              <h2 id="cloudy-help-title">Cloudy support</h2>
+              <h2 id="cloudy-help-title">Cloudy assistant</h2>
               <p>Website &amp; purchase help</p>
             </div>
             <button type="button" className={styles.iconButton} onClick={reset} aria-label="Start a new chat" title="Start a new chat"><RotateCcw size={17} aria-hidden="true" /></button>
-            <button type="button" className={styles.iconButton} onClick={close} aria-label="Close Cloudy support"><X size={20} aria-hidden="true" /></button>
+            <button type="button" className={styles.iconButton} onClick={close} aria-label="Close Cloudy assistant"><X size={20} aria-hidden="true" /></button>
           </header>
 
           <div className={styles.body} ref={logRef}>
             <div className={styles.welcome}>
               <span className={styles.eyebrow}>HOW CAN WE HELP?</span>
-              <h3>Welcome to <span>Cloudy support</span></h3>
+              <h3>Chat with our assistant.</h3>
               <p>Ask about the website, purchases or support. Choose a topic or type your question below.</p>
             </div>
             <div className={styles.topics} aria-label="Help topics">
@@ -110,7 +110,7 @@ export function CloudyHelp() {
                 <p key={index} className={styles.visitor}>{message.text}</p>
               ) : (
                 <div key={index} className={styles.answer}>
-                  <span className={styles.sender}>Cloudy support</span>
+                  <span className={styles.sender}>Cloudy assistant</span>
                   {message.result.kind === 'answer' ? message.result.entries.map(entry => (
                     <div key={entry.id}>
                       <h3>{entry.title}</h3>
@@ -143,9 +143,9 @@ export function CloudyHelp() {
           </form>
         </section>
       )}
-      <button ref={launcherRef} type="button" className={styles.launcher} aria-label="Cloudy support" aria-expanded={open} aria-controls="cloudy-help-panel" onClick={() => open ? close() : setOpen(true)}>
-        {open ? <X size={21} aria-hidden="true" /> : <MessageCircle size={23} aria-hidden="true" />}
-        <span>Cloudy support</span>
+      <button ref={launcherRef} type="button" className={styles.launcher} aria-label="Assistant" aria-expanded={open} aria-controls="cloudy-help-panel" onClick={() => open ? close() : setOpen(true)}>
+        <Bot size={23} aria-hidden="true" />
+        <span>Assistant</span>
       </button>
     </div>
   );
