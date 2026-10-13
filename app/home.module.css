@@ -211,3 +211,33 @@
   color: #e51b2e;
   filter: drop-shadow(0 0 3px rgba(229,27,46,.9)) drop-shadow(0 0 10px rgba(229,27,46,.6));
 }
+
+/* Confine the diagonal sweep to the selected homepage panels. */
+.home::after { display: none; }
+.home :global(.cloudy-classic-intro),
+.home :global(.cloudy-classic-coming),
+.home :global(.cloudy-classic-feature),
+.home :global(.cloudy-classic-future),
+.home :global(.cloudy-restored-pay-grid) article,
+.home :global(.cloudy-classic-why-grid) article {
+  background-color: #050505;
+  background-image: linear-gradient(110deg, transparent 42%, rgba(160,160,170,.03) 46%, rgba(210,210,220,.12) 50%, rgba(160,160,170,.03) 54%, transparent 58%);
+  background-size: 400% 100%;
+  background-repeat: no-repeat;
+  animation: panelGlowSweep 5s linear infinite;
+}
+@keyframes panelGlowSweep {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home :global(.cloudy-classic-intro),
+  .home :global(.cloudy-classic-coming),
+  .home :global(.cloudy-classic-feature),
+  .home :global(.cloudy-classic-future),
+  .home :global(.cloudy-restored-pay-grid) article,
+  .home :global(.cloudy-classic-why-grid) article {
+    animation: none;
+    background-image: none;
+  }
+}
