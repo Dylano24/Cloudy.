@@ -113,3 +113,9 @@
 .accountMenu button:disabled { opacity: .65; cursor: not-allowed; }
 .accountMenu a { margin-top: 6px; border-top: 1px solid rgba(255,255,255,.1); border-radius: 0 0 8px 8px; }
 .accountMenu a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+
+.header :global(.cloudy-shared-basket),
+.header :global(.cloudy-shared-basket):hover,
+.login {
+  border-color: #e51b2e !important;
+}
