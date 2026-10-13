@@ -28,7 +28,7 @@ export default function HomePage() {
 
         <section id="games" className="cloudy-classic-section">
           <div className="cloudy-classic-heading">
-            <h2>Inside Cloudy</h2>
+            <h2>Inside <span className={styles.titleGlow}>Cloudy</span></h2>
             <p>Discover the games, servers and experiences created and operated by Cloudy.</p>
           </div>
 
@@ -68,12 +68,12 @@ export default function HomePage() {
           </div>
         </section>
         <section className="cloudy-classic-feature">
-          <div><h2>Enhance your experience</h2></div>
+          <div><h2>Enhance your <span className={styles.titleGlow}>experience</span></h2></div>
           <Link href="/shop" className="cloudy-classic-button">Visit the store <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
         <section className="cloudy-restored-payments" aria-label="Secure payments">
           <div className="cloudy-classic-heading">
-            <h2>Secure payments</h2>
+            <h2>Secure <span className={styles.titleGlow}>payments</span></h2>
             <p>Simple, secure and reliable checkout</p>
             <div className="cloudy-restored-payment-brands" aria-label="Payment methods">
               <span>Visa</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span><span>Google Pay</span>
@@ -88,7 +88,7 @@ export default function HomePage() {
 
         <section className="cloudy-classic-feature cloudy-classic-community">
           <div>
-            <h2>Join the community</h2>
+            <h2>Join the <span className={styles.titleGlow}>community</span></h2>
             <p>Join Cloudy on Discord for server updates, community news and support.</p>
           </div>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-classic-button">Join our Discord <ArrowRight size={15} aria-hidden="true" /></a>
@@ -96,7 +96,7 @@ export default function HomePage() {
 
         <section className="cloudy-classic-why">
           <div className="cloudy-classic-heading">
-            <h2>Why Cloudy?</h2>
+            <h2>Why <span className={styles.titleGlow}>Cloudy</span>?</h2>
             <p>Made with purpose.</p>
           </div>
           <div className="cloudy-classic-why-grid">
@@ -109,7 +109,7 @@ export default function HomePage() {
 
         <section className="cloudy-classic-future">
           <span className="cloudy-classic-eyebrow">What&apos;s next?</span>
-          <h2>The future of Cloudy</h2>
+          <h2>The future of <span className={styles.titleGlow}>Cloudy</span></h2>
           <p>
             We aim to expand Cloudy across new games and experiences while carrying the same attention to detail
             and commitment to quality into everything we create.
