@@ -17,7 +17,6 @@ export default function HomePage() {
         </div>
         <p className="cloudy-classic-tagline">Perfected through detail. <strong>Designed for excellence.</strong></p>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className={styles.discordJoin} aria-label="Join Discord">
-            <img src="https://cdn.discordapp.com/emojis/1543287452410716160.gif?size=96&quality=lossless" alt="" width={30} height={30} aria-hidden="true" />
             <span>Discord</span>
           </a>
       </section>
