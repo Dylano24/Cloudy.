@@ -277,3 +277,17 @@
 .home :global(.cloudy-classic-intro) {
   box-shadow: 0 0 25px rgba(229,27,46,.05), 0 0 46px rgba(229,27,46,.15);
 }
+
+.home :global(.cloudy-classic-heading) > p::after,
+.statement::after {
+  content: '';
+  display: block;
+  width: 72px;
+  height: 2px;
+  margin: 20px auto 0;
+  background: #e51b2e;
+}
+.home :global(.cloudy-classic-button),
+.home :global(.cloudy-classic-button):hover {
+  border-color: #e51b2e;
+}

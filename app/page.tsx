@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-react';
 import styles from './home.module.css';
 import { CloudyHelp } from '@/components/help/cloudy-help';
+import { GameCarousel } from '@/components/home/game-carousel';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
@@ -34,7 +35,7 @@ export default function HomePage() {
             <p>Discover the games, servers and experiences created and operated by Cloudy.</p>
           </div>
 
-          <div className="cloudy-classic-game-grid">
+          <GameCarousel>
             <Link
               href="/shop"
               className="cloudy-classic-game-card"
@@ -67,16 +68,16 @@ export default function HomePage() {
                 <p>New projects are on the way</p>
               </div>
             </article>
-          </div>
+          </GameCarousel>
         </section>
         <section className="cloudy-classic-feature">
-          <div><h2>Enhance your <span className={styles.titleGlow}>experience</span></h2></div>
+          <div><h2>Enhance your <span className={styles.titleGlow}>experience</span></h2><p>From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.</p></div>
           <Link href="/shop" className="cloudy-classic-button">Visit the store <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
         <section className="cloudy-restored-payments" aria-label="Secure payments">
           <div className="cloudy-classic-heading">
             <h2>Secure <span className={styles.titleGlow}>payments</span></h2>
-            <p>Simple, secure and reliable checkout</p>
+            <p>Simple, secure and reliable checkout.</p>
             <div className="cloudy-restored-payment-brands" aria-label="Payment methods">
               <span>Visa</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span><span>Google Pay</span>
             </div>
@@ -91,7 +92,7 @@ export default function HomePage() {
         <section className="cloudy-classic-feature cloudy-classic-community">
           <div>
             <h2>Join the <span className={styles.titleGlow}>community</span></h2>
-            <p>Join Cloudy on Discord for server updates, community news and support.</p>
+            <p>Connect with other players, stay up to date with Cloudy, get support and discover what’s coming next.</p>
           </div>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-classic-button">Join our Discord <ArrowRight size={15} aria-hidden="true" /></a>
         </section>
