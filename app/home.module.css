@@ -66,10 +66,10 @@
   height: max(110vw, 850px);
   left: calc(50% - max(55vw, 425px));
   top: calc(50% - max(55vw, 425px));
-  background: url('/images/cloud-vortex.png') center / cover no-repeat;
+  background: url('/images/cloud-vortex-sharp.png') center / cover no-repeat;
   opacity: .78;
   pointer-events: none;
-  animation: vortexSpin 20s linear infinite;
+  animation: vortexSpin 28s linear infinite;
 }
 .home :global(.cloudy-classic-hero)::after {
   content: "";
@@ -85,4 +85,21 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .home :global(.cloudy-classic-hero)::before { animation: none; }
+}
+/* Soft ambient glow outside the vortex, with black card surfaces. */
+.home::before {
+  background:
+    radial-gradient(ellipse at 18% 30%, rgba(255,255,255,.075), transparent 48%) 0 0 / 100% 850px repeat-y,
+    radial-gradient(ellipse at 84% 65%, rgba(255,255,255,.06), transparent 46%) 0 0 / 100% 1100px repeat-y,
+    #030303;
+}
+.home :global(.cloudy-classic-coming),
+.home :global(.cloudy-classic-feature),
+.home :global(.cloudy-classic-future),
+.home :global(.cloudy-classic-why-grid),
+.home :global(.cloudy-classic-why-grid) article,
+.home :global(.cloudy-restored-pay-grid) article,
+.home :global(.cloudy-restored-pay-icon),
+.home :global(.cloudy-restored-payment-brands) span {
+  background: #050505;
 }
