@@ -178,3 +178,17 @@
     text-shadow: 0 0 2px rgba(201,24,40,.75), 0 0 11px rgba(180,12,28,.5), 0 0 24px rgba(160,0,18,.24);
   }
 }
+
+/* Constant, crisp text glow without brightness pulsing. */
+.home h2,
+.home :global(.cloudy-restored-pay-grid) h3,
+.home :global(.cloudy-classic-why-grid) strong,
+.home :global(.cloudy-classic-tagline) strong,
+.statement {
+  animation: none;
+  text-shadow: 0 0 3px rgba(255,255,255,.9), 0 0 14px rgba(255,255,255,.6), 0 0 28px rgba(255,255,255,.25);
+}
+.titleGlow {
+  animation: none;
+  text-shadow: 0 0 2px rgba(220,30,46,.9), 0 0 13px rgba(201,24,40,.65), 0 0 28px rgba(180,0,24,.3);
+}
