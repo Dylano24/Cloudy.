@@ -59,7 +59,7 @@
 .login {
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(239,60,60,.45);
+  border: 1px solid rgba(255,255,255,0.45);
   background: rgba(255,255,255,.03);
   display: flex;
   align-items: center;
@@ -74,7 +74,7 @@
 
 .login svg { width: 21px; height: 21px; }
 
-.login:hover { color: #fff; background: rgba(239,60,60,.06); }
+.login:hover { color: #fff; background: rgba(255,255,255,0.06); }
 
 @media (max-width: 900px) {
   .login { padding: 0; gap: 5px; font-size: 10px; }
@@ -92,7 +92,7 @@
   right: 0;
   width: 230px;
   padding: 8px;
-  border: 1px solid rgba(239,60,60,.3);
+  border: 1px solid rgba(255,255,255,0.3);
   border-radius: 13px;
   background: #080809;
   box-shadow: 0 24px 70px rgba(0,0,0,.56);
@@ -112,4 +112,4 @@
 }
 .accountMenu button:disabled { opacity: .65; cursor: not-allowed; }
 .accountMenu a { margin-top: 6px; border-top: 1px solid rgba(255,255,255,.1); border-radius: 0 0 8px 8px; }
-.accountMenu a:hover { color: #fff; background: rgba(239,60,60,.06); }
+.accountMenu a:hover { color: #fff; background: rgba(255,255,255,0.06); }
