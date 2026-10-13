@@ -58,7 +58,7 @@ export default function HomePage() {
               />
               <div className="cloudy-classic-game-copy">
                 <h3>Rust</h3>
-                <b>View servers &amp; kits <ArrowRight size={15} aria-hidden="true" /></b>
+                <b>View servers &amp; store <ArrowRight size={15} aria-hidden="true" /></b>
               </div>
             </Link>
 

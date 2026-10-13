@@ -120,7 +120,7 @@
   border-color: #e51b2e !important;
 }
 
-.header :global(.cloudy-header-nav) a.active::after {
+.header :global(.cloudy-header-nav a.active)::after {
   background: #e51b2e !important;
   box-shadow: none !important;
 }
