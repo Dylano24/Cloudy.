@@ -1277,6 +1277,7 @@ body {
   isolation: isolate;
 }
 
+.cloudy-classic-intro::after,
 .cloudy-classic-game-card::after,
 .cloudy-classic-coming::after,
 .cloudy-classic-feature::after,
