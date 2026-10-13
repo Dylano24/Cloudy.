@@ -50,3 +50,53 @@
 .discordJoin img { width: 30px; height: 30px; object-fit: contain; }
 
 .statement { color: #fff; text-shadow: 0 0 14px rgba(255,255,255,.22); }
+
+/* Moving cloud vortex, scoped to the homepage background. */
+.home :global(.cloudy-classic-smoke) {
+  inset: auto;
+  width: 150vmax;
+  height: 150vmax;
+  left: calc(50% - 75vmax);
+  top: calc(45% - 75vmax);
+  opacity: .42;
+  filter: blur(18px);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, #030303 0%, transparent 18%, transparent 48%, #030303 72%),
+    repeating-conic-gradient(from 15deg,
+      transparent 0deg, rgba(255,255,255,.025) 24deg,
+      rgba(235,235,240,.2) 42deg, rgba(130,130,140,.1) 55deg,
+      transparent 72deg);
+  mask-image: radial-gradient(circle, transparent 5%, #000 23%, #000 48%, transparent 70%);
+  animation: vortexSpin 75s linear infinite;
+}
+.home :global(.cloudy-classic-smoke)::before,
+.home :global(.cloudy-classic-smoke)::after {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 28% 28%, rgba(255,255,255,.2), transparent 24%),
+    radial-gradient(ellipse at 74% 35%, rgba(215,215,225,.16), transparent 22%),
+    radial-gradient(ellipse at 65% 76%, rgba(255,255,255,.18), transparent 25%),
+    radial-gradient(ellipse at 24% 68%, rgba(190,190,205,.14), transparent 23%);
+  filter: blur(28px);
+  mask-image: radial-gradient(circle, transparent 12%, #000 34%, transparent 70%);
+}
+.home :global(.cloudy-classic-smoke)::after {
+  inset: 23%;
+  animation: cloudDrift 32s ease-in-out infinite alternate;
+}
+@keyframes vortexSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes cloudDrift {
+  from { transform: rotate(55deg) scale(.95); opacity: .5; }
+  to { transform: rotate(105deg) scale(1.12); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home :global(.cloudy-classic-smoke),
+  .home :global(.cloudy-classic-smoke)::after { animation: none; }
+}
