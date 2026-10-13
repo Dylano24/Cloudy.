@@ -368,13 +368,7 @@
 }
 
 :global(.cloudy-header) {
-  border-bottom-color: #292929 !important;
   background: rgba(8, 8, 8, .96) !important;
-}
-
-:global(.cloudy-header)::after {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent) !important;
-  opacity: .5 !important;
 }
 
 :global(.cloudy-logo-orbit) {
@@ -400,11 +394,6 @@
   background: #181818 !important;
 }
 
-:global(.cloudy-header-nav a.active)::after {
-  background: #f0f0f0 !important;
-  box-shadow: 0 0 8px rgba(255,255,255,.18) !important;
-}
-
 :global(.cloudy-discord-button) {
   border-color: #444 !important;
   color: #f0f0f0 !important;
@@ -423,7 +412,6 @@
 
 :global(.cloudy-footer) {
   background: #090909 !important;
-  border-top-color: #292929 !important;
 }
 
 :global(.cloudy-footer-title),
