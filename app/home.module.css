@@ -92,20 +92,22 @@
 }
 .home::after {
   content: "";
-  position: absolute;
+  position: fixed;
   z-index: -2;
-  inset: 0;
+  inset: auto;
+  left: 0;
+  top: -30vh;
+  width: max(45vw, 450px);
+  height: 160vh;
   pointer-events: none;
-  background-image: linear-gradient(110deg, transparent 18%, rgba(150,150,160,.025) 32%, rgba(175,175,185,.075) 50%, rgba(150,150,160,.025) 68%, transparent 82%);
-  background-size: 1600px 1000px;
-  background-repeat: repeat-y;
+  background: linear-gradient(90deg, transparent 0%, rgba(160,160,170,.03) 25%, rgba(210,210,220,.12) 50%, rgba(160,160,170,.03) 75%, transparent 100%);
   animation: grayGlowSweep 5s linear infinite;
 }
 @keyframes grayGlowSweep {
-  0% { transform: translateX(calc(100% + 1600px)); opacity: 0; }
+  0% { transform: translateX(calc(100vw + 500px)) skewX(-18deg); opacity: 0; }
   15% { opacity: 1; }
   85% { opacity: 1; }
-  100% { transform: translateX(-1600px); opacity: 0; }
+  100% { transform: translateX(calc(-45vw - 500px)) skewX(-18deg); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .home::after { animation: none; background-image: none; }
