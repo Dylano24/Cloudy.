@@ -133,6 +133,8 @@
 
 /* Bright white, smoothly breathing glow for homepage titles. */
 .home h2,
+.home :global(.cloudy-restored-pay-grid) h3,
+.home :global(.cloudy-classic-why-grid) strong,
 .home :global(.cloudy-classic-tagline) strong,
 .statement {
   color: #fff;
@@ -148,6 +150,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .home h2,
+.home :global(.cloudy-restored-pay-grid) h3,
+.home :global(.cloudy-classic-why-grid) strong,
   .home :global(.cloudy-classic-tagline) strong,
   .statement {
     animation: none;
