@@ -122,3 +122,5 @@
 .home :global(.cloudy-restored-payment-brands) span {
   background: #050505;
 }
+/* Keep the fixed glow anchored to the viewport throughout the homepage. */
+.home { transform: none !important; }
