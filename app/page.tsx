@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-react';
 import styles from './home.module.css';
+import { CloudyHelp } from '@/components/help/cloudy-help';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
 
 export default function HomePage() {
   return (
+    <>
     <div className={`cloudy-classic-home ${styles.home}`}>
       <div className="cloudy-classic-smoke" aria-hidden="true" />
 
@@ -118,5 +120,7 @@ export default function HomePage() {
         <p className={styles.statement}>Quality. Precision. Experience.</p>
       </div>
     </div>
+    <CloudyHelp />
+    </>
   );
 }
