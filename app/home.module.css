@@ -250,22 +250,3 @@
   text-shadow: 0 0 3px rgba(229,27,46,.9), 0 0 14px rgba(229,27,46,.6), 0 0 28px rgba(229,27,46,.25);
 }
 
-/* Restore the intro's animated border independently of its inner glow. */
-.home :global(.cloudy-classic-intro)::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  background: conic-gradient(from var(--cloudy-classic-angle), #fff, #ffffff, #8e8e8e, #fff, #ffffff, #fff);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: introBorderTrace 8s linear infinite;
-}
-@media (prefers-reduced-motion: reduce) {
-  .home :global(.cloudy-classic-intro)::after { animation: none; }
-}
-
-@keyframes introBorderTrace { from { --cloudy-classic-angle: 0deg; } to { --cloudy-classic-angle: 360deg; } }
