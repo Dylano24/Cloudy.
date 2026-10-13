@@ -1296,11 +1296,11 @@ body {
       from var(--cloudy-trace-angle),
       transparent 0deg,
       transparent 238deg,
-      rgba(255,255,255,0.12) 260deg,
-      #ffffff 282deg,
-      #ffffff 298deg,
-      #ffffff 306deg,
-      rgba(255,255,255,0.2) 316deg,
+      rgba(229,27,46,0.12) 260deg,
+      #e51b2e 282deg,
+      #e51b2e 298deg,
+      #e51b2e 306deg,
+      rgba(229,27,46,0.2) 316deg,
       transparent 334deg,
       transparent 360deg
     );
@@ -1686,10 +1686,10 @@ body {
   top: 0;
   width: 44%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #ffffff 34%, #fff 50%, #ffffff 66%, transparent);
+  background: linear-gradient(90deg, transparent, #e51b2e 34%, #e51b2e 50%, #e51b2e 66%, transparent);
   transform: translateX(-145%);
   animation: cloudy-payment-sweep 4.8s linear infinite;
-  box-shadow: 0 0 12px rgba(255,255,255,.26), 0 0 22px rgba(255,255,255,0.3);
+  box-shadow: none;
 }
 .cloudy-restored-pay-icon {
   width: 56px;
@@ -1841,3 +1841,10 @@ body {
   filter: drop-shadow(0 0 4px rgba(255,255,255,.45));
 }
 .cloudy-shared-basket-count { color: #080808 !important; }
+
+/* Red moving header/footer lines, matching the panel outlines. */
+.cloudy-header::after,
+.cloudy-footer::before {
+  background-image: linear-gradient(90deg, transparent 0%, transparent 34%, rgba(229,27,46,.16) 42%, #e51b2e 49%, #e51b2e 51%, #e51b2e 53%, rgba(229,27,46,.16) 60%, transparent 68%, transparent 100%) !important;
+  filter: none;
+}

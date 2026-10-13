@@ -9,13 +9,12 @@ type Message =
   | { role: 'visitor'; text: string }
   | { role: 'assistant'; result: HelpResult };
 
-const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'faq', 'sale-introduction'];
+const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'basket', 'sale-introduction'];
 
 export function CloudyHelp() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const [allTopics, setAllTopics] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
@@ -62,7 +61,6 @@ export function CloudyHelp() {
 
   function choose(entry: HelpEntry) {
     setMessages(previous => [...previous, { role: 'visitor' as const, text: entry.title }, { role: 'assistant' as const, result: { kind: 'answer' as const, entries: [entry] } }].slice(-30));
-    setAllTopics(false);
     inputRef.current?.focus({ preventScroll: true });
   }
 
@@ -78,7 +76,6 @@ export function CloudyHelp() {
   function reset() {
     setMessages([]);
     setQuestion('');
-    setAllTopics(false);
     inputRef.current?.focus({ preventScroll: true });
   }
 
@@ -89,32 +86,31 @@ export function CloudyHelp() {
           <header className={styles.header}>
             <span className={styles.brandIcon}><MessageCircle size={21} aria-hidden="true" /></span>
             <div className={styles.brandCopy}>
-              <h2 id="cloudy-help-title">Cloudy help</h2>
+              <h2 id="cloudy-help-title">Cloudy support</h2>
               <p>Website &amp; purchase help</p>
             </div>
             <button type="button" className={styles.iconButton} onClick={reset} aria-label="Start a new chat" title="Start a new chat"><RotateCcw size={17} aria-hidden="true" /></button>
-            <button type="button" className={styles.iconButton} onClick={close} aria-label="Close Cloudy help"><X size={20} aria-hidden="true" /></button>
+            <button type="button" className={styles.iconButton} onClick={close} aria-label="Close Cloudy support"><X size={20} aria-hidden="true" /></button>
           </header>
 
           <div className={styles.body} ref={logRef}>
             <div className={styles.welcome}>
               <span className={styles.eyebrow}>HOW CAN WE HELP?</span>
-              <h3>Welcome to <span>Cloudy.</span></h3>
+              <h3>Welcome to <span>Cloudy support</span></h3>
               <p>Ask about the website, purchases or support. Choose a topic or type your question below.</p>
             </div>
             <div className={styles.topics} aria-label="Help topics">
-              {(allTopics ? helpEntries : helpEntries.filter(entry => shortcuts.includes(entry.id))).map(entry => (
+              {helpEntries.filter(entry => shortcuts.includes(entry.id)).map(entry => (
                 <button type="button" key={entry.id} onClick={() => choose(entry)}>{entry.title}<ArrowUpRight size={13} aria-hidden="true" /></button>
               ))}
             </div>
-            <button className={styles.browse} type="button" aria-expanded={allTopics} onClick={() => setAllTopics(value => !value)}>{allTopics ? 'Show fewer topics' : 'Browse all topics'}</button>
 
             <div className={styles.conversation} role="log" aria-label="Support conversation" aria-live="polite" aria-relevant="additions">
               {messages.map((message, index) => message.role === 'visitor' ? (
                 <p key={index} className={styles.visitor}>{message.text}</p>
               ) : (
                 <div key={index} className={styles.answer}>
-                  <span className={styles.sender}>Cloudy help</span>
+                  <span className={styles.sender}>Cloudy support</span>
                   {message.result.kind === 'answer' ? message.result.entries.map(entry => (
                     <div key={entry.id}>
                       <h3>{entry.title}</h3>
@@ -142,14 +138,14 @@ export function CloudyHelp() {
 
           <form className={styles.form} onSubmit={submit}>
             <label className={styles.srOnly} htmlFor="cloudy-help-question">Your question</label>
-            <input ref={inputRef} id="cloudy-help-question" value={question} onChange={event => setQuestion(event.target.value)} maxLength={1000} placeholder="How can we help?" autoComplete="off" />
+            <input ref={inputRef} id="cloudy-help-question" value={question} onChange={event => setQuestion(event.target.value)} maxLength={1000} placeholder="Type your question" autoComplete="off" />
             <button type="submit" disabled={!question.trim()} aria-label="Send question"><ArrowUp size={19} aria-hidden="true" /></button>
           </form>
         </section>
       )}
-      <button ref={launcherRef} type="button" className={styles.launcher} aria-label="Cloudy help" aria-expanded={open} aria-controls="cloudy-help-panel" onClick={() => open ? close() : setOpen(true)}>
+      <button ref={launcherRef} type="button" className={styles.launcher} aria-label="Cloudy support" aria-expanded={open} aria-controls="cloudy-help-panel" onClick={() => open ? close() : setOpen(true)}>
         {open ? <X size={21} aria-hidden="true" /> : <MessageCircle size={23} aria-hidden="true" />}
-        <span>Cloudy help</span>
+        <span>Cloudy support</span>
       </button>
     </div>
   );
