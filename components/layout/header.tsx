@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { UserRound } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
@@ -77,8 +78,8 @@ export function Header() {
           }} onKeyDown={(event) => {
             if (event.key === 'Escape') setAccountOpen(false);
           }}>
-            <button type="button" className={styles.login} aria-expanded={accountOpen} aria-controls="cloudy-account-menu" onClick={() => setAccountOpen(!accountOpen)}>
-              Account
+            <button type="button" className={styles.login} aria-label="Account" aria-expanded={accountOpen} aria-controls="cloudy-account-menu" onClick={() => setAccountOpen(!accountOpen)}>
+              <UserRound size={20} aria-hidden="true" />
             </button>
             {accountOpen && (
               <nav id="cloudy-account-menu" className={styles.accountMenu} aria-label="Account menu">
