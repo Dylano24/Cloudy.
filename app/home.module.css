@@ -20,7 +20,7 @@
 }
 
 .home :global(.cloudy-classic-why-grid) svg {
-  color: #ef4a4a;
+  color: #ffffff;
 }
 
 .statement {
@@ -48,3 +48,5 @@
   font-size: 11px;
 }
 .discordJoin img { width: 30px; height: 30px; object-fit: contain; }
+
+.statement { color: #fff; text-shadow: 0 0 14px rgba(255,255,255,.22); }
