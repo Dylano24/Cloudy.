@@ -241,3 +241,11 @@
     background-image: none;
   }
 }
+
+/* Temporarily hide the vortex and match the tagline to the red accents. */
+.home :global(.cloudy-classic-hero)::before { display: none; }
+.home :global(.cloudy-classic-tagline) strong {
+  color: #e51b2e;
+  animation: none;
+  text-shadow: 0 0 3px rgba(229,27,46,.9), 0 0 14px rgba(229,27,46,.6), 0 0 28px rgba(229,27,46,.25);
+}
