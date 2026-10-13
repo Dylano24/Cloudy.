@@ -45,7 +45,7 @@ export function Footer() {
         </div>
 
         <div className="cloudy-footer-bottom">
-          <span>© {new Date().getFullYear()} Cloudy Inc. • Quality. Innovation. Performance.</span>
+          <span>© {new Date().getFullYear()} Cloudy Inc. All rights reserved.</span>
         </div>
       </div>
     </footer>
