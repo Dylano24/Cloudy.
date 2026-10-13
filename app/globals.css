@@ -852,7 +852,7 @@ body {
 .cloudy-header-nav a.active::after { background: #ef3c3c !important; box-shadow: 0 0 10px rgba(239,60,60,.55) !important; }
 .cloudy-footer { background: #050506 !important; border-top-color: rgba(255,255,255,.08) !important; }
 .cloudy-footer::before {
-  background: linear-gradient(90deg, transparent 0%, #ef3c3c 18%, #fff 50%, #ef3c3c 82%, transparent 100%) !important;
+  background-image: linear-gradient(90deg, transparent 0%, #ef3c3c 18%, #fff 50%, #ef3c3c 82%, transparent 100%) !important;
   opacity: .65;
 }
 .cloudy-footer-brand img { border-radius: 50%; object-fit: cover; }
@@ -1326,9 +1326,27 @@ body {
 }
 
 /* Header and footer accent lines now move instead of sitting still */
-.cloudy-header::after,
+.cloudy-header::after {
+  background-image:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 34%,
+      rgba(185,24,24,.16) 42%,
+      #ef3c3c 49%,
+      #ffb0b0 51%,
+      #ef3c3c 53%,
+      rgba(185,24,24,.16) 60%,
+      transparent 68%,
+      transparent 100%
+    ) !important;
+  background-size: 220% 100% !important;
+  animation: cloudy-line-sweep 6.5s linear infinite;
+  opacity: .78 !important;
+}
+
 .cloudy-footer::before {
-  background:
+  background-image:
     linear-gradient(
       90deg,
       transparent 0%,
