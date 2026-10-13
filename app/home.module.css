@@ -66,7 +66,7 @@
   height: max(110vw, 850px);
   left: calc(50% - max(55vw, 425px));
   top: calc(50% - max(55vw, 425px));
-  background: url('/images/cloud-vortex-sharp.png') center / cover no-repeat;
+  background: url('/images/cloud-vortex-white.png') center / cover no-repeat;
   opacity: .78;
   pointer-events: none;
   animation: vortexSpin 28s linear infinite;
