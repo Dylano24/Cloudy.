@@ -16,9 +16,6 @@ export default function HomePage() {
 
         </div>
         <p className="cloudy-classic-tagline">Perfected through detail. <strong>Designed for excellence.</strong></p>
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer" className={styles.discordJoin} aria-label="Join Discord">
-            <span>Discord</span>
-          </a>
       </section>
 
       <div className="cloudy-classic-wrap">
