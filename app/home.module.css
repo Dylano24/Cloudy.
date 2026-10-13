@@ -192,3 +192,10 @@
   animation: none;
   text-shadow: 0 0 2px rgba(220,30,46,.9), 0 0 13px rgba(201,24,40,.65), 0 0 28px rgba(180,0,24,.3);
 }
+
+/* Red only on the seven payment and value icons. */
+.home :global(.cloudy-restored-pay-icon),
+.home :global(.cloudy-restored-pay-icon) svg,
+.home :global(.cloudy-classic-why-grid) svg {
+  color: #c91828;
+}
