@@ -89,8 +89,8 @@
 /* Soft ambient glow outside the vortex, with black card surfaces. */
 .home::before {
   background:
-    radial-gradient(ellipse at 18% 30%, rgba(255,255,255,.075), transparent 48%) 0 0 / 100% 850px repeat-y,
-    radial-gradient(ellipse at 84% 65%, rgba(255,255,255,.06), transparent 46%) 0 0 / 100% 1100px repeat-y,
+    radial-gradient(ellipse at 18% 30%, rgba(175,175,180,.18), transparent 65%) 0 0 / 100% 850px repeat-y,
+    radial-gradient(ellipse at 84% 65%, rgba(155,155,165,.14), transparent 65%) 0 0 / 100% 1100px repeat-y,
     #030303;
 }
 .home :global(.cloudy-classic-coming),
