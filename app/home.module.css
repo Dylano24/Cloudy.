@@ -199,3 +199,15 @@
 .home :global(.cloudy-classic-why-grid) svg {
   color: #c91828;
 }
+
+/* Bright, steady red glow on the existing red accents only. */
+.titleGlow,
+.home :global(.cloudy-restored-pay-icon) {
+  color: #e51b2e;
+  text-shadow: 0 0 3px rgba(229,27,46,.9), 0 0 14px rgba(229,27,46,.6), 0 0 28px rgba(229,27,46,.25);
+}
+.home :global(.cloudy-restored-pay-icon) svg,
+.home :global(.cloudy-classic-why-grid) svg {
+  color: #e51b2e;
+  filter: drop-shadow(0 0 3px rgba(229,27,46,.9)) drop-shadow(0 0 10px rgba(229,27,46,.6));
+}
