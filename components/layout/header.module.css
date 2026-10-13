@@ -57,22 +57,31 @@
 }
 
 .login {
+  width: 44px;
+  height: 44px;
   border: 1px solid rgba(239,60,60,.45);
   background: rgba(255,255,255,.03);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 9px;
-  padding: 12px 13px;
+  padding: 0;
   border-radius: 8px;
   color: #c8c8cc;
   font-size: 12px;
   font-weight: 800;
 }
 
+.login svg { width: 21px; height: 21px; }
+
 .login:hover { color: #fff; background: rgba(239,60,60,.06); }
 
 @media (max-width: 900px) {
-  .login { padding: 10px 4px; gap: 5px; font-size: 10px; }
+  .login { padding: 0; gap: 5px; font-size: 10px; }
+}
+
+@media (max-width: 420px) {
+  .login { width: 34px; height: 38px; }
 }
 
 .account { position: relative; }
