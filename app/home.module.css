@@ -88,20 +88,27 @@
 }
 /* Soft ambient glow outside the vortex, with black card surfaces. */
 .home::before {
-  background-color: #000;
-  background-image: linear-gradient(90deg, transparent 0%, rgba(180,180,190,.08) 25%, rgba(235,235,245,.22) 48%, rgba(255,255,255,.26) 50%, rgba(235,235,245,.22) 52%, rgba(180,180,190,.08) 75%, transparent 100%);
-  background-size: 45% 100%;
-  background-repeat: no-repeat;
+  background: #000;
+}
+.home::after {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(110deg, transparent 18%, rgba(150,150,160,.025) 32%, rgba(175,175,185,.075) 50%, rgba(150,150,160,.025) 68%, transparent 82%);
+  background-size: 1600px 1000px;
+  background-repeat: repeat-y;
   animation: grayGlowSweep 5s linear infinite;
 }
 @keyframes grayGlowSweep {
-  0% { background-position: -100% 0; opacity: 0; }
+  0% { transform: translateX(calc(100% + 1600px)); opacity: 0; }
   15% { opacity: 1; }
   85% { opacity: 1; }
-  100% { background-position: 200% 0; opacity: 0; }
+  100% { transform: translateX(-1600px); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .home::before { animation: none; background-image: none; }
+  .home::after { animation: none; background-image: none; }
 }
 .home :global(.cloudy-classic-coming),
 .home :global(.cloudy-classic-feature),
