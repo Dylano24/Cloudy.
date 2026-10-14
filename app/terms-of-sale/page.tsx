@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 const sections = [
   {
     title: "1. Introduction",
@@ -46,14 +44,11 @@ export default function TermsOfSalePage() {
         <header className="cloudy-terms-head">
           <img src="https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width={80} height={80} style={{ borderRadius: '50%', objectFit: 'cover' }} />
           <h1>Terms of sale</h1>
-          <Link href="/" className="cloudy-cta-secondary">
-            Back to Cloudy
-          </Link>
         </header>
 
         <div className="cloudy-terms-list">
           {sections.map(section => (
-            <section className="cloudy-term-card" key={section.title}>
+            <section className="cloudy-term-card cloudy-traced-panel" key={section.title}>
               <h2>{section.title}</h2>
               <p>{section.body}</p>
             </section>
