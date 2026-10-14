@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { findHelp } from '@/components/help/cloudy-knowledge';
-import { assistantKnowledge, sanitizeAssistantHistory } from '@/lib/cloudy-chat-context';
+import { assistantKnowledge, isVagueHelpRequest, sanitizeAssistantHistory } from '@/lib/cloudy-chat-context';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -58,6 +58,17 @@ export async function POST(request: NextRequest) {
   }
 
   const history = sanitizeAssistantHistory(data.history);
+  // A vague request for help is a conversation opener, not a request for
+  // the support website. Clarify it without spamming links or consuming AI.
+  if (isVagueHelpRequest(question)) {
+    const dutch = /\b(?:ik|hulp|ondersteuning|kun|kan|mij|je|jij)\b/i.test(question);
+    return respond({
+      answer: dutch
+        ? 'Waarmee kan ik je helpen? Vertel me kort wat er aan de hand is.'
+        : 'What do you need help with? Tell me a little about what is going on.',
+      links: [],
+    });
+  }
   const context = assistantKnowledge(question, history, findHelp);
   const payload = { question, evidence: context.evidence, history: [...history] };
   while (payload.history.length && Buffer.byteLength(JSON.stringify(payload)) > 7_500) {
