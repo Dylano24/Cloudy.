@@ -26,12 +26,12 @@
     grid-row: 1;
   }
 
-  .footer :global(.cloudy-footer-grid) > :nth-child(3) {
+  .footer :global(.cloudy-footer-grid) > :nth-child(4) {
     grid-column: 2;
     grid-row: 1;
   }
 
-  .footer :global(.cloudy-footer-grid) > :nth-child(4) {
+  .footer :global(.cloudy-footer-grid) > :nth-child(3) {
     grid-column: 1;
     grid-row: 2;
   }
