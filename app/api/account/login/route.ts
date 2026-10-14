@@ -91,7 +91,7 @@ p{margin:12px auto 0;max-width:310px;color:#9b9b9f;font-size:15px;line-height:1.
     <h1>Opening Discord</h1>
     <p>Cloudy is securely handing you over to Discord to continue.</p>
     <div class="status"><span>Ready to continue</span></div>
-    <a class="retry" href=${JSON.stringify(appAuthorize)}>Open Discord</a>
+    <a class="retry" href=${JSON.stringify(appAuthorize)}>Open</a>
     <p class="note">You can return to Cloudy after authorization.</p>
   </section>
 </main>
