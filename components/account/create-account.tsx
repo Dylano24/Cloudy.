@@ -43,10 +43,10 @@ export function CreateAccount() {
           <p className="mt-4 text-xs leading-6 text-muted">Your provider account and display name will be saved. Read our <Link href="/privacy" className="text-white underline">Privacy notice</Link>.</p>
           <button type="submit" disabled={saving} className="cloudy-classic-button mt-6 disabled:opacity-60" style={{ borderColor: '#e51b2e' }}>{saving ? 'Creating account…' : 'Create account'}</button>
         </form> : <>
-          <p className="mt-3 text-sm leading-7 text-muted">Choose Google or Discord, then set your Cloudy display name.</p>
-          {profileStep && <p role="alert" className="mt-4 text-sm text-red-500">Your registration has expired. Continue with Google or Discord again.</p>}
+          <p className="mt-3 text-sm leading-7 text-muted">Continue with Discord, then set your Cloudy display name.</p>
+          {profileStep && <p role="alert" className="mt-4 text-sm text-red-500">Your registration has expired. Continue with Discord again.</p>}
           {params.has('login_error') && <p role="alert" className="mt-4 text-sm text-red-500">{params.get('login_error') === 'unavailable' ? 'Sign-in is currently unavailable. Please contact Cloudy support.' : 'We could not sign you in. Please try again.'}</p>}
-          <div className="mt-7 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap"><a href="/api/account/login?intent=create" target="_blank" rel="noopener noreferrer" className="cloudy-classic-button w-full min-h-[48px] sm:hidden" style={{ borderColor: '#e51b2e', touchAction: 'manipulation' }}>Continue with Discord</a><a href="/api/account/login?intent=create" className="cloudy-classic-button hidden min-h-[48px] sm:inline-flex sm:w-auto" style={{ borderColor: '#e51b2e', touchAction: 'manipulation' }}>Continue with Discord</a><a href="/api/account/google/login?intent=create" className="cloudy-classic-button w-full min-h-[48px] sm:w-auto" style={{ borderColor: '#e51b2e', touchAction: 'manipulation' }}>Continue with Google</a></div>
+          <div className="mt-7"><a href="/api/account/login?intent=create" className="cloudy-classic-button w-full min-h-[48px] sm:w-auto" style={{ borderColor: '#e51b2e', touchAction: 'manipulation' }}>Continue with Discord</a></div>
         </>}
         <p className="mt-6 text-sm text-muted">Already have an account? <Link href="/account" className="text-white underline underline-offset-4">Login</Link></p>
       </>}
