@@ -9,13 +9,13 @@ export type AssistantReply = {
 
 export function sanitizeAssistantHistory(value: unknown): AssistantTurn[] {
   if (!Array.isArray(value)) return [];
-  return value.slice(-8).flatMap((turn): AssistantTurn[] => {
+  return value.flatMap((turn): AssistantTurn[] => {
     if (!turn || typeof turn !== 'object') return [];
     const candidate = turn as Record<string, unknown>;
     if (candidate.role !== 'user' && candidate.role !== 'assistant') return [];
     if (typeof candidate.content !== 'string' || !candidate.content.trim()) return [];
     return [{ role: candidate.role, content: candidate.content.trim().slice(0, 550) }];
-  });
+  }).slice(-8);
 }
 
 export function assistantKnowledge(
