@@ -24,6 +24,10 @@ function discordLoginOrigin(request: NextRequest) {
   return request.nextUrl.origin;
 }
 
+function isIOS(request: NextRequest) {
+  return /iPhone|iPad|iPod/i.test(request.headers.get('user-agent') || '');
+}
+
 export async function GET(request: NextRequest) {
   const intent = request.nextUrl.searchParams.get('intent') === 'create' ? 'create' : 'login';
   const origin = discordLoginOrigin(request);
@@ -51,6 +55,41 @@ export async function GET(request: NextRequest) {
     redirect_uri: redirectUri,
   });
   const authorize = `https://discord.com/oauth2/authorize?${params.toString()}`;
+
+  if (isIOS(request)) {
+    const appAuthorize = `discord://-/oauth2/authorize?${params.toString()}`;
+    const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Opening Discord…</title>
+<style>
+html,body{margin:0;background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{min-height:100vh;display:grid;place-items:center;padding:24px;text-align:center}
+a{color:#fff}
+</style>
+</head>
+<body>
+<main><div><p>Opening Discord…</p><p><a href=${JSON.stringify(appAuthorize)}>Open Discord</a></p></div></main>
+<script>
+(() => {
+  const appUrl = ${JSON.stringify(appAuthorize)};
+  try { window.location.replace(appUrl); } catch {}
+})();
+</script>
+</body>
+</html>`;
+    const response = new NextResponse(html, { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' } });
+    response.cookies.set(STATE_COOKIE, state, {
+      httpOnly: true,
+      secure: request.nextUrl.protocol === 'https:',
+      sameSite: 'lax',
+      path: '/api/oauth/discord/callback',
+      maxAge: 600,
+    });
+    return response;
+  }
 
   const response = NextResponse.redirect(authorize);
   response.cookies.set(STATE_COOKIE, state, {
