@@ -51,21 +51,60 @@ export function CloudyHelp() {
     const fitViewport = () => {
       const dock = dockRef.current;
       if (!dock) return;
-      dock.style.setProperty('--help-available-height', `${viewport.height}px`);
-      dock.style.setProperty('--help-viewport-top', `${viewport.offsetTop}px`);
-      // Browser toolbars can change the visual viewport too. Only lift
-      // the dock for a real on-screen keyboard, not for small toolbar shifts.
+      // Use the actual visible part of the screen, not 100vh. On iPhone
+      // the software keyboard changes visualViewport independently.
+      dock.style.setProperty('--help-available-height', `${Math.round(viewport.height)}px`);
+      dock.style.setProperty('--help-viewport-top', `${Math.round(viewport.offsetTop)}px`);
       const covered = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
       dock.style.setProperty('--help-keyboard-inset', `${covered > 140 ? covered : 0}px`);
     };
+    let animationFrame = 0;
+    const scheduleFit = () => {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = requestAnimationFrame(fitViewport);
+    };
     fitViewport();
-    viewport.addEventListener('resize', fitViewport);
-    viewport.addEventListener('scroll', fitViewport);
+    viewport.addEventListener('resize', scheduleFit);
+    viewport.addEventListener('scroll', scheduleFit);
+    window.addEventListener('resize', scheduleFit);
+    document.addEventListener('focusin', scheduleFit);
     return () => {
-      viewport.removeEventListener('resize', fitViewport);
-      viewport.removeEventListener('scroll', fitViewport);
+      cancelAnimationFrame(animationFrame);
+      viewport.removeEventListener('resize', scheduleFit);
+      viewport.removeEventListener('scroll', scheduleFit);
+      window.removeEventListener('resize', scheduleFit);
+      document.removeEventListener('focusin', scheduleFit);
     };
   }, []);
+
+  // Lock the background page while the assistant is open on a phone.
+  // Safari otherwise scrolls the entire website to focus the input,
+  // which visually collapses or jumps the fixed chat panel.
+  useEffect(() => {
+    if (!open || !window.matchMedia('(max-width: 480px)').matches) return;
+    const scrollTop = window.scrollY;
+    const body = document.body;
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+    };
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollTop}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    return () => {
+      body.style.position = previous.position;
+      body.style.top = previous.top;
+      body.style.left = previous.left;
+      body.style.right = previous.right;
+      body.style.width = previous.width;
+      window.scrollTo(0, scrollTop);
+    };
+  }, [open]);
 
   function choose(entry: HelpEntry) {
     setMessages(previous => [...previous, { role: 'visitor' as const, text: entry.title }, { role: 'assistant' as const, result: { kind: 'answer' as const, entries: [entry] } }].slice(-30));
@@ -88,7 +127,7 @@ export function CloudyHelp() {
   }
 
   return (
-    <div className={styles.dock} ref={dockRef}>
+    <div className={styles.dock} data-open={open ? "true" : "false"} ref={dockRef}>
       {open && (
         <section id="cloudy-help-panel" className={styles.panel} role="dialog" aria-modal="false" aria-labelledby="cloudy-help-title">
           <header className={styles.header}>

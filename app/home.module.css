@@ -294,3 +294,48 @@
 .home :global(.cloudy-classic-button):hover {
   border-color: #e51b2e;
 }
+
+/* Phone only: synchronize the diagonal silver sheen across every homepage
+   surface on one shared timeline. Individual 5-second animations can start
+   in different frames, making stacked panels look out of alignment on iOS. */
+@property --cloudy-mobile-panel-sheen {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+@keyframes cloudy-mobile-shared-sheen {
+  from { --cloudy-mobile-panel-sheen: 0%; }
+  to { --cloudy-mobile-panel-sheen: 100%; }
+}
+
+@media (max-width: 820px) {
+  .home :global(.cloudy-classic-wrap) {
+    animation: cloudy-mobile-shared-sheen 5s linear infinite;
+  }
+
+  .home :global(.cloudy-classic-intro),
+  .home :global(.cloudy-classic-coming),
+  .home :global(.cloudy-classic-feature),
+  .home :global(.cloudy-classic-future),
+  .home :global(.cloudy-restored-pay-grid) article,
+  .home :global(.cloudy-classic-why-grid) article {
+    animation: none;
+    background-position: var(--cloudy-mobile-panel-sheen) 50%;
+  }
+
+  /* Match the red highlight position to the silver light, not a separate
+     animation that can drift out of phase after viewport resize. */
+  .home :global(.cloudy-restored-pay-grid) {
+    animation: none;
+  }
+  .home :global(.cloudy-restored-pay-grid) article::before {
+    animation: none;
+    background-size: 400% 100%;
+    background-position: var(--cloudy-mobile-panel-sheen) 0;
+  }
+}
+
+@media (max-width: 820px) and (prefers-reduced-motion: reduce) {
+  .home :global(.cloudy-classic-wrap) { animation: none; }
+}
