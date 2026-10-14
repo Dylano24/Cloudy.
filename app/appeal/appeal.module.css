@@ -442,7 +442,8 @@
   .panelInner { padding: 22px 17px; }
   .scopeGrid { grid-template-columns: 1fr; }
   .scopeButton { min-height: 112px; }
-  .formTop { align-items: flex-start; flex-direction: column-reverse; }
+  .formTop { align-items: center; flex-direction: row; }
+  .formTop .contextPill { margin-left: auto; flex-shrink: 0; }
   .submitRow { align-items: stretch; flex-direction: column; }
   .submitButton { width: 100%; }
   .success { padding: 30px 18px 34px; }

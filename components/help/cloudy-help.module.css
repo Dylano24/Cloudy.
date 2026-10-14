@@ -93,3 +93,41 @@
 @media (prefers-reduced-motion: reduce) {
   .body { scroll-behavior: auto; }
 }
+
+/* Mobile-only keyboard-safe assistant: keep the entire panel inside the
+   visual viewport, including the composer when the on-screen keyboard opens. */
+@media (max-width: 480px) {
+  .dock:has(.panel) {
+    top: var(--help-viewport-top, 0px);
+    bottom: auto;
+    right: max(12px, env(safe-area-inset-right));
+    width: calc(100% - max(12px, env(safe-area-inset-left)) - max(12px, env(safe-area-inset-right)));
+    height: var(--help-available-height, 100dvh);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+  }
+
+  .dock:has(.panel) .panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    margin: 12px 0;
+    overflow: hidden;
+    box-sizing: border-box;
+    border-radius: 16px;
+    pointer-events: auto;
+  }
+
+  .dock:has(.panel) .launcher { display: none; }
+  .panel .body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .panel .form { flex: 0 0 auto; }
+}
