@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { UserRound } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
 import { BasketIcon } from '@/components/ui/basket-icon';
@@ -15,6 +15,7 @@ export function Header() {
   const pathname = usePathname();
   const { user, pending, logout, loggingOut } = useAccount();
   const [accountOpen, setAccountOpen] = useState(false);
+  const accountRef = useRef<HTMLDivElement>(null);
   const [basketCount, setBasketCount] = useState(0);
 
   useEffect(() => {
@@ -34,6 +35,19 @@ export function Header() {
       window.removeEventListener('focus', readBasketCount);
     };
   }, []);
+
+  // Dismiss the phone account menu when the visitor taps anywhere outside it.
+  // Desktop behaviour remains unchanged.
+  useEffect(() => {
+    if (!accountOpen || !window.matchMedia('(max-width: 900px)').matches) return;
+    const dismissOutside = (event: PointerEvent) => {
+      if (accountRef.current && !accountRef.current.contains(event.target as Node)) {
+        setAccountOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', dismissOutside);
+    return () => document.removeEventListener('pointerdown', dismissOutside);
+  }, [accountOpen]);
 
   const nav = [
     ['Home', '/'],
@@ -64,7 +78,7 @@ export function Header() {
         </nav>
 
         <div className="cloudy-header-actions">
-          <div className={styles.account} onBlur={(event) => {
+          <div ref={accountRef} className={styles.account} onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) setAccountOpen(false);
           }} onKeyDown={(event) => {
             if (event.key === 'Escape') setAccountOpen(false);
