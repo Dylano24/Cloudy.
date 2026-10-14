@@ -38,7 +38,7 @@ export function Header() {
   const nav = [
     ['Home', '/'],
     ['Store', '/shop'],
-    ['Discord', 'https://discord.gg/HGvtrSvK6w'],
+    ['Discord', 'https://discord.gg/EGDVMmmSzF'],
     ['Support', '/support'],
   ] as const;
 

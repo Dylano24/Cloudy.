@@ -5,7 +5,7 @@ import { CloudyHelp } from '@/components/help/cloudy-help';
 import { GameCarousel } from '@/components/home/game-carousel';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
-const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
+const DISCORD_URL = 'https://discord.gg/EGDVMmmSzF';
 
 export default function HomePage() {
   return (

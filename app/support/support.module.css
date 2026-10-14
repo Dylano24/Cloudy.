@@ -1,0 +1,12 @@
+.page .heading { text-transform: none; }
+.page .card {
+  position: relative;
+  isolation: isolate;
+  background-color: #050505 !important;
+  background-image: linear-gradient(110deg, transparent 42%, rgba(160,160,170,.03) 46%, rgba(210,210,220,.12) 50%, rgba(160,160,170,.03) 54%, transparent 58%) !important;
+  background-size: 400% 100% !important;
+  background-repeat: no-repeat !important;
+  animation: panelGlowSweep 5s linear infinite;
+}
+@keyframes panelGlowSweep { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
+@media (prefers-reduced-motion: reduce) { .page .card { animation: none; background-image: none !important; } }

@@ -5,6 +5,7 @@ import { useCart } from '@/hooks/use-cart';
 import { ProductCard } from '@/components/product/product-card';
 import { Package, Filter, AlertCircle, RefreshCcw, Loader2, Search } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { Category } from '@/lib/schemas';
 
@@ -176,6 +177,7 @@ export default function ShopPage() {
         <div className="cloudy-rust-store-hero-copy">
           <span>RUST</span>
           <h1>RUST STORE</h1>
+          <Link href="/#games" className="cloudy-classic-button mt-5" style={{ borderColor: '#e51b2e' }}>Select other game</Link>
         </div>
       </section>
       <div className="container mx-auto px-4 py-12">

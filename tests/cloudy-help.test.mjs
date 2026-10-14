@@ -89,7 +89,7 @@ test('every answer comes from an approved source with a safe official link', () 
     ids.add(entry.id);
     assert.ok(entry.source && entry.answer && entry.title && entry.keywords.length);
     assert.ok(entry.links.length);
-    for (const link of entry.links) assert.match(link.href, /^(\/(?!\/)|https:\/\/discord\.gg\/HGvtrSvK6w$)/);
+    for (const link of entry.links) assert.match(link.href, /^(\/(?!\/)|https:\/\/discord\.gg\/EGDVMmmSzF$)/);
   }
 });
 
