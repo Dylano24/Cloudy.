@@ -44,7 +44,17 @@ export function CloudyHelp() {
     setPending(false);
   }
 
+  function clearConversation() {
+    // Closing the assistant ends this session. Clear both visible messages and
+    // any draft/topic, and invalidate pending replies so they cannot reappear.
+    stopPendingReply();
+    setActivePhoneTopic(null);
+    setMessages([]);
+    setQuestion('');
+  }
+
   function close() {
+    clearConversation();
     setOpen(false);
     launcherRef.current?.focus();
   }
@@ -58,8 +68,7 @@ export function CloudyHelp() {
     }
     const escape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
-      setOpen(false);
-      launcherRef.current?.focus();
+      close();
     };
     document.addEventListener('keydown', escape);
     return () => document.removeEventListener('keydown', escape);
@@ -253,10 +262,7 @@ export function CloudyHelp() {
   }
 
   function reset() {
-    stopPendingReply();
-    setActivePhoneTopic(null);
-    setMessages([]);
-    setQuestion('');
+    clearConversation();
     if (window.matchMedia('(max-width: 480px)').matches) {
       inputRef.current?.blur();
     } else {
