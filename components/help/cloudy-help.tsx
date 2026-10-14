@@ -3,11 +3,13 @@
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
+import type { AssistantReply, AssistantTurn } from '@/lib/cloudy-chat-context';
 import styles from './cloudy-help.module.css';
 
 type Message =
   | { role: 'visitor'; text: string }
-  | { role: 'assistant'; result: HelpResult };
+  | { role: 'assistant'; result: HelpResult }
+  | { role: 'assistant'; response: AssistantReply };
 
 const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'sale-introduction'];
 
@@ -15,11 +17,23 @@ export function CloudyHelp() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [pending, setPending] = useState(false);
   const [activePhoneTopic, setActivePhoneTopic] = useState<HelpEntry | null>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
+  const requestRef = useRef<AbortController | null>(null);
+  const requestGeneration = useRef(0);
+
+  useEffect(() => () => { requestRef.current?.abort(); }, []);
+
+  function stopPendingReply() {
+    requestGeneration.current += 1;
+    requestRef.current?.abort();
+    requestRef.current = null;
+    setPending(false);
+  }
 
   function close() {
     setOpen(false);
@@ -60,7 +74,7 @@ export function CloudyHelp() {
       }
     }
     log.scrollTop = log.scrollHeight;
-  }, [messages, open, activePhoneTopic]);
+  }, [messages, open, activePhoneTopic, pending]);
 
   useLayoutEffect(() => {
     if (activePhoneTopic && open && logRef.current) {
@@ -130,6 +144,7 @@ export function CloudyHelp() {
   }, [open]);
 
   function choose(entry: HelpEntry) {
+    stopPendingReply();
     setMessages(previous => [...previous, { role: 'visitor' as const, text: entry.title }, { role: 'assistant' as const, result: { kind: 'answer' as const, entries: [entry] } }].slice(-30));
     if (window.matchMedia('(max-width: 480px)').matches) {
       // Display the complete selected answer directly. On iPhone the prior
@@ -148,17 +163,81 @@ export function CloudyHelp() {
     }
   }
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const text = question.trim();
-    if (!text || text.length > 1000) return;
-    const result = findHelp(text);
+    if (!text || text.length > 1000 || requestRef.current) return;
+
+    const history: AssistantTurn[] = messages.flatMap(message => {
+      if (message.role === 'visitor') return [{ role: 'user' as const, content: message.text }];
+      if ('response' in message) return [{ role: 'assistant' as const, content: message.response.answer }];
+      if (message.result.kind === 'answer') return [{
+        role: 'assistant' as const,
+        content: message.result.entries.map(entry => entry.answer).join('\n'),
+      }];
+      return [];
+    }).slice(-8);
+
+    const controller = new AbortController();
+    const generation = ++requestGeneration.current;
+    requestRef.current = controller;
+    setPending(true);
     setActivePhoneTopic(null);
-    setMessages(previous => [...previous, { role: 'visitor' as const, text }, { role: 'assistant' as const, result }].slice(-30));
+    setMessages(previous => [...previous, { role: 'visitor' as const, text }].slice(-30));
     setQuestion('');
+
+    try {
+      const response = await fetch('/api/assistant/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: text, history }),
+        signal: controller.signal,
+      });
+      const data = await response.json();
+      if (!response.ok || typeof data?.answer !== 'string' || !data.answer.trim()) {
+        throw new Error(typeof data?.error === 'string' ? data.error : 'Assistant temporarily unavailable.');
+      }
+      if (requestGeneration.current !== generation) return;
+      setMessages(previous => [...previous, {
+        role: 'assistant' as const,
+        response: {
+          answer: data.answer.trim(),
+          links: Array.isArray(data.links) ? data.links : [],
+          source: typeof data.source === 'string' ? data.source : undefined,
+        },
+      }].slice(-30));
+    } catch {
+      if (controller.signal.aborted || requestGeneration.current !== generation) return;
+      const fallback = findHelp(text);
+      if (fallback.kind === 'answer' && fallback.entries[0]) {
+        const entry = fallback.entries[0];
+        setMessages(previous => [...previous, {
+          role: 'assistant' as const,
+          response: {
+            answer: `I can't connect to the AI right now. Here is the published Cloudy information:\n\n${entry.answer}`,
+            links: entry.links,
+            source: entry.source,
+          },
+        }].slice(-30));
+      } else {
+        setMessages(previous => [...previous, {
+          role: 'assistant' as const,
+          response: {
+            answer: 'I can’t connect to the AI right now. Please try again in a moment, or contact Cloudy support.',
+            links: [{ label: 'Contact support', href: '/support' }],
+          },
+        }].slice(-30));
+      }
+    } finally {
+      if (requestGeneration.current === generation) {
+        requestRef.current = null;
+        setPending(false);
+      }
+    }
   }
 
   function reset() {
+    stopPendingReply();
     setActivePhoneTopic(null);
     setMessages([]);
     setQuestion('');
@@ -217,7 +296,17 @@ export function CloudyHelp() {
               ) : (
                 <div key={index} className={styles.answer} data-latest-answer={index === messages.length - 1 ? "true" : undefined}>
                   <span className={styles.sender}>Cloudy assistant</span>
-                  {message.result.kind === 'answer' ? message.result.entries.map(entry => (
+                  {'response' in message ? (
+                    <>
+                      <p>{message.response.answer}</p>
+                      {message.response.links.length > 0 && (
+                        <div className={styles.links}>
+                          {message.response.links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
+                        </div>
+                      )}
+                      {message.response.source && <small className={styles.source}>Source: {message.response.source}</small>}
+                    </>
+                  ) : message.result.kind === 'answer' ? message.result.entries.map(entry => (
                     <div key={entry.id}>
                       <h3>{entry.title}</h3>
                       <p>{entry.answer}</p>
@@ -239,13 +328,19 @@ export function CloudyHelp() {
                   )}
                 </div>
               ))}
+              {pending && (
+                <div className={styles.answer} data-latest-answer="true" role="status">
+                  <span className={styles.sender}>Cloudy assistant</span>
+                  <p>Thinking…</p>
+                </div>
+              )}
             </div>
           </div>
 
           <form className={styles.form} onSubmit={submit}>
             <label className={styles.srOnly} htmlFor="cloudy-help-question">Your question</label>
             <input ref={inputRef} id="cloudy-help-question" value={question} onChange={event => setQuestion(event.target.value)} maxLength={1000} placeholder="Type your question" autoComplete="off" />
-            <button type="submit" disabled={!question.trim()} aria-label="Send question"><ArrowUp size={19} aria-hidden="true" /></button>
+            <button type="submit" disabled={!question.trim() || pending} aria-label="Send question"><ArrowUp size={19} aria-hidden="true" /></button>
           </form>
         </section>
       )}
