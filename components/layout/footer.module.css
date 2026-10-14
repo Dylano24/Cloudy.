@@ -14,16 +14,18 @@
   }
 }
 
-/* Only on phones: define the positions explicitly rather than relying on
-   implicit grid placement. The desktop footer above is unchanged. */
+/* Mobile-only: all three footer categories share ONE row.
+   The Cloudy brand is pinned to the bottom right without creating a second
+   category row or changing the desktop grid. */
 @media (max-width: 700px) {
+  .footer :global(.cloudy-footer-inner) { position: relative; }
+
   .footer :global(.cloudy-footer-grid) {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      "navigation information"
-      "community brand";
-    gap: 24px 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas: "navigation information community";
+    column-gap: 8px;
+    row-gap: 0;
     align-items: start;
   }
 
@@ -31,14 +33,26 @@
   .information { grid-area: information; min-width: 0; }
   .community { grid-area: community; min-width: 0; }
 
-  .brand {
-    grid-area: brand;
-    min-width: 0;
-    justify-self: end;
-    align-self: end;
+  .footer :global(.cloudy-footer-title) {
+    font-size: clamp(7px, 2.25vw, 9px);
+    letter-spacing: .055em;
+    white-space: nowrap;
+  }
+  .footer :global(.cloudy-footer-links) { gap: 9px; }
+  .footer :global(.cloudy-footer-links a) {
+    font-size: clamp(8px, 2.35vw, 10px);
+    overflow-wrap: anywhere;
   }
 
-  .footer :global(.cloudy-footer-brand) {
-    justify-content: flex-end;
+  /* Brand sits by the copyright, rather than taking a whole new row. */
+  .brand {
+    position: absolute;
+    right: 0;
+    bottom: 17px;
+    width: auto;
+    grid-area: auto;
   }
+  .footer :global(.cloudy-footer-brand) { gap: 7px; justify-content: flex-end; }
+  .footer :global(.cloudy-footer-brand img) { width: 32px; height: 32px; }
+  .footer :global(.cloudy-footer-brand strong) { font-size: 10px; letter-spacing: .01em; }
 }
