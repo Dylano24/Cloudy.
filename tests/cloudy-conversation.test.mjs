@@ -100,7 +100,7 @@ test('assistant renders bold text and lists as structured text rather than raw m
   assert.deepEqual(blocks.map(item => item.kind), ['paragraph', 'list']);
   assert.equal(blocks[1].items.length, 2);
   const inline = parseAssistantInline(blocks[1].items[0]);
-  assert.ok(inline.some(part => part.kind === 'strong' && part.text === 'Support & Help pagina'));
+  assert.ok(inline.some(part => part.kind === 'link' && part.text === 'Support & Help' && part.emphasis === 'strong'));
   assert.ok(inline.some(part => part.kind === 'link' && part.text === 'Support & Help' && part.href === '/support'));
   const discord = parseAssistantInline(blocks[1].items[1]);
   assert.ok(discord.some(part => part.kind === 'link' && part.text === 'Cloudy Discord'));
