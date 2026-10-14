@@ -17,6 +17,18 @@ export function Header() {
   const [accountOpen, setAccountOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
   const [basketCount, setBasketCount] = useState(0);
+  const [menuOffset, setMenuOffset] = useState<number>();
+  useEffect(() => {
+    if (!accountOpen || !accountRef.current) return;
+    const account = accountRef.current;
+    const header = account.closest('header');
+    if (!header) return;
+    const align = () => setMenuOffset(header.getBoundingClientRect().bottom - account.getBoundingClientRect().top);
+    align();
+    const observer = new ResizeObserver(align);
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, [accountOpen]);
 
   useEffect(() => {
     const readBasketCount = () => {
@@ -87,7 +99,7 @@ export function Header() {
               <UserRound size={20} aria-hidden="true" />
             </button>
             {accountOpen && (
-              <nav id="cloudy-account-menu" className={styles.accountMenu} aria-label="Account menu">
+              <nav id="cloudy-account-menu" className={styles.accountMenu} style={{ top: menuOffset }} aria-label="Account menu">
                 {user && ([['My account', '/account'], ['My orders', '/account/orders'], ['Favorites', '/account/favorites'], ['Fidelity', '/account/fidelity'], ['My information', '/account/information']] as const).map(([label, href]) => (
                   <Link key={href} href={href} onClick={() => setAccountOpen(false)}>{label}</Link>
                 ))}

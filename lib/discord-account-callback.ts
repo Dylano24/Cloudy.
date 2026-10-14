@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { accountSigningSecret, encodeSession, SESSION_COOKIE, SESSION_SECONDS, STATE_COOKIE } from '@/lib/account-session';
+import { STATE_COOKIE } from '@/lib/account-session';
+
+import { finishAccountOAuth } from '@/lib/account-oauth-finish';
 
 export async function completeAccountLogin(request: NextRequest) {
   const origin = request.nextUrl.origin;
@@ -22,8 +24,8 @@ export async function completeAccountLogin(request: NextRequest) {
     if (!profile.ok) return finish('failed');
     const user = await profile.json();
     if (typeof user.id !== 'string' || !/^\d{17,20}$/.test(user.id) || typeof user.username !== 'string') return finish('failed');
-    const response = finish();
-    response.cookies.set(SESSION_COOKIE, encodeSession({ id: user.id, name: (user.global_name || user.username).slice(0, 100), provider: 'discord' }, accountSigningSecret()), { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/', maxAge: SESSION_SECONDS });
+    const response = await finishAccountOAuth(request, { id: user.id, name: (user.global_name || user.username).slice(0, 100), provider: 'discord' }, expected.startsWith('cloudy-login:create:') ? 'create' : 'login');
+    response.cookies.set(STATE_COOKIE, '', { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/api/oauth/discord/callback', maxAge: 0 });
     return response;
   } catch { return finish('failed'); }
 }

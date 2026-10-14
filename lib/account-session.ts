@@ -9,9 +9,9 @@ export const SESSION_SECONDS = 7 * 86400;
 function signature(payload: string, secret: string) {
   return createHmac('sha256', secret).update(`cloudy-account-v1:${payload}`).digest('base64url');
 }
-export function encodeSession(user: AccountUser, secret: string, now = Math.floor(Date.now() / 1000)) {
+export function encodeSession(user: AccountUser, secret: string, now = Math.floor(Date.now() / 1000), duration = SESSION_SECONDS) {
   if (!secret) throw new Error('Missing session signing key');
-  const payload = Buffer.from(JSON.stringify({ ...user, exp: now + SESSION_SECONDS })).toString('base64url');
+  const payload = Buffer.from(JSON.stringify({ ...user, exp: now + duration })).toString('base64url');
   return `${payload}.${signature(payload, secret)}`;
 }
 export function decodeSession(token: string | undefined, secret: string, now = Math.floor(Date.now() / 1000)): AccountUser | null {
