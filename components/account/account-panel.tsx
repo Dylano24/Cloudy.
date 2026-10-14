@@ -23,7 +23,6 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
         <div className="mt-6 flex flex-wrap gap-3">
           <a href="/api/account/login" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>{section === 'create' ? 'Create account with Discord' : 'Login with Discord'}</a>
           {section !== 'create' && <Link href="/account/create" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>Create account</Link>}
-          <a href="https://discord.gg/EGDVMmmSzF" target="_blank" rel="noreferrer" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>Join Discord</a>
         </div>
       </> : <>
         {(section === 'account' || section === 'information' || section === 'create') ? <><h2 className="text-xl font-bold">{user.name}</h2><dl className="mt-5 space-y-3 text-sm"><div><dt className="text-muted">Discord ID</dt><dd>{user.id}</dd></div><div><dt className="text-muted">Display name</dt><dd>{user.name}</dd></div></dl></> : <>
