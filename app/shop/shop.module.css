@@ -12,9 +12,10 @@
 .game,
 .game:hover,
 .game:focus,
-.game:active {
-  border: 2px solid #f1263b;
-  box-shadow: inset 0 0 0 1px rgba(241,38,59,.85), 0 0 0 1px rgba(241,38,59,.8), 0 0 24px rgba(229,27,46,.55);
+.game:active,
+.game:visited {
+  border: 1px solid #e51b2e;
+  box-shadow: 0 0 14px rgba(229,27,46,.24);
 }
 .game:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
 .coming { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; border: 1px solid #252525; border-radius: 20px; text-align: center; background: #000; color: #fff; }
