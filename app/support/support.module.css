@@ -1,8 +1,9 @@
 .page .heading { text-transform: none; }
+.page { background: #000 !important; }
 .page .card {
   position: relative;
   isolation: isolate;
-  background-color: #050505 !important;
+  background-color: #000 !important;
   background-image: linear-gradient(110deg, transparent 42%, rgba(160,160,170,.03) 46%, rgba(210,210,220,.12) 50%, rgba(160,160,170,.03) 54%, transparent 58%) !important;
   background-size: 400% 100% !important;
   background-repeat: no-repeat !important;

@@ -48,7 +48,7 @@ export default function TermsOfSalePage() {
 
         <div className="cloudy-terms-list">
           {sections.map(section => (
-            <section className="cloudy-term-card cloudy-traced-panel" key={section.title}>
+            <section className="cloudy-term-card" key={section.title}>
               <h2>{section.title}</h2>
               <p>{section.body}</p>
             </section>

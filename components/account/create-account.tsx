@@ -6,7 +6,7 @@ import { useAccount } from '@/hooks/use-account';
 export function CreateAccount() {
   const { user, pending } = useAccount();
   const params = useSearchParams();
-  return <div className="min-h-[70vh] px-4 py-16 sm:py-24"><div className="mx-auto max-w-xl">
+  return <div className="cloudy-black-page min-h-[70vh] px-4 py-16 sm:py-24"><div className="mx-auto max-w-xl">
     <section className="cloud-panel cloudy-traced-panel relative isolate mt-8 rounded-2xl border p-7 sm:p-10">
       {pending ? <p>Loading…</p> : user ? <><h2 className="text-xl font-bold">You’re already signed in</h2><Link href="/account" className="cloudy-classic-button mt-6" style={{ borderColor: '#e51b2e' }}>My account</Link></> : <>
         <h2 className="text-2xl font-bold text-white">Create your Cloudy account</h2>
