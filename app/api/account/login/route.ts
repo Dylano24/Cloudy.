@@ -71,19 +71,11 @@ a{color:#fff}
 </style>
 </head>
 <body>
-<main><div><p>Opening Discord…</p><p><a id="fallback" href=${JSON.stringify(authorize)}>Continue in browser</a></p></div></main>
+<main><div><p>Opening Discord…</p><p><a href=${JSON.stringify(appAuthorize)}>Open Discord</a></p></div></main>
 <script>
 (() => {
   const appUrl = ${JSON.stringify(appAuthorize)};
-  const webUrl = ${JSON.stringify(authorize)};
-  let switchedAway = false;
-  const stopFallback = () => { if (document.hidden) switchedAway = true; };
-  document.addEventListener('visibilitychange', stopFallback, { passive: true });
-  window.addEventListener('pagehide', () => { switchedAway = true; }, { passive: true });
-  try { window.location.href = appUrl; } catch {}
-  window.setTimeout(() => {
-    if (!switchedAway && document.visibilityState === 'visible') window.location.replace(webUrl);
-  }, 1100);
+  try { window.location.replace(appUrl); } catch {}
 })();
 </script>
 </body>
