@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { accountSigningSecret, encodeSession, SESSION_COOKIE, SESSION_SECONDS } from '@/lib/account-session';
+import { finishAccountOAuth } from '@/lib/account-oauth-finish';
 
 export async function GET(request: NextRequest) {
   const origin = request.nextUrl.origin;
@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   const state = request.nextUrl.searchParams.get('state');
   const code = request.nextUrl.searchParams.get('code');
   function finish(error?: string) {
-    const response = NextResponse.redirect(new URL(error ? `/account/create?login_error=${error}` : '/account', origin));
+    const response = NextResponse.redirect(new URL(error ? `${expected.startsWith('create:') ? '/account/create' : '/account'}?login_error=${error}` : '/account', origin));
     response.cookies.set('cloudy-google-state', '', { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/api/account/google/callback', maxAge: 0 });
     response.headers.set('Cache-Control', 'no-store');
     return response;
@@ -23,8 +23,8 @@ export async function GET(request: NextRequest) {
     if (!profile.ok) return finish('failed');
     const user = await profile.json();
     if (typeof user.sub !== 'string' || !/^[A-Za-z0-9_-]{1,255}$/.test(user.sub) || typeof user.name !== 'string') return finish('failed');
-    const response = finish();
-    response.cookies.set(SESSION_COOKIE, encodeSession({ id: user.sub, name: user.name.slice(0, 100), provider: 'google' }, accountSigningSecret()), { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/', maxAge: SESSION_SECONDS });
+    const response = await finishAccountOAuth(request, { id: user.sub, name: user.name.slice(0, 100), provider: 'google' }, expected.startsWith('create:') ? 'create' : 'login');
+    response.cookies.set('cloudy-google-state', '', { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/api/account/google/callback', maxAge: 0 });
     return response;
   } catch { return finish('failed'); }
 }

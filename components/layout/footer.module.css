@@ -14,16 +14,15 @@
   }
 }
 
-/* Mobile layout only: preserve the approved two-column footer while
-   swapping Community and Information. Desktop remains exactly unchanged. */
+/* Keep the three mobile link groups side by side. */
 @media (max-width: 700px) {
   .footer :global(.cloudy-footer-grid) {
     display: grid;
     position: static;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
-      "navigation community"
-      "information brand";
+      "navigation community information"
+      "brand brand brand";
     gap: 24px 12px;
     align-items: start;
   }
