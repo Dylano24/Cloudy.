@@ -2,7 +2,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-type User = { id: string; name: string };
+type User = { id: string; name: string; provider?: 'discord' | 'google' };
 export function useAccount() {
   const client = useQueryClient();
   const [loggingOut, setLoggingOut] = useState(false);

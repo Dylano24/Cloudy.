@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { encodeSession, SESSION_COOKIE, SESSION_SECONDS, STATE_COOKIE } from '@/lib/account-session';
+import { accountSigningSecret, encodeSession, SESSION_COOKIE, SESSION_SECONDS, STATE_COOKIE } from '@/lib/account-session';
 
 export async function completeAccountLogin(request: NextRequest) {
   const origin = request.nextUrl.origin;
@@ -23,7 +23,7 @@ export async function completeAccountLogin(request: NextRequest) {
     const user = await profile.json();
     if (typeof user.id !== 'string' || !/^\d{17,20}$/.test(user.id) || typeof user.username !== 'string') return finish('failed');
     const response = finish();
-    response.cookies.set(SESSION_COOKIE, encodeSession({ id: user.id, name: (user.global_name || user.username).slice(0, 100) }, process.env.DISCORD_CLIENT_SECRET), { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/', maxAge: SESSION_SECONDS });
+    response.cookies.set(SESSION_COOKIE, encodeSession({ id: user.id, name: (user.global_name || user.username).slice(0, 100), provider: 'discord' }, accountSigningSecret()), { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/', maxAge: SESSION_SECONDS });
     return response;
   } catch { return finish('failed'); }
 }

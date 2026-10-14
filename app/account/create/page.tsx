@@ -1,3 +1,3 @@
 import { Suspense } from 'react';
-import { AccountPanel } from '@/components/account/account-panel';
-export default function CreateAccountPage() { return <Suspense><AccountPanel section="create" /></Suspense>; }
+import { CreateAccount } from '@/components/account/create-account';
+export default function CreateAccountPage() { return <Suspense><CreateAccount /></Suspense>; }
