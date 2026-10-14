@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { decodeSession, SESSION_COOKIE } from '@/lib/account-session';
+import { accountSigningSecret, decodeSession, SESSION_COOKIE } from '@/lib/account-session';
 
 export async function GET(request: NextRequest) {
-  const user = decodeSession(request.cookies.get(SESSION_COOKIE)?.value, process.env.DISCORD_CLIENT_SECRET || '');
+  const user = decodeSession(request.cookies.get(SESSION_COOKIE)?.value, accountSigningSecret());
   return NextResponse.json({ user }, { headers: { 'Cache-Control': 'private, no-store' } });
 }
 export async function POST(request: NextRequest) {
