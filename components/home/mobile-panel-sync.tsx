@@ -10,8 +10,17 @@ export function MobilePanelSync() {
     let frame = 0;
     const measure = () => {
       const root = home.getBoundingClientRect();
-      if (media.matches) home.style.setProperty('--cloudy-mobile-plane-height', root.height + 'px');
-      else home.style.removeProperty('--cloudy-mobile-plane-height');
+      if (media.matches) {
+        home.style.setProperty('--cloudy-mobile-plane-height', root.height + 'px');
+        // The former 400%-wide background travelled three card widths in five seconds.
+        const cardWidth = panels[0]?.getBoundingClientRect().width || window.innerWidth;
+        const previousSpeed = 3 * cardWidth / 5;
+        const travel = root.height * .364 + window.innerWidth * 5;
+        home.style.setProperty('--cloudy-mobile-light-duration', (travel / previousSpeed).toFixed(4) + 's');
+      } else {
+        home.style.removeProperty('--cloudy-mobile-plane-height');
+        home.style.removeProperty('--cloudy-mobile-light-duration');
+      }
       for (const panel of panels) {
         if (media.matches) {
           const rect = panel.getBoundingClientRect();
@@ -39,6 +48,7 @@ export function MobilePanelSync() {
       window.removeEventListener('resize', schedule);
       media.removeEventListener('change', schedule);
       home.style.removeProperty('--cloudy-mobile-plane-height');
+      home.style.removeProperty('--cloudy-mobile-light-duration');
       for (const panel of panels) { panel.style.removeProperty('--cloudy-panel-left'); panel.style.removeProperty('--cloudy-panel-top'); }
     };
   }, []);
