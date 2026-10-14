@@ -18,25 +18,75 @@ export function sanitizeAssistantHistory(value: unknown): AssistantTurn[] {
   }).slice(-8);
 }
 
+function normalizeIntent(value: string): string {
+  return value.toLowerCase().normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[!?.,:;]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/** A broad request for help is the beginning of a conversation, not a request for support links. */
+export function isVagueHelpRequest(question: string): boolean {
+  const q = normalizeIntent(question);
+  return /^(?:(?:hallo|hoi|hey|hello|hi|hey cloudy|beste cloudy)\s+)?(?:ik (?:heb|zoek|wil|kan wel wat) (?:wat |een beetje |graag )?(?:hulp|help|support|ondersteuning|assistentie)(?: nodig)?|(?:i|we) (?:need|want|could use) (?:some |a bit of )?(?:help|support|assistance)|(?:can|could) you help me|(?:kun|kan) (?:je|jij|u) (?:me|mij) helpen|help me|help|support|hulp|help alsjeblieft|help please)$/.test(q);
+}
+
+function isContactOrLinkRequest(question: string): boolean {
+  const q = normalizeIntent(question);
+  return /\b(?:link|linkje|url|website|pagina|page|open|openen|bezoek|visit|stuur|send|show me|take me|go to|ga naar|contact|contact opnemen|bereiken|reach|spreken met|talk to|join|uitnodiging|invite|waar vind ik|where (?:can|do|is)|hoe (?:kom ik|vind ik|bereik ik)|how (?:can i find|do i reach|to access))\b/.test(q);
+}
+
+function wantsDirectCloudySupport(question: string): boolean {
+  const q = normalizeIntent(question);
+  if (isVagueHelpRequest(q)) return false;
+  return /\b(?:contact|contact opnemen|bereik|medewerker|staff|helpdesk|support team|support pagina|support page|support link|supportlink|ticket|tickets|discord support|spreken met|talk to|reach support|where is support|waar is support)\b/.test(q)
+    || /\b(?:link|pagina|page|url|website|waar|where|open|openen)\b/.test(q)
+      && /\b(?:support|hulp|help)\b/.test(q);
+}
+
+function hasActionableDeliveryIssue(question: string): boolean {
+  const q = normalizeIntent(question);
+  return /\b(?:niet ontvangen|niet gekregen|niet geleverd|not received|never arrived|not delivered|missing product|purchase is missing|where is my order|waar is mijn bestelling)\b/.test(q)
+    && /\b(?:wat moet|what should|wat kan|what can|hoe los|how do|support|contact|help|hulp)\b/.test(q);
+}
+
+function allowContextForEntry(entry: HelpEntry, question: string): boolean {
+  if (entry.id !== 'support') return true;
+  return wantsDirectCloudySupport(question);
+}
+
+function showLinksForEntry(entry: HelpEntry, question: string): boolean {
+  if (entry.id === 'support') return wantsDirectCloudySupport(question);
+  return isContactOrLinkRequest(question) || entry.id === 'missing-delivery' && hasActionableDeliveryIssue(question);
+}
+
 export function assistantKnowledge(
   question: string,
   history: AssistantTurn[],
   lookup: (question: string) => HelpResult,
 ): { evidence: string; links: AssistantReply['links']; source?: string } {
-  let result = lookup(question);
-  if (result.kind === 'unknown') {
+  const vagueHelp = isVagueHelpRequest(question);
+  let result: HelpResult = vagueHelp ? { kind: 'unknown', entries: [] } : lookup(question);
+
+  // Recover context for short follow-ups only. Generic help requests always start
+  // with a clarification and must not reuse a previous support link.
+  if (!vagueHelp && result.kind === 'unknown') {
     const previous = [...history].reverse().find(turn => turn.role === 'user');
-    if (previous) result = lookup(previous.content);
+    if (previous && !isVagueHelpRequest(previous.content)) result = lookup(previous.content);
   }
 
-  const entries: HelpEntry[] = result.entries.slice(0, 2);
-  const links = entries.flatMap(entry => entry.links)
+  const entries = result.entries
+    .filter(entry => allowContextForEntry(entry, question))
+    .slice(0, 2);
+  const linkEntries = entries.filter(entry => showLinksForEntry(entry, question));
+  const links = linkEntries.flatMap(entry => entry.links)
     .filter((link, index, all) => all.findIndex(item => item.href === link.href) === index)
     .slice(0, 3);
   const source = entries.length ? entries.map(entry => entry.source).join(' · ').slice(0, 200) : undefined;
 
-  // Only the server-controlled, already approved knowledge base is supplied as
-  // evidence. Never fetch private orders, arbitrary URLs or Discord channels.
+  // The website controls sources and link buttons, not the model. In particular,
+  // "Ik heb support nodig" has no verified-navigation evidence or automatic links.
   const evidence = JSON.stringify({
     site: 'Cloudy Inc.',
     verifiedWebsiteInformation: entries.map(entry => ({
@@ -45,7 +95,8 @@ export function assistantKnowledge(
       source: entry.source,
       links: entry.links.slice(0, 3),
     })),
-    limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. For unavailable Cloudy details refer visitors to official support; do not invent information.',
+    navigationRequested: links.length > 0,
+    limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. Talk naturally about general questions. Never direct a visitor to the support page or Discord without a specific request. Do not invent private Cloudy facts.',
   });
   return { evidence, links, source };
 }
