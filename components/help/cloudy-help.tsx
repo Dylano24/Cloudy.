@@ -27,7 +27,11 @@ export function CloudyHelp() {
 
   useEffect(() => {
     if (!open) return;
-    inputRef.current?.focus({ preventScroll: true });
+    // Do not trigger the phone keyboard when the assistant first opens:
+    // visitors should see the full intro and shortcuts straight away.
+    if (!window.matchMedia('(max-width: 480px)').matches) {
+      inputRef.current?.focus({ preventScroll: true });
+    }
     const escape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
       setOpen(false);
@@ -48,7 +52,10 @@ export function CloudyHelp() {
       const dock = dockRef.current;
       if (!dock) return;
       dock.style.setProperty('--help-available-height', `${viewport.height}px`);
-      dock.style.setProperty('--help-keyboard-inset', `${Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop)}px`);
+      // Browser toolbars can change the visual viewport too. Only lift
+      // the dock for a real on-screen keyboard, not for small toolbar shifts.
+      const covered = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+      dock.style.setProperty('--help-keyboard-inset', `${covered > 140 ? covered : 0}px`);
     };
     fitViewport();
     viewport.addEventListener('resize', fitViewport);
