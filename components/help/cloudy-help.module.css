@@ -93,3 +93,35 @@
 @media (prefers-reduced-motion: reduce) {
   .body { scroll-behavior: auto; }
 }
+
+/* Phone-only assistant: show its content immediately and keep the header,
+   scrollable conversation, and composer together while the keyboard is open. */
+@media (max-width: 480px) {
+  .dock:has(.panel) {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(max(12px, env(safe-area-inset-bottom)) + var(--help-keyboard-inset, 0px));
+    width: calc(100% - max(12px, env(safe-area-inset-left)) - max(12px, env(safe-area-inset-right)));
+  }
+
+  .dock:has(.panel) .panel {
+    width: 100%;
+    height: calc(var(--help-available-height, 100dvh) - 24px);
+    max-height: 700px;
+    margin-bottom: 0;
+    border-radius: 16px;
+  }
+
+  .dock:has(.panel) .launcher {
+    display: none;
+  }
+
+  .panel .body {
+    min-height: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .panel .form {
+    flex-shrink: 0;
+  }
+}
