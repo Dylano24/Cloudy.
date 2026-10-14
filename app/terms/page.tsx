@@ -50,7 +50,6 @@ export default function TermsPage() {
             </section>
           ))}
         </div>
-        <p className="cloudy-legal-updated">Last updated 20.03.2026 at 13h42</p>
       </div>
     </main>
   );
