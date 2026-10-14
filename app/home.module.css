@@ -365,12 +365,12 @@
 /* Only silver light uses a page-wide plane. Red outline animations remain unchanged. */
 @property --cloudy-mobile-light-x { syntax: '<length>'; inherits: true; initial-value: 0px; }
 @keyframes cloudy-mobile-aligned-light {
-  from { --cloudy-mobile-light-x: calc(var(--cloudy-mobile-plane-height, 5000px) * .182 + 100vw); }
-  to { --cloudy-mobile-light-x: calc(var(--cloudy-mobile-plane-height, 5000px) * -.182 - 400vw); }
+  from { --cloudy-mobile-light-x: 0px; }
+  to { --cloudy-mobile-light-x: var(--cloudy-mobile-light-travel, -1080px); }
 }
 @media (max-width: 820px) {
   .home :global(.cloudy-classic-wrap) {
-    animation: cloudy-mobile-shared-sheen 5s linear infinite, cloudy-mobile-aligned-light var(--cloudy-mobile-light-duration, 20s) linear infinite;
+    animation: cloudy-mobile-shared-sheen 5s linear infinite, cloudy-mobile-aligned-light 5s linear infinite;
   }
   .home :global(.cloudy-classic-intro),
   .home :global(.cloudy-classic-coming),
@@ -378,7 +378,7 @@
   .home :global(.cloudy-classic-future),
   .home :global(.cloudy-restored-pay-grid) article,
   .home :global(.cloudy-classic-why-grid) article {
-    background-image: linear-gradient(110deg, transparent calc(50% - 90px), rgba(160,160,170,.03) calc(50% - 45px), rgba(210,210,220,.12) 50%, rgba(160,160,170,.03) calc(50% + 45px), transparent calc(50% + 90px));
+    background-image: repeating-linear-gradient(110deg, transparent 0px, rgba(160,160,170,.03) 45px, rgba(210,210,220,.12) 90px, rgba(160,160,170,.03) 135px, transparent 180px, transparent var(--cloudy-mobile-light-period, 1014.87px));
     background-size: 400vw var(--cloudy-mobile-plane-height, 5000px);
     background-origin: padding-box;
     background-position: calc(var(--cloudy-mobile-light-x) - var(--cloudy-panel-left, 0px)) calc(0px - var(--cloudy-panel-top, 0px));
