@@ -243,18 +243,7 @@
 }
 
 /* Temporarily hide the vortex and match the tagline to the red accents. */
-.home :global(.cloudy-classic-hero)::before {
-  display: block;
-  opacity: .48;
-  animation: cloudDrift 40s ease-in-out infinite alternate;
-}
-@keyframes cloudDrift {
-  from { transform: translate(-25px, -10px) rotate(-5deg); }
-  to { transform: translate(25px, 10px) rotate(5deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .home :global(.cloudy-classic-hero)::before { animation: none; }
-}
+.home :global(.cloudy-classic-hero)::before { display: none; }
 .home :global(.cloudy-classic-tagline) strong {
   color: #e51b2e;
   animation: none;
