@@ -18,10 +18,9 @@
    The Cloudy brand is pinned to the bottom right without creating a second
    category row or changing the desktop grid. */
 @media (max-width: 700px) {
-  .footer :global(.cloudy-footer-inner) { position: relative; }
-
   .footer :global(.cloudy-footer-grid) {
     display: grid;
+    position: relative;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas: "navigation information community";
     column-gap: 8px;
@@ -48,7 +47,7 @@
   .brand {
     position: absolute;
     right: 0;
-    bottom: 17px;
+    bottom: 0;
     width: auto;
     grid-area: auto;
   }
