@@ -97,7 +97,9 @@ export function assistantKnowledge(
       title: entry.title,
       answer: entry.answer.slice(0, 1050),
       source: entry.source,
-      links: entry.links.slice(0, 3),
+      // Never feed support/Discord URLs to the model unless the visitor asked
+      // for a specific resource. The site renders verified buttons separately.
+      ...(showLinksForEntry(entry, topicQuestion) ? { links: entry.links.slice(0, 3) } : {}),
     })),
     navigationRequested: links.length > 0,
     limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. Talk naturally about general questions. Never direct a visitor to the support page or Discord without a specific request. Do not invent private Cloudy facts.',
