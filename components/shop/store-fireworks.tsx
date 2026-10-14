@@ -50,10 +50,9 @@ export function StoreFireworks() {
 
     function burst(x: number, y: number, color: number) {
       const count = width < 650 ? 90 : 160;
-      const ring = launches % 3 === 0;
       for (let i = 0; i < count; i++) {
         const angle = i / count * Math.PI * 2 + Math.random() * .04;
-        const speed = (ring && i % 4 !== 0 ? 90 + Math.random() * 15 : 30 + Math.random() * 115) * Math.min(width / 800, 1);
+        const speed = (10 + Math.random() * 135) * Math.min(width / 800, 1);
         sparks.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
           age: 0, life: 2.2 + Math.random() * 1.5, color: i % 5 === 0 ? 2 : color,
           size: .6 + Math.random() * .6, trail: [] });
