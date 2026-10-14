@@ -14,12 +14,13 @@ export function MobilePanelSync() {
         home.style.setProperty('--cloudy-mobile-plane-height', root.height + 'px');
         // The former 400%-wide background travelled three card widths in five seconds.
         const cardWidth = panels[0]?.getBoundingClientRect().width || window.innerWidth;
-        const previousSpeed = 3 * cardWidth / 5;
-        const travel = root.height * .364 + window.innerWidth * 5;
-        home.style.setProperty('--cloudy-mobile-light-duration', (travel / previousSpeed).toFixed(4) + 's');
+        const travel = 3 * cardWidth;
+        home.style.setProperty('--cloudy-mobile-light-travel', -travel + 'px');
+        home.style.setProperty('--cloudy-mobile-light-period', (travel * Math.sin(110 * Math.PI / 180)) + 'px');
       } else {
         home.style.removeProperty('--cloudy-mobile-plane-height');
-        home.style.removeProperty('--cloudy-mobile-light-duration');
+        home.style.removeProperty('--cloudy-mobile-light-travel');
+        home.style.removeProperty('--cloudy-mobile-light-period');
       }
       for (const panel of panels) {
         if (media.matches) {
@@ -48,7 +49,8 @@ export function MobilePanelSync() {
       window.removeEventListener('resize', schedule);
       media.removeEventListener('change', schedule);
       home.style.removeProperty('--cloudy-mobile-plane-height');
-      home.style.removeProperty('--cloudy-mobile-light-duration');
+      home.style.removeProperty('--cloudy-mobile-light-travel');
+      home.style.removeProperty('--cloudy-mobile-light-period');
       for (const panel of panels) { panel.style.removeProperty('--cloudy-panel-left'); panel.style.removeProperty('--cloudy-panel-top'); }
     };
   }, []);

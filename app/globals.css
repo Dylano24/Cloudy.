@@ -1885,3 +1885,17 @@ body {
 @media (max-width: 820px) and (prefers-reduced-motion: reduce) {
   .cloudy-restored-pay-grid { animation: none !important; }
 }
+
+/* Mobile outline: steady movement at the turn, faster along the run, then steady again. */
+@media (max-width: 820px) {
+  .cloudy-traced-panel::after,
+  .cloudy-classic-intro::after,
+  .cloudy-classic-game-card::after,
+  .cloudy-classic-coming::after,
+  .cloudy-classic-feature::after,
+  .cloudy-classic-future::after,
+  .cloudy-classic-why-grid::after,
+  .cloudy-classic-benefits::after {
+    animation-timing-function: cubic-bezier(.4, .2, .6, .8);
+  }
+}
