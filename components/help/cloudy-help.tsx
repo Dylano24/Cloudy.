@@ -5,6 +5,7 @@ import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
 import { assistantKnowledge, type AssistantReply, type AssistantTurn } from '@/lib/cloudy-chat-context';
 import { CloudyMessage } from './cloudy-message';
+import { assistantInlineDestinationHrefs } from '@/lib/cloudy-message-format';
 import styles from './cloudy-help.module.css';
 
 type Message =
@@ -13,6 +14,13 @@ type Message =
   | { role: 'assistant'; response: AssistantReply };
 
 const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'sale-introduction'];
+
+// A verified destination shown as a blue inline link should not also appear
+// as a bulky duplicate navigation card under the same assistant answer.
+function extraReplyLinks(response: AssistantReply): AssistantReply['links'] {
+  const inline = assistantInlineDestinationHrefs(response.answer);
+  return response.links.filter(link => !inline.has(link.href));
+}
 
 export function CloudyHelp() {
   const [open, setOpen] = useState(false);
@@ -307,9 +315,9 @@ export function CloudyHelp() {
                   {'response' in message ? (
                     <>
                       <CloudyMessage text={message.response.answer} />
-                      {message.response.links.length > 0 && (
+                      {extraReplyLinks(message.response).length > 0 && (
                         <div className={styles.links}>
-                          {message.response.links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
+                          {extraReplyLinks(message.response).map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
                         </div>
                       )}
                       {message.response.source && <small className={styles.source}>Source: {message.response.source}</small>}
