@@ -6,12 +6,22 @@ export function MobilePanelSync() {
     const home = document.querySelector<HTMLElement>('.cloudy-classic-home');
     if (!home) return;
     const media = window.matchMedia('(max-width: 820px)');
-    const panels = [...home.querySelectorAll<HTMLElement>('.cloudy-classic-intro, .cloudy-classic-coming, .cloudy-classic-feature, .cloudy-classic-future, .cloudy-restored-pay-grid article, .cloudy-classic-why-grid article, .cloudy-classic-why-grid, .cloudy-classic-game-card, .cloudy-classic-benefits')];
+    const panels = [...home.querySelectorAll<HTMLElement>('.cloudy-classic-intro, .cloudy-classic-coming, .cloudy-classic-feature, .cloudy-classic-future, .cloudy-restored-pay-grid article, .cloudy-classic-why-grid article')];
     let frame = 0;
     const measure = () => {
+      const root = home.getBoundingClientRect();
+      if (media.matches) home.style.setProperty('--cloudy-mobile-plane-height', root.height + 'px');
+      else home.style.removeProperty('--cloudy-mobile-plane-height');
       for (const panel of panels) {
-        if (media.matches) panel.style.setProperty('--cloudy-panel-left', `${panel.getBoundingClientRect().left + parseFloat(getComputedStyle(panel).borderLeftWidth || '0')}px`);
-        else panel.style.removeProperty('--cloudy-panel-left');
+        if (media.matches) {
+          const rect = panel.getBoundingClientRect();
+          const style = getComputedStyle(panel);
+          panel.style.setProperty('--cloudy-panel-left', (rect.left + parseFloat(style.borderLeftWidth || '0')) + 'px');
+          panel.style.setProperty('--cloudy-panel-top', (rect.top - root.top + parseFloat(style.borderTopWidth || '0')) + 'px');
+        } else {
+          panel.style.removeProperty('--cloudy-panel-left');
+          panel.style.removeProperty('--cloudy-panel-top');
+        }
       }
     };
     const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(measure); };
@@ -28,7 +38,8 @@ export function MobilePanelSync() {
       home.removeEventListener('scroll', schedule, true);
       window.removeEventListener('resize', schedule);
       media.removeEventListener('change', schedule);
-      for (const panel of panels) panel.style.removeProperty('--cloudy-panel-left');
+      home.style.removeProperty('--cloudy-mobile-plane-height');
+      for (const panel of panels) { panel.style.removeProperty('--cloudy-panel-left'); panel.style.removeProperty('--cloudy-panel-top'); }
     };
   }, []);
   return null;
