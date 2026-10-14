@@ -94,40 +94,43 @@
   .body { scroll-behavior: auto; }
 }
 
-/* Mobile-only keyboard-safe assistant: keep the entire panel inside the
-   visual viewport, including the composer when the on-screen keyboard opens. */
+/* iPhone-safe mobile dialog. Keep the assistant open, prevent page
+   scrolling behind it and make only the messages area scroll. The input
+   remains pinned above the keyboard as visualViewport changes. */
 @media (max-width: 480px) {
-  .dock:has(.panel) {
-    top: var(--help-viewport-top, 0px);
+  .dock[data-open="true"] {
+    position: fixed;
+    top: calc(var(--help-viewport-top, 0px) + 10px);
     bottom: auto;
     right: max(12px, env(safe-area-inset-right));
     width: calc(100% - max(12px, env(safe-area-inset-left)) - max(12px, env(safe-area-inset-right)));
-    height: var(--help-available-height, 100dvh);
+    height: calc(var(--help-available-height, 100dvh) - 20px);
     min-height: 0;
     display: flex;
     flex-direction: column;
     pointer-events: none;
   }
 
-  .dock:has(.panel) .panel {
+  .dock[data-open="true"] .panel {
     flex: 1 1 auto;
-    min-height: 0;
     width: 100%;
-    height: auto;
+    height: 100%;
+    min-height: 0;
     max-height: none;
-    margin: 12px 0;
+    margin: 0;
     overflow: hidden;
     box-sizing: border-box;
     border-radius: 16px;
     pointer-events: auto;
   }
 
-  .dock:has(.panel) .launcher { display: none; }
-  .panel .body {
+  .dock[data-open="true"] .launcher { display: none; }
+  .dock[data-open="true"] .body {
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
+    overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
   }
-  .panel .form { flex: 0 0 auto; }
+  .dock[data-open="true"] .form { flex: 0 0 auto; }
 }
