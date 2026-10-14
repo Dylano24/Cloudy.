@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
 import styles from './cloudy-help.module.css';
@@ -141,6 +141,13 @@ export function CloudyHelp() {
     inputRef.current?.focus({ preventScroll: true });
   }
 
+  function preserveShortcutPosition(event: PointerEvent<HTMLButtonElement>) {
+    if (event.button === 0 && window.matchMedia('(max-width: 480px)').matches) {
+      // Keep input focus until the click lands, so Safari cannot move its target.
+      event.preventDefault();
+    }
+  }
+
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const text = question.trim();
@@ -184,7 +191,7 @@ export function CloudyHelp() {
             </div>
             <div className={styles.topics} aria-label="Help topics">
               {helpEntries.filter(entry => shortcuts.includes(entry.id)).map(entry => (
-                <button type="button" key={entry.id} onClick={() => choose(entry)}><span className={styles.topicLabel}>{entry.title}</span><ArrowUpRight size={13} aria-hidden="true" /></button>
+                <button type="button" key={entry.id} onPointerDown={preserveShortcutPosition} onClick={() => choose(entry)}><span className={styles.topicLabel}>{entry.title}</span><ArrowUpRight size={13} aria-hidden="true" /></button>
               ))}
             </div>
 
@@ -222,7 +229,7 @@ export function CloudyHelp() {
                   )) : message.result.kind === 'clarify' ? (
                     <>
                       <p>Which of these topics do you mean? Choose one, or give me a little more detail.</p>
-                      <div className={styles.topics}>{message.result.entries.map(entry => <button key={entry.id} type="button" onClick={() => choose(entry)}><span className={styles.topicLabel}>{entry.title}</span><ArrowUpRight size={13} aria-hidden="true" /></button>)}</div>
+                      <div className={styles.topics}>{message.result.entries.map(entry => <button key={entry.id} type="button" onPointerDown={preserveShortcutPosition} onClick={() => choose(entry)}><span className={styles.topicLabel}>{entry.title}</span><ArrowUpRight size={13} aria-hidden="true" /></button>)}</div>
                     </>
                   ) : (
                     <>
