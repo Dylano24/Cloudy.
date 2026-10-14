@@ -68,18 +68,22 @@ export function assistantKnowledge(
 ): { evidence: string; links: AssistantReply['links']; source?: string } {
   const vagueHelp = isVagueHelpRequest(question);
   let result: HelpResult = vagueHelp ? { kind: 'unknown', entries: [] } : lookup(question);
+  let topicQuestion = question;
 
-  // Recover context for short follow-ups only. Generic help requests always start
-  // with a clarification and must not reuse a previous support link.
+  // Follow-ups may ask for the next step without repeating the original issue.
+  // Keep the earlier topic only when the current message is genuinely a follow-up.
   if (!vagueHelp && result.kind === 'unknown') {
     const previous = [...history].reverse().find(turn => turn.role === 'user');
-    if (previous && !isVagueHelpRequest(previous.content)) result = lookup(previous.content);
+    if (previous && !isVagueHelpRequest(previous.content)) {
+      result = lookup(previous.content);
+      topicQuestion = previous.content + ' ' + question;
+    }
   }
 
   const entries = result.entries
-    .filter(entry => allowContextForEntry(entry, question))
+    .filter(entry => allowContextForEntry(entry, topicQuestion))
     .slice(0, 2);
-  const linkEntries = entries.filter(entry => showLinksForEntry(entry, question));
+  const linkEntries = entries.filter(entry => showLinksForEntry(entry, topicQuestion));
   const links = linkEntries.flatMap(entry => entry.links)
     .filter((link, index, all) => all.findIndex(item => item.href === link.href) === index)
     .slice(0, 3);
