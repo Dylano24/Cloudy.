@@ -9,12 +9,11 @@ export const accountSections = [
 ] as const;
 
 export function AccountPanel({ section = 'account' }: { section?: string }) {
-  const { user, pending, error, logout, loggingOut } = useAccount();
+  const { user, pending, error } = useAccount();
   const params = useSearchParams();
   const current = accountSections.find(([, href]) => href === (section === 'account' ? '/account' : `/account/${section}`)) || accountSections[0];
   return <div className="cloudy-black-page min-h-[70vh] px-4 py-16 sm:py-24"><div className="mx-auto max-w-4xl">
     {section !== 'account' && <h1 className="text-4xl font-bold text-white sm:text-5xl">{section === 'create' ? 'Create account' : current[0]}</h1>}
-    {user && <nav aria-label="Account pages" className="mt-7 flex flex-wrap gap-3">{accountSections.map(([label, href]) => <Link key={href} href={href} aria-current={href === current[1] ? 'page' : undefined} className="rounded-lg border border-red-600/50 px-4 py-2 text-sm">{label}</Link>)}</nav>}
     <section className="cloud-panel cloudy-traced-panel relative isolate mt-8 rounded-2xl border p-7 sm:p-10">
       {pending ? <p>Loading your account…</p> : !user ? <>
         <h2 className="text-xl font-bold">Sign in with your account</h2>
@@ -29,7 +28,6 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
           <p className="text-sm leading-7 text-muted">{section === 'orders' ? 'Your order history is not available here yet. Contact Cloudy support for help with a purchase.' : section === 'fidelity' ? 'Fidelity details are not available yet.' : 'Your saved favorites are not available here yet.'}</p>
           <Link href="/support" className="cloudy-classic-button mt-6" style={{ borderColor: '#e51b2e' }}>Contact support</Link>
         </>}
-        <button type="button" disabled={loggingOut} onClick={() => { void logout().catch(() => window.alert('Unable to sign out. Please try again.')); }} className="mt-7 block text-sm text-red-500">{loggingOut ? 'Signing out…' : 'Log off'}</button>
       </>}
     </section>
   </div></div>;
