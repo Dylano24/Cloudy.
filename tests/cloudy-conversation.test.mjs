@@ -85,6 +85,12 @@ test('Cloudy support links appear when specifically requested, never after unrel
   }
   const policy = assistantKnowledge('What are the Discord rules?', [], findHelp);
   assert.deepEqual(policy.links, [], 'a factual question should not automatically show navigation links');
+  const verified = JSON.parse(policy.evidence).verifiedWebsiteInformation;
+  assert.ok(verified.length > 0);
+  assert.equal(verified[0].links, undefined, 'do not send unsolicited URLs to the AI model');
+  const rulePage = assistantKnowledge('Where can I read the Discord rules?', [], findHelp);
+  assert.ok(rulePage.links.some(link => link.href.startsWith('https://discord.gg/')));
+  assert.ok(JSON.parse(rulePage.evidence).verifiedWebsiteInformation[0].links.length > 0);
 });
 
 test('assistant renders bold text and lists as structured text rather than raw markup', () => {
