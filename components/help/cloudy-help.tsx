@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type FormEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type FormEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
 import styles from './cloudy-help.module.css';
@@ -15,6 +15,7 @@ export function CloudyHelp() {
   const [open, setOpen] = useState(false);
   const [question, setQuestion] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [activePhoneTopic, setActivePhoneTopic] = useState<HelpEntry | null>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
@@ -44,6 +45,10 @@ export function CloudyHelp() {
   useEffect(() => {
     const log = logRef.current;
     if (!open || !log) return;
+    if (activePhoneTopic && window.matchMedia('(max-width: 480px)').matches) {
+      log.scrollTop = 0;
+      return;
+    }
     if (window.matchMedia('(max-width: 480px)').matches && messages.length) {
       // Present the newest answer at its beginning on the first tap.
       // Scrolling to the very bottom previously hid the answer heading.
@@ -55,7 +60,13 @@ export function CloudyHelp() {
       }
     }
     log.scrollTop = log.scrollHeight;
-  }, [messages, open]);
+  }, [messages, open, activePhoneTopic]);
+
+  useLayoutEffect(() => {
+    if (activePhoneTopic && open && logRef.current) {
+      logRef.current.scrollTop = 0;
+    }
+  }, [activePhoneTopic, open]);
 
   useEffect(() => {
     const viewport = window.visualViewport;
@@ -120,13 +131,14 @@ export function CloudyHelp() {
 
   function choose(entry: HelpEntry) {
     setMessages(previous => [...previous, { role: 'visitor' as const, text: entry.title }, { role: 'assistant' as const, result: { kind: 'answer' as const, entries: [entry] } }].slice(-30));
-    // Tapping a shortcut on iPhone must reveal the answer, not focus
-    // the composer and open the keyboard before the answer is visible.
     if (window.matchMedia('(max-width: 480px)').matches) {
+      // Display the complete selected answer directly. On iPhone the prior
+      // chat/scroll transition could hide the reply until another tap.
+      setActivePhoneTopic(entry);
       inputRef.current?.blur();
-    } else {
-      inputRef.current?.focus({ preventScroll: true });
+      return;
     }
+    inputRef.current?.focus({ preventScroll: true });
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -134,11 +146,13 @@ export function CloudyHelp() {
     const text = question.trim();
     if (!text || text.length > 1000) return;
     const result = findHelp(text);
+    setActivePhoneTopic(null);
     setMessages(previous => [...previous, { role: 'visitor' as const, text }, { role: 'assistant' as const, result }].slice(-30));
     setQuestion('');
   }
 
   function reset() {
+    setActivePhoneTopic(null);
     setMessages([]);
     setQuestion('');
     if (window.matchMedia('(max-width: 480px)').matches) {
@@ -149,7 +163,7 @@ export function CloudyHelp() {
   }
 
   return (
-    <div className={styles.dock} data-open={open ? "true" : "false"} data-has-messages={messages.length > 0 ? "true" : "false"} ref={dockRef}>
+    <div className={styles.dock} data-open={open ? "true" : "false"} data-has-messages={messages.length > 0 ? "true" : "false"} data-active-phone-topic={activePhoneTopic ? "true" : "false"} ref={dockRef}>
       {open && (
         <section id="cloudy-help-panel" className={styles.panel} role="dialog" aria-modal="false" aria-labelledby="cloudy-help-title">
           <header className={styles.header}>
@@ -173,6 +187,22 @@ export function CloudyHelp() {
                 <button type="button" key={entry.id} onClick={() => choose(entry)}>{entry.title}<ArrowUpRight size={13} aria-hidden="true" /></button>
               ))}
             </div>
+
+            {activePhoneTopic && (
+              <section className={styles.phoneTopicDetail} role="region" aria-label={activePhoneTopic.title} aria-live="polite">
+                <span className={styles.sender}>Cloudy assistant</span>
+                <h3>{activePhoneTopic.title}</h3>
+                <p>{activePhoneTopic.answer}</p>
+                <div className={styles.links}>
+                  {activePhoneTopic.links.map(link => (
+                    <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                      {link.label}<ArrowUpRight size={14} aria-hidden="true" />
+                    </a>
+                  ))}
+                </div>
+                <small className={styles.source}>Source: {activePhoneTopic.source}</small>
+              </section>
+            )}
 
             <div className={styles.conversation} role="log" aria-label="Support conversation" aria-live="polite" aria-relevant="additions">
               {messages.map((message, index) => message.role === 'visitor' ? (
