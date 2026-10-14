@@ -1915,3 +1915,23 @@ body {
   border-color: #e51b2e !important;
   box-shadow: 0 34px 80px rgba(0,0,0,.52), 0 0 0 1px rgba(229,27,46,.7), 0 0 20px rgba(229,27,46,.38) !important;
 }
+
+/* Game cards only: persistent red perimeter, including the top edge after navigation. */
+.cloudy-classic-game-card,
+.cloudy-classic-game-card:hover,
+.cloudy-classic-game-card:focus,
+.cloudy-classic-game-card:active {
+  border: 2px solid #f1263b !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.44), inset 0 0 0 1px rgba(241,38,59,.9), 0 0 0 1px rgba(241,38,59,.85), 0 0 24px rgba(229,27,46,.55) !important;
+}
+.cloudy-classic-game-card::after,
+.cloudy-classic-game-card:hover::after,
+.cloudy-classic-game-card:focus::after,
+.cloudy-classic-game-card:active::after {
+  inset: 0 !important;
+  padding: 2px !important;
+  background: #f1263b !important;
+  opacity: 1 !important;
+  animation: none !important;
+  transition: none !important;
+}
