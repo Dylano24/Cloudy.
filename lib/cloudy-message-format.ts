@@ -2,6 +2,8 @@ export type MessageInline = {
   kind: 'text' | 'strong' | 'emphasis' | 'code' | 'link';
   text: string;
   href?: string;
+  // Preserve bold or italic emphasis when a known Cloudy page becomes a link.
+  emphasis?: 'strong' | 'emphasis';
 };
 export type MessageBlock =
   | { kind: 'paragraph' | 'heading' | 'quote' | 'code'; content: string }
@@ -25,7 +27,7 @@ const KNOWN_PATH_LABELS: Record<string, string> = {
 };
 
 export function safeAssistantHref(href: string): string | null {
-  if (ALLOWED_PATH.test(href)) return href;
+  if (href === '/' || ALLOWED_PATH.test(href)) return href;
   if (DISCORD_INVITE.test(href) || CLOUDY_HOST.test(href)) return href;
   return null;
 }
@@ -44,19 +46,60 @@ function friendlyLinkLabel(href: string): string {
   }
 }
 
+// Link only fixed, verified Cloudy destinations. Never trust model-generated
+// links to arbitrary domains and never turn ordinary brand mentions into
+// advertisements. Exact page names can appear in Dutch, French or English text.
+const TRUSTED_MENTION = /\b(?:Cloudy Store|Cloudy Discord|Cloudy website|Support\s*&\s*Help|Appeal form|Terms of (?:service|sale)|Privacy policy|Link your account|Shopping basket|My account|Cloudy checkout|Cloudy winkel|Cloudy boutique)\b/gi;
+
+export function trustedMentionHref(mention: string): string | null {
+  const key = mention.toLowerCase().replace(/\s+/g, ' ').trim();
+  const destinations: Record<string, string> = {
+    'cloudy store': '/shop',
+    'cloudy winkel': '/shop',
+    'cloudy boutique': '/shop',
+    'cloudy discord': 'https://discord.gg/EGDVMmmSzF',
+    'cloudy website': '/',
+    'support & help': '/support',
+    'appeal form': '/appeal',
+    'terms of service': '/terms',
+    'terms of sale': '/terms-of-sale',
+    'privacy policy': '/privacy',
+    'link your account': '/link-account',
+    'shopping basket': '/cart',
+    'my account': '/account',
+    'cloudy checkout': '/checkout',
+  };
+  return destinations[key] || null;
+}
+
+function linkifyTrustedMentions(text: string, emphasis?: 'strong' | 'emphasis'): MessageInline[] {
+  const result: MessageInline[] = [];
+  let offset = 0;
+  for (const match of text.matchAll(TRUSTED_MENTION)) {
+    const i = match.index ?? 0;
+    if (i > offset) result.push({ kind: emphasis || 'text', text: text.slice(offset, i) });
+    const href = trustedMentionHref(match[0]);
+    if (href) result.push({ kind: 'link', text: match[0], href, ...(emphasis ? { emphasis } : {}) });
+    else result.push({ kind: emphasis || 'text', text: match[0] });
+    offset = i + match[0].length;
+  }
+  if (offset < text.length) result.push({ kind: emphasis || 'text', text: text.slice(offset) });
+  return result;
+}
+
 /** Parse only a small, safe subset of Markdown. No HTML or scripts are interpreted. */
 export function parseAssistantInline(text: string): MessageInline[] {
   const pieces: MessageInline[] = [];
   let from = 0;
   for (const match of text.matchAll(INLINE_MARKUP)) {
     const index = match.index ?? 0;
-    if (index > from) pieces.push({ kind: 'text', text: text.slice(from, index) });
+    if (index > from) pieces.push(...linkifyTrustedMentions(text.slice(from, index)));
     const token = match[0];
     if (token.startsWith('**') && token.endsWith('**')
         || token.startsWith('__') && token.endsWith('__')) {
-      pieces.push({ kind: 'strong', text: token.slice(2, -2) });
+      pieces.push(...linkifyTrustedMentions(token.slice(2, -2), 'strong'));
     } else if (token.startsWith('*') && token.endsWith('*')) {
-      pieces.push({ kind: 'emphasis', text: token.slice(1, -1) });
+      pieces.push(...linkifyTrustedMentions(token.slice(1, -1), 'emphasis'));
     } else if (token.startsWith('`') && token.endsWith('`')) {
       const value = token.slice(1, -1);
       const path = safeAssistantHref(value);
@@ -88,7 +131,7 @@ export function parseAssistantInline(text: string): MessageInline[] {
     }
     from = index + token.length;
   }
-  if (from < text.length) pieces.push({ kind: 'text', text: text.slice(from) });
+  if (from < text.length) pieces.push(...linkifyTrustedMentions(text.slice(from)));
   return pieces;
 }
 
