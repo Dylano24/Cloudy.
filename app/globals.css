@@ -1910,8 +1910,3 @@ body {
   border: 1px solid #e51b2e !important;
   box-shadow: 0 28px 70px rgba(0,0,0,.44), 0 0 14px rgba(229,27,46,.24) !important;
 }
-.cloudy-classic-game-card::after {
-  content: none !important;
-  display: none !important;
-  animation: none !important;
-}
