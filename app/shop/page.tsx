@@ -2,18 +2,14 @@ import Link from 'next/link';
 import RustStore from '@/components/shop/rust-store';
 import styles from './shop.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
-import type { CSSProperties } from 'react';
+import { StoreFireworks } from '@/components/shop/store-fireworks';
 
 export default async function ShopPage({ searchParams }: { searchParams: Promise<{ game?: string }> }) {
   const { game } = await searchParams;
   if (game === 'rust') return <RustStore />;
 
   return <div className={styles.page}>
-    <div className={styles.fireworks} aria-hidden="true">
-      {[0, 1, 2].map(burst => <div key={burst} className={styles.burst}>
-        {Array.from({ length: 16 }, (_, spark) => <span key={spark} style={{ '--angle': `${spark * 22.5}deg`, '--delay': `${.2 + burst * .9}s` } as CSSProperties} />)}
-      </div>)}
-    </div>
+    <StoreFireworks />
     <div className={styles.wrap}>
       <header className={styles.heading}>
         <h1>Cloudy store</h1>
