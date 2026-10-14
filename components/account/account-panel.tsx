@@ -20,9 +20,9 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
         {section === 'create' && <p className="mt-3 text-sm leading-7 text-muted">Continue with Discord to create or access your Cloudy account.</p>}
         {(params.has('login_error') || error) && <p role="alert" className="mt-3 text-sm text-red-500">{params.get('login_error') === 'not_registered' ? 'Account does not exist. Create an account first.' : params.get('login_error') === 'unavailable' ? 'Sign-in is currently unavailable. Please contact Cloudy support.' : 'We could not sign you in. Please try again or contact Cloudy support.'}</p>}
         <p className="mt-3 text-sm text-muted">New to Cloudy? <Link href="/account/create" className="text-white underline underline-offset-4">Create account</Link></p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <a href="/api/account/login" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>{section === 'create' ? 'Create account with Discord' : 'Login with Discord'}</a>
-          <a href="/api/account/google/login" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>Login with Google</a>
+        <div className="mt-6 grid grid-cols-1 gap-3 sm:flex sm:flex-wrap">
+          <a href="/api/account/login" className="cloudy-classic-button w-full min-h-[48px] sm:w-auto" style={{ borderColor: '#e51b2e', touchAction: 'manipulation' }}>{section === 'create' ? 'Create account with Discord' : 'Login with Discord'}</a>
+          <a href="/api/account/google/login" className="cloudy-classic-button w-full min-h-[48px] sm:w-auto" style={{ borderColor: '#e51b2e', touchAction: 'manipulation' }}>Login with Google</a>
         </div>
       </> : <>
         {(section === 'account' || section === 'information' || section === 'create') ? <><h2 className="text-xl font-bold">{user.name}</h2><dl className="mt-5 space-y-3 text-sm"><div><dt className="text-muted">{user.provider === 'google' ? 'Google ID' : 'Discord ID'}</dt><dd>{user.id}</dd></div><div><dt className="text-muted">Display name</dt><dd>{user.name}</dd></div></dl></> : <>
