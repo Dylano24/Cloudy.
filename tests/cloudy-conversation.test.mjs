@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { assistantKnowledge, isVagueHelpRequest, sanitizeAssistantHistory } from '../lib/cloudy-chat-context.ts';
-import { parseAssistantInline, parseAssistantMessage, safeAssistantHref, trustedMentionHref } from '../lib/cloudy-message-format.ts';
+import { assistantInlineDestinationHrefs, parseAssistantInline, parseAssistantMessage, safeAssistantHref, trustedMentionHref } from '../lib/cloudy-message-format.ts';
 import { findHelp } from '../components/help/cloudy-knowledge.ts';
 
 test('only user and assistant history is accepted, bounded to eight recent turns', () => {
@@ -150,4 +150,13 @@ test('approved link names remain clickable without exposing untrusted external U
   assert.ok(formatted.some(piece => piece.kind === 'link' && piece.href === '/support'));
   assert.equal(safeAssistantHref('/'), '/');
   assert.equal(parseAssistantInline('https://fake-cloudy-store.example').some(piece => piece.kind === 'link'), false);
+});
+
+test('named Cloudy links in response make duplicate footer cards unnecessary', () => {
+  const links = assistantInlineDestinationHrefs('Vous pouvez visiter la **Cloudy Store** et **Cloudy Discord**.');
+  assert.equal(links.has('/shop'), true);
+  assert.equal(links.has('https://discord.gg/EGDVMmmSzF'), true);
+  assert.deepEqual(Array.from(assistantInlineDestinationHrefs('Une boutique locale.')), []);
+  const widget = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
+  assert.match(widget, /extraReplyLinks\(message\.response\)/);
 });
