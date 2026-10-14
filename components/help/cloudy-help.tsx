@@ -42,7 +42,19 @@ export function CloudyHelp() {
   }, [open]);
 
   useEffect(() => {
-    if (open && logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
+    const log = logRef.current;
+    if (!open || !log) return;
+    if (window.matchMedia('(max-width: 480px)').matches && messages.length) {
+      // Present the newest answer at its beginning on the first tap.
+      // Scrolling to the very bottom previously hid the answer heading.
+      const latest = log.querySelector<HTMLElement>('[data-latest-answer="true"]');
+      if (latest) {
+        const delta = latest.getBoundingClientRect().top - log.getBoundingClientRect().top;
+        log.scrollTop += delta - 8;
+        return;
+      }
+    }
+    log.scrollTop = log.scrollHeight;
   }, [messages, open]);
 
   useEffect(() => {
@@ -108,7 +120,13 @@ export function CloudyHelp() {
 
   function choose(entry: HelpEntry) {
     setMessages(previous => [...previous, { role: 'visitor' as const, text: entry.title }, { role: 'assistant' as const, result: { kind: 'answer' as const, entries: [entry] } }].slice(-30));
-    inputRef.current?.focus({ preventScroll: true });
+    // Tapping a shortcut on iPhone must reveal the answer, not focus
+    // the composer and open the keyboard before the answer is visible.
+    if (window.matchMedia('(max-width: 480px)').matches) {
+      inputRef.current?.blur();
+    } else {
+      inputRef.current?.focus({ preventScroll: true });
+    }
   }
 
   function submit(event: FormEvent<HTMLFormElement>) {
@@ -123,11 +141,15 @@ export function CloudyHelp() {
   function reset() {
     setMessages([]);
     setQuestion('');
-    inputRef.current?.focus({ preventScroll: true });
+    if (window.matchMedia('(max-width: 480px)').matches) {
+      inputRef.current?.blur();
+    } else {
+      inputRef.current?.focus({ preventScroll: true });
+    }
   }
 
   return (
-    <div className={styles.dock} data-open={open ? "true" : "false"} ref={dockRef}>
+    <div className={styles.dock} data-open={open ? "true" : "false"} data-has-messages={messages.length > 0 ? "true" : "false"} ref={dockRef}>
       {open && (
         <section id="cloudy-help-panel" className={styles.panel} role="dialog" aria-modal="false" aria-labelledby="cloudy-help-title">
           <header className={styles.header}>
@@ -156,7 +178,7 @@ export function CloudyHelp() {
               {messages.map((message, index) => message.role === 'visitor' ? (
                 <p key={index} className={styles.visitor}>{message.text}</p>
               ) : (
-                <div key={index} className={styles.answer}>
+                <div key={index} className={styles.answer} data-latest-answer={index === messages.length - 1 ? "true" : undefined}>
                   <span className={styles.sender}>Cloudy assistant</span>
                   {message.result.kind === 'answer' ? message.result.entries.map(entry => (
                     <div key={entry.id}>
