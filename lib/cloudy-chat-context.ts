@@ -61,6 +61,21 @@ function showLinksForEntry(entry: HelpEntry, question: string): boolean {
   return isContactOrLinkRequest(question) || entry.id === 'missing-delivery' && hasActionableDeliveryIssue(question);
 }
 
+function relevantLinksForEntry(entry: HelpEntry, question: string): AssistantReply['links'] {
+  if (!showLinksForEntry(entry, question)) return [];
+  const q = normalizeIntent(question);
+  // Prefer exactly the requested destination. Do not dump a list of generic
+  // Support, Discord, terms, shop and checkout links below every answer.
+  const preferred = /\bdiscord\b/.test(q) ? 'discord.gg'
+    : /\b(?:voorwaarden|terms|privacy|beleid)\b/.test(q) ? '/terms'
+    : /\b(?:support|hulp|contact|staff|ticket)\b/.test(q) ? '/support'
+    : /\b(?:afrekenen|checkout)\b/.test(q) ? '/checkout'
+    : /\b(?:winkelmand|basket|cart)\b/.test(q) ? '/cart'
+    : '';
+  const match = preferred ? entry.links.find(link => link.href.includes(preferred)) : null;
+  return match ? [match] : entry.links.slice(0, 1);
+}
+
 export function assistantKnowledge(
   question: string,
   history: AssistantTurn[],
@@ -83,10 +98,9 @@ export function assistantKnowledge(
   const entries = result.entries
     .filter(entry => allowContextForEntry(entry, topicQuestion))
     .slice(0, 2);
-  const linkEntries = entries.filter(entry => showLinksForEntry(entry, topicQuestion));
-  const links = linkEntries.flatMap(entry => entry.links)
+  const links = entries.flatMap(entry => relevantLinksForEntry(entry, topicQuestion))
     .filter((link, index, all) => all.findIndex(item => item.href === link.href) === index)
-    .slice(0, 3);
+    .slice(0, 2);
   const source = entries.length ? entries.map(entry => entry.source).join(' · ').slice(0, 200) : undefined;
 
   // The website controls sources and link buttons, not the model. In particular,
@@ -99,7 +113,7 @@ export function assistantKnowledge(
       source: entry.source,
       // Never feed support/Discord URLs to the model unless the visitor asked
       // for a specific resource. The site renders verified buttons separately.
-      ...(showLinksForEntry(entry, topicQuestion) ? { links: entry.links.slice(0, 3) } : {}),
+      ...(showLinksForEntry(entry, topicQuestion) ? { links: relevantLinksForEntry(entry, topicQuestion) } : {}),
     })),
     navigationRequested: links.length > 0,
     limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. Talk naturally about general questions. Never direct a visitor to the support page or Discord without a specific request. Do not invent private Cloudy facts.',
