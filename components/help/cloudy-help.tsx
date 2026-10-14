@@ -168,15 +168,20 @@ export function CloudyHelp() {
     const text = question.trim();
     if (!text || text.length > 1000 || requestRef.current) return;
 
-    const history: AssistantTurn[] = messages.flatMap(message => {
-      if (message.role === 'visitor') return [{ role: 'user' as const, content: message.text }];
-      if ('response' in message) return [{ role: 'assistant' as const, content: message.response.answer }];
-      if (message.result.kind === 'answer') return [{
-        role: 'assistant' as const,
-        content: message.result.entries.map(entry => entry.answer).join('\n'),
-      }];
-      return [];
-    }).slice(-8);
+    const history: AssistantTurn[] = [];
+    for (const message of messages) {
+      if (message.role === 'visitor') {
+        history.push({ role: 'user', content: message.text });
+      } else if ('response' in message) {
+        history.push({ role: 'assistant', content: message.response.answer });
+      } else if (message.result.kind === 'answer') {
+        history.push({
+          role: 'assistant',
+          content: message.result.entries.map(entry => entry.answer).join('\n'),
+        });
+      }
+    }
+    const recentHistory = history.slice(-8);
 
     const controller = new AbortController();
     const generation = ++requestGeneration.current;
@@ -190,7 +195,7 @@ export function CloudyHelp() {
       const response = await fetch('/api/assistant/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: text, history }),
+        body: JSON.stringify({ question: text, history: recentHistory }),
         signal: controller.signal,
       });
       const data = await response.json();
