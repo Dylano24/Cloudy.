@@ -51,10 +51,11 @@ export function StoreFireworks() {
     function burst(x: number, y: number, color: number) {
       const count = width < 650 ? 90 : 160;
       for (let i = 0; i < count; i++) {
-        const angle = i / count * Math.PI * 2 + Math.random() * .04;
-        const speed = (10 + Math.random() * 135) * Math.min(width / 800, 1);
+        const angle = i * 2.399963 + Math.random() * .04;
+        const center = i < count / 3;
+        const speed = (center ? Math.random() * 20 : 20 + Math.random() * 110) * Math.min(width / 800, 1);
         sparks.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-          age: 0, life: 2.2 + Math.random() * 1.5, color: i % 5 === 0 ? 2 : color,
+          age: 0, life: center ? 2.8 : 1.6 + Math.random() * .8, color: i % 5 === 0 ? 2 : color,
           size: .6 + Math.random() * .6, trail: [] });
       }
       if (sparks.length > 650) sparks.splice(0, sparks.length - 650);
