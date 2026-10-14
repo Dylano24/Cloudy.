@@ -172,3 +172,44 @@
     padding-top: 0;
   }
 }
+
+/* iPhone shortcut view: show the chosen response immediately, in the main
+   reading area. Do not require a second tap, scroll-to-chat transition,
+   or keyboard focus. The original desktop conversation is unchanged. */
+.phoneTopicDetail { display: none; }
+@media (max-width: 480px) {
+  .dock[data-open="true"][data-active-phone-topic="true"] .welcome,
+  .dock[data-open="true"][data-active-phone-topic="true"] .body > .topics,
+  .dock[data-open="true"][data-active-phone-topic="true"] .conversation {
+    display: none !important;
+  }
+  .dock[data-open="true"][data-active-phone-topic="true"] .body {
+    padding: 18px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .dock[data-open="true"][data-active-phone-topic="true"] .phoneTopicDetail {
+    display: block;
+    margin: 0;
+    padding: 16px;
+    border: 1px solid #ffffff22;
+    border-radius: 13px;
+    background: #101010;
+    color: #eee;
+  }
+  .phoneTopicDetail h3 {
+    margin: 8px 0 12px;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+  .phoneTopicDetail p {
+    margin: 0;
+    color: #e2e2e7;
+    font-size: 13px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
