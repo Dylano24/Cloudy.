@@ -370,7 +370,7 @@
 }
 @media (max-width: 820px) {
   .home :global(.cloudy-classic-wrap) {
-    animation: cloudy-mobile-shared-sheen 5s linear infinite, cloudy-mobile-aligned-light 5s linear infinite;
+    animation: cloudy-mobile-shared-sheen 5s linear infinite, cloudy-mobile-aligned-light 6s linear infinite;
   }
   .home :global(.cloudy-classic-intro),
   .home :global(.cloudy-classic-coming),
@@ -379,7 +379,8 @@
   .home :global(.cloudy-restored-pay-grid) article,
   .home :global(.cloudy-classic-why-grid) article {
     background-image: repeating-linear-gradient(110deg, transparent 0px, rgba(160,160,170,.03) 45px, rgba(210,210,220,.12) 90px, rgba(160,160,170,.03) 135px, transparent 180px, transparent var(--cloudy-mobile-light-period, 1014.87px));
-    background-size: 400vw var(--cloudy-mobile-plane-height, 5000px);
+    background-size: calc(400vw - var(--cloudy-mobile-light-travel, -1080px)) var(--cloudy-mobile-plane-height, 5000px);
+    background-repeat: no-repeat;
     background-origin: padding-box;
     background-position: calc(var(--cloudy-mobile-light-x) - var(--cloudy-panel-left, 0px)) calc(0px - var(--cloudy-panel-top, 0px));
   }
