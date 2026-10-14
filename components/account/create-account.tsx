@@ -46,16 +46,7 @@ export function CreateAccount() {
           <p className="mt-3 text-sm leading-7 text-muted">Choose Google or Discord, then set your Cloudy display name.</p>
           {profileStep && <p role="alert" className="mt-4 text-sm text-red-500">Your registration has expired. Continue with Google or Discord again.</p>}
           {params.has('login_error') && <p role="alert" className="mt-4 text-sm text-red-500">{params.get('login_error') === 'unavailable' ? 'Sign-in is currently unavailable. Please contact Cloudy support.' : 'We could not sign you in. Please try again.'}</p>}
-          <div className="mt-7 flex flex-wrap gap-3"><a href="/api/account/google/login?intent=create" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>Continue with Google</a><a href="/api/account/login?intent=create" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }} onClick={(event) => {
-            const isiOS = /iPad|iPhone|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-            if (!isiOS) return;
-            event.preventDefault();
-            const target = 'https://cloudy-store-vert.vercel.app/api/account/login?intent=create';
-            window.location.href = `x-safari-${target}`;
-            window.setTimeout(() => {
-              if (document.visibilityState === 'visible') window.location.href = target;
-            }, 1200);
-          }}>Continue with Discord</a></div>
+          <div className="mt-7 flex flex-wrap gap-3"><a href="/api/account/google/login?intent=create" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>Continue with Google</a><a href="/api/account/login?intent=create" className="cloudy-classic-button" style={{ borderColor: '#e51b2e' }}>Continue with Discord</a></div>
         </>}
         <p className="mt-6 text-sm text-muted">Already have an account? <Link href="/account" className="text-white underline underline-offset-4">Login</Link></p>
       </>}
