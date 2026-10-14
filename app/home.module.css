@@ -360,3 +360,39 @@
     background-position: var(--cloudy-mobile-panel-sheen) 0;
   }
 }
+
+/* One coordinate system keeps diagonal light aligned despite unequal card heights. */
+@property --cloudy-mobile-light-x { syntax: '<length>'; inherits: true; initial-value: 0px; }
+@keyframes cloudy-mobile-aligned-light { from { --cloudy-mobile-light-x: 0px; } to { --cloudy-mobile-light-x: -350vw; } }
+@media (max-width: 820px) {
+  .home :global(.cloudy-classic-wrap) { animation: cloudy-mobile-aligned-light 7.5s linear infinite; }
+  .home :global(.cloudy-classic-intro),
+  .home :global(.cloudy-classic-coming),
+  .home :global(.cloudy-classic-feature),
+  .home :global(.cloudy-classic-future),
+  .home :global(.cloudy-restored-pay-grid) article,
+  .home :global(.cloudy-classic-why-grid) article {
+    background-size: 400vw 1200px;
+    background-origin: padding-box;
+    background-position: calc(var(--cloudy-mobile-light-x) - var(--cloudy-panel-left, 0px)) 0;
+  }
+  .home :global(.cloudy-classic-intro)::after,
+  .home :global(.cloudy-classic-game-card)::after,
+  .home :global(.cloudy-classic-coming)::after,
+  .home :global(.cloudy-classic-feature)::after,
+  .home :global(.cloudy-classic-future)::after,
+  .home :global(.cloudy-classic-why-grid)::after,
+  .home :global(.cloudy-classic-benefits)::after,
+  .home :global(.cloudy-restored-pay-grid) article::before {
+    animation: none;
+    transform: none;
+    background-image: linear-gradient(110deg, transparent 42%, rgba(229,27,46,.16) 46%, #e51b2e 49%, #e51b2e 51%, rgba(229,27,46,.16) 54%, transparent 58%);
+    background-size: 400vw 1200px;
+    background-position: calc(var(--cloudy-mobile-light-x) - var(--cloudy-panel-left, 0px)) 0;
+    background-repeat: no-repeat;
+  }
+}
+@media (max-width: 820px) and (prefers-reduced-motion: reduce) {
+  .home :global(.cloudy-classic-wrap) { animation: none !important; }
+  .home :global(.cloudy-classic-intro), .home :global(.cloudy-classic-coming), .home :global(.cloudy-classic-feature), .home :global(.cloudy-classic-future), .home :global(.cloudy-restored-pay-grid) article, .home :global(.cloudy-classic-why-grid) article { background-image: none; }
+}
