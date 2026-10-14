@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { assistantKnowledge, isVagueHelpRequest, sanitizeAssistantHistory } from '../lib/cloudy-chat-context.ts';
-import { parseAssistantInline, parseAssistantMessage, safeAssistantHref } from '../lib/cloudy-message-format.ts';
+import { parseAssistantInline, parseAssistantMessage, safeAssistantHref, trustedMentionHref } from '../lib/cloudy-message-format.ts';
 import { findHelp } from '../components/help/cloudy-knowledge.ts';
 
 test('only user and assistant history is accepted, bounded to eight recent turns', () => {
@@ -127,4 +127,27 @@ test('short help statements receive deterministic clarification before the hoste
   assert.match(route, /Waarmee kan ik je helpen/);
   const client = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
   assert.match(client, /<CloudyMessage text={message\.response\.answer}/);
+});
+
+test('Cloudy Store mention is a blue-linkable trusted destination in French and Dutch', () => {
+  const french = parseAssistantInline('Vous trouverez les produits dans la **Cloudy Store**.');
+  const link = french.find(part => part.kind === 'link');
+  assert.deepEqual(link, { kind: 'link', text: 'Cloudy Store', href: '/shop', emphasis: 'strong' });
+  const dutch = parseAssistantInline('Je kunt de Cloudy Store bezoeken voor meer informatie.');
+  assert.ok(dutch.some(part => part.kind === 'link' && part.href === '/shop'));
+  assert.deepEqual(parseAssistantInline('De store helpt je.'), [{ kind: 'text', text: 'De store helpt je.' }]);
+  assert.equal(trustedMentionHref('Cloudy Store'), '/shop');
+  assert.equal(trustedMentionHref('Cloudy Discord'), 'https://discord.gg/EGDVMmmSzF');
+  assert.equal(trustedMentionHref('Cloudy website'), '/');
+  assert.equal(trustedMentionHref('Support & Help'), '/support');
+  assert.equal(trustedMentionHref('Not a real destination'), null);
+});
+
+test('approved link names remain clickable without exposing untrusted external URLs', () => {
+  const formatted = parseAssistantInline('Lees de **Terms of service** of kijk in Support & Help.');
+  assert.equal(formatted.filter(piece => piece.kind === 'link').length, 2);
+  assert.ok(formatted.some(piece => piece.kind === 'link' && piece.href === '/terms' && piece.emphasis === 'strong'));
+  assert.ok(formatted.some(piece => piece.kind === 'link' && piece.href === '/support'));
+  assert.equal(safeAssistantHref('/'), '/');
+  assert.equal(parseAssistantInline('https://fake-cloudy-store.example').some(piece => piece.kind === 'link'), false);
 });
