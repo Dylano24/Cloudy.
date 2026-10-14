@@ -271,7 +271,7 @@ export function CloudyHelp() {
             <div className={styles.welcome}>
               <span className={styles.eyebrow}>HOW CAN WE HELP?</span>
               <h3>Chat with our assistant.</h3>
-              <p>Ask about the website, purchases or support. Choose a topic or type your question below.</p>
+              <p>Ask about the website, purchases or anything else. Choose a topic or chat with Cloudy below. AI messages are processed by a hosted provider, so please don't share passwords or payment details.</p>
             </div>
             <div className={styles.topics} aria-label="Help topics">
               {helpEntries.filter(entry => shortcuts.includes(entry.id)).map(entry => (
