@@ -184,7 +184,7 @@ export function CloudyHelp() {
             </div>
             <div className={styles.topics} aria-label="Help topics">
               {helpEntries.filter(entry => shortcuts.includes(entry.id)).map(entry => (
-                <button type="button" key={entry.id} onClick={() => choose(entry)}>{entry.title}<ArrowUpRight size={13} aria-hidden="true" /></button>
+                <button type="button" key={entry.id} onClick={() => choose(entry)}><span className={styles.topicLabel}>{entry.title}</span><ArrowUpRight size={13} aria-hidden="true" /></button>
               ))}
             </div>
 
@@ -196,7 +196,7 @@ export function CloudyHelp() {
                 <div className={styles.links}>
                   {activePhoneTopic.links.map(link => (
                     <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                      {link.label}<ArrowUpRight size={14} aria-hidden="true" />
+                      <span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" />
                     </a>
                   ))}
                 </div>
@@ -215,14 +215,14 @@ export function CloudyHelp() {
                       <h3>{entry.title}</h3>
                       <p>{entry.answer}</p>
                       <div className={styles.links}>
-                        {entry.links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{link.label}<ArrowUpRight size={14} aria-hidden="true" /></a>)}
+                        {entry.links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
                       </div>
                       <small className={styles.source}>Source: {entry.source}</small>
                     </div>
                   )) : message.result.kind === 'clarify' ? (
                     <>
                       <p>Which of these topics do you mean? Choose one, or give me a little more detail.</p>
-                      <div className={styles.topics}>{message.result.entries.map(entry => <button key={entry.id} type="button" onClick={() => choose(entry)}>{entry.title}<ArrowUpRight size={13} aria-hidden="true" /></button>)}</div>
+                      <div className={styles.topics}>{message.result.entries.map(entry => <button key={entry.id} type="button" onClick={() => choose(entry)}><span className={styles.topicLabel}>{entry.title}</span><ArrowUpRight size={13} aria-hidden="true" /></button>)}</div>
                     </>
                   ) : (
                     <>
