@@ -16,7 +16,7 @@ export function Footer() {
             </Link>
           </div>
 
-          <div>
+          <div className={styles.navigation}>
             <div className="cloudy-footer-title">Navigation</div>
             <div className="cloudy-footer-links">
               <Link href="/">Home</Link>
@@ -27,7 +27,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div className={styles.community}>
             <div className="cloudy-footer-title">Community</div>
             <div className="cloudy-footer-links">
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
@@ -35,7 +35,7 @@ export function Footer() {
 
           </div>
 
-          <div>
+          <div className={styles.information}>
             <div className="cloudy-footer-title">Information</div>
             <div className="cloudy-footer-links">
               <Link href="/terms">Terms of service</Link>
