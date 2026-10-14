@@ -74,7 +74,7 @@ export function Header() {
             </button>
             {accountOpen && (
               <nav id="cloudy-account-menu" className={styles.accountMenu} aria-label="Account menu">
-                {([['My account', '/account'], ['My orders', '/account/orders'], ['Favorites', '/account/favorites'], ['Fidelity', '/account/fidelity'], ['My information', '/account/information']] as const).map(([label, href]) => (
+                {user && ([['My account', '/account'], ['My orders', '/account/orders'], ['Favorites', '/account/favorites'], ['Fidelity', '/account/fidelity'], ['My information', '/account/information']] as const).map(([label, href]) => (
                   <Link key={href} href={href} onClick={() => setAccountOpen(false)}>{label}</Link>
                 ))}
                 {user ? <button type="button" className={styles.authAction} disabled={loggingOut} onClick={() => { void logout().then(() => setAccountOpen(false)).catch(() => window.alert('Unable to sign out. Please try again.')); }}>Log off</button> : !pending && <a href="/api/account/login" className={styles.authAction} onClick={() => setAccountOpen(false)}>Login</a>}

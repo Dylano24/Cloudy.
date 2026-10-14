@@ -77,7 +77,7 @@ export default function AppealPage() {
     <main className={styles.page}>
       <div className={styles.wrap}>
         <div className={styles.formTop}>
-          <a href="/" className={styles.backButton}><ChevronLeft size={15} /> Home</a>
+          <a href="/support" className={styles.backButton}><ChevronLeft size={15} /> Back</a>
           <a href="/appeal" className={styles.contextPill}>Appeal</a>
         </div>
 
