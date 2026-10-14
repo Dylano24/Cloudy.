@@ -65,7 +65,7 @@ export const helpEntries: HelpEntry[] = [
       },
       {
         "label": "Open Discord",
-        "href": "https://discord.gg/HGvtrSvK6w"
+        "href": "https://discord.gg/EGDVMmmSzF"
       },
       {
         "label": "Payments and delivery terms",
@@ -228,7 +228,7 @@ export const helpEntries: HelpEntry[] = [
       },
       {
         "label": "Join Cloudy Discord",
-        "href": "https://discord.gg/HGvtrSvK6w"
+        "href": "https://discord.gg/EGDVMmmSzF"
       }
     ],
     "source": "Support & Help page"
@@ -247,7 +247,7 @@ export const helpEntries: HelpEntry[] = [
     "links": [
       {
         "label": "Join Cloudy Discord",
-        "href": "https://discord.gg/HGvtrSvK6w"
+        "href": "https://discord.gg/EGDVMmmSzF"
       }
     ],
     "source": "Homepage · Join the community; Support & Help"
@@ -275,7 +275,7 @@ export const helpEntries: HelpEntry[] = [
       },
       {
         "label": "Open Cloudy Discord",
-        "href": "https://discord.gg/HGvtrSvK6w"
+        "href": "https://discord.gg/EGDVMmmSzF"
       }
     ],
     "source": "Homepage · Rust; Store"
@@ -297,7 +297,7 @@ export const helpEntries: HelpEntry[] = [
     "links": [
       {
         "label": "Open Cloudy Discord",
-        "href": "https://discord.gg/HGvtrSvK6w"
+        "href": "https://discord.gg/EGDVMmmSzF"
       },
       {
         "label": "Terms of service",
@@ -319,7 +319,7 @@ export const helpEntries: HelpEntry[] = [
     "links": [
       {
         "label": "Open Cloudy Discord",
-        "href": "https://discord.gg/HGvtrSvK6w"
+        "href": "https://discord.gg/EGDVMmmSzF"
       }
     ],
     "source": "Existing Cloudy FAQ assistant · src/services/faqAiService.js"
@@ -337,7 +337,7 @@ export const helpEntries: HelpEntry[] = [
     "links": [
       {
         "label": "Open Cloudy Discord",
-        "href": "https://discord.gg/HGvtrSvK6w"
+        "href": "https://discord.gg/EGDVMmmSzF"
       }
     ],
     "source": "Existing Cloudy FAQ assistant source list · ZORP Guide"

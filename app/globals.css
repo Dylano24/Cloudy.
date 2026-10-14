@@ -1277,6 +1277,7 @@ body {
   isolation: isolate;
 }
 
+.cloudy-traced-panel::after,
 .cloudy-classic-intro::after,
 .cloudy-classic-game-card::after,
 .cloudy-classic-coming::after,
@@ -1383,6 +1384,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .cloudy-traced-panel::after,
   .cloudy-classic-game-card::after,
   .cloudy-classic-coming::after,
   .cloudy-classic-feature::after,

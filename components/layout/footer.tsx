@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styles from './footer.module.css';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
-const DISCORD_URL = 'https://discord.gg/HGvtrSvK6w';
+const DISCORD_URL = 'https://discord.gg/EGDVMmmSzF';
 
 export function Footer() {
   return (
