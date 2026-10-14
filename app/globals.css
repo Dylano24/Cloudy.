@@ -1899,3 +1899,19 @@ body {
     animation-timing-function: cubic-bezier(.4, .2, .6, .8);
   }
 }
+
+/* Rust game card: permanent, even red glow around all four edges.
+   No moving trace on desktop or phone; other panels keep their effects. */
+.cloudy-classic-game-card {
+  border-color: #e51b2e !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.44), 0 0 0 1px rgba(229,27,46,.7), 0 0 18px rgba(229,27,46,.32) !important;
+}
+.cloudy-classic-game-card::after {
+  animation: none !important;
+  background: #e51b2e !important;
+  opacity: 1 !important;
+}
+.cloudy-classic-game-card:hover {
+  border-color: #e51b2e !important;
+  box-shadow: 0 34px 80px rgba(0,0,0,.52), 0 0 0 1px rgba(229,27,46,.7), 0 0 20px rgba(229,27,46,.38) !important;
+}
