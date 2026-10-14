@@ -15,7 +15,11 @@ function InlineText({ text }: { text: string }) {
               href={piece.href}
               {...(piece.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
-              {piece.text}
+              {piece.emphasis === 'strong'
+                ? <strong>{piece.text}</strong>
+                : piece.emphasis === 'emphasis'
+                  ? <em>{piece.text}</em>
+                  : piece.text}
             </a>
           );
         }
