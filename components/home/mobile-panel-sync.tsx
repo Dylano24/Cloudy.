@@ -1,36 +1,59 @@
 'use client';
 import { useEffect } from 'react';
+import { createMobileSheenClock } from '@/lib/mobile-sheen-clock';
 
 export function MobilePanelSync() {
   useEffect(() => {
     const home = document.querySelector<HTMLElement>('.cloudy-classic-home');
     if (!home) return;
     const media = window.matchMedia('(max-width: 820px)');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     const panels = [...home.querySelectorAll<HTMLElement>('.cloudy-classic-intro, .cloudy-classic-coming, .cloudy-classic-feature, .cloudy-classic-future, .cloudy-restored-pay-grid article, .cloudy-classic-why-grid article')];
     const lights = new Map<HTMLElement, HTMLSpanElement>();
-    const startedAt = Number(document.timeline.currentTime ?? performance.now());
+    const clock = createMobileSheenClock();
+    const visibleTextures = new Set<HTMLSpanElement>();
+    let travel = 1080;
+    let phase = 0;
+    let animationFrame = 0;
+    const paint = (texture: HTMLSpanElement) => {
+      texture.style.transform = `translate3d(${-travel * phase}px, 0, 0)`;
+    };
+    const animate = (now: number) => {
+      phase = clock.step(now);
+      for (const texture of visibleTextures) paint(texture);
+      animationFrame = requestAnimationFrame(animate);
+    };
+    const updatePlayback = () => {
+      cancelAnimationFrame(animationFrame);
+      clock.pause();
+      if (media.matches && !reduced.matches && !document.hidden) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
     const visibility = new IntersectionObserver(entries => {
       for (const entry of entries) {
         const clip = entry.target as HTMLSpanElement;
         const texture = clip.firstElementChild as HTMLSpanElement;
         if (entry.isIntersecting) {
-          // Newly visible cards join the existing timeline; hidden cards do
+          // Visible cards use the same bounded frame clock. Hidden cards do
           // not retain large animated compositor textures on mobile GPUs.
+          paint(texture);
           clip.dataset.visible = 'true';
-          const animation = texture.getAnimations()[0];
-          if (animation) animation.startTime = startedAt;
+          visibleTextures.add(texture);
         } else {
           delete clip.dataset.visible;
+          visibleTextures.delete(texture);
         }
       }
     }, { rootMargin: '160px' });
     let frame = 0;
     const measure = () => {
       const root = home.getBoundingClientRect();
-      if (media.matches) {
+      const enabled = media.matches && !reduced.matches;
+      if (enabled) {
         // The former 400%-wide background travelled three card widths in five seconds.
         const cardWidth = panels[0]?.getBoundingClientRect().width || window.innerWidth;
-        const travel = 3 * cardWidth;
+        travel = 3 * cardWidth;
         home.style.setProperty('--cloudy-mobile-light-travel', -travel + 'px');
         home.style.setProperty('--cloudy-mobile-light-period', (travel * Math.sin(110 * Math.PI / 180)) + 'px');
       } else {
@@ -38,7 +61,7 @@ export function MobilePanelSync() {
         home.style.removeProperty('--cloudy-mobile-light-period');
       }
       for (const panel of panels) {
-        if (media.matches) {
+        if (enabled) {
           const rect = panel.getBoundingClientRect();
           const style = getComputedStyle(panel);
           const left = rect.left + parseFloat(style.borderLeftWidth || '0');
@@ -63,7 +86,10 @@ export function MobilePanelSync() {
         } else {
           panel.style.removeProperty('--cloudy-mobile-light-phase');
           const clip = lights.get(panel);
-          if (clip) { visibility.unobserve(clip); clip.remove(); }
+          if (clip) {
+            visibleTextures.delete(clip.firstElementChild as HTMLSpanElement);
+            visibility.unobserve(clip); clip.remove();
+          }
           lights.delete(panel);
         }
       }
@@ -75,14 +101,24 @@ export function MobilePanelSync() {
     home.addEventListener('scroll', schedule, true);
     window.addEventListener('resize', schedule);
     media.addEventListener('change', schedule);
+    media.addEventListener('change', updatePlayback);
+    reduced.addEventListener('change', schedule);
+    reduced.addEventListener('change', updatePlayback);
+    document.addEventListener('visibilitychange', updatePlayback);
     measure();
+    updatePlayback();
     return () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(animationFrame);
       observer.disconnect();
       visibility.disconnect();
       home.removeEventListener('scroll', schedule, true);
       window.removeEventListener('resize', schedule);
       media.removeEventListener('change', schedule);
+      media.removeEventListener('change', updatePlayback);
+      reduced.removeEventListener('change', schedule);
+      reduced.removeEventListener('change', updatePlayback);
+      document.removeEventListener('visibilitychange', updatePlayback);
       home.style.removeProperty('--cloudy-mobile-light-travel');
       home.style.removeProperty('--cloudy-mobile-light-period');
       for (const panel of panels) {
