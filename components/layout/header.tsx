@@ -6,12 +6,14 @@ import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
 import { BasketIcon } from '@/components/ui/basket-icon';
+import { useAccount } from '@/hooks/use-account';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const BASKET_KEY = 'cloudy-basket-v1';
 
 export function Header() {
   const pathname = usePathname();
+  const { user, pending, logout, loggingOut } = useAccount();
   const [accountOpen, setAccountOpen] = useState(false);
   const [basketCount, setBasketCount] = useState(0);
 
@@ -36,7 +38,7 @@ export function Header() {
   const nav = [
     ['Home', '/'],
     ['Store', '/shop'],
-    ['Appeal', '/appeal'],
+    ['Discord', 'https://discord.gg/HGvtrSvK6w'],
     ['Support', '/support'],
   ] as const;
 
@@ -55,7 +57,7 @@ export function Header() {
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
           {nav.map(([label, href]) => (
-            <Link key={href} href={href} className={pathname === href || (href === '/appeal' && pathname.startsWith('/appeal')) ? 'active' : ''}>
+            <Link key={href} href={href} {...(href.startsWith('https://') ? { target: '_blank', rel: 'noreferrer' } : {})} className={pathname === href ? 'active' : ''}>
               {label}
             </Link>
           ))}
@@ -72,10 +74,10 @@ export function Header() {
             </button>
             {accountOpen && (
               <nav id="cloudy-account-menu" className={styles.accountMenu} aria-label="Account menu">
-                {['My account', 'My orders', 'Favorites', 'Fidelity', 'My information', 'Log off'].map((label) => (
-                  <button key={label} type="button" disabled>{label}</button>
+                {([['My account', '/account'], ['My orders', '/account/orders'], ['Favorites', '/account/favorites'], ['Fidelity', '/account/fidelity'], ['My information', '/account/information']] as const).map(([label, href]) => (
+                  <Link key={href} href={href} onClick={() => setAccountOpen(false)}>{label}</Link>
                 ))}
-                <Link href="/?open=account" onClick={() => setAccountOpen(false)}>Login</Link>
+                {user ? <button type="button" className={styles.authAction} disabled={loggingOut} onClick={() => { void logout().then(() => setAccountOpen(false)).catch(() => window.alert('Unable to sign out. Please try again.')); }}>Log off</button> : !pending && <a href="/api/account/login" className={styles.authAction} onClick={() => setAccountOpen(false)}>Login</a>}
               </nav>
             )}
           </div>

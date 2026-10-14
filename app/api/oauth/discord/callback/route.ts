@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { completeAccountLogin } from '@/lib/discord-account-callback';
 
 const DISCORD_API_URL = 'https://discord.com/api/v10';
 const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
 const CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
 
 export async function GET(request: NextRequest) {
+  if (request.nextUrl.searchParams.get('state')?.startsWith('cloudy-login:')) return completeAccountLogin(request);
   try {
     const code = request.nextUrl.searchParams.get('code');
     const state = request.nextUrl.searchParams.get('state');
