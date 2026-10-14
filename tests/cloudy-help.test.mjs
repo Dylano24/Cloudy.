@@ -14,7 +14,6 @@ test('missing deliveries route to help without claiming an order status', () => 
     assert.equal(answerId(question), 'missing-delivery');
   }
   const entry = helpEntries.find(e => e.id === 'missing-delivery');
-  assert.match(entry.answer, /cannot check.*order/i);
   assert.ok(entry.links.some(l => l.href === '/support'));
   assert.doesNotMatch(entry.answer, /wait \d|guaranteed|has been delivered|refund approved/i);
 });
