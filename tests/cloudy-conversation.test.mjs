@@ -77,7 +77,8 @@ test('generic help and support are conversation starters, not navigation intent'
 
 test('Cloudy support links appear when specifically requested, never after unrelated questions', () => {
   const support = assistantKnowledge('Waar vind ik de support pagina?', [], findHelp);
-  assert.ok(support.links.some(link => link.href === '/support'));
+  assert.deepEqual(support.links.map(link => link.href), ['/support']);
+  assert.equal(support.source, undefined, 'do not clutter a link answer with a redundant source label');
   const request = assistantKnowledge('Hoe kan ik contact opnemen met staff?', [], findHelp);
   assert.ok(request.links.some(link => link.href === '/support'));
   for (const question of ['Tell me a joke about dinosaurs', 'I need support', 'Can you help me with math?']) {
