@@ -134,3 +134,28 @@
   }
   .dock[data-open="true"] .form { flex: 0 0 auto; }
 }
+
+/* Keyboard-open view: keep the conversation and shortcuts accessible.
+   Safari's keyboard shortens the visible viewport, so remove ONLY the
+   introductory blurb while typing. The header, topics, messages and
+   composer remain in place and the assistant never closes on focus. */
+@media (max-width: 480px) {
+  .dock[data-open="true"]:has(.form input:focus) .welcome {
+    display: none;
+  }
+  .dock[data-open="true"]:has(.form input:focus) .body {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .dock[data-open="true"]:has(.form input:focus) .body > .topics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    gap: 7px;
+  }
+  .dock[data-open="true"]:has(.form input:focus) .body > .topics button {
+    width: 100%;
+    min-width: 0;
+    font-size: 10px;
+  }
+}
