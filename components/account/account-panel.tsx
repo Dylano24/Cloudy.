@@ -13,11 +13,11 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
   const params = useSearchParams();
   const current = accountSections.find(([, href]) => href === (section === 'account' ? '/account' : `/account/${section}`)) || accountSections[0];
   return <div className="min-h-[70vh] px-4 py-16 sm:py-24"><div className="mx-auto max-w-4xl">
-    <h1 className="text-4xl font-bold text-white sm:text-5xl">{section === 'create' ? 'Create account' : current[0]}</h1>
+    {section !== 'account' && <h1 className="text-4xl font-bold text-white sm:text-5xl">{section === 'create' ? 'Create account' : current[0]}</h1>}
     {user && <nav aria-label="Account pages" className="mt-7 flex flex-wrap gap-3">{accountSections.map(([label, href]) => <Link key={href} href={href} aria-current={href === current[1] ? 'page' : undefined} className="rounded-lg border border-red-600/50 px-4 py-2 text-sm">{label}</Link>)}</nav>}
     <section className="cloud-panel cloudy-traced-panel relative isolate mt-8 rounded-2xl border p-7 sm:p-10">
       {pending ? <p>Loading your account…</p> : !user ? <>
-        <h2 className="text-xl font-bold">Sign in</h2>
+        <h2 className="text-xl font-bold">Sign in with your account</h2>
         {section === 'create' && <p className="mt-3 text-sm leading-7 text-muted">Continue with Discord to create or access your Cloudy account.</p>}
         {(params.has('login_error') || error) && <p role="alert" className="mt-3 text-sm text-red-500">{params.get('login_error') === 'unavailable' ? 'Discord login is currently unavailable. Please contact Cloudy support.' : 'We could not sign you in. Please try again or contact Cloudy support.'}</p>}
         <div className="mt-6 flex flex-wrap gap-3">
