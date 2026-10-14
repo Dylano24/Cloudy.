@@ -70,6 +70,25 @@
 .sender { display: block; margin-bottom: 9px; color: #a8a8b0; }
 .answer h3 { margin: 0 0 9px; color: #fff; font-family: inherit; font-size: 13px; font-weight: 750; line-height: 1.5; }
 .answer p { margin: 0; color: #d0d0d5; white-space: pre-wrap; font-size: 12px; line-height: 1.8; }
+.richText { color: #dedee3; font-size: 12.5px; line-height: 1.7; overflow-wrap: anywhere; }
+.answer .richText > * { margin: 0; }
+.answer .richText > * + * { margin-top: 12px; }
+.answer .richText p { color: inherit; font-size: inherit; line-height: inherit; white-space: pre-wrap; }
+.answer .richText h3 { color: #fff; font-family: inherit; font-size: 13px; font-weight: 750; line-height: 1.5; }
+.answer .richText strong { color: #f4f4f6; font-weight: 750; }
+.answer .richText em { color: #e4e4e9; }
+.answer .richText ul, .answer .richText ol { margin: 8px 0; padding-left: 20px; color: inherit; }
+.answer .richText li { padding-left: 2px; margin: 5px 0; }
+.answer .richText li::marker { color: #dd3442; }
+.answer .richText a { color: #69b5ff; text-decoration: underline; text-decoration-color: #69b5ff90; text-underline-offset: 3px; font-weight: 600; overflow-wrap: anywhere; }
+.answer .richText a:hover { color: #acd9ff; text-decoration-color: currentColor; }
+.answer .richText a strong, .answer .richText a em { color: inherit; }
+.answer .richText a:focus-visible { outline: 2px solid #69b5ff; outline-offset: 3px; border-radius: 2px; }
+.answer .richText code { border: 1px solid #ffffff20; border-radius: 4px; padding: 1px 4px; background: #212124; color: #fff; font-size: .92em; white-space: break-spaces; }
+.answer .richText pre { padding: 12px; border: 1px solid #ffffff20; border-radius: 9px; background: #161618; overflow-x: auto; white-space: pre; }
+.answer .richText pre code { padding: 0; border: 0; background: transparent; white-space: pre; }
+.answer .richText blockquote { border-left: 2px solid #e51b2e; padding-left: 12px; color: #c8c8ce; }
+
 .answer .topics { margin-top: 12px; }
 .links { display: flex; flex-direction: column; gap: 7px; margin-top: 14px; }
 .links a { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; padding: 8px 10px; border: 1px solid #ffffff22; border-radius: 8px; color: #fff; font-size: 11px; line-height: 1.4; text-decoration: none; }

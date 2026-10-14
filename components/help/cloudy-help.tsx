@@ -3,7 +3,9 @@
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
-import type { AssistantReply, AssistantTurn } from '@/lib/cloudy-chat-context';
+import { assistantKnowledge, type AssistantReply, type AssistantTurn } from '@/lib/cloudy-chat-context';
+import { CloudyMessage } from './cloudy-message';
+import { assistantInlineDestinationHrefs } from '@/lib/cloudy-message-format';
 import styles from './cloudy-help.module.css';
 
 type Message =
@@ -12,6 +14,13 @@ type Message =
   | { role: 'assistant'; response: AssistantReply };
 
 const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'sale-introduction'];
+
+// A verified destination shown as a blue inline link should not also appear
+// as a bulky duplicate navigation card under the same assistant answer.
+function extraReplyLinks(response: AssistantReply): AssistantReply['links'] {
+  const inline = assistantInlineDestinationHrefs(response.answer);
+  return response.links.filter(link => !inline.has(link.href));
+}
 
 export function CloudyHelp() {
   const [open, setOpen] = useState(false);
@@ -214,23 +223,25 @@ export function CloudyHelp() {
     } catch {
       if (controller.signal.aborted || requestGeneration.current !== generation) return;
       const fallback = findHelp(text);
-      if (fallback.kind === 'answer' && fallback.entries[0]) {
+      const context = assistantKnowledge(text, recentHistory, findHelp);
+      const dutch = /\b(?:ik|een|mijn|jij|kun|kan|wat|waar|hoe|nodig|wil|niet|met|hulp)\b/i.test(text);
+      const unavailable = dutch
+        ? 'De AI is even niet bereikbaar. Probeer het zo opnieuw.'
+        : 'The AI is temporarily unavailable. Please try again shortly.';
+      if (context.source && fallback.kind === 'answer' && fallback.entries[0]) {
         const entry = fallback.entries[0];
         setMessages(previous => [...previous, {
           role: 'assistant' as const,
           response: {
-            answer: `I can't connect to the AI right now. Here is the published Cloudy information:\n\n${entry.answer}`,
-            links: entry.links,
-            source: entry.source,
+            answer: `${unavailable}\n\n${entry.answer}`,
+            links: context.links,
+            source: context.source,
           },
         }].slice(-30));
       } else {
         setMessages(previous => [...previous, {
           role: 'assistant' as const,
-          response: {
-            answer: 'I can’t connect to the AI right now. Please try again in a moment, or contact Cloudy support.',
-            links: [{ label: 'Contact support', href: '/support' }],
-          },
+          response: { answer: unavailable, links: [] },
         }].slice(-30));
       }
     } finally {
@@ -261,7 +272,7 @@ export function CloudyHelp() {
             <span className={styles.brandIcon}><Bot size={21} aria-hidden="true" /></span>
             <div className={styles.brandCopy}>
               <h2 id="cloudy-help-title">Cloudy assistant</h2>
-              <p>Website &amp; purchase help</p>
+              <p>Your AI assistant</p>
             </div>
             <button type="button" className={styles.iconButton} onClick={reset} aria-label="Start a new chat" title="Start a new chat"><RotateCcw size={17} aria-hidden="true" /></button>
             <button type="button" className={styles.iconButton} onClick={close} aria-label="Close Cloudy assistant"><X size={20} aria-hidden="true" /></button>
@@ -271,7 +282,7 @@ export function CloudyHelp() {
             <div className={styles.welcome}>
               <span className={styles.eyebrow}>HOW CAN WE HELP?</span>
               <h3>Chat with our assistant.</h3>
-              <p>Ask about the website, purchases or anything else. Choose a topic or chat with Cloudy below. AI messages are processed by a hosted provider, so please don't share passwords or payment details.</p>
+              <p>Ask me anything or choose a topic below. Don’t share passwords or payment details in chat.</p>
             </div>
             <div className={styles.topics} aria-label="Help topics">
               {helpEntries.filter(entry => shortcuts.includes(entry.id)).map(entry => (
@@ -303,10 +314,10 @@ export function CloudyHelp() {
                   <span className={styles.sender}>Cloudy assistant</span>
                   {'response' in message ? (
                     <>
-                      <p>{message.response.answer}</p>
-                      {message.response.links.length > 0 && (
+                      <CloudyMessage text={message.response.answer} />
+                      {extraReplyLinks(message.response).length > 0 && (
                         <div className={styles.links}>
-                          {message.response.links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
+                          {extraReplyLinks(message.response).map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
                         </div>
                       )}
                       {message.response.source && <small className={styles.source}>Source: {message.response.source}</small>}

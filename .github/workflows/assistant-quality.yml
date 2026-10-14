@@ -1,0 +1,28 @@
+name: Assistant quality checks
+
+on:
+  pull_request:
+    paths:
+      - 'components/help/**'
+      - 'lib/cloudy-chat-context.ts'
+      - 'lib/cloudy-message-format.ts'
+      - 'app/api/assistant/chat/**'
+      - 'tests/cloudy-conversation.test.mjs'
+      - '.github/workflows/assistant-quality.yml'
+
+jobs:
+  assistant-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - name: Verify conversational links and safe formatting
+        run: node --test tests/cloudy-conversation.test.mjs
+      - name: TypeScript type check
+        run: npx tsc --noEmit
