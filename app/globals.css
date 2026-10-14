@@ -1749,9 +1749,7 @@ body {
 .cloudy-terms-page {
   min-height: 100vh !important;
   padding: 95px 0 120px !important;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(255,255,255,0.05), transparent 30rem),
-    linear-gradient(180deg, #050505 0%, #070707 52%, #030303 100%) !important;
+  background: #000 !important;
 }
 .cloudy-terms-head img {
   filter: drop-shadow(0 0 18px rgba(255,255,255,.12)) !important;
@@ -1769,15 +1767,14 @@ body {
   position: relative;
   isolation: isolate;
   border-color: rgba(255,255,255,.10) !important;
-  background-color: #050505 !important;
-  background-image: linear-gradient(110deg, transparent 42%, rgba(160,160,170,.03) 46%, rgba(210,210,220,.12) 50%, rgba(160,160,170,.03) 54%, transparent 58%) !important;
-  background-size: 400% 100% !important;
-  background-repeat: no-repeat !important;
-  animation: cloudy-terms-glow-sweep 5s linear infinite;
+  background: #000 !important;
   box-shadow: none !important;
 }
-@keyframes cloudy-terms-glow-sweep { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
-@media (prefers-reduced-motion: reduce) { .cloudy-term-card { animation: none; background-image: none !important; } }
+.cloudy-black-page,
+.cloudy-black-page .cloud-panel {
+  background: #000 !important;
+  box-shadow: none !important;
+}
 .cloudy-term-card h2 {
   color: #f1f1f2 !important;
 }
