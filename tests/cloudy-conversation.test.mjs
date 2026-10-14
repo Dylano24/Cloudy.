@@ -1,7 +1,8 @@
 import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { assistantKnowledge, sanitizeAssistantHistory } from '../lib/cloudy-chat-context.ts';
+import { assistantKnowledge, isVagueHelpRequest, sanitizeAssistantHistory } from '../lib/cloudy-chat-context.ts';
+import { parseAssistantInline, parseAssistantMessage, safeAssistantHref } from '../lib/cloudy-message-format.ts';
 import { findHelp } from '../components/help/cloudy-knowledge.ts';
 
 test('only user and assistant history is accepted, bounded to eight recent turns', () => {
@@ -22,8 +23,10 @@ test('website knowledge evidence uses approved Cloudy information and links', ()
   const context = assistantKnowledge('I paid but my kit was not received', [], findHelp);
   const parsed = JSON.parse(context.evidence);
   assert.equal(parsed.verifiedWebsiteInformation[0].title, 'Product not received');
-  assert.ok(context.links.some(link => link.href === '/support'));
+  assert.deepEqual(context.links, [], 'a statement must not force Support & Help buttons');
   assert.match(context.source, /Store terms/i);
+  const actionable = assistantKnowledge('I paid but my kit was not received, what should I do?', [], findHelp);
+  assert.ok(actionable.links.some(link => link.href === '/support'));
   assert.doesNotMatch(context.evidence, /PRIVATE_KEY|credit card number/i);
 });
 
@@ -49,4 +52,72 @@ test('assistant route has a server-only Railway connection and never embeds secr
   assert.match(site, /cache: 'no-store'/);
   assert.match(frontend, /fetch\('\/api\/assistant\/chat'/);
   assert.doesNotMatch(frontend, /GROQ_API_KEY|CLOUDY_ASSISTANT_SHARED_SECRET/);
+});
+
+
+test('generic help and support are conversation starters, not navigation intent', () => {
+  for (const question of [
+    'Ik heb support nodig',
+    'ik heb hulp nodig!',
+    'I need help',
+    'Can you help me?',
+    'Help me',
+    'hallo ik heb ondersteuning nodig',
+  ]) {
+    assert.equal(isVagueHelpRequest(question), true, question);
+    const result = assistantKnowledge(question, [], findHelp);
+    assert.deepEqual(result.links, [], question);
+    assert.deepEqual(JSON.parse(result.evidence).verifiedWebsiteInformation, [], question);
+    assert.equal(result.source, undefined, question);
+  }
+  const generic = assistantKnowledge('Can you help me write Python?', [], findHelp);
+  assert.deepEqual(generic.links, []);
+  assert.deepEqual(JSON.parse(generic.evidence).verifiedWebsiteInformation, []);
+});
+
+test('Cloudy support links appear when specifically requested, never after unrelated questions', () => {
+  const support = assistantKnowledge('Waar vind ik de support pagina?', [], findHelp);
+  assert.ok(support.links.some(link => link.href === '/support'));
+  const request = assistantKnowledge('Hoe kan ik contact opnemen met staff?', [], findHelp);
+  assert.ok(request.links.some(link => link.href === '/support'));
+  for (const question of ['Tell me a joke about dinosaurs', 'I need support', 'Can you help me with math?']) {
+    assert.deepEqual(assistantKnowledge(question, [], findHelp).links, [], question);
+  }
+  const policy = assistantKnowledge('What are the Discord rules?', [], findHelp);
+  assert.deepEqual(policy.links, [], 'a factual question should not automatically show navigation links');
+});
+
+test('assistant renders bold text and lists as structured text rather than raw markup', () => {
+  const input = 'Natuurlijk! Voor **Support & Help** kun je kiezen:\n\n- **Support & Help pagina**: `/support`\n- **Cloudy Discord**: <https://discord.gg/EGDVMmmSzF>';
+  const blocks = parseAssistantMessage(input);
+  assert.deepEqual(blocks.map(item => item.kind), ['paragraph', 'list']);
+  assert.equal(blocks[1].items.length, 2);
+  const inline = parseAssistantInline(blocks[1].items[0]);
+  assert.ok(inline.some(part => part.kind === 'strong' && part.text === 'Support & Help pagina'));
+  assert.ok(inline.some(part => part.kind === 'link' && part.text === 'Support & Help' && part.href === '/support'));
+  const discord = parseAssistantInline(blocks[1].items[1]);
+  assert.ok(discord.some(part => part.kind === 'link' && part.text === 'Cloudy Discord'));
+});
+
+test('model output never becomes executable HTML or an untrusted clickable link', () => {
+  assert.equal(safeAssistantHref('javascript:alert(1)'), null);
+  assert.equal(safeAssistantHref('//evil.example'), null);
+  assert.equal(safeAssistantHref('https://evil.example/fake-support'), null);
+  assert.equal(safeAssistantHref('/support'), '/support');
+  assert.equal(safeAssistantHref('https://discord.gg/EGDVMmmSzF'), 'https://discord.gg/EGDVMmmSzF');
+  const parts = parseAssistantInline('[Verify now](https://evil.example) and **stay safe**');
+  assert.ok(parts.some(part => part.kind === 'text' && part.text === 'Verify now'));
+  assert.ok(parts.some(part => part.kind === 'strong' && part.text === 'stay safe'));
+  assert.equal(parts.some(part => part.kind === 'link'), false);
+  const rendered = parseAssistantMessage('<script>alert(1)</script>');
+  assert.equal(rendered[0].kind, 'paragraph');
+  assert.equal(rendered[0].content, '<script>alert(1)</script>');
+});
+
+test('short help statements receive deterministic clarification before the hosted model', () => {
+  const route = readFileSync(new URL('../app/api/assistant/chat/route.ts', import.meta.url), 'utf8');
+  assert.match(route, /if \(isVagueHelpRequest\(question\)\)/);
+  assert.match(route, /Waarmee kan ik je helpen/);
+  const client = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
+  assert.match(client, /<CloudyMessage text={message\.response\.answer}/);
 });
