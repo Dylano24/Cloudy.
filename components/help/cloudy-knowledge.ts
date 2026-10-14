@@ -38,7 +38,7 @@ export const helpEntries: HelpEntry[] = [
   {
     "id": "missing-delivery",
     "title": "Product not received",
-    "answer": "Cloudy’s Store terms say digital products are normally delivered immediately after successful payment, except for technical or processing issues. Delivery also requires the correct linked account or purchase information. Check that your payment succeeded and that you used the correct account details.\n\nI cannot check your personal order status. If your product is still missing, contact Cloudy support through the official Discord.",
+    "answer": "Cloudy’s Store terms say digital products are normally delivered immediately after successful payment, except for technical or processing issues. Delivery also requires the correct linked account or purchase information. Check that your payment succeeded and that you used the correct account details.",
     "keywords": [
       "not received",
       "not receive",
@@ -184,7 +184,7 @@ export const helpEntries: HelpEntry[] = [
   {
     "id": "appeal",
     "title": "Appeal a moderation action",
-    "answer": "Use the Appeal page to request a review of a Discord or Rust server moderation action. Choose the platform and complete the existing form. I cannot decide an appeal or confirm its outcome.",
+    "answer": "Use the Appeal page to request a review of a Discord or Rust server moderation action.",
     "keywords": [
       "appeal",
       "appeals",

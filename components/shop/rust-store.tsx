@@ -177,7 +177,7 @@ export default function RustStore() {
         <div className="cloudy-rust-store-hero-copy">
           <span>RUST</span>
           <h1>RUST STORE</h1>
-          <Link href="/shop" className="cloudy-classic-button mt-5" style={{ borderColor: '#e51b2e' }}>Select other game</Link>
+          <Link href="/shop" className="cloudy-classic-button mt-5" style={{ borderColor: '#e51b2e' }}>Back</Link>
         </div>
       </section>
       <div className="container mx-auto px-4 py-12">
