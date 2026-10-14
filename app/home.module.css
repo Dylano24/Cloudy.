@@ -364,10 +364,6 @@
 
 /* Move small card textures on the compositor instead of repainting a
    page-height background each frame. Red outline animations stay separate. */
-@keyframes cloudy-mobile-aligned-light {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(var(--cloudy-mobile-light-travel, -1080px), 0, 0); }
-}
 @media (max-width: 820px) {
   .home :global(.cloudy-classic-wrap) {
     animation: cloudy-mobile-shared-sheen 5s linear infinite;
@@ -404,7 +400,9 @@
       rgba(160,160,170,.03) calc(var(--cloudy-mobile-light-phase, 0px) + 135px),
       transparent calc(var(--cloudy-mobile-light-phase, 0px) + 180px),
       transparent calc(var(--cloudy-mobile-light-phase, 0px) + var(--cloudy-mobile-light-period, 1014.87px)));
-    animation: cloudy-mobile-aligned-light 6s linear infinite;
+    /* A shared bounded frame clock sets transform without CSS catching up
+       after a delayed frame on mobile. */
+    animation: none;
     will-change: transform;
   }
 }
