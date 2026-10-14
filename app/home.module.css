@@ -279,7 +279,16 @@
 }
 
 .home :global(.cloudy-classic-heading) > p {
-  color: #e51b2e;
+  color: #fff;
+}
+.home :global(.cloudy-classic-heading) > p::after,
+.statement::after {
+  content: '';
+  display: block;
+  width: 76px;
+  height: 2px;
+  margin: 18px auto 0;
+  background: #e51b2e;
 }
 .home :global(.cloudy-classic-button),
 .home :global(.cloudy-classic-button):hover {

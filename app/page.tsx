@@ -36,7 +36,7 @@ export default function HomePage() {
 
           <GameCarousel>
             <Link
-              href="/shop"
+              href="/shop?game=rust"
               className="cloudy-classic-game-card"
               style={{
                 backgroundImage: "url('/images/cloudy-rust-premium-4k.avif')",
