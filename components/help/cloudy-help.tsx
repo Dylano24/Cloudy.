@@ -52,6 +52,7 @@ export function CloudyHelp() {
       const dock = dockRef.current;
       if (!dock) return;
       dock.style.setProperty('--help-available-height', `${viewport.height}px`);
+      dock.style.setProperty('--help-viewport-top', `${viewport.offsetTop}px`);
       // Browser toolbars can change the visual viewport too. Only lift
       // the dock for a real on-screen keyboard, not for small toolbar shifts.
       const covered = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
