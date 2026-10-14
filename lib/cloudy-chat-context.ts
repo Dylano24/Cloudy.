@@ -101,7 +101,14 @@ export function assistantKnowledge(
   const links = entries.flatMap(entry => relevantLinksForEntry(entry, topicQuestion))
     .filter((link, index, all) => all.findIndex(item => item.href === link.href) === index)
     .slice(0, 2);
-  const source = entries.length ? entries.map(entry => entry.source).join(' · ').slice(0, 200) : undefined;
+  // Source notes add value for policy/delivery facts, not generic chat or
+  // navigation. Avoid redundant "Source: Support & Help page" labels.
+  const sourcedEntries = entries.filter(entry =>
+    entry.id.startsWith('sale-') || entry.id.startsWith('service-')
+    || ['missing-delivery', 'discord-rules', 'zorp'].includes(entry.id));
+  const source = sourcedEntries.length
+    ? sourcedEntries.map(entry => entry.source).join(' · ').slice(0, 200)
+    : undefined;
 
   // The website controls sources and link buttons, not the model. In particular,
   // "Ik heb support nodig" has no verified-navigation evidence or automatic links.
