@@ -190,3 +190,19 @@ export function parseAssistantMessage(text: string): MessageBlock[] {
   }
   return blocks;
 }
+
+
+/** Verified URLs that are already clickable in the visible AI text. */
+export function assistantInlineDestinationHrefs(text: string): Set<string> {
+  const destinations = new Set<string>();
+  for (const block of parseAssistantMessage(text)) {
+    if (block.kind === 'code') continue;
+    const segments = block.kind === 'list' ? block.items : [block.content];
+    for (const segment of segments) {
+      for (const piece of parseAssistantInline(segment)) {
+        if (piece.kind === 'link' && piece.href) destinations.add(piece.href);
+      }
+    }
+  }
+  return destinations;
+}
