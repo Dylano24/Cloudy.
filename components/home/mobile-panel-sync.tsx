@@ -8,6 +8,22 @@ export function MobilePanelSync() {
     const media = window.matchMedia('(max-width: 820px)');
     const panels = [...home.querySelectorAll<HTMLElement>('.cloudy-classic-intro, .cloudy-classic-coming, .cloudy-classic-feature, .cloudy-classic-future, .cloudy-restored-pay-grid article, .cloudy-classic-why-grid article')];
     const lights = new Map<HTMLElement, HTMLSpanElement>();
+    const startedAt = Number(document.timeline.currentTime ?? performance.now());
+    const visibility = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const clip = entry.target as HTMLSpanElement;
+        const texture = clip.firstElementChild as HTMLSpanElement;
+        if (entry.isIntersecting) {
+          // Newly visible cards join the existing timeline; hidden cards do
+          // not retain large animated compositor textures on mobile GPUs.
+          clip.dataset.visible = 'true';
+          const animation = texture.getAnimations()[0];
+          if (animation) animation.startTime = startedAt;
+        } else {
+          delete clip.dataset.visible;
+        }
+      }
+    }, { rootMargin: '160px' });
     let frame = 0;
     const measure = () => {
       const root = home.getBoundingClientRect();
@@ -42,10 +58,12 @@ export function MobilePanelSync() {
             clip.append(texture);
             panel.append(clip);
             lights.set(panel, clip);
+            visibility.observe(clip);
           }
         } else {
           panel.style.removeProperty('--cloudy-mobile-light-phase');
-          lights.get(panel)?.remove();
+          const clip = lights.get(panel);
+          if (clip) { visibility.unobserve(clip); clip.remove(); }
           lights.delete(panel);
         }
       }
@@ -61,6 +79,7 @@ export function MobilePanelSync() {
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
+      visibility.disconnect();
       home.removeEventListener('scroll', schedule, true);
       window.removeEventListener('resize', schedule);
       media.removeEventListener('change', schedule);

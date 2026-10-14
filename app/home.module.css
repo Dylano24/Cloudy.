@@ -390,6 +390,9 @@
     border-radius: inherit;
     pointer-events: none;
   }
+  .home :global(.cloudy-mobile-sheen:not([data-visible])) :global(.cloudy-mobile-sheen-texture) {
+    display: none;
+  }
   .home :global(.cloudy-mobile-sheen-texture) {
     position: absolute;
     inset: 0 auto 0 0;
