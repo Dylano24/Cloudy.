@@ -525,3 +525,36 @@
   isolation: isolate;
   border-left: 1px solid rgba(255,255,255,.09);
 }
+
+/* Final Store refinements: preserve the existing approved cards and swipe. */
+.hero h1 { margin-bottom: 32px; }
+.flow > div:first-child h2 { margin-top: 0; }
+.comingCard > div {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.comingLogo {
+  display: block;
+  width: 92px;
+  height: 92px;
+  max-width: 30%;
+  margin: 0 0 28px;
+  opacity: .38;
+  object-fit: contain;
+  filter: grayscale(1);
+}
+/* No fixed red side: only the site's shared 1px animated outline runs around
+   the whole non-Rust card, including the three Store flow steps. */
+.stats > div,
+.comingCard,
+.steps article {
+  border-left: 1px solid rgba(255,255,255,.09);
+}
+@media (max-width: 700px) {
+  .hero h1 { margin-bottom: 26px; }
+  .comingLogo { width: 78px; height: 78px; margin-bottom: 24px; }
+}
