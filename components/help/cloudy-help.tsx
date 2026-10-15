@@ -70,7 +70,7 @@ export function CloudyHelp() {
   function close() {
     clearConversation();
     setOpen(false);
-    launcherRef.current?.focus();
+    launcherRef.current?.focus({ preventScroll: true });
   }
 
   useEffect(() => {
@@ -166,14 +166,23 @@ export function CloudyHelp() {
         position: body.style.position, top: body.style.top,
         left: body.style.left, right: body.style.right, width: body.style.width,
       };
+      // The phone dialog leaves small visual margins. Those margins must not
+      // pass taps through to the Home logo or other navigation underneath.
+      const background = Array.from(dockRef.current?.parentElement?.children ?? [])
+        .filter(element => element !== dockRef.current)
+        .map(element => ({ element: element as HTMLElement, inert: (element as HTMLElement).inert }));
+      for (const { element } of background) element.inert = true;
       body.style.position = 'fixed';
       body.style.top = `-${scrollTop}px`;
       body.style.left = '0';
       body.style.right = '0';
       body.style.width = '100%';
       unlock = () => {
+        for (const { element, inert } of background) element.inert = inert;
         Object.assign(body.style, previous);
-        window.scrollTo(0, scrollTop);
+        // Global smooth scrolling would animate from the fixed body's zero
+        // position, making closing/rotation look like a return to page top.
+        window.scrollTo({ top: scrollTop, left: 0, behavior: 'instant' });
       };
     };
     syncLock();
