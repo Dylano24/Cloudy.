@@ -2,6 +2,7 @@ import Link from 'next/link';
 import RustStore from '@/components/shop/rust-store';
 import { StoreFireworks } from '@/components/shop/store-fireworks';
 import styles from './shop.module.css';
+import { GameCarousel } from '@/components/home/game-carousel';
 
 type ShopPageProps = { searchParams: Promise<{ game?: string }> };
 
@@ -57,7 +58,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           </div>
         </header>
 
-        <div className={styles.gameGrid}>
+        <GameCarousel trackClassName={styles.gameGrid} labels={games.map(item => item.name)} ariaLabel="Cloudy store games">
           {games.map((item, index) => {
             const card = (
               <>
@@ -106,7 +107,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
               </article>
             );
           })}
-        </div>
+        </GameCarousel>
       </section>
 
       <section className={styles.flow} aria-label="How the Cloudy store works">
