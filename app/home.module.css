@@ -2,6 +2,9 @@
   grid-template-columns: 1fr;
 }
 
+.home { position: relative; isolation: isolate; }
+.home :global(.cloudy-classic-hero), .home :global(.cloudy-classic-wrap) { position: relative; z-index: 1; }
+
 .home :global(.cloudy-classic-coming) > div {
   border-left: 0;
   text-align: center;
@@ -68,8 +71,8 @@
   left: calc(50% - var(--vortex-size) * .508776);
   top: calc(50% - 18px - var(--vortex-size) * .467456);
   transform-origin: 50.8776% 46.7456%;
-  background: url('/images/cloud-vortex-white.png') center / cover no-repeat;
-  opacity: .78;
+  background: none;
+  opacity: 0;
   pointer-events: none;
   animation: vortexSpin 28s linear infinite;
 }
