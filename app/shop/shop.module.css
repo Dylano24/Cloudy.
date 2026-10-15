@@ -502,42 +502,12 @@
 @media (max-width: 700px) {
   .page .browser .gameGrid { grid-auto-columns: minmax(0, 88%); }
 }
-
-/* Moving highlight travels along the EXISTING red left-side line only.
-   The Rust game card intentionally keeps its own approved trace unchanged. */
+/* Reuse the homepage's exact 1px perimeter trace on non-Rust cards.
+   No permanent red left bar, added glow or thick border. */
 .stats > div,
 .comingCard,
-.steps article { position: relative; isolation: isolate; }
-.stats > div::before,
-.comingCard::before,
-.steps article::before {
-  content: "";
-  position: absolute;
-  z-index: 3;
-  inset: 0 auto 0 0;
-  width: 3px;
-  pointer-events: none;
-  border-radius: 3px;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(229,27,46,.05) 32%,
-    rgba(255,39,60,.9) 48%,
-    #ff273c 50%,
-    rgba(255,39,60,.9) 52%,
-    rgba(229,27,46,.05) 68%,
-    transparent 100%
-  );
-  background-size: 100% 250%;
-  background-repeat: no-repeat;
-  animation: cloudyStoreSideSweep 7.5s linear infinite;
-}
-@keyframes cloudyStoreSideSweep {
-  from { background-position: 0 100%; }
-  to { background-position: 0 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .stats > div::before,
-  .comingCard::before,
-  .steps article::before { animation: none; background: none; }
+.steps article {
+  position: relative;
+  isolation: isolate;
+  border-left: 1px solid rgba(255,255,255,.09);
 }
