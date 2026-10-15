@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
 import { assistantKnowledge, type AssistantReply, type AssistantTurn } from '@/lib/cloudy-chat-context';
 import { CloudyMessage } from './cloudy-message';
 import { assistantInlineDestinationHrefs } from '@/lib/cloudy-message-format';
+import { buildAssistantRequest } from '@/lib/assistant-request';
 import styles from './cloudy-help.module.css';
 
 type Message =
@@ -21,6 +22,19 @@ function extraReplyLinks(response: AssistantReply): AssistantReply['links'] {
   const inline = assistantInlineDestinationHrefs(response.answer);
   return response.links.filter(link => !inline.has(link.href));
 }
+
+// Existing answers are immutable. Typing a draft should not parse their
+// Markdown and destination links again on every keystroke.
+const AssistantReplyContent = memo(function AssistantReplyContent({ response }: { response: AssistantReply }) {
+  const links = extraReplyLinks(response);
+  return <>
+    <CloudyMessage text={response.answer} />
+    {links.length > 0 && <div className={styles.links}>
+      {links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
+    </div>}
+    {response.source && <small className={styles.source}>Source: {response.source}</small>}
+  </>;
+});
 
 export function CloudyHelp() {
   const [open, setOpen] = useState(false);
@@ -136,28 +150,37 @@ export function CloudyHelp() {
   // Safari otherwise scrolls the entire website to focus the input,
   // which visually collapses or jumps the fixed chat panel.
   useEffect(() => {
-    if (!open || !window.matchMedia('(max-width: 480px)').matches) return;
-    const scrollTop = window.scrollY;
-    const body = document.body;
-    const previous = {
-      position: body.style.position,
-      top: body.style.top,
-      left: body.style.left,
-      right: body.style.right,
-      width: body.style.width,
+    if (!open) return;
+    const phone = window.matchMedia('(max-width: 480px)');
+    let unlock: (() => void) | null = null;
+    const syncLock = () => {
+      if (!phone.matches) {
+        unlock?.();
+        unlock = null;
+        return;
+      }
+      if (unlock) return;
+      const scrollTop = window.scrollY;
+      const body = document.body;
+      const previous = {
+        position: body.style.position, top: body.style.top,
+        left: body.style.left, right: body.style.right, width: body.style.width,
+      };
+      body.style.position = 'fixed';
+      body.style.top = `-${scrollTop}px`;
+      body.style.left = '0';
+      body.style.right = '0';
+      body.style.width = '100%';
+      unlock = () => {
+        Object.assign(body.style, previous);
+        window.scrollTo(0, scrollTop);
+      };
     };
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollTop}px`;
-    body.style.left = '0';
-    body.style.right = '0';
-    body.style.width = '100%';
+    syncLock();
+    phone.addEventListener('change', syncLock);
     return () => {
-      body.style.position = previous.position;
-      body.style.top = previous.top;
-      body.style.left = previous.left;
-      body.style.right = previous.right;
-      body.style.width = previous.width;
-      window.scrollTo(0, scrollTop);
+      phone.removeEventListener('change', syncLock);
+      unlock?.();
     };
   }, [open]);
 
@@ -213,7 +236,7 @@ export function CloudyHelp() {
       const response = await fetch('/api/assistant/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: text, history: recentHistory }),
+        body: buildAssistantRequest(text, recentHistory),
         signal: controller.signal,
       });
       const data = await response.json();
@@ -319,15 +342,7 @@ export function CloudyHelp() {
                 <div key={index} className={styles.answer} data-latest-answer={index === messages.length - 1 ? "true" : undefined}>
                   <span className={styles.sender}>Cloudy assistant</span>
                   {'response' in message ? (
-                    <>
-                      <CloudyMessage text={message.response.answer} />
-                      {extraReplyLinks(message.response).length > 0 && (
-                        <div className={styles.links}>
-                          {extraReplyLinks(message.response).map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
-                        </div>
-                      )}
-                      {message.response.source && <small className={styles.source}>Source: {message.response.source}</small>}
-                    </>
+                    <AssistantReplyContent response={message.response} />
                   ) : message.result.kind === 'answer' ? message.result.entries.map(entry => (
                     <div key={entry.id}>
                       <h3>{entry.title}</h3>

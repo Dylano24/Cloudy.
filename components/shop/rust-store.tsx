@@ -1,31 +1,30 @@
 'use client';
 
-import { useProducts, useCategories, useStore } from '@/hooks/use-api';
+import { useProducts, useCategories } from '@/hooks/use-api';
 import { useCart } from '@/hooks/use-cart';
 import { ProductCard } from '@/components/product/product-card';
 import { Package, Filter, AlertCircle, RefreshCcw, Loader2, Search } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import type { Category } from '@/lib/schemas';
+import { useState, useEffect, useRef } from 'react';
+import type { Category, ProductGeneral } from '@/lib/schemas';
 
 export default function RustStore() {
-  const cart = useCart();
-  const { data: store } = useStore();
+  const clearIfExpired = useCart(state => state.clearIfExpired);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [allProducts, setAllProducts] = useState<any[]>([]);
+  const [allProducts, setAllProducts] = useState<Array<ProductGeneral & { description?: string }>>([]);
   const [hasMore, setHasMore] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const observerTarget = useRef<HTMLDivElement>(null);
-  const processedDataRef = useRef<{ page: number; category: number | null; ids: string }>({ page: 0, category: null, ids: '' });
+  const loadingMore = useRef(false);
   
   useEffect(() => {
-    cart.clearIfExpired();
-  }, []);
+    clearIfExpired();
+  }, [clearIfExpired]);
 
   const { data: categories, error: categoriesError } = useCategories();
-  const { data: products, isLoading, error: productsError, refetch } = useProducts({ 
+  const { data: products, isLoading, isFetching, isPlaceholderData, error: productsError, refetch } = useProducts({
     page: currentPage, 
     maxPage: 50, 
     onlyEnabled: true,
@@ -42,13 +41,14 @@ export default function RustStore() {
     return acc;
   }, {} as Record<number, typeof categories.categories>);
 
-  // Reset when category changes
-  useEffect(() => {
+  const selectCategory = (category: number | null) => {
+    if (category === selectedCategory) return;
+    setSelectedCategory(category);
     setCurrentPage(1);
     setAllProducts([]);
     setHasMore(true);
-    processedDataRef.current = { page: 0, category: selectedCategory, ids: '' };
-  }, [selectedCategory]);
+    loadingMore.current = false;
+  };
 
   const renderCategoryButton = (category: Category) => {
     const isSelected = selectedCategory === category.id;
@@ -56,7 +56,7 @@ export default function RustStore() {
     return (
       <button
         key={category.id}
-        onClick={() => setSelectedCategory(category.id)}
+        onClick={() => selectCategory(category.id)}
         className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-lg border transition-all cursor-pointer ${
           isSelected
             ? 'bg-primary text-background border-primary glow-primary'
@@ -85,32 +85,11 @@ export default function RustStore() {
 
   // Append new products when data arrives
   useEffect(() => {
-    // Skip if loading, error, or no products
-    if (isLoading || productsError || !products?.products) {
+    // Previous-page/category placeholders must never enter the current list.
+    if (isFetching || isPlaceholderData || productsError || !products?.products) {
       return;
     }
-    
-    // Check if products array is empty
-    if (products.products.length === 0) {
-      setHasMore(false);
-      return;
-    }
-    
-    // Create a unique identifier for this data
-    const dataIds = products.products.map(p => p.id).join(',');
-    const dataSignature = { page: currentPage, category: selectedCategory, ids: dataIds };
-    
-    // Skip if we've already processed this exact data
-    if (
-      processedDataRef.current.page === dataSignature.page &&
-      processedDataRef.current.category === dataSignature.category &&
-      processedDataRef.current.ids === dataSignature.ids
-    ) {
-      return;
-    }
-    
-    // Mark this data as processed
-    processedDataRef.current = dataSignature;
+    loadingMore.current = false;
     
     // Update products - use callback to avoid race conditions
     setAllProducts(prev => {
@@ -118,36 +97,25 @@ export default function RustStore() {
         return products.products;
       }
       
-      // For subsequent pages, filter out any duplicates
+      // Refresh existing records too, so unchanged IDs can get new price/stock.
       const existingIds = new Set(prev.map(p => p.id));
       const newProducts = products.products.filter(p => !existingIds.has(p.id));
-      
-      // If no new products, keep the previous state
-      if (newProducts.length === 0) {
-        return prev;
-      }
-      
-      return [...prev, ...newProducts];
+      const incoming = new Map(products.products.map(p => [p.id, p]));
+      return [...prev.map(p => incoming.get(p.id) || p), ...newProducts];
     });
     
     // Only has more if we got a full page of products
     setHasMore(products.products.length === 50);
-  }, [isLoading, productsError, products?.products, currentPage, selectedCategory]);
-
-  // Infinite scroll observer
-  const handleLoadMore = useCallback(() => {
-    if (!isLoading && !productsError && hasMore) {
-      setCurrentPage(prev => prev + 1);
-    }
-  }, [isLoading, productsError, hasMore]);
+  }, [isFetching, isPlaceholderData, productsError, products?.products, currentPage]);
 
   useEffect(() => {
     // Only set up observer if we have products loaded
-    if (allProducts.length === 0 || !hasMore || isLoading) return;
+    if (allProducts.length === 0 || !hasMore || isFetching || isPlaceholderData || productsError) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !isLoading && hasMore) {
+        if (entries[0].isIntersecting && !loadingMore.current) {
+          loadingMore.current = true;
           setCurrentPage(prev => prev + 1);
         }
       },
@@ -163,11 +131,9 @@ export default function RustStore() {
     }
 
     return () => {
-      if (currentTarget) {
-        observer.unobserve(currentTarget);
-      }
+      observer.disconnect();
     };
-  }, [allProducts.length, isLoading, hasMore]);
+  }, [allProducts.length, isFetching, isPlaceholderData, productsError, hasMore]);
 
   return (
     <div className="cloudy-rust-store-page min-h-screen">
@@ -214,7 +180,7 @@ export default function RustStore() {
               </div>
               <div className="flex flex-wrap gap-2">
                 <button
-                  onClick={() => setSelectedCategory(null)}
+                  onClick={() => selectCategory(null)}
                   className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-lg border transition-all cursor-pointer ${
                     selectedCategory === null
                       ? 'bg-primary text-background border-primary glow-primary'
@@ -257,7 +223,7 @@ export default function RustStore() {
         ) : null}
 
         {/* Product Grid */}
-        {isLoading ? (
+        {isLoading || (isFetching && allProducts.length === 0) ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="h-96 rounded-xl bg-card border border-border animate-pulse" />
@@ -327,7 +293,7 @@ export default function RustStore() {
             <Package className="w-16 h-16 text-muted mx-auto mb-4" />
             <p className="text-xl text-muted mb-4">No products found in this category</p>
             <button
-              onClick={() => setSelectedCategory(null)}
+              onClick={() => selectCategory(null)}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-card border border-border hover:border-primary transition-colors cursor-pointer"
             >
               Show all products

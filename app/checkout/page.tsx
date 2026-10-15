@@ -58,6 +58,7 @@ function CheckoutContent() {
   const [isRedirecting, setIsRedirecting] = useState(false);
 
   const requiredIdentifiers = identifiersData?.identifiers || [];
+  const identifierFields = [...new Set(requiredIdentifiers.map(identifier => IDENTIFIER_FIELD_MAPPING[identifier] || identifier))];
 
   // Initialize from localStorage on mount
   useEffect(() => {
@@ -154,7 +155,7 @@ function CheckoutContent() {
       const fieldKey = IDENTIFIER_FIELD_MAPPING[identifier] || identifier;
       const value = formData[fieldKey as keyof CheckoutUser];
       if (!value || (typeof value === 'string' && value.trim() === '')) {
-        newErrors[identifier] = `${IDENTIFIER_LABELS[identifier] || identifier} is required`;
+        newErrors[fieldKey] = `${IDENTIFIER_LABELS[identifier] || identifier} is required`;
       }
     });
 
@@ -422,11 +423,8 @@ function CheckoutContent() {
                       </div>
 
                       {/* Dynamic Required Identifiers */}
-                      {requiredIdentifiers.map((identifier) => {
+                      {identifierFields.map((identifier) => {
                         if (identifier === 'email') return null;
-                        
-                        // Skip UUID/UID fields - only show username field
-                        if (identifier === 'minecraft_uid' || identifier === 'minecraft_uuid') return null;
                         
                         // Check if this identifier has an OAuth button
                         const hasOAuth = ['discord_id', 'steam_id'].includes(identifier);

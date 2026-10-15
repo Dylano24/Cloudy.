@@ -80,11 +80,11 @@ export function useProducts(params?: {
   });
 }
 
-export function useProduct(slug: string, details: boolean = true) {
+export function useProduct(slug: string, details: boolean = true, enabled: boolean = true) {
   return useQuery<ProductDetailed>({
     queryKey: ['store', 'product', 'slug', slug, details],
     queryFn: () => fetchAPI(`/store/product/slug/${encodeURIComponent(slug)}?details=${details}`),
-    enabled: !!slug,
+    enabled: !!slug && enabled,
   });
 }
 

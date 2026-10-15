@@ -1,8 +1,7 @@
 'use client';
 
 import { useCart } from '@/hooks/use-cart';
-import { calculateNumberRangeCharge } from '@/lib/cart-utils';
-import { formatCustomFieldsForDisplay } from '@/lib/cart-utils';
+import { calculateNumberRangeCharge, convertCustomFieldsForApi, formatCustomFieldsForDisplay, getCustomFieldValue } from '@/lib/cart-utils';
 import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, Loader2 } from 'lucide-react';
 import { BasketIcon } from '@/components/ui/basket-icon';
 import Image from 'next/image';
@@ -70,7 +69,8 @@ export default function CartPage() {
       
       // Handle custom fields
       if (item.customFields && Object.keys(item.customFields).length > 0) {
-        product.customFields = item.customFields;
+        const productCustomFields = 'custom_fields' in item.product ? item.product.custom_fields : undefined;
+        product.customFields = convertCustomFieldsForApi(item.customFields, productCustomFields);
       }
       
       // Handle server selection
@@ -155,6 +155,7 @@ export default function CartPage() {
               {cart.items.map((item, index) => {
                 // Check if this product appears multiple times with different custom fields
                 const duplicateCount = cart.items.filter((i) => i.product.id === item.product.id).length;
+                const productQuantityInCart = cart.items.reduce((total, current) => current.product.id === item.product.id ? total + current.quantity : total, 0);
                 const showCustomFieldsDetail = duplicateCount > 1;
                 const customFieldsDisplay = showCustomFieldsDetail && item.customFields && 'custom_fields' in item.product
                   ? formatCustomFieldsForDisplay(item.customFields, item.product.custom_fields || [])
@@ -208,8 +209,7 @@ export default function CartPage() {
                         // Add custom field prices
                         if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
                           item.product.custom_fields.forEach((field) => {
-                            const key = field.marker || field.id.toString();
-                            const value = item.customFields?.[key];
+                            const value = getCustomFieldValue(item.customFields, field);
                             
                             if (field.type === 'checkbox' && value) {
                               price += field.price || 0;
@@ -265,13 +265,8 @@ export default function CartPage() {
                       </button>
                       <span className="w-8 text-center font-semibold">{item.quantity}</span>
                       <button
-                        onClick={() => {
-                          const maxQuantity = typeof item.product.stock === 'number' ? item.product.stock : item.quantity + 1;
-                          if (item.quantity < maxQuantity) {
-                            cart.updateQuantity(item.product.id, item.quantity + 1, item.customFields);
-                          }
-                        }}
-                        disabled={typeof item.product.stock === 'number' && item.quantity >= item.product.stock}
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity + 1, item.customFields)}
+                        disabled={typeof item.product.stock === 'number' && productQuantityInCart >= item.product.stock}
                         className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Plus className="w-4 h-4" />
@@ -314,8 +309,7 @@ export default function CartPage() {
                             // Add custom field prices
                             if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
                               item.product.custom_fields.forEach((field) => {
-                                const key = field.marker || field.id.toString();
-                                const value = item.customFields?.[key];
+                                const value = getCustomFieldValue(item.customFields, field);
                                 
                                 if (field.type === 'checkbox' && value) {
                                   price += field.price || 0;

@@ -26,6 +26,26 @@ function normalizeIntent(value: string): string {
     .trim();
 }
 
+const FOLLOW_UP_STEPS = /^(?:(?:and|en|et)\s+)?(?:what (?:should|can) i do(?: (?:next|now))?|what (?:happens|comes) next|wat (?:moet|kan) ik(?: (?:nu|daarna))? doen|wat is de volgende stap|que dois-je faire(?: (?:maintenant|ensuite))?|quelle est la prochaine etape)$/;
+const FOLLOW_UP_LINK = /^(?:(?:and|en|et)\s+)?(?:where (?:can|do) i (?:find|read|access) (?:that|this|it)|(?:can|could) you send me (?:that|the link)|waar (?:kan|kun) ik (?:dat|dit) (?:vinden|lezen)|(?:kun|kan) je (?:die|de) link sturen|ou (?:puis-je|peux-tu) (?:trouver|lire) (?:cela|ca))$/;
+const FOLLOW_UP_LANGUAGE = '(?:english|dutch|french|nederlands|engels|frans|anglais|neerlandais|francais)';
+const FOLLOW_UP_POLITENESS = "(?:please|alsjeblieft|s['’]il te plait)";
+const FOLLOW_UP_EXPLANATION = new RegExp(
+  "^(?:(?:and|en|et)\\s+)?(?:(?:can|could) you (?:explain|clarify|repeat|summarize) (?:that|this|it)|(?:explain|clarify|repeat|summarize) (?:that|this|it)|(?:kun|kan) (?:je|jij|u) (?:dat|dit) (?:uitleggen|herhalen|samenvatten)|(?:peux|pourrais)-tu (?:expliquer|clarifier|repeter|resumer) (?:cela|ca)|(?:explique|repete|resume) (?:cela|ca))"
+  + '(?:\\s+(?:in|en)(?: het)?\\s+' + FOLLOW_UP_LANGUAGE + ')?'
+  + '(?:\\s+' + FOLLOW_UP_POLITENESS + ')?$',
+);
+const FOLLOW_UP_TRANSLATION = new RegExp(
+  '^(?:(?:can|could) you translate (?:that|this|it) (?:into|to)|translate (?:that|this|it) (?:into|to)|(?:kun|kan) (?:je|jij|u) (?:dat|dit) (?:in|vertalen naar)(?: het)?|(?:peux|pourrais)-tu traduire (?:cela|ca) en|traduis (?:cela|ca) en|(?:in|en)(?: het)?)\\s+'
+  + FOLLOW_UP_LANGUAGE + '(?:\\s+vertalen)?(?:\\s+' + FOLLOW_UP_POLITENESS + ')?$',
+);
+
+function isTopicFollowUp(question: string): boolean {
+  const q = normalizeIntent(question);
+  return FOLLOW_UP_STEPS.test(q) || FOLLOW_UP_LINK.test(q)
+    || FOLLOW_UP_EXPLANATION.test(q) || FOLLOW_UP_TRANSLATION.test(q);
+}
+
 /** A broad request for help is the beginning of a conversation, not a request for support links. */
 export function isVagueHelpRequest(question: string): boolean {
   const q = normalizeIntent(question);
@@ -87,7 +107,7 @@ export function assistantKnowledge(
 
   // Follow-ups may ask for the next step without repeating the original issue.
   // Keep the earlier topic only when the current message is genuinely a follow-up.
-  if (!vagueHelp && result.kind === 'unknown') {
+  if (!vagueHelp && result.kind === 'unknown' && isTopicFollowUp(question)) {
     const previous = [...history].reverse().find(turn => turn.role === 'user');
     if (previous && !isVagueHelpRequest(previous.content)) {
       result = lookup(previous.content);

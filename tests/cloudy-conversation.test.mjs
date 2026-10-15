@@ -126,7 +126,8 @@ test('short help statements receive deterministic clarification before the hoste
   assert.match(route, /if \(isVagueHelpRequest\(question\)\)/);
   assert.match(route, /Waarmee kan ik je helpen/);
   const client = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
-  assert.match(client, /<CloudyMessage text={message\.response\.answer}/);
+  assert.match(client, /<AssistantReplyContent response={message\.response}/);
+  assert.match(client, /<CloudyMessage text={response\.answer}/);
 });
 
 test('Cloudy Store mention is a blue-linkable trusted destination in French and Dutch', () => {
@@ -158,7 +159,7 @@ test('named Cloudy links in response make duplicate footer cards unnecessary', (
   assert.equal(links.has('https://discord.gg/EGDVMmmSzF'), true);
   assert.deepEqual(Array.from(assistantInlineDestinationHrefs('Une boutique locale.')), []);
   const widget = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
-  assert.match(widget, /extraReplyLinks\(message\.response\)/);
+  assert.match(widget, /const links = extraReplyLinks\(response\)/);
 });
 
 

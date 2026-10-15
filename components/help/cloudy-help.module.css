@@ -6,8 +6,10 @@
   z-index: 200;
   font-family: var(--font-sans), sans-serif;
   color: #fff;
+  pointer-events: none;
 }
 .launcher {
+  pointer-events: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -27,6 +29,7 @@
 .launcher svg, .brandIcon svg { color: #e51b2e; }
 .launcher:hover { border-color: #e51b2e; }
 .panel {
+  pointer-events: auto;
   display: flex;
   flex-direction: column;
   width: 100%;
