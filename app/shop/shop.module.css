@@ -479,14 +479,17 @@
 
 /* Store feedback revision: homepage-style coming soon + standard red side accents. */
 
-/* Store game browser: swipe from the Rust card through both Coming soon cards.
-   Cards retain their existing art, content and individual border treatments. */
+/* Show ONE complete game per view. Swipe/drag reveals the next game.
+   Flex sizing avoids the old responsive three-column CSS grid squashing Rust. */
 .page .browser .gameGrid {
-  grid-template-columns: none;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 64%);
-  align-items: stretch;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  min-width: 0;
+  gap: 18px;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
   scroll-padding-inline: 12px;
   overscroll-behavior-x: contain;
@@ -494,14 +497,25 @@
   scrollbar-width: none;
 }
 .page .browser .gameGrid::-webkit-scrollbar { display: none; }
-.page .browser .gameGrid > * { min-width: 0; scroll-snap-align: start; }
-.page .browser .gameCard:first-child { grid-column: auto; }
-@media (max-width: 980px) {
-  .page .browser .gameGrid { grid-auto-columns: minmax(0, 76%); }
+.page .browser .gameGrid > * {
+  flex: 0 0 100%;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  grid-column: auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.page .browser .gameCard:first-child {
+  grid-column: auto;
+  width: 100%;
+  min-width: 0;
 }
 @media (max-width: 700px) {
-  .page .browser .gameGrid { grid-auto-columns: minmax(0, 88%); }
+  .page .browser .gameGrid > * { min-height: 430px; }
 }
+
 /* Reuse the homepage's exact 1px perimeter trace on non-Rust cards.
    No permanent red left bar, added glow or thick border. */
 .stats > div,
