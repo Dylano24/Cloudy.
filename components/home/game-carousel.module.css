@@ -5,11 +5,14 @@
   grid-auto-columns: 100%;
   gap: 18px;
   overflow-x: auto;
-  /* Leave room for the moving edge and the existing hover lift. Negative
-     margins retain the card's original position and carousel dimensions. */
+  /* Leave room for the moving edge and glow on every side. Negative margins
+     retain the card's original position and carousel dimensions. */
   padding-block: 12px;
+  padding-inline: 12px;
   margin-block: -12px;
+  margin-inline: -12px;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: 12px;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
   cursor: grab;

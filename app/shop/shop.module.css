@@ -59,7 +59,7 @@
 .game:active,
 .game:visited {
   border: 1px solid transparent;
-  box-shadow: 0 20px 50px rgba(0,0,0,.44), 0 0 0 1px rgba(229,27,46,.45), 0 0 12px rgba(229,27,46,.18);
+  box-shadow: 0 20px 50px rgba(0,0,0,.44), 0 0 0 1px rgba(229,27,46,.45), 0 0 14px rgba(229,27,46,.36);
 }
 .game:focus-visible { outline: 2px solid #e51b2e; outline-offset: 5px; }
 .coming { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; border: 1px solid #252525; border-radius: 20px; text-align: center; background: #000; color: #fff; }
