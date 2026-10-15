@@ -14,7 +14,7 @@ function setup() {
 }
 const buttons = tree => elements(tree, node => node.type === 'button');
 
-test('Buy shows a preview notice for the current server without creating a checkout link', () => {
+test('Buy shows only the requested preview notice without creating a checkout link', () => {
   const h = componentHarness();
   const { KitPreviewCard } = loadTypeScript('components/shop/rust-kit-preview.tsx', {
     imports: { react: h.react, 'next/link': 'a', 'next/image': 'img', '@/lib/rust-items.json': JSON.parse(readFileSync(new URL('../lib/rust-items.json', import.meta.url), 'utf8')) },
@@ -23,15 +23,16 @@ test('Buy shows a preview notice for the current server without creating a check
   h.mount(KitPreviewCard, { kit: previewKits[0], server: 'Server 2' });
   buttons(h.tree).find(node => node.props['aria-label'] === 'Preview purchase of VIP kit').props.onClick();
   let tree = h.render();
-  assert.match(textContent(elements(tree, node => node.props.role === 'status')), /VIP kit · Server 2.*purchases are not available/);
-  tree = h.update({ kit: previewKits[0], server: 'Server 5' });
-  assert.match(textContent(elements(tree, node => node.props.role === 'status')), /Server 5/);
+  assert.equal(textContent(elements(tree, node => node.props.role === 'status')), 'Preview only');
+  tree = h.update({ kit: previewKits[0], server: 'Server 3' });
+  assert.equal(textContent(elements(tree, node => node.props.role === 'status')), 'Preview only');
   assert.equal(elements(tree, node => node.type === 'a' || node.type === 'form').length, 0);
 });
 
-test('choosing any of the five servers updates every visible kit without adding products to a cart', () => {
+test('choosing any of the three servers updates every visible kit without adding products to a cart', () => {
   const h = setup();
-  for (let server = 1; server <= 5; server++) {
+  assert.equal(buttons(h.tree).filter(node => node.props['aria-label']?.startsWith('Select Server')).length, 3);
+  for (let server = 1; server <= 3; server++) {
     const choice = buttons(h.tree).find(node => node.props['aria-label'] === `Select Server ${server}`);
     assert.ok(choice);
     choice.props.onClick();
@@ -60,22 +61,23 @@ test('search and category work together, with a recovery action for empty result
 
 test('purchase-type categories each show their own two kits and retain server selection', () => {
   const h = setup();
-  buttons(h.tree).find(node => node.props['aria-label'] === 'Select Server 5').props.onClick();
+  buttons(h.tree).find(node => node.props['aria-label'] === 'Select Server 3').props.onClick();
   h.render();
   for (const name of ['Subscriptions', 'Claim once', 'Lifetime']) {
     buttons(h.tree).find(node => textContent(node) === name).props.onClick();
     const tree = h.render();
     const cards = elements(tree, node => node.props.kit && node.props.server);
     assert.equal(cards.length, 2);
-    assert.ok(cards.every(card => card.props.kit.category === name && card.props.server === 'Server 5'));
+    assert.ok(cards.every(card => card.props.kit.category === name && card.props.server === 'Server 3'));
   }
 });
 
 test('every inventory item has a canonical Rust name, a local image and a valid slot', () => {
   const catalog = JSON.parse(readFileSync(new URL('../lib/rust-items.json', import.meta.url), 'utf8'));
   const { previewKits } = loadTypeScript('lib/rust-kit-preview.ts', { imports: { '@/lib/rust-items.json': catalog } });
-  const capacities = { wear: 7, main: 12, belt: 6 };
+  const capacities = { wear: 7, main: 24, belt: 6 };
   for (const kit of previewKits) {
+    assert.equal(new Set(kit.items.map(item => item.shortname)).size, kit.items.length, 'No duplicate items');
     assert.ok(kit.price > 0, 'Preview prices must be positive proposals');
     for (const [area, capacity] of Object.entries(capacities)) {
       assert.ok(kit.items.filter(item => item.area === area).length <= capacity, `${kit.id}: no hidden items`);

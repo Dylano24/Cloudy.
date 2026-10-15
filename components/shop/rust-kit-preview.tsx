@@ -3,15 +3,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, ChevronDown, Search, Server, Package, Crosshair, Hammer, HeartPulse, Boxes, Wrench } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Search, Server } from 'lucide-react';
 import { previewKits, rustItems, type PreviewKit, type InventoryArea } from '@/lib/rust-kit-preview';
 import styles from './rust-kit-preview.module.css';
 
 const categories = ['All kits', 'Subscriptions', 'Claim once', 'Lifetime'] as const;
-const kitIcons = { assault: Crosshair, tactical: Crosshair, builder: Hammer, resources: Boxes, medic: HeartPulse, components: Wrench };
 const inventoryAreas: readonly { key: InventoryArea; name: string; slots: number }[] = [
   { key: 'wear', name: 'Wear', slots: 7 },
-  { key: 'main', name: 'Main', slots: 12 },
+  { key: 'main', name: 'Main', slots: 24 },
   { key: 'belt', name: 'Belt', slots: 6 },
 ];
 const quantity = new Intl.NumberFormat('en-GB');
@@ -51,13 +50,11 @@ export function KitInventory({ kit }: { kit: PreviewKit }) {
 
 export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: string }) {
   const [purchaseNotice, setPurchaseNotice] = useState(false);
-  const Icon = kitIcons[kit.id as keyof typeof kitIcons] ?? Package;
   return (
     <article className={`${styles.card} cloudy-traced-panel cloudy-store-traced-panel`} aria-labelledby={`title-${kit.id}`}>
       <div className={styles.artwork} aria-hidden="true">
         <Image src="/images/cloudy-rust-premium-4k.avif" alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 390px" className={styles.cardPhoto} />
         <div className={styles.artShade} />
-        <span className={styles.kitSeal}><Icon size={26} strokeWidth={1.5} /></span>
       </div>
       <div className={styles.cardBody}>
         <div className={styles.cardKicker}><span>{kit.category}</span></div>
@@ -68,10 +65,10 @@ export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: strin
         </details>
         <div className={styles.priceRow}>
           <div><span>Preview price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
-          <button type="button" className={styles.buy} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy<ArrowRight size={15} aria-hidden="true" /></button>
+          <button type="button" className={styles.buy} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy</button>
         </div>
-        {purchaseNotice && <p className={styles.purchaseNotice} role="status">{kit.name} · {server}. Preview only — purchases are not available yet.</p>}
-        <div className={styles.cardServer}><Server size={13} aria-hidden="true" /><span>{server}</span></div>
+        {purchaseNotice && <p className={styles.purchaseNotice} role="status">Preview only</p>}
+        <div className={styles.cardServer}><span>{server}</span></div>
       </div>
     </article>
   );
@@ -109,7 +106,7 @@ export default function RustKitPreview() {
             <div><span className={styles.sectionNumber}>YOUR SERVER</span><h2 id="server-title">Where do you play?</h2><p>Choose the server for your kit selection.</p></div>
           </div>
           <div className={styles.serverGrid} role="group" aria-label="Select your Rust server">
-            {[1, 2, 3, 4, 5].map(number => <button key={number} type="button" aria-label={`Select Server ${number}`} aria-pressed={server === number} onClick={() => setServer(number)}>
+            {[1, 2, 3].map(number => <button key={number} type="button" aria-label={`Select Server ${number}`} aria-pressed={server === number} onClick={() => setServer(number)}>
               <span className={styles.serverIcon}><Server size={19} strokeWidth={1.5} /></span><span><small>CLOUDY RUST</small><strong>Server {number}</strong></span>{server === number && <span className={styles.serverCheck}><Check size={14} /></span>}
             </button>)}
           </div>
