@@ -45,8 +45,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <p>Select a game first. Every Cloudy game has its own store, future products stay organised as the platform grows.</p>
 
         <div className={styles.stats}>
-          <div><strong>Games</strong><span>Cloudy titles</span></div>
-          <div><strong>Coming soon</strong><span>More games on the way</span></div>
+          <div><strong>01</strong><span>Games</span></div>
+          <div><strong>More</strong><span>On the way</span></div>
         </div>
       </section>
 
