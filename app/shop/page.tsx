@@ -14,7 +14,7 @@ const games = [
     href: '/shop?game=rust',
     image: '/images/cloudy-rust-premium-4k.avif',
     status: 'Live',
-    description: 'Open the Rust store to browse kits and servers made for the Cloudy Rust experience.',
+    description: 'Open the Rust store to browse kits and servers made for the Rust experience.',
     tags: ['Kits', 'Servers'],
     live: true,
   },
