@@ -18,7 +18,7 @@ export const rustItems = catalog;
 // No record in this collection is passed to the cart or checkout.
 export const previewKits: readonly PreviewKit[] = [
   {
-    id: 'assault', number: '01', name: 'VIP Loadout', category: 'Subscriptions', price: null,
+    id: 'assault', number: '01', name: 'VIP kit', category: 'Subscriptions', price: null,
     items: [
       { shortname: 'hazmatsuit', amount: 1, area: 'wear' },
       { shortname: 'ammo.rifle', amount: 128, area: 'main' },
@@ -30,7 +30,7 @@ export const previewKits: readonly PreviewKit[] = [
     ],
   },
   {
-    id: 'tactical', number: '02', name: 'Elite Loadout', category: 'Subscriptions', price: null,
+    id: 'tactical', number: '02', name: 'Elite kit', category: 'Subscriptions', price: null,
     items: [
       { shortname: 'metal.facemask', amount: 1, area: 'wear' },
       { shortname: 'metal.plate.torso', amount: 1, area: 'wear' },
@@ -48,7 +48,7 @@ export const previewKits: readonly PreviewKit[] = [
     ],
   },
   {
-    id: 'builder', number: '03', name: 'Builder Pack', category: 'Claim once', price: null,
+    id: 'builder', number: '03', name: 'Builder kit', category: 'Claim once', price: null,
     items: [
       { shortname: 'wood', amount: 3000, area: 'main' },
       { shortname: 'stones', amount: 2000, area: 'main' },
@@ -59,7 +59,7 @@ export const previewKits: readonly PreviewKit[] = [
     ],
   },
   {
-    id: 'resources', number: '04', name: 'Resource Pack', category: 'Claim once', price: null,
+    id: 'resources', number: '04', name: 'Resource kit', category: 'Claim once', price: null,
     items: [
       { shortname: 'wood', amount: 2500, area: 'main' },
       { shortname: 'stones', amount: 2000, area: 'main' },
@@ -70,7 +70,7 @@ export const previewKits: readonly PreviewKit[] = [
     ],
   },
   {
-    id: 'medic', number: '05', name: 'Medical Kit', category: 'Lifetime', price: null,
+    id: 'medic', number: '05', name: 'Medical kit', category: 'Lifetime', price: null,
     items: [
       { shortname: 'cloth', amount: 100, area: 'main' },
       { shortname: 'lowgradefuel', amount: 60, area: 'main' },
@@ -81,7 +81,7 @@ export const previewKits: readonly PreviewKit[] = [
     ],
   },
   {
-    id: 'components', number: '06', name: 'Component Kit', category: 'Lifetime', price: null,
+    id: 'components', number: '06', name: 'Component kit', category: 'Lifetime', price: null,
     items: [
       { shortname: 'gears', amount: 6, area: 'main' },
       { shortname: 'metalpipe', amount: 4, area: 'main' },
