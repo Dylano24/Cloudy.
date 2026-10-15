@@ -91,11 +91,11 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             );
 
             return item.live ? (
-              <Link key={item.name} href={item.href} className={styles.gameCard}>
+              <Link key={`${item.name}-${index}`} href={item.href} className={styles.gameCard}>
                 {card}
               </Link>
             ) : (
-              <article key={item.name} className={`${styles.gameCard} ${styles.disabled}`}>
+              <article key={`${item.name}-${index}`} className={`${styles.gameCard} ${styles.disabled}`}>
                 {card}
               </article>
             );
