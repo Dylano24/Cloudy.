@@ -515,3 +515,120 @@
 @media (max-width: 700px) {
   .hero h1 { margin-bottom: 26px; }
 }
+
+/* Store counters: label first, value beneath, aligned left on phone and desktop. */
+.stats > div {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  text-align: left;
+}
+.stats span {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #a6a6ac;
+  font-size: 12px;
+  font-weight: 550;
+}
+.stats strong {
+  position: relative;
+  z-index: 1;
+  margin-top: 7px;
+  color: #fff;
+  font-size: 22px;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+/* Soft traveling red highlight on the left of the two counters, not a thick border. */
+.stats > div::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0 auto 0 0;
+  width: 2px;
+  border-radius: 2px;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%, transparent 25%,
+    rgba(229,27,46,.2) 38%,
+    #e51b2e 49%, #e51b2e 51%,
+    rgba(229,27,46,.2) 62%,
+    transparent 75%, transparent 100%
+  );
+  background-size: 100% 280%;
+  animation: cloudyStoreStatGlow 7.5s linear infinite;
+  filter: drop-shadow(0 0 4px rgba(229,27,46,.65));
+}
+@keyframes cloudyStoreStatGlow {
+  from { background-position: 0 100%; }
+  to { background-position: 0 0; }
+}
+
+/* Exact diagonal silver sheen gradient and timing from the Home panels on desktop. */
+.stats > div,
+.comingCard,
+.steps article {
+  background-color: #050505;
+  background-image: linear-gradient(
+    110deg, transparent 42%, rgba(160,160,170,.03) 46%,
+    rgba(210,210,220,.12) 50%, rgba(160,160,170,.03) 54%,
+    transparent 58%
+  );
+  background-size: 400% 100%;
+  background-repeat: no-repeat;
+  animation: cloudyStorePanelSweep 5s linear infinite;
+}
+@keyframes cloudyStorePanelSweep {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+/* Mobile matches Home's compositor-based synchronized sheen clock. */
+@media (max-width: 820px) {
+  .stats > div,
+  .comingCard,
+  .steps article {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-image: none;
+    animation: none;
+  }
+  .page :global(.cloudy-mobile-sheen) {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  .page :global(.cloudy-mobile-sheen:not([data-visible])) :global(.cloudy-mobile-sheen-texture) {
+    display: none;
+  }
+  .page :global(.cloudy-mobile-sheen-texture) {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(100% - var(--cloudy-mobile-light-travel, -1080px));
+    background-image: repeating-linear-gradient(110deg,
+      transparent var(--cloudy-mobile-light-phase, 0px),
+      rgba(160,160,170,.03) calc(var(--cloudy-mobile-light-phase, 0px) + 45px),
+      rgba(210,210,220,.12) calc(var(--cloudy-mobile-light-phase, 0px) + 90px),
+      rgba(160,160,170,.03) calc(var(--cloudy-mobile-light-phase, 0px) + 135px),
+      transparent calc(var(--cloudy-mobile-light-phase, 0px) + 180px),
+      transparent calc(var(--cloudy-mobile-light-phase, 0px) + var(--cloudy-mobile-light-period, 1014.87px))
+    );
+    animation: none;
+    will-change: transform;
+  }
+  .steps article > :not(.cloudy-mobile-sheen) {
+    position: relative;
+    z-index: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stats > div, .comingCard, .steps article { animation: none; background-image: none; }
+  .stats > div::before { animation: none; background: none; }
+  .page :global(.cloudy-mobile-sheen) { display: none; }
+}
