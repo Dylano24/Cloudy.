@@ -3,7 +3,7 @@
 .heading { text-align: center; margin-bottom: 40px; text-shadow: 0 2px 12px #000; }
 .heading h1 { color: #fff; font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -.04em; }
 .heading p { margin-top: 12px; color: #fff; }
-.game { position: relative; isolation: isolate; display: block; min-height: 480px; overflow: hidden; border: 1px solid #e51b2e; border-radius: 20px; background: #000; }
+.game { position: relative; isolation: isolate; display: block; min-height: 480px; overflow: hidden; border: 1px solid transparent; border-radius: 20px; background: #000; }
 .game img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .game::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 20%, rgba(0,0,0,.9)); }
 
@@ -21,25 +21,28 @@
   z-index: 3;
   inset: 0;
   border-radius: inherit;
-  padding: 1px;
+  padding: 2px;
   pointer-events: none;
   background: conic-gradient(
     from var(--cloudy-store-trace-angle),
     transparent 0deg,
-    transparent 238deg,
-    rgba(229,27,46,.12) 260deg,
-    #e51b2e 282deg,
-    #e51b2e 298deg,
-    #e51b2e 306deg,
-    rgba(229,27,46,.2) 316deg,
-    transparent 334deg,
+    transparent 208deg,
+    rgba(229,27,46,.14) 232deg,
+    rgba(255,39,60,.7) 262deg,
+    #ff273c 282deg,
+    #ff7884 294deg,
+    #ff273c 302deg,
+    rgba(255,39,60,.6) 316deg,
+    rgba(229,27,46,.14) 336deg,
+    transparent 354deg,
     transparent 360deg
   );
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   animation: cloudyStoreTraceSpin 7.5s linear infinite;
-  opacity: .88;
+  opacity: 1;
+  filter: drop-shadow(0 0 3px rgba(255,39,60,.85));
 }
 @media (max-width: 820px) {
   .game::before { animation-timing-function: cubic-bezier(.4, .2, .6, .8); }
@@ -55,8 +58,8 @@
 .game:focus,
 .game:active,
 .game:visited {
-  border: 1px solid #e51b2e;
-  box-shadow: 0 0 14px rgba(229,27,46,.24);
+  border: 1px solid transparent;
+  box-shadow: 0 20px 50px rgba(0,0,0,.44);
 }
 .game:focus-visible { outline: 2px solid #fff; outline-offset: 5px; }
 .coming { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 30px; border: 1px solid #252525; border-radius: 20px; text-align: center; background: #000; color: #fff; }

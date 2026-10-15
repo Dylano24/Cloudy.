@@ -1900,13 +1900,31 @@ body {
   }
 }
 
-/* Game cards only: one clean, permanent red edge on all four sides.
-   Use the real border instead of the masked trace so the top edge can never disappear. */
+/* Rust card: one bright moving trace, without a second fixed red border. */
+.cloudy-classic-game-card::after {
+  padding: 2px;
+  opacity: 1;
+  background: conic-gradient(
+    from var(--cloudy-trace-angle),
+    transparent 0deg,
+    transparent 208deg,
+    rgba(229,27,46,.14) 232deg,
+    rgba(255,39,60,.7) 262deg,
+    #ff273c 282deg,
+    #ff7884 294deg,
+    #ff273c 302deg,
+    rgba(255,39,60,.6) 316deg,
+    rgba(229,27,46,.14) 336deg,
+    transparent 354deg,
+    transparent 360deg
+  );
+  filter: drop-shadow(0 0 3px rgba(255,39,60,.85));
+}
 .cloudy-classic-game-card,
 .cloudy-classic-game-card:hover,
 .cloudy-classic-game-card:focus,
 .cloudy-classic-game-card:active,
 .cloudy-classic-game-card:visited {
-  border: 1px solid #e51b2e !important;
-  box-shadow: 0 28px 70px rgba(0,0,0,.44), 0 0 14px rgba(229,27,46,.24) !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.44) !important;
 }
