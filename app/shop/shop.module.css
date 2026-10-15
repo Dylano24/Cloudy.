@@ -86,13 +86,11 @@
 .stats > div {
   min-width: 158px;
   padding: 13px 16px;
-  border: 1px solid #c7192b;
+  border: 1px solid rgba(255,255,255,.09);
+  border-left: 3px solid #e51b2e;
   border-radius: 12px;
   background: rgba(255,255,255,.025);
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  box-shadow: 0 0 14px rgba(229,27,46,.12);
+  box-shadow: 0 18px 42px rgba(0,0,0,.24);
 }
 
 .stats strong,
@@ -149,7 +147,8 @@
   min-height: 520px;
   overflow: hidden;
   isolation: isolate;
-  border: 1px solid #c7192b;
+  border: 1px solid rgba(255,255,255,.10);
+  border-left: 3px solid #e51b2e;
   border-radius: 20px;
   background: #080808;
   color: #fff;
@@ -167,9 +166,7 @@
   to { --cloudy-store-hub-angle: 360deg; }
 }
 
-.stats > div::after,
-.gameCard::after,
-.steps article::after {
+.gameCard:first-child::after {
   content: "";
   position: absolute;
   z-index: 4;
@@ -197,8 +194,8 @@
   filter: drop-shadow(0 0 3px rgba(255,39,60,.82));
 }
 
-.gameCard:hover,
-.gameCard:focus-visible {
+.gameCard:first-child:hover,
+.gameCard:first-child:focus-visible {
   transform: translateY(-5px);
   border-color: #e51b2e;
   box-shadow: 0 30px 80px rgba(0,0,0,.58), 0 0 28px rgba(229,27,46,.23);
@@ -387,15 +384,13 @@
 }
 
 .steps article {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   min-height: 180px;
   padding: 20px;
-  border: 1px solid #c7192b;
+  border: 1px solid rgba(255,255,255,.08);
+  border-left: 3px solid #e51b2e;
   border-radius: 14px;
   background: rgba(255,255,255,.018);
-  box-shadow: 0 0 14px rgba(229,27,46,.10);
+  box-shadow: 0 18px 42px rgba(0,0,0,.22);
 }
 
 .steps b {
@@ -444,7 +439,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .stats > div::after,
-  .gameCard::after,
-  .steps article::after { animation: none; }
+  .gameCard:first-child::after { animation: none; }
 }
