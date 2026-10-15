@@ -474,3 +474,5 @@
 @media (prefers-reduced-motion: reduce) {
   .gameCard:first-child::after { animation: none; }
 }
+
+/* Store feedback revision: homepage-style coming soon + standard red side accents. */
