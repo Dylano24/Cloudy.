@@ -14,6 +14,21 @@ function setup() {
 }
 const buttons = tree => elements(tree, node => node.type === 'button');
 
+test('Buy shows a preview notice for the current server without creating a checkout link', () => {
+  const h = componentHarness();
+  const { KitPreviewCard } = loadTypeScript('components/shop/rust-kit-preview.tsx', {
+    imports: { react: h.react, 'next/link': 'a', 'next/image': 'img', '@/lib/rust-items.json': JSON.parse(readFileSync(new URL('../lib/rust-items.json', import.meta.url), 'utf8')) },
+  });
+  const { previewKits } = loadTypeScript('lib/rust-kit-preview.ts', { imports: { '@/lib/rust-items.json': JSON.parse(readFileSync(new URL('../lib/rust-items.json', import.meta.url), 'utf8')) } });
+  h.mount(KitPreviewCard, { kit: previewKits[0], server: 'Server 2' });
+  buttons(h.tree).find(node => node.props['aria-label'] === 'Preview purchase of VIP kit').props.onClick();
+  let tree = h.render();
+  assert.match(textContent(elements(tree, node => node.props.role === 'status')), /VIP kit · Server 2.*purchases are not available/);
+  tree = h.update({ kit: previewKits[0], server: 'Server 5' });
+  assert.match(textContent(elements(tree, node => node.props.role === 'status')), /Server 5/);
+  assert.equal(elements(tree, node => node.type === 'a' || node.type === 'form').length, 0);
+});
+
 test('choosing any of the five servers updates every visible kit without adding products to a cart', () => {
   const h = setup();
   for (let server = 1; server <= 5; server++) {
@@ -61,7 +76,7 @@ test('every inventory item has a canonical Rust name, a local image and a valid 
   const { previewKits } = loadTypeScript('lib/rust-kit-preview.ts', { imports: { '@/lib/rust-items.json': catalog } });
   const capacities = { wear: 7, main: 12, belt: 6 };
   for (const kit of previewKits) {
-    assert.equal(kit.price, null, 'Price must wait for the owner');
+    assert.ok(kit.price > 0, 'Preview prices must be positive proposals');
     for (const [area, capacity] of Object.entries(capacities)) {
       assert.ok(kit.items.filter(item => item.area === area).length <= capacity, `${kit.id}: no hidden items`);
     }
