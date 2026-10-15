@@ -3,10 +3,7 @@
   min-height: 100vh;
   overflow: hidden;
   padding: clamp(68px, 8vw, 110px) 24px 120px;
-  background:
-    radial-gradient(circle at 76% 9%, rgba(229,27,46,.10), transparent 26rem),
-    radial-gradient(circle at 18% 60%, rgba(229,27,46,.06), transparent 30rem),
-    #030303;
+  background: #000;
   color: #fff;
 }
 
@@ -57,7 +54,7 @@
 }
 
 .hero h1 {
-  margin: 18px 0 16px;
+  margin: 0 0 16px;
   max-width: 940px;
   font-size: clamp(58px, 9vw, 120px);
   line-height: .88;
@@ -89,9 +86,13 @@
 .stats > div {
   min-width: 158px;
   padding: 13px 16px;
-  border: 1px solid rgba(255,255,255,.09);
+  border: 1px solid #c7192b;
   border-radius: 12px;
   background: rgba(255,255,255,.025);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  box-shadow: 0 0 14px rgba(229,27,46,.12);
 }
 
 .stats strong,
@@ -148,17 +149,12 @@
   min-height: 520px;
   overflow: hidden;
   isolation: isolate;
-  border: 1px solid rgba(255,255,255,.10);
+  border: 1px solid #c7192b;
   border-radius: 20px;
   background: #080808;
   color: #fff;
   text-decoration: none;
   transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
-}
-
-.gameCard:first-child {
-  border-color: #c7192b;
-  box-shadow: 0 24px 70px rgba(0,0,0,.5), 0 0 18px rgba(229,27,46,.18);
 }
 
 @property --cloudy-store-hub-angle {
@@ -171,7 +167,9 @@
   to { --cloudy-store-hub-angle: 360deg; }
 }
 
-.gameCard:first-child::after {
+.stats > div::after,
+.gameCard::after,
+.steps article::after {
   content: "";
   position: absolute;
   z-index: 4;
@@ -199,8 +197,8 @@
   filter: drop-shadow(0 0 3px rgba(255,39,60,.82));
 }
 
-.gameCard:first-child:hover,
-.gameCard:first-child:focus-visible {
+.gameCard:hover,
+.gameCard:focus-visible {
   transform: translateY(-5px);
   border-color: #e51b2e;
   box-shadow: 0 30px 80px rgba(0,0,0,.58), 0 0 28px rgba(229,27,46,.23);
@@ -389,11 +387,15 @@
 }
 
 .steps article {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   min-height: 180px;
   padding: 20px;
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid #c7192b;
   border-radius: 14px;
   background: rgba(255,255,255,.018);
+  box-shadow: 0 0 14px rgba(229,27,46,.10);
 }
 
 .steps b {
@@ -426,7 +428,6 @@
   .hero { padding-top: 16px; }
   .hero h1 { font-size: clamp(54px, 17vw, 86px); }
   .stats { display: grid; grid-template-columns: 1fr 1fr; }
-  .stats > div:last-child { grid-column: 1 / -1; }
   .sectionHeader { flex-direction: column; align-items: flex-start; }
   .sectionHeader p { text-align: left; }
   .gameGrid { grid-template-columns: 1fr; }
@@ -443,5 +444,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .gameCard:first-child::after { animation: none; }
+  .stats > div::after,
+  .gameCard::after,
+  .steps article::after { animation: none; }
 }
