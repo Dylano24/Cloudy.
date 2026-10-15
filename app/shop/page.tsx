@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Gamepad2, ShoppingBag, CreditCard } from 'lucide-react';
-import RustStore from '@/components/shop/rust-store';
 import { StoreFireworks } from '@/components/shop/store-fireworks';
 import styles from './shop.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
@@ -38,9 +37,8 @@ const games = [
 ] as const;
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
-  const { game, view } = await searchParams;
-  if (game === 'rust' && view === 'kits') return <RustKitPreview />;
-  if (game === 'rust') return <RustStore />;
+  const { game } = await searchParams;
+  if (game === 'rust') return <RustKitPreview />;
 
   return (
     <main className={`${styles.page} cloudy-store-page`}>
