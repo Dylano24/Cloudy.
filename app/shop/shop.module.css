@@ -540,32 +540,6 @@
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
 }
-/* Soft traveling red highlight on the left of the two counters, not a thick border. */
-.stats > div::before {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  inset: 0 auto 0 0;
-  width: 2px;
-  border-radius: 2px;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    transparent 0%, transparent 25%,
-    rgba(229,27,46,.2) 38%,
-    #e51b2e 49%, #e51b2e 51%,
-    rgba(229,27,46,.2) 62%,
-    transparent 75%, transparent 100%
-  );
-  background-size: 100% 280%;
-  animation: cloudyStoreStatGlow 7.5s linear infinite;
-  filter: drop-shadow(0 0 4px rgba(229,27,46,.65));
-}
-@keyframes cloudyStoreStatGlow {
-  from { background-position: 0 100%; }
-  to { background-position: 0 0; }
-}
-
 /* Exact diagonal silver sheen gradient and timing from the Home panels on desktop. */
 .stats > div,
 .comingCard,
@@ -583,6 +557,13 @@
 @keyframes cloudyStorePanelSweep {
   from { background-position: 0% 50%; }
   to { background-position: 100% 50%; }
+}
+
+
+/* The same gentle red bloom follows the shared 1px moving perimeter on every Store card.
+   Unlike the removed ::before strip, this never paints a stationary vertical line. */
+.page :global(.cloudy-store-traced-panel)::after {
+  filter: drop-shadow(0 0 3px rgba(229,27,46,.55));
 }
 
 /* Mobile matches Home's compositor-based synchronized sheen clock. */
@@ -629,6 +610,5 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .stats > div, .comingCard, .steps article { animation: none; background-image: none; }
-  .stats > div::before { animation: none; background: none; }
   .page :global(.cloudy-mobile-sheen) { display: none; }
 }
