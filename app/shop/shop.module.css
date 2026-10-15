@@ -87,7 +87,7 @@
   min-width: 158px;
   padding: 13px 16px;
   border: 1px solid rgba(255,255,255,.09);
-  border-left: 3px solid #e51b2e;
+  border-left: 1px solid rgba(255,255,255,.09);
   border-radius: 12px;
   background: rgba(255,255,255,.025);
   box-shadow: 0 18px 42px rgba(0,0,0,.24);
@@ -148,7 +148,7 @@
   overflow: hidden;
   isolation: isolate;
   border: 1px solid rgba(255,255,255,.10);
-  border-left: 3px solid #e51b2e;
+  border-left: 1px solid rgba(255,255,255,.09);
   border-radius: 20px;
   background: #080808;
   color: #fff;
@@ -156,49 +156,11 @@
   transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
 }
 
-@property --cloudy-store-hub-angle {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
-@keyframes cloudyStoreHubTrace {
-  to { --cloudy-store-hub-angle: 360deg; }
-}
-
-.gameCard:first-child::after {
-  content: "";
-  position: absolute;
-  z-index: 4;
-  inset: 0;
-  padding: 2px;
-  border-radius: inherit;
-  pointer-events: none;
-  background: conic-gradient(
-    from var(--cloudy-store-hub-angle),
-    transparent 0deg,
-    transparent 212deg,
-    rgba(229,27,46,.12) 238deg,
-    rgba(255,39,60,.72) 266deg,
-    #ff273c 286deg,
-    #ff1a32 298deg,
-    rgba(255,39,60,.66) 316deg,
-    rgba(229,27,46,.12) 338deg,
-    transparent 355deg,
-    transparent 360deg
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: cloudyStoreHubTrace 7.5s linear infinite;
-  filter: drop-shadow(0 0 3px rgba(255,39,60,.82));
-}
-
 .gameCard:first-child:hover,
 .gameCard:first-child:focus-visible {
   transform: translateY(-5px);
-  border-color: #e51b2e;
-  box-shadow: 0 30px 80px rgba(0,0,0,.58), 0 0 28px rgba(229,27,46,.23);
+  border-color: rgba(255,255,255,.10);
+  box-shadow: 0 30px 80px rgba(0,0,0,.58);
 }
 
 .gameCard:focus-visible {
@@ -376,7 +338,7 @@
   justify-content: center;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.07);
-  border-left: 3px solid #e51b2e;
+  border-left: 1px solid rgba(255,255,255,.09);
   border-radius: 20px;
   background: rgba(255,255,255,.018);
   box-shadow: 0 18px 42px rgba(0,0,0,.22);
@@ -421,12 +383,22 @@
   min-height: 180px;
   padding: 20px;
   border: 1px solid rgba(255,255,255,.08);
-  border-left: 3px solid #e51b2e;
+  border-left: 1px solid rgba(255,255,255,.09);
   border-radius: 14px;
   background: rgba(255,255,255,.018);
   box-shadow: 0 18px 42px rgba(0,0,0,.22);
 }
 
+.stepHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30px;
+}
+.stepHeader svg {
+  flex: none;
+  color: #e51b2e;
+}
 .steps b {
   color: #e51b2e;
   font-size: 11px;
@@ -471,10 +443,6 @@
   .steps { grid-template-columns: 1fr; }
   .steps article { min-height: 138px; }
   .steps h3 { margin-top: 20px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gameCard:first-child::after { animation: none; }
 }
 
 /* Store feedback revision: homepage-style coming soon + standard red side accents. */
@@ -537,16 +505,6 @@
   align-items: center;
   width: 100%;
 }
-.comingLogo {
-  display: block;
-  width: 92px;
-  height: 92px;
-  max-width: 30%;
-  margin: 0 0 28px;
-  opacity: .38;
-  object-fit: contain;
-  filter: grayscale(1);
-}
 /* No fixed red side: only the site's shared 1px animated outline runs around
    the whole non-Rust card, including the three Store flow steps. */
 .stats > div,
@@ -556,5 +514,4 @@
 }
 @media (max-width: 700px) {
   .hero h1 { margin-bottom: 26px; }
-  .comingLogo { width: 78px; height: 78px; margin-bottom: 24px; }
 }
