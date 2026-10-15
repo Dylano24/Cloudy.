@@ -146,6 +146,9 @@ export function assistantKnowledge(
       // for a specific resource. The site renders verified buttons separately.
       ...(showLinksForEntry(entry, topicQuestion) ? { links: relevantLinksForEntry(entry, topicQuestion) } : {}),
     })),
+    responseGuidance: entries.length
+      ? 'The visitor has named a Cloudy topic. Answer the question directly using the verified information above. Do not ask which topic they mean when the question already identifies products, purchases, support or appeals. Ask for details only when essential to answer accurately. If order-specific facts are unavailable, explain that limit without guessing an order status.'
+      : undefined,
     navigationRequested: links.length > 0,
     limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. Talk naturally about general questions. Never direct a visitor to the support page or Discord without a specific request. Do not invent private Cloudy facts. Do not present Cloudy purchases as income, investments, resale opportunities or ways to earn money. No Cloudy earning or affiliate program has been verified. Do not guess your model version or claim to be ChatGPT 4. Distinguish general Rust advice from verified Cloudy offerings; ask what the visitor means when earning money is ambiguous. Explain assumptions and uncertainty rather than filling gaps with invented facts.',
   });

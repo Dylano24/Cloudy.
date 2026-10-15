@@ -93,6 +93,9 @@ export const helpEntries: HelpEntry[] = [
       "kopen",
       "winkel",
       "aankoop",
+      "aankopen",
+      "bestelling",
+      "bestellingen",
       "producten",
       "prijs",
       "prijzen"
@@ -193,6 +196,8 @@ export const helpEntries: HelpEntry[] = [
       "mute",
       "unban",
       "beroep",
+      "appeal form",
+      "bezwaar maken",
       "bezwaar",
       "verbannen",
       "ban appeal"
@@ -219,6 +224,7 @@ export const helpEntries: HelpEntry[] = [
       "tickets",
       "hulp",
       "ondersteuning",
+      "klantenservice",
       "medewerker"
     ],
     "links": [
