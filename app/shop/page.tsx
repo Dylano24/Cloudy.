@@ -1,29 +1,128 @@
 import Link from 'next/link';
 import RustStore from '@/components/shop/rust-store';
-import styles from './shop.module.css';
-import { GameCarousel } from '@/components/home/game-carousel';
 import { StoreFireworks } from '@/components/shop/store-fireworks';
+import styles from './shop.module.css';
 
-export default async function ShopPage({ searchParams }: { searchParams: Promise<{ game?: string }> }) {
+type ShopPageProps = { searchParams: Promise<{ game?: string }> };
+
+const games = [
+  {
+    name: 'Rust',
+    href: '/shop?game=rust',
+    image: '/images/cloudy-rust-premium-4k.avif',
+    status: 'Live',
+    description: 'Open the Rust store to browse kits, ranks and extras made for the Cloudy Rust experience.',
+    tags: ['Kits', 'Ranks', 'Extras'],
+    live: true,
+  },
+  {
+    name: 'Next game',
+    image: '',
+    status: 'Coming soon',
+    description: 'The next Cloudy game will get its own storefront here.',
+    tags: ['New world', 'New store'],
+    live: false,
+  },
+  {
+    name: 'Future project',
+    image: '',
+    status: 'Planned',
+    description: 'Cloudy is built to expand beyond a single game.',
+    tags: ['More games', 'One account'],
+    live: false,
+  },
+] as const;
+
+export default async function ShopPage({ searchParams }: ShopPageProps) {
   const { game } = await searchParams;
   if (game === 'rust') return <RustStore />;
 
-  return <div className={styles.page}>
-    <StoreFireworks />
-    <div className={styles.wrap}>
-      <header className={styles.heading}>
-        <h1>Cloudy store</h1>
-        <p>Select a game to visit its store.</p>
-      </header>
-      <GameCarousel>
-        <Link href="/shop?game=rust" className={styles.game}>
-          <img src="/images/cloudy-rust-premium-4k.avif" alt="" />
-          <div><h2>Rust</h2><span>Visit the Rust store →</span></div>
-        </Link>
-        <article className={styles.coming}>
-          <h2>Coming soon</h2><p>More games and stores are on the way.</p>
-        </article>
-      </GameCarousel>
-    </div>
-  </div>;
+  return (
+    <main className={styles.page}>
+      <StoreFireworks />
+      <div className={styles.grid} aria-hidden="true" />
+
+      <section className={styles.hero}>
+        <span className={styles.eyebrow}><i />Cloudy game store</span>
+        <h1>Choose your <em>world.</em></h1>
+        <p>
+          Select a game first. Every Cloudy game has its own store, so kits,
+          ranks and future products stay organised as the platform grows.
+        </p>
+
+        <div className={styles.stats}>
+          <div><strong>01</strong><span>Live game</span></div>
+          <div><strong>More</strong><span>Games incoming</span></div>
+          <div><strong>One</strong><span>Cloudy account</span></div>
+        </div>
+      </section>
+
+      <section className={styles.browser} aria-labelledby="game-store-title">
+        <header className={styles.sectionHeader}>
+          <div>
+            <span>SELECT A GAME</span>
+            <h2 id="game-store-title">Enter a store</h2>
+          </div>
+          <p>Pick the experience you play, then choose what you need.</p>
+        </header>
+
+        <div className={styles.gameGrid}>
+          {games.map((item, index) => {
+            const card = (
+              <>
+                {item.image ? (
+                  <img className={styles.art} src={item.image} alt="" aria-hidden="true" />
+                ) : (
+                  <div className={styles.placeholder} aria-hidden="true">
+                    <b>{String(index + 1).padStart(2, '0')}</b>
+                  </div>
+                )}
+                <div className={styles.shade} aria-hidden="true" />
+                <div className={styles.cardTop}>
+                  <span className={item.live ? styles.live : styles.soon}>{item.status}</span>
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                </div>
+                <div className={styles.cardBody}>
+                  <div className={styles.titleRow}>
+                    <h3>{item.name}</h3>
+                    {item.live && <span className={styles.arrow}>↗</span>}
+                  </div>
+                  <p>{item.description}</p>
+                  <div className={styles.tags}>
+                    {item.tags.map(tag => <span key={tag}>{tag}</span>)}
+                  </div>
+                  <div className={styles.cardFoot}>
+                    <span>{item.live ? 'Open game store' : 'Not available yet'}</span>
+                    {item.live && <strong>Explore →</strong>}
+                  </div>
+                </div>
+              </>
+            );
+
+            return item.live ? (
+              <Link key={item.name} href={item.href} className={styles.gameCard}>
+                {card}
+              </Link>
+            ) : (
+              <article key={item.name} className={`${styles.gameCard} ${styles.disabled}`}>
+                {card}
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className={styles.flow} aria-label="How the Cloudy store works">
+        <div>
+          <span>STORE FLOW</span>
+          <h2>Game first. Products second.</h2>
+        </div>
+        <div className={styles.steps}>
+          <article><b>01</b><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
+          <article><b>02</b><h3>Pick what you need</h3><p>Browse that game's kits, ranks and extras.</p></article>
+          <article><b>03</b><h3>Checkout</h3><p>Your basket stays connected to the correct game.</p></article>
+        </div>
+      </section>
+    </main>
+  );
 }
