@@ -26,3 +26,27 @@
 .dots button[aria-pressed="true"] { background: #e51b2e; }
 .dots button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 @media (max-width: 620px) { .track > article { min-height: 390px; } }
+
+/* Swipe works natively on touch devices; arrows also expose navigation on desktop. */
+.track { scroll-behavior: smooth; }
+.track:focus-visible { outline: 2px solid #e51b2e; outline-offset: 3px; }
+.controls { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 18px; }
+.controls .dots { margin-top: 0; }
+.arrow {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(229,27,46,.55);
+  border-radius: 50%;
+  background: #090909;
+  color: #fff;
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+}
+.arrow:hover:not(:disabled) { border-color: #e51b2e; background: rgba(229,27,46,.10); }
+.arrow:disabled { cursor: default; opacity: .35; }
+.arrow:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .track { scroll-behavior: auto; } }
