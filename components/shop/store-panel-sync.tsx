@@ -58,7 +58,8 @@ export function StorePanelSync() {
       const enabled = media.matches && !reduced.matches;
       const rootRect = root.getBoundingClientRect();
       if (enabled) {
-        const cardWidth = panels[0]?.getBoundingClientRect().width || window.innerWidth;
+        // Use a full-width panel as on Home, rather than the small Games counter.
+        const cardWidth = Math.max(...panels.map(panel => panel.getBoundingClientRect().width), 0) || window.innerWidth;
         travel = 3 * cardWidth;
         root.style.setProperty('--cloudy-mobile-light-travel', -travel + 'px');
         root.style.setProperty('--cloudy-mobile-light-period', (travel * Math.sin(110 * Math.PI / 180)) + 'px');

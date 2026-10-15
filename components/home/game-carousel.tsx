@@ -1,14 +1,24 @@
 'use client';
 
-import { Children, useRef, useState, type ReactNode } from 'react';
+import { Children, useEffect, useRef, useState, type ReactNode } from 'react';
 import styles from './game-carousel.module.css';
 
 export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cloudy games', showArrows = true }: { children: ReactNode; trackClassName?: string; labels?: readonly string[]; ariaLabel?: string; showArrows?: boolean }) {
   const track = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
+  const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [active, setActive] = useState(0);
   const slides = Children.toArray(children);
+
+  useEffect(() => () => {
+    if (settleTimer.current !== null) clearTimeout(settleTimer.current);
+  }, []);
+
+  function settle(element: HTMLDivElement) {
+    if (settleTimer.current !== null) clearTimeout(settleTimer.current);
+    if (!drag.current) setActive(nearestSlide(element));
+  }
 
   function slidePositions(element: HTMLDivElement) {
     const cards = Array.from(element.children) as HTMLElement[];
@@ -51,7 +61,14 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
             select(active + (event.key === 'ArrowRight' ? 1 : -1));
           }
         }}
-        onScroll={event => setActive(nearestSlide(event.currentTarget))}
+        onScroll={event => {
+          // Keep the selected dot stable while smooth scrolling, swiping or
+          // snapping. The timeout also supports browsers without scrollend.
+          const element = event.currentTarget;
+          if (settleTimer.current !== null) clearTimeout(settleTimer.current);
+          settleTimer.current = setTimeout(() => settle(element), 150);
+        }}
+        onScrollEnd={event => settle(event.currentTarget)}
         onDragStart={event => event.preventDefault()}
         onPointerDown={event => {
           if (event.pointerType !== 'mouse' || event.button !== 0) return;
