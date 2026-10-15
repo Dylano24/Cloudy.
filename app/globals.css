@@ -1946,6 +1946,6 @@ body {
    Override only the old small-screen animation pause for these specific cards. */
 @media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
   .cloudy-store-traced-panel::after {
-    animation: cloudy-trace-spin 7.5s linear infinite !important;
+    animation: cloudy-trace-spin 7.5s cubic-bezier(.4, .2, .6, .8) infinite !important;
   }
 }

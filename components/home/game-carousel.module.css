@@ -22,13 +22,14 @@
 .track > * { min-width: 0; scroll-snap-align: start; user-select: none; }
 .track > article { min-height: 480px; }
 .dots { display: flex; justify-content: center; gap: 10px; margin-top: 18px; }
-.dots button { width: 9px; height: 9px; padding: 0; border: 1px solid #e51b2e; border-radius: 50%; background: transparent; cursor: pointer; }
+.dots button { flex: 0 0 9px; width: 9px; height: 9px; padding: 0; border: 1px solid #e51b2e; border-radius: 50%; background: transparent; cursor: pointer; }
 .dots button[aria-pressed="true"] { background: #e51b2e; }
 .dots button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 @media (max-width: 620px) { .track > article { min-height: 390px; } }
 
 /* Swipe works natively on touch devices; arrows also expose navigation on desktop. */
-.track { scroll-behavior: smooth; }
+/* Programmatic navigation opts into smooth scrolling; mouse dragging stays immediate. */
+.track { scroll-behavior: auto; }
 .track:focus-visible { outline: 2px solid #e51b2e; outline-offset: 3px; }
 .controls { display: flex; justify-content: center; align-items: center; gap: 18px; margin-top: 18px; }
 .controls .dots { margin-top: 0; }
