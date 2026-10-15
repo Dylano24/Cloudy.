@@ -21,18 +21,20 @@ export function KitInventory({ kit }: { kit: PreviewKit }) {
     <div className={styles.inventory} aria-label={`${kit.name} contents`}>
       {inventoryAreas.map(area => {
         const items = kit.items.filter(item => item.area === area.key);
+        if (!items.length) return null;
+        const visibleSlots = Math.ceil(items.length / 4) * 4;
         return (
           <section className={styles.inventoryArea} key={area.key} aria-label={area.name}>
             <h4>{area.name}</h4>
-            <ul className={`${styles.slots} ${area.key === 'wear' ? styles.wearSlots : ''}`}>
-              {Array.from({ length: area.slots }, (_, index) => {
+            <ul className={styles.slots}>
+              {Array.from({ length: visibleSlots }, (_, index) => {
                 const item = items[index];
                 if (!item) return <li key={`empty-${index}`} className={styles.emptySlot} aria-hidden="true"><span /></li>;
                 const data = rustItems[item.shortname];
                 return (
                   <li key={item.shortname} className={styles.slot} title={`${data.name} × ${quantity.format(item.amount)}`}>
                     <span className={styles.slotImage}>
-                      <Image src={data.image} alt="" width={80} height={80} sizes="(max-width: 700px) 44px, 50px" />
+                      <Image src={data.image} alt="" width={80} height={80} sizes="(max-width: 700px) 70px, 80px" />
                       <strong>×{quantity.format(item.amount)}</strong>
                     </span>
                     <span className={styles.itemName}>{data.name}</span>
