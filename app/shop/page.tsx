@@ -46,8 +46,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <p>Select a game first. Every Cloudy game has its own store, future products stay organised as the platform grows.</p>
 
         <div className={styles.stats}>
-          <div><strong>01</strong><span>Games</span></div>
-          <div><strong>More</strong><span>On the way</span></div>
+          <div className="cloudy-traced-panel cloudy-store-traced-panel"><strong>01</strong><span>Games</span></div>
+          <div className="cloudy-traced-panel cloudy-store-traced-panel"><strong>More</strong><span>On the way</span></div>
         </div>
       </section>
 
@@ -98,7 +98,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             ) : (
               <article
                 key={`${item.name}-${index}`}
-                className={styles.comingCard}
+                className={`${styles.comingCard} cloudy-traced-panel cloudy-store-traced-panel`}
               >
                 <div>
                   <strong>Coming soon</strong>
@@ -116,9 +116,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           <h2>Game first. Products second.</h2>
         </div>
         <div className={styles.steps}>
-          <article><b>01</b><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
-          <article><b>02</b><h3>Pick what you need</h3><p>Browse the game's kits & servers.</p></article>
-          <article><b>03</b><h3>Checkout</h3><p>Your basket stays connected to the correct game.</p></article>
+          <article className="cloudy-traced-panel cloudy-store-traced-panel"><b>01</b><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
+          <article className="cloudy-traced-panel cloudy-store-traced-panel"><b>02</b><h3>Pick what you need</h3><p>Browse the game's kits & servers.</p></article>
+          <article className="cloudy-traced-panel cloudy-store-traced-panel"><b>03</b><h3>Checkout</h3><p>Your basket stays connected to the correct game.</p></article>
         </div>
       </section>
     </main>
