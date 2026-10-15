@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(payload),
       cache: 'no-store',
       redirect: 'error',
-      signal: AbortSignal.timeout(50_000),
+      signal: AbortSignal.any([request.signal, AbortSignal.timeout(50_000)]),
     });
     if (!upstream.ok) {
       return respond({

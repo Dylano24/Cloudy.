@@ -36,6 +36,16 @@ export function areCustomFieldsDifferent(
   return str1 !== str2;
 }
 
+/** Read current UI marker values while supporting saved/API numeric ID keys. */
+export function getCustomFieldValue<T>(
+  customFields: Record<string, T> | undefined,
+  field: { id: number; marker?: string }
+): T | undefined {
+  if (!customFields) return undefined;
+  const markerValue = field.marker ? customFields[field.marker] : undefined;
+  return markerValue !== undefined ? markerValue : customFields[field.id.toString()];
+}
+
 /**
  * For number/range custom fields, charge only the increment beyond the free baseline.
  * Baseline uses default_value first, then minimum, otherwise 0.
@@ -125,8 +135,7 @@ export function formatCustomFieldsForDisplay(
   const parts: string[] = [];
 
   productCustomFields.forEach((field) => {
-    const key = field.marker || field.id.toString();
-    const value = customFields[key];
+    const value = getCustomFieldValue(customFields, field);
 
     if (value === undefined || value === null || value === '') {
       return;

@@ -17,7 +17,9 @@ type CustomFieldsModalProps = {
 };
 
 export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModalProps) {
-  const cart = useCart();
+  const addItem = useCart(state => state.addItem);
+  const updateServerSelection = useCart(state => state.updateServerSelection);
+  const updateDonationAmount = useCart(state => state.updateDonationAmount);
   const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [customFields, setCustomFields] = useState<Record<string, any>>({});
@@ -77,7 +79,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
 
   // Initialize number/range custom fields with their default values
   useEffect(() => {
-    if (product.custom_fields) {
+    if (isOpen && product.custom_fields) {
       const defaults: Record<string, any> = {};
       product.custom_fields.forEach((field) => {
         const key = field.marker || field.id.toString();
@@ -90,7 +92,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
         setCustomFields((prev) => ({ ...defaults, ...prev }));
       }
     }
-  }, [product]);
+  }, [product, isOpen]);
 
   const calculateTotalPrice = () => {
     // For donation products, the donation amount is the total price
@@ -155,7 +157,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
 
   const handleAddToCart = () => {
     // Validate stock - consider what's already in cart
-    const currentInCart = cart.items.find((item) => item.product.id === product.id)?.quantity || 0;
+    const currentInCart = useCart.getState().items.find((item) => item.product.id === product.id)?.quantity || 0;
     const totalWillBe = currentInCart + quantity;
 
     if (typeof product.stock === 'number' && product.stock === 0) {
@@ -216,12 +218,12 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
     setError(null);
     // Only pass subscriptionType if this is actually a subscription product
     const typeToPass = product.subscription ? subscriptionType : undefined;
-    cart.addItem(product, quantity, customFields, typeToPass);
+    addItem(product, quantity, customFields, typeToPass);
     if (serverSelection) {
-      cart.updateServerSelection(product.id, serverSelection, customFields);
+      updateServerSelection(product.id, serverSelection, customFields);
     }
     if (donationAmount && donationAmount > 0) {
-      cart.updateDonationAmount(product.id, donationAmount, customFields);
+      updateDonationAmount(product.id, donationAmount, customFields);
     }
     onClose();
     

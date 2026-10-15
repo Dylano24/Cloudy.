@@ -362,7 +362,13 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
         return;
       }
     }
-    
+
+    if (product.donation && (!donationAmount || donationAmount < (product.min_donation || 0))) {
+      setError('Donation must be at least $' + (product.min_donation || 0));
+      setTimeout(() => setError(null), 5000);
+      return;
+    }
+
     setError(null);
     // Only pass subscriptionType if this is actually a subscription product
     const typeToPass = product.subscription ? subscriptionType : undefined;
@@ -370,7 +376,11 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
     if (serverSelection) {
       cart.updateServerSelection(product.id, serverSelection, customFields);
     }
-    
+
+    if (donationAmount && donationAmount > 0) {
+      cart.updateDonationAmount(product.id, donationAmount, customFields);
+    }
+
     // Immediately redirect to cart
     router.push('/cart');
   };

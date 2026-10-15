@@ -1,4 +1,5 @@
 import type { CustomRule, CustomField } from './schemas';
+import { getCustomFieldValue } from './cart-utils';
 
 export interface CustomRuleValidation {
   rule: CustomRule;
@@ -19,7 +20,8 @@ export function calculateRuleTotal(
   let total = 0;
 
   for (const fieldId of rule.fields) {
-    const value = customFields[fieldId.toString()];
+    const field = customFieldsData?.find((candidate) => candidate.id === fieldId);
+    const value = getCustomFieldValue(customFields, field || { id: fieldId });
     
     if (value !== undefined && value !== null && value !== '') {
       const numValue = parseFloat(value);

@@ -6,7 +6,8 @@ const CLIENT_ID = process.env.DISCORD_CLIENT_ID;
 const CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET;
 
 export async function GET(request: NextRequest) {
-  if (request.nextUrl.searchParams.get('state')?.startsWith('cloudy-login:')) return completeAccountLogin(request);
+  const accountState = request.nextUrl.searchParams.get('state');
+  if (accountState?.startsWith('cloudy-login:') || accountState?.startsWith('cloudy-login-v2.')) return completeAccountLogin(request);
   try {
     const code = request.nextUrl.searchParams.get('code');
     const state = request.nextUrl.searchParams.get('state');

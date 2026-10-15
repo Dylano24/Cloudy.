@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingCart, Zap, Check, ArrowRight } from 'lucide-react';
-import type { ProductGeneral } from '@/lib/schemas';
+import { ShoppingCart, Zap, Check, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import type { ProductGeneral, ProductDetailed } from '@/lib/schemas';
 import { useCart } from '@/hooks/use-cart';
 import { motion } from 'framer-motion';
-import { useState, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useProduct } from '@/hooks/use-api';
 import { CustomFieldsModal } from './custom-fields-modal';
 import { useRouter } from 'next/navigation';
@@ -16,58 +16,64 @@ type ProductCardProps = {
   hideFeaturedBadge?: boolean;
 };
 
+function needsCustomization(product: ProductDetailed | undefined) {
+  return !!product && Boolean(
+    product.custom_fields?.length ||
+    (product.subscription && product.onetime_sub === true) ||
+    product.donation ||
+    product.server_choice
+  );
+}
+
 export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardProps) {
-  const cart = useCart();
+  const addItem = useCart(state => state.addItem);
   const router = useRouter();
   const [added, setAdded] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [needsCustomFields, setNeedsCustomFields] = useState(false);
-  const { data: detailedProduct } = useProduct(product.slug);
+  const [loadingDetails, setLoadingDetails] = useState(false);
+  const [detailsError, setDetailsError] = useState<string | null>(null);
+  const pendingAdd = useRef(false);
+  const { data: detailedProduct, refetch } = useProduct(product.slug, true, false);
+  const needsCustomFields = needsCustomization(detailedProduct);
   
   const isOutOfStock = typeof product.stock === 'number' && product.stock === 0;
 
-  useEffect(() => {
-    // Check if product has custom fields, is a subscription that allows onetime purchase, is a donation product, or requires server selection
-    if (detailedProduct) {
-      const hasCustomFields = 'custom_fields' in detailedProduct && detailedProduct.custom_fields && detailedProduct.custom_fields.length > 0;
-      const isSubscriptionWithChoice = detailedProduct.subscription && detailedProduct.onetime_sub === true;
-      const isDonation = 'donation' in detailedProduct && detailedProduct.donation === true;
-      const hasServerChoice = 'server_choice' in detailedProduct && detailedProduct.server_choice === true;
-      setNeedsCustomFields(hasCustomFields || isSubscriptionWithChoice || isDonation || hasServerChoice);
-    }
-  }, [detailedProduct]);
-
-  const handleAddToCart = (e: React.MouseEvent) => {
+  const handleAddToCart = async (e: React.MouseEvent) => {
     e.preventDefault();
 
-    // Prevent adding if out of stock or stock is 0
-    if (typeof product.stock === 'number' && product.stock === 0) return;
+    if (isOutOfStock || pendingAdd.current) return;
+    pendingAdd.current = true;
+    setLoadingDetails(true);
+    setDetailsError(null);
+    try {
+      const result = await refetch();
+      if (result.error || !result.data) throw result.error || new Error('Missing product details');
+      const selectedProduct = result.data;
+      if (!selectedProduct.status || selectedProduct.stock === 0) return;
 
-    // If product needs modal (custom fields or subscription type choice), open it
-    if (needsCustomFields && detailedProduct) {
-      setShowModal(true);
-      return;
-    }
+      if (needsCustomization(selectedProduct)) {
+        setShowModal(true);
+        return;
+      }
 
-    // For subscriptions without custom fields, default to recurring and go to cart
-    const subscriptionType = product.subscription ? 'recurring' : undefined;
-    // Prevent adding more than stock (if stock is defined)
-    const currentInCart = cart.items.find((item) => item.product.id === product.id)?.quantity || 0;
-    if (typeof product.stock === 'number' && currentInCart + 1 > product.stock) {
-      // Optionally show a toast or error here
-      setAdded(false);
-      return;
+      const currentInCart = useCart.getState().items
+        .filter(item => item.product.id === selectedProduct.id)
+        .reduce((count, item) => count + item.quantity, 0);
+      if (typeof selectedProduct.stock === 'number' && currentInCart + 1 > selectedProduct.stock) return;
+      const subscriptionType = selectedProduct.subscription ? 'recurring' : undefined;
+      addItem(selectedProduct, 1, {}, subscriptionType);
+      if (selectedProduct.subscription) {
+        router.push('/cart');
+        return;
+      }
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    } catch {
+      setDetailsError('Unable to load product details. Please try again.');
+    } finally {
+      pendingAdd.current = false;
+      setLoadingDetails(false);
     }
-    cart.addItem(product, 1, {}, subscriptionType);
-    
-    // If it's a subscription without custom fields, redirect directly to cart
-    if (product.subscription && !needsCustomFields) {
-      router.push('/cart');
-      return;
-    }
-    
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
   };
 
   // Strip HTML tags from description
@@ -191,10 +197,16 @@ export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardP
                         ? 'bg-green-500 glow-primary' 
                         : 'bg-primary hover:bg-primary/90 glow-primary'
                   }`}
-                  aria-label={product.subscription && !needsCustomFields ? 'Subscribe' : 'Add to cart'}
-                  disabled={isOutOfStock}
+                  aria-label={detailsError || (product.subscription && !needsCustomFields ? 'Subscribe' : 'Add to cart')}
+                  aria-busy={loadingDetails}
+                  title={detailsError || undefined}
+                  disabled={isOutOfStock || loadingDetails}
                 >
-                  {added ? (
+                  {loadingDetails ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : detailsError ? (
+                    <AlertCircle className="w-5 h-5" />
+                  ) : added ? (
                     <Check className="w-5 h-5" />
                   ) : product.subscription && !needsCustomFields ? (
                     <ArrowRight className="w-5 h-5" />
@@ -202,6 +214,7 @@ export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardP
                     <ShoppingCart className="w-5 h-5" />
                   )}
                 </motion.button>
+                {detailsError && <span className="sr-only" role="alert">{detailsError}</span>}
               </div>
             </div>
           </div>

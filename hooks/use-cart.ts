@@ -2,7 +2,7 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { areCustomFieldsDifferent, calculateNumberRangeCharge } from '@/lib/cart-utils';
+import { areCustomFieldsDifferent, calculateNumberRangeCharge, getCustomFieldValue } from '@/lib/cart-utils';
 import type { ProductGeneral, ProductDetailed } from '@/lib/schemas';
 
 export type CartItem = {
@@ -158,26 +158,32 @@ export const useCart = create<CartStore>()(
           return;
         }
 
-        set((state) => ({
-          items: state.items.map((item) => {
-            if (item.product.id !== productId) {
-              return item;
-            }
-            // Match by custom fields if provided, otherwise match first item with this product ID
+        set((state) => {
+          const itemIndex = state.items.findIndex((item) => {
+            if (item.product.id !== productId) return false;
             if (!customFields || Object.keys(customFields).length === 0) {
-              const itemHasNoCustomFields = !item.customFields || Object.keys(item.customFields).length === 0;
-              if (itemHasNoCustomFields) {
-                return { ...item, quantity };
-              }
-              return item;
+              return !item.customFields || Object.keys(item.customFields).length === 0;
             }
-            if (!areCustomFieldsDifferent(item.customFields, customFields)) {
-              return { ...item, quantity };
-            }
-            return item;
-          }),
-          lastModified: Date.now(),
-        }));
+            return !areCustomFieldsDifferent(item.customFields, customFields);
+          });
+          if (itemIndex < 0) return { lastModified: Date.now() };
+
+          const item = state.items[itemIndex];
+          let nextQuantity = quantity;
+          if (typeof item.product.stock === 'number') {
+            const otherQuantity = state.items.reduce((sum, other, index) => (
+              index !== itemIndex && other.product.id === productId ? sum + other.quantity : sum
+            ), 0);
+            nextQuantity = Math.min(quantity, Math.max(0, item.product.stock - otherQuantity));
+          }
+
+          return {
+            items: nextQuantity > 0
+              ? state.items.map((current, index) => index === itemIndex ? { ...current, quantity: nextQuantity } : current)
+              : state.items.filter((_, index) => index !== itemIndex),
+            lastModified: Date.now(),
+          };
+        });
       },
 
       updateCustomFields: (productId: number, fields: Record<string, any>, customFields?: Record<string, any>) => {
@@ -292,8 +298,7 @@ export const useCart = create<CartStore>()(
           // Add custom field prices
           if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
             item.product.custom_fields.forEach((field) => {
-              const key = field.id.toString();
-              const value = item.customFields?.[key];
+              const value = getCustomFieldValue(item.customFields, field);
               
               if (field.type === 'checkbox' && value) {
                 itemPrice += field.price || 0;

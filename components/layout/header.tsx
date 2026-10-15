@@ -2,21 +2,26 @@
 
 import Link from 'next/link';
 import { UserRound } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
 import { BasketIcon } from '@/components/ui/basket-icon';
 import { useAccount } from '@/hooks/use-account';
+import { useCart } from '@/hooks/use-cart';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
-const BASKET_KEY = 'cloudy-basket-v1';
+const subscribeCartHydration = (listener: () => void) => useCart.persist.onFinishHydration(listener);
+const cartHasHydrated = () => useCart.persist.hasHydrated();
+const serverCartHasHydrated = () => false;
 
 export function Header() {
   const pathname = usePathname();
   const { user, pending, logout, loggingOut } = useAccount();
   const [accountOpen, setAccountOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
-  const [basketCount, setBasketCount] = useState(0);
+  const items = useCart(state => state.items);
+  const cartReady = useSyncExternalStore(subscribeCartHydration, cartHasHydrated, serverCartHasHydrated);
+  const basketCount = cartReady ? items.reduce((total, item) => total + item.quantity, 0) : 0;
   const [menuOffset, setMenuOffset] = useState<number>();
   useEffect(() => {
     if (!accountOpen || !accountRef.current) return;
@@ -30,30 +35,13 @@ export function Header() {
     return () => observer.disconnect();
   }, [accountOpen]);
 
-  useEffect(() => {
-    const readBasketCount = () => {
-      try {
-        const saved = JSON.parse(localStorage.getItem(BASKET_KEY) || '[]');
-        setBasketCount(Array.isArray(saved) ? new Set(saved).size : 0);
-      } catch {
-        setBasketCount(0);
-      }
-    };
-    readBasketCount();
-    window.addEventListener('storage', readBasketCount);
-    window.addEventListener('focus', readBasketCount);
-    return () => {
-      window.removeEventListener('storage', readBasketCount);
-      window.removeEventListener('focus', readBasketCount);
-    };
-  }, []);
-
   // Dismiss the phone account menu when the visitor taps anywhere outside it.
   // Desktop behaviour remains unchanged.
   useEffect(() => {
-    if (!accountOpen || !window.matchMedia('(max-width: 900px)').matches) return;
+    if (!accountOpen) return;
+    const phone = window.matchMedia('(max-width: 900px)');
     const dismissOutside = (event: PointerEvent) => {
-      if (accountRef.current && !accountRef.current.contains(event.target as Node)) {
+      if (phone.matches && accountRef.current && !accountRef.current.contains(event.target as Node)) {
         setAccountOpen(false);
       }
     };
