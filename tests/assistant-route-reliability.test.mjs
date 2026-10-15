@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import vm from 'node:vm';
 import * as context from '../lib/cloudy-chat-context.ts';
+import { assistantIdentityReply } from '../lib/assistant-identity.ts';
 import { findHelp } from '../components/help/cloudy-knowledge.ts';
 
 const require = createRequire(import.meta.url);
@@ -45,6 +46,7 @@ function routeFixture() {
     require: name => {
       if (name === '@/components/help/cloudy-knowledge') return { findHelp };
       if (name === '@/lib/cloudy-chat-context') return context;
+      if (name === '@/lib/assistant-identity') return { assistantIdentityReply };
       return require(name);
     },
   });
@@ -58,14 +60,25 @@ function routeFixture() {
   };
 }
 
-function request(signal) {
+function request(signal, question = 'Tell me a short story') {
   return new NextRequest('https://cloudy.test/api/assistant/chat', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-vercel-forwarded-for': 'test-client' },
-    body: JSON.stringify({ question: 'Tell me a short story', history: [] }),
+    body: JSON.stringify({ question, history: [] }),
     signal,
   });
 }
+
+test('identity answers cannot be replaced by an invented upstream model claim', async () => {
+  const fixture = routeFixture();
+  const response = await fixture.POST(request(new AbortController().signal, 'Are you ChatGPT 4?'));
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.match(data.answer, /Cloudy assistant/);
+  assert.match(data.answer, /Dylano/);
+  assert.doesNotMatch(data.answer, /ChatGPT|GPT.?4/);
+  assert.equal(fixture.upstreamSignal, undefined);
+});
 
 test('an incoming disconnect cancels the existing upstream request', async () => {
   const fixture = routeFixture();

@@ -1911,7 +1911,7 @@ body {
     rgba(229,27,46,.14) 232deg,
     rgba(255,39,60,.7) 262deg,
     #ff273c 282deg,
-    #ff7884 294deg,
+    #ff1a32 294deg,
     #ff273c 302deg,
     rgba(255,39,60,.6) 316deg,
     rgba(229,27,46,.14) 336deg,
@@ -1926,5 +1926,18 @@ body {
 .cloudy-classic-game-card:active,
 .cloudy-classic-game-card:visited {
   border: 1px solid transparent !important;
-  box-shadow: 0 28px 70px rgba(0,0,0,.44) !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.44), 0 0 0 1px rgba(229,27,46,.45), 0 0 12px rgba(229,27,46,.18) !important;
 }
+
+/* Preserve the same uncropped source proportions as the approved header logo. */
+.cloudy-footer-brand img {
+  height: auto;
+  object-fit: contain;
+  border-radius: 0;
+}
+.cloudy-terms-head img {
+  height: auto;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+}
+.cloudy-classic-game-card:focus-visible { outline: 2px solid #e51b2e; outline-offset: 5px; }
