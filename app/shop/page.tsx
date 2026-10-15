@@ -6,6 +6,8 @@ import { GameCarousel } from '@/components/home/game-carousel';
 
 type ShopPageProps = { searchParams: Promise<{ game?: string }> };
 
+const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
+
 const games = [
   {
     name: 'Rust',
@@ -42,8 +44,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     <main className={styles.page}>
       <StoreFireworks />
       <section className={styles.hero}>
-        <h1>Cloudy game store</h1>
-        <p>Select a game first. Every Cloudy game has its own store, future products stay organised as the platform grows.</p>
+        <h1>Cloudy store</h1>
+        <p>Every game has its own store, future products stay organised as the platform grows.</p>
 
         <div className={styles.stats}>
           <div className="cloudy-traced-panel cloudy-store-traced-panel"><strong>01</strong><span>Games</span></div>
@@ -100,6 +102,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                 className={`${styles.comingCard} cloudy-traced-panel cloudy-store-traced-panel`}
               >
                 <div>
+                  <img src={CLOUDY_LOGO_URL} alt="" aria-hidden="true" className={styles.comingLogo} width={92} height={92} />
                   <strong>Coming soon</strong>
                   <p>New projects are on the way</p>
                 </div>
@@ -109,10 +112,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         </GameCarousel>
       </section>
 
-      <section className={styles.flow} aria-label="How the Cloudy store works">
+      <section className={styles.flow} aria-label="Store flow">
         <div>
-          <span>STORE FLOW</span>
-          <h2>Game first. Products second.</h2>
+          <h2>Store flow</h2>
         </div>
         <div className={styles.steps}>
           <article className="cloudy-traced-panel cloudy-store-traced-panel"><b>01</b><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
