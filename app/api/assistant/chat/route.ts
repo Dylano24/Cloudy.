@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { findHelp } from '@/components/help/cloudy-knowledge';
 import { assistantKnowledge, isVagueHelpRequest, sanitizeAssistantHistory } from '@/lib/cloudy-chat-context';
+import { assistantIdentityReply } from '@/lib/assistant-identity';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -58,6 +59,8 @@ export async function POST(request: NextRequest) {
   }
 
   const history = sanitizeAssistantHistory(data.history);
+  const identity = assistantIdentityReply(question);
+  if (identity) return respond({ answer: identity, links: [] });
   // A vague request for help is a conversation opener, not a request for
   // the support website. Clarify it without spamming links or consuming AI.
   if (isVagueHelpRequest(question)) {

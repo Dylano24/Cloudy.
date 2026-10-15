@@ -102,12 +102,15 @@ export function assistantKnowledge(
   lookup: (question: string) => HelpResult,
 ): { evidence: string; links: AssistantReply['links']; source?: string } {
   const vagueHelp = isVagueHelpRequest(question);
-  let result: HelpResult = vagueHelp ? { kind: 'unknown', entries: [] } : lookup(question);
+  const intent = normalizeIntent(question);
+  const rustIncome = /\brust\b/.test(intent)
+    && /\b(?:money|income|earn|earning|geld|verdienen|verdien|inkomen|revenu|argent)\b/.test(intent);
+  let result: HelpResult = vagueHelp || rustIncome ? { kind: 'unknown', entries: [] } : lookup(question);
   let topicQuestion = question;
 
   // Follow-ups may ask for the next step without repeating the original issue.
   // Keep the earlier topic only when the current message is genuinely a follow-up.
-  if (!vagueHelp && result.kind === 'unknown' && isTopicFollowUp(question)) {
+  if (!vagueHelp && !rustIncome && result.kind === 'unknown' && isTopicFollowUp(question)) {
     const previous = [...history].reverse().find(turn => turn.role === 'user');
     if (previous && !isVagueHelpRequest(previous.content)) {
       result = lookup(previous.content);
@@ -134,6 +137,7 @@ export function assistantKnowledge(
   // "Ik heb support nodig" has no verified-navigation evidence or automatic links.
   const evidence = JSON.stringify({
     site: 'Cloudy Inc.',
+    identity: { name: 'Cloudy assistant', createdBy: 'Dylano', verifiedModelVersion: null },
     verifiedWebsiteInformation: entries.map(entry => ({
       title: entry.title,
       answer: entry.answer.slice(0, 1050),
@@ -143,7 +147,7 @@ export function assistantKnowledge(
       ...(showLinksForEntry(entry, topicQuestion) ? { links: relevantLinksForEntry(entry, topicQuestion) } : {}),
     })),
     navigationRequested: links.length > 0,
-    limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. Talk naturally about general questions. Never direct a visitor to the support page or Discord without a specific request. Do not invent private Cloudy facts.',
+    limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. Talk naturally about general questions. Never direct a visitor to the support page or Discord without a specific request. Do not invent private Cloudy facts. Do not present Cloudy purchases as income, investments, resale opportunities or ways to earn money. No Cloudy earning or affiliate program has been verified. Do not guess your model version or claim to be ChatGPT 4. Distinguish general Rust advice from verified Cloudy offerings; ask what the visitor means when earning money is ambiguous. Explain assumptions and uncertainty rather than filling gaps with invented facts.',
   });
   return { evidence, links, source };
 }

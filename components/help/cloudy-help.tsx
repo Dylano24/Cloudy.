@@ -2,17 +2,15 @@
 
 import { memo, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
-import { findHelp, helpEntries, type HelpEntry, type HelpResult } from './cloudy-knowledge';
+import { findHelp, helpEntries, type HelpEntry } from './cloudy-knowledge';
 import { assistantKnowledge, type AssistantReply, type AssistantTurn } from '@/lib/cloudy-chat-context';
 import { CloudyMessage } from './cloudy-message';
 import { assistantInlineDestinationHrefs } from '@/lib/cloudy-message-format';
 import { buildAssistantRequest } from '@/lib/assistant-request';
+import { readAssistantSession, saveAssistantSession, clearAssistantSession, type AssistantSessionMessage } from '@/lib/assistant-session';
 import styles from './cloudy-help.module.css';
 
-type Message =
-  | { role: 'visitor'; text: string }
-  | { role: 'assistant'; result: HelpResult }
-  | { role: 'assistant'; response: AssistantReply };
+type Message = AssistantSessionMessage;
 
 const shortcuts = ['missing-delivery', 'store', 'appeal', 'support', 'sale-introduction'];
 
@@ -42,7 +40,9 @@ export function CloudyHelp() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [pending, setPending] = useState(false);
   const [activePhoneTopic, setActivePhoneTopic] = useState<HelpEntry | null>(null);
+  const [sessionReady, setSessionReady] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<() => void>(() => {});
   const inputRef = useRef<HTMLInputElement>(null);
   const logRef = useRef<HTMLDivElement>(null);
   const dockRef = useRef<HTMLDivElement>(null);
@@ -50,6 +50,23 @@ export function CloudyHelp() {
   const requestGeneration = useRef(0);
 
   useEffect(() => () => { requestRef.current?.abort(); }, []);
+
+  useEffect(() => {
+    const session = readAssistantSession();
+    if (session) {
+      setQuestion(session.question);
+      setMessages(session.messages);
+      setActivePhoneTopic(helpEntries.find(entry => entry.id === session.activePhoneTopicId) ?? null);
+      setOpen(true);
+    }
+    setSessionReady(true);
+  }, []);
+
+  useLayoutEffect(() => {
+    if (!sessionReady) return;
+    if (open) saveAssistantSession(undefined, { question, messages, activePhoneTopicId: activePhoneTopic?.id ?? null });
+    else clearAssistantSession();
+  }, [sessionReady, open, question, messages, activePhoneTopic]);
 
   function stopPendingReply() {
     requestGeneration.current += 1;
@@ -68,10 +85,12 @@ export function CloudyHelp() {
   }
 
   function close() {
+    clearAssistantSession();
     clearConversation();
     setOpen(false);
     launcherRef.current?.focus({ preventScroll: true });
   }
+  closeRef.current = close;
 
   useEffect(() => {
     if (!open) return;
@@ -82,7 +101,7 @@ export function CloudyHelp() {
     }
     const escape = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
-      close();
+      closeRef.current();
     };
     document.addEventListener('keydown', escape);
     return () => document.removeEventListener('keydown', escape);

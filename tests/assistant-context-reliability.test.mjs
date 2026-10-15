@@ -8,6 +8,16 @@ const policyHistory = [
   { role: 'assistant', content: 'You can read the refund policy in the terms of sale.' },
 ];
 
+test('earning money in Rust is not evidence of Cloudy store income or resale offers', () => {
+  for (const question of ['Hoe kan ik geld maken met Rust?', 'How can I earn money with Rust?', 'How can I make money buying Rust kits?']) {
+    const context = assistantKnowledge(question, [], findHelp);
+    const evidence = JSON.parse(context.evidence);
+    assert.deepEqual(evidence.verifiedWebsiteInformation, []);
+    assert.match(evidence.limitations, /Do not present Cloudy purchases as income/);
+    assert.deepEqual(context.links, []);
+  }
+});
+
 test('switching to an unrelated question removes earlier policy evidence and navigation', () => {
   for (const question of [
     'Tell me a joke about dinosaurs',
