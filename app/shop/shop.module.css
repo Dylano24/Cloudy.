@@ -376,8 +376,10 @@
   justify-content: center;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,.07);
+  border-left: 3px solid #e51b2e;
   border-radius: 20px;
   background: rgba(255,255,255,.018);
+  box-shadow: 0 18px 42px rgba(0,0,0,.22);
   text-align: center;
 }
 
