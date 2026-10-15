@@ -16,7 +16,7 @@ const games = [
     live: true,
   },
   {
-    name: 'Next game',
+    name: 'Coming soon',
     image: '',
     status: 'Coming soon',
     description: 'The next Cloudy game will get its own storefront here.',
@@ -24,9 +24,9 @@ const games = [
     live: false,
   },
   {
-    name: 'Future project',
+    name: 'Coming soon',
     image: '',
-    status: 'Planned',
+    status: 'Coming soon',
     description: 'Cloudy is built to expand beyond a single game.',
     tags: ['More games', 'One account'],
     live: false,
@@ -40,30 +40,21 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   return (
     <main className={styles.page}>
       <StoreFireworks />
-      <div className={styles.grid} aria-hidden="true" />
-
       <section className={styles.hero}>
-        <span className={styles.eyebrow}><i />Cloudy game store</span>
-        <h1>Choose your <em>world.</em></h1>
-        <p>
-          Select a game first. Every Cloudy game has its own store, so kits,
-          ranks and future products stay organised as the platform grows.
-        </p>
+        <h1>Cloudy game store</h1>
+        <p>Select a game first. Every Cloudy game has its own store, future products stay organised as the platform grows.</p>
 
         <div className={styles.stats}>
           <div><strong>01</strong><span>Live game</span></div>
           <div><strong>More</strong><span>Games incoming</span></div>
-          <div><strong>One</strong><span>Cloudy account</span></div>
         </div>
       </section>
 
       <section className={styles.browser} aria-labelledby="game-store-title">
         <header className={styles.sectionHeader}>
           <div>
-            <span>SELECT A GAME</span>
-            <h2 id="game-store-title">Enter a store</h2>
+            <h2 id="game-store-title">Select a game</h2>
           </div>
-          <p>Pick the experience you play, then choose what you need.</p>
         </header>
 
         <div className={styles.gameGrid}>
@@ -119,7 +110,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         </div>
         <div className={styles.steps}>
           <article><b>01</b><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
-          <article><b>02</b><h3>Pick what you need</h3><p>Browse that game's kits, ranks and extras.</p></article>
+          <article><b>02</b><h3>Pick what you need</h3><p>Browse the game's kits & servers.</p></article>
           <article><b>03</b><h3>Checkout</h3><p>Your basket stays connected to the correct game.</p></article>
         </div>
       </section>
