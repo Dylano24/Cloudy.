@@ -97,7 +97,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             ) : (
               <article
                 key={`${item.name}-${index}`}
-                className={`${styles.comingCard} cloudy-classic-coming`}
+                className={styles.comingCard}
               >
                 <div>
                   <strong>Coming soon</strong>
