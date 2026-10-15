@@ -50,9 +50,10 @@ export function KitInventory({ kit }: { kit: PreviewKit }) {
 }
 
 export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: string }) {
+  const [purchaseNotice, setPurchaseNotice] = useState(false);
   const Icon = kitIcons[kit.id as keyof typeof kitIcons] ?? Package;
   return (
-    <article className={`${styles.card} cloudy-traced-panel`} aria-labelledby={`title-${kit.id}`}>
+    <article className={`${styles.card} cloudy-traced-panel cloudy-store-traced-panel`} aria-labelledby={`title-${kit.id}`}>
       <div className={styles.artwork} aria-hidden="true">
         <Image src="/images/cloudy-rust-premium-4k.avif" alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 390px" className={styles.cardPhoto} />
         <div className={styles.artShade} />
@@ -65,7 +66,11 @@ export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: strin
           <summary>View details<ChevronDown size={16} aria-hidden="true" /></summary>
           <KitInventory kit={kit} />
         </details>
-        <div className={styles.priceRow}><span>Price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
+        <div className={styles.priceRow}>
+          <div><span>Preview price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
+          <button type="button" className={styles.buy} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy<ArrowRight size={15} aria-hidden="true" /></button>
+        </div>
+        {purchaseNotice && <p className={styles.purchaseNotice} role="status">{kit.name} · {server}. Preview only — purchases are not available yet.</p>}
         <div className={styles.cardServer}><Server size={13} aria-hidden="true" /><span>{server}</span></div>
       </div>
     </article>
@@ -102,7 +107,6 @@ export default function RustKitPreview() {
         <section className={styles.serverSection} aria-labelledby="server-title">
           <div className={styles.sectionTop}>
             <div><span className={styles.sectionNumber}>YOUR SERVER</span><h2 id="server-title">Where do you play?</h2><p>Choose the server for your kit selection.</p></div>
-            <div className={styles.selection} role="status"><span>Selected server</span><strong><Server size={15} />{serverName}</strong></div>
           </div>
           <div className={styles.serverGrid} role="group" aria-label="Select your Rust server">
             {[1, 2, 3, 4, 5].map(number => <button key={number} type="button" aria-label={`Select Server ${number}`} aria-pressed={server === number} onClick={() => setServer(number)}>
@@ -112,7 +116,7 @@ export default function RustKitPreview() {
         </section>
 
         <section className={styles.collection} aria-labelledby="kits-title">
-          <div className={styles.sectionTop}><div><h2 id="kits-title">Choose your kit</h2></div><span className={styles.kitCount}>06<span>KITS</span></span></div>
+          <div className={styles.sectionTop}><div><h2 id="kits-title">Choose your kit</h2></div></div>
           <div className={styles.toolbar}>
             <div className={styles.filters} role="group" aria-label="Filter kits by category">{categories.map(name => <button key={name} type="button" aria-pressed={category === name} onClick={() => setCategory(name)}>{name}{name === 'All kits' && <span>6</span>}</button>)}</div>
             <div className={styles.search}><Search size={16} aria-hidden="true" /><input type="search" aria-label="Search kits" placeholder="Search kits" value={query} onChange={event => setQuery(event.target.value)} /></div>
