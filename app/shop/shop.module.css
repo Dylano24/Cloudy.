@@ -603,7 +603,7 @@
     animation: none;
     will-change: transform;
   }
-  .steps article > :not(.cloudy-mobile-sheen) {
+  .steps article > :not(:global(.cloudy-mobile-sheen)) {
     position: relative;
     z-index: 1;
   }
