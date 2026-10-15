@@ -4,6 +4,7 @@ import RustStore from '@/components/shop/rust-store';
 import { StoreFireworks } from '@/components/shop/store-fireworks';
 import styles from './shop.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
+import { StorePanelSync } from '@/components/shop/store-panel-sync';
 
 type ShopPageProps = { searchParams: Promise<{ game?: string }> };
 
@@ -40,15 +41,16 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
   if (game === 'rust') return <RustStore />;
 
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} cloudy-store-page`}>
+      <StorePanelSync />
       <StoreFireworks />
       <section className={styles.hero}>
         <h1>Cloudy store</h1>
         <p>Every game has its own store, future products stay organised as the platform grows.</p>
 
         <div className={styles.stats}>
-          <div className="cloudy-traced-panel cloudy-store-traced-panel"><strong>01</strong><span>Games</span></div>
-          <div className="cloudy-traced-panel cloudy-store-traced-panel"><strong>More</strong><span>On the way</span></div>
+          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Games</span><strong>01</strong></div>
+          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Purchases</span><strong>0</strong></div>
         </div>
       </section>
 
@@ -98,6 +100,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
             ) : (
               <article
                 key={`${item.name}-${index}`}
+                data-cloudy-store-sheen
                 className={`${styles.comingCard} cloudy-traced-panel cloudy-store-traced-panel`}
               >
                 <div>
@@ -115,9 +118,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           <h2>Store flow</h2>
         </div>
         <div className={styles.steps}>
-          <article className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>01</b><Gamepad2 size={27} aria-hidden="true" /></div><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
-          <article className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>02</b><ShoppingBag size={27} aria-hidden="true" /></div><h3>Pick what you need</h3><p>Browse the game's kits & servers.</p></article>
-          <article className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>03</b><CreditCard size={27} aria-hidden="true" /></div><h3>Checkout</h3><p>Your basket stays connected to the correct game.</p></article>
+          <article data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>01</b><Gamepad2 size={27} aria-hidden="true" /></div><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
+          <article data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>02</b><ShoppingBag size={27} aria-hidden="true" /></div><h3>Pick what you need</h3><p>Browse the game's kits & servers.</p></article>
+          <article data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>03</b><CreditCard size={27} aria-hidden="true" /></div><h3>Checkout</h3><p>Your basket stays connected to the correct game.</p></article>
         </div>
       </section>
     </main>
