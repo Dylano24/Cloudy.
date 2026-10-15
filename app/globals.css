@@ -1926,7 +1926,7 @@ body {
 .cloudy-classic-game-card:active,
 .cloudy-classic-game-card:visited {
   border: 1px solid transparent !important;
-  box-shadow: 0 28px 70px rgba(0,0,0,.44), 0 0 0 1px rgba(229,27,46,.45), 0 0 12px rgba(229,27,46,.18) !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.44), 0 0 0 1px rgba(229,27,46,.45), 0 0 14px rgba(229,27,46,.36) !important;
 }
 
 /* Preserve the same uncropped source proportions as the approved header logo. */
