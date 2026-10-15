@@ -1,0 +1,5 @@
+.field { position: fixed; inset: 0 0 auto; height: 100svh; z-index: 0; overflow: hidden; pointer-events: none; background: radial-gradient(ellipse at 12% 25%,#e51b2e12,transparent 65%),radial-gradient(ellipse at 88% 80%,#9c10200d,transparent 60%); }
+.field span { position: absolute; left: var(--x); top: var(--y); width: var(--size); height: var(--size); border-radius: 50%; background: #ff354f; box-shadow: 0 0 0 4px #e51b2e0e,0 0 14px #e51b2e77; animation: drift var(--duration) ease-in-out var(--delay) infinite alternate; }
+@keyframes drift { from { transform: translate3d(0,28px,0); opacity: .2; } 50% { opacity: .65; } to { transform: translate3d(var(--drift),-55px,0); opacity: .35; } }
+@media (max-width: 700px) { .field span:nth-child(n+33) { display: none; } }
+@media (prefers-reduced-motion: reduce) { .field span { animation: none; opacity: .3; } }

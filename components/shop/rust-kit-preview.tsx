@@ -3,15 +3,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, ChevronDown, Search, Server, Package, Crosshair, Hammer, HeartPulse, Boxes, Wrench } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Search, Server } from 'lucide-react';
 import { previewKits, rustItems, type PreviewKit, type InventoryArea } from '@/lib/rust-kit-preview';
 import styles from './rust-kit-preview.module.css';
 
 const categories = ['All kits', 'Subscriptions', 'Claim once', 'Lifetime'] as const;
-const kitIcons = { assault: Crosshair, tactical: Crosshair, builder: Hammer, resources: Boxes, medic: HeartPulse, components: Wrench };
 const inventoryAreas: readonly { key: InventoryArea; name: string; slots: number }[] = [
   { key: 'wear', name: 'Wear', slots: 7 },
-  { key: 'main', name: 'Main', slots: 12 },
+  { key: 'main', name: 'Main', slots: 24 },
   { key: 'belt', name: 'Belt', slots: 6 },
 ];
 const quantity = new Intl.NumberFormat('en-GB');
@@ -50,13 +49,12 @@ export function KitInventory({ kit }: { kit: PreviewKit }) {
 }
 
 export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: string }) {
-  const Icon = kitIcons[kit.id as keyof typeof kitIcons] ?? Package;
+  const [purchaseNotice, setPurchaseNotice] = useState(false);
   return (
-    <article className={`${styles.card} cloudy-traced-panel`} aria-labelledby={`title-${kit.id}`}>
+    <article className={`${styles.card} cloudy-traced-panel cloudy-store-traced-panel`} aria-labelledby={`title-${kit.id}`}>
       <div className={styles.artwork} aria-hidden="true">
         <Image src="/images/cloudy-rust-premium-4k.avif" alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 390px" className={styles.cardPhoto} />
         <div className={styles.artShade} />
-        <span className={styles.kitSeal}><Icon size={26} strokeWidth={1.5} /></span>
       </div>
       <div className={styles.cardBody}>
         <div className={styles.cardKicker}><span>{kit.category}</span></div>
@@ -65,8 +63,12 @@ export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: strin
           <summary>View details<ChevronDown size={16} aria-hidden="true" /></summary>
           <KitInventory kit={kit} />
         </details>
-        <div className={styles.priceRow}><span>Price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
-        <div className={styles.cardServer}><Server size={13} aria-hidden="true" /><span>{server}</span></div>
+        <div className={styles.priceRow}>
+          <div><span>Preview price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
+          <button type="button" className={styles.buy} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy</button>
+        </div>
+        {purchaseNotice && <p className={styles.purchaseNotice} role="status">Preview only</p>}
+        <div className={styles.cardServer}><span>{server}</span></div>
       </div>
     </article>
   );
@@ -102,17 +104,16 @@ export default function RustKitPreview() {
         <section className={styles.serverSection} aria-labelledby="server-title">
           <div className={styles.sectionTop}>
             <div><span className={styles.sectionNumber}>YOUR SERVER</span><h2 id="server-title">Where do you play?</h2><p>Choose the server for your kit selection.</p></div>
-            <div className={styles.selection} role="status"><span>Selected server</span><strong><Server size={15} />{serverName}</strong></div>
           </div>
           <div className={styles.serverGrid} role="group" aria-label="Select your Rust server">
-            {[1, 2, 3, 4, 5].map(number => <button key={number} type="button" aria-label={`Select Server ${number}`} aria-pressed={server === number} onClick={() => setServer(number)}>
+            {[1, 2, 3].map(number => <button key={number} type="button" aria-label={`Select Server ${number}`} aria-pressed={server === number} onClick={() => setServer(number)}>
               <span className={styles.serverIcon}><Server size={19} strokeWidth={1.5} /></span><span><small>CLOUDY RUST</small><strong>Server {number}</strong></span>{server === number && <span className={styles.serverCheck}><Check size={14} /></span>}
             </button>)}
           </div>
         </section>
 
         <section className={styles.collection} aria-labelledby="kits-title">
-          <div className={styles.sectionTop}><div><h2 id="kits-title">Choose your kit</h2></div><span className={styles.kitCount}>06<span>KITS</span></span></div>
+          <div className={styles.sectionTop}><div><h2 id="kits-title">Choose your kit</h2></div></div>
           <div className={styles.toolbar}>
             <div className={styles.filters} role="group" aria-label="Filter kits by category">{categories.map(name => <button key={name} type="button" aria-pressed={category === name} onClick={() => setCategory(name)}>{name}{name === 'All kits' && <span>6</span>}</button>)}</div>
             <div className={styles.search}><Search size={16} aria-hidden="true" /><input type="search" aria-label="Search kits" placeholder="Search kits" value={query} onChange={event => setQuery(event.target.value)} /></div>

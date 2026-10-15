@@ -9,35 +9,100 @@
     "image": "/images/rust-items/ammo.rifle.png",
     "source": "https://wiki.facepunch.com/rust/item/ammo.rifle"
   },
+  "antiradpills": {
+    "name": "Anti-Radiation Pills",
+    "image": "/images/rust-items/antiradpills.png",
+    "source": "https://wiki.facepunch.com/rust/item/antiradpills"
+  },
   "bandage": {
     "name": "Bandage",
     "image": "/images/rust-items/bandage.png",
     "source": "https://wiki.facepunch.com/rust/item/bandage"
+  },
+  "box.wooden.large": {
+    "name": "Large Wood Box",
+    "image": "/images/rust-items/box.wooden.large.png",
+    "source": "https://wiki.facepunch.com/rust/item/box.wooden.large"
   },
   "building.planner": {
     "name": "Building Plan",
     "image": "/images/rust-items/building.planner.png",
     "source": "https://wiki.facepunch.com/rust/item/building.planner"
   },
+  "campfire": {
+    "name": "Camp Fire",
+    "image": "/images/rust-items/campfire.png",
+    "source": "https://wiki.facepunch.com/rust/item/campfire"
+  },
+  "can.beans": {
+    "name": "Can of Beans",
+    "image": "/images/rust-items/can.beans.png",
+    "source": "https://wiki.facepunch.com/rust/item/can.beans"
+  },
+  "can.tuna": {
+    "name": "Can of Tuna",
+    "image": "/images/rust-items/can.tuna.png",
+    "source": "https://wiki.facepunch.com/rust/item/can.tuna"
+  },
+  "charcoal": {
+    "name": "Charcoal",
+    "image": "/images/rust-items/charcoal.png",
+    "source": "https://wiki.facepunch.com/rust/item/charcoal"
+  },
   "cloth": {
     "name": "Cloth",
     "image": "/images/rust-items/cloth.png",
     "source": "https://wiki.facepunch.com/rust/item/cloth"
+  },
+  "corn": {
+    "name": "Corn",
+    "image": "/images/rust-items/corn.png",
+    "source": "https://wiki.facepunch.com/rust/item/corn"
+  },
+  "cupboard.tool": {
+    "name": "Tool Cupboard",
+    "image": "/images/rust-items/cupboard.tool.png",
+    "source": "https://wiki.facepunch.com/rust/item/cupboard.tool"
+  },
+  "door.hinged.metal": {
+    "name": "Sheet Metal Door",
+    "image": "/images/rust-items/door.hinged.metal.png",
+    "source": "https://wiki.facepunch.com/rust/item/door.hinged.metal"
   },
   "fat.animal": {
     "name": "Animal Fat",
     "image": "/images/rust-items/fat.animal.png",
     "source": "https://wiki.facepunch.com/rust/item/fat.animal"
   },
+  "furnace": {
+    "name": "Furnace",
+    "image": "/images/rust-items/furnace.png",
+    "source": "https://wiki.facepunch.com/rust/item/furnace"
+  },
+  "fuse": {
+    "name": "Electric Fuse",
+    "image": "/images/rust-items/fuse.png",
+    "source": "https://wiki.facepunch.com/rust/item/fuse"
+  },
   "gears": {
     "name": "Gears",
     "image": "/images/rust-items/gears.png",
     "source": "https://wiki.facepunch.com/rust/item/gears"
   },
+  "gunpowder": {
+    "name": "Gun Powder",
+    "image": "/images/rust-items/gunpowder.png",
+    "source": "https://wiki.facepunch.com/rust/item/gunpowder"
+  },
   "hammer": {
     "name": "Hammer",
     "image": "/images/rust-items/hammer.png",
     "source": "https://wiki.facepunch.com/rust/item/hammer"
+  },
+  "hatchet": {
+    "name": "Hatchet",
+    "image": "/images/rust-items/hatchet.png",
+    "source": "https://wiki.facepunch.com/rust/item/hatchet"
   },
   "hazmatsuit": {
     "name": "Hazmat Suit",
@@ -48,6 +113,11 @@
     "name": "Hoodie",
     "image": "/images/rust-items/hoodie.png",
     "source": "https://wiki.facepunch.com/rust/item/hoodie"
+  },
+  "largemedkit": {
+    "name": "Large Medkit",
+    "image": "/images/rust-items/largemedkit.png",
+    "source": "https://wiki.facepunch.com/rust/item/largemedkit"
   },
   "leather": {
     "name": "Leather",
@@ -74,6 +144,11 @@
     "image": "/images/rust-items/metal.fragments.png",
     "source": "https://wiki.facepunch.com/rust/item/metal.fragments"
   },
+  "metal.ore": {
+    "name": "Metal Ore",
+    "image": "/images/rust-items/metal.ore.png",
+    "source": "https://wiki.facepunch.com/rust/item/metal.ore"
+  },
   "metal.plate.torso": {
     "name": "Metal Chest Plate",
     "image": "/images/rust-items/metal.plate.torso.png",
@@ -94,10 +169,20 @@
     "image": "/images/rust-items/metalpipe.png",
     "source": "https://wiki.facepunch.com/rust/item/metalpipe"
   },
+  "metalspring": {
+    "name": "Metal Spring",
+    "image": "/images/rust-items/metalspring.png",
+    "source": "https://wiki.facepunch.com/rust/item/metalspring"
+  },
   "pants": {
     "name": "Pants",
     "image": "/images/rust-items/pants.png",
     "source": "https://wiki.facepunch.com/rust/item/pants"
+  },
+  "pickaxe": {
+    "name": "Pickaxe",
+    "image": "/images/rust-items/pickaxe.png",
+    "source": "https://wiki.facepunch.com/rust/item/pickaxe"
   },
   "pumpkin": {
     "name": "Pumpkin",
@@ -119,6 +204,11 @@
     "image": "/images/rust-items/rifle.lr300.png",
     "source": "https://wiki.facepunch.com/rust/item/rifle.lr300"
   },
+  "riflebody": {
+    "name": "Rifle Body",
+    "image": "/images/rust-items/riflebody.png",
+    "source": "https://wiki.facepunch.com/rust/item/riflebody"
+  },
   "roadsign.kilt": {
     "name": "Road Sign Kilt",
     "image": "/images/rust-items/roadsign.kilt.png",
@@ -134,15 +224,30 @@
     "image": "/images/rust-items/scrap.png",
     "source": "https://wiki.facepunch.com/rust/item/scrap"
   },
+  "semibody": {
+    "name": "Semi Automatic Body",
+    "image": "/images/rust-items/semibody.png",
+    "source": "https://wiki.facepunch.com/rust/item/semibody"
+  },
   "sewingkit": {
     "name": "Sewing Kit",
     "image": "/images/rust-items/sewingkit.png",
     "source": "https://wiki.facepunch.com/rust/item/sewingkit"
   },
+  "sheetmetal": {
+    "name": "Sheet Metal",
+    "image": "/images/rust-items/sheetmetal.png",
+    "source": "https://wiki.facepunch.com/rust/item/sheetmetal"
+  },
   "shoes.boots": {
     "name": "Boots",
     "image": "/images/rust-items/shoes.boots.png",
     "source": "https://wiki.facepunch.com/rust/item/shoes.boots"
+  },
+  "sleepingbag": {
+    "name": "Sleeping Bag",
+    "image": "/images/rust-items/sleepingbag.png",
+    "source": "https://wiki.facepunch.com/rust/item/sleepingbag"
   },
   "smallwaterbottle": {
     "name": "Small Water Bottle",
@@ -154,10 +259,25 @@
     "image": "/images/rust-items/smg.mp5.png",
     "source": "https://wiki.facepunch.com/rust/item/smg.mp5"
   },
+  "smgbody": {
+    "name": "SMG Body",
+    "image": "/images/rust-items/smgbody.png",
+    "source": "https://wiki.facepunch.com/rust/item/smgbody"
+  },
   "stones": {
     "name": "Stones",
     "image": "/images/rust-items/stones.png",
     "source": "https://wiki.facepunch.com/rust/item/stones"
+  },
+  "sulfur": {
+    "name": "Sulfur",
+    "image": "/images/rust-items/sulfur.png",
+    "source": "https://wiki.facepunch.com/rust/item/sulfur"
+  },
+  "sulfur.ore": {
+    "name": "Sulfur Ore",
+    "image": "/images/rust-items/sulfur.ore.png",
+    "source": "https://wiki.facepunch.com/rust/item/sulfur.ore"
   },
   "syringe.medical": {
     "name": "Medical Syringe",
@@ -168,6 +288,21 @@
     "name": "Tactical Gloves",
     "image": "/images/rust-items/tactical.gloves.png",
     "source": "https://wiki.facepunch.com/rust/item/tactical.gloves"
+  },
+  "tarp": {
+    "name": "Tarp",
+    "image": "/images/rust-items/tarp.png",
+    "source": "https://wiki.facepunch.com/rust/item/tarp"
+  },
+  "techparts": {
+    "name": "Tech Trash",
+    "image": "/images/rust-items/techparts.png",
+    "source": "https://wiki.facepunch.com/rust/item/techparts"
+  },
+  "torch": {
+    "name": "Torch",
+    "image": "/images/rust-items/torch.png",
+    "source": "https://wiki.facepunch.com/rust/item/torch"
   },
   "wood": {
     "name": "Wood",
