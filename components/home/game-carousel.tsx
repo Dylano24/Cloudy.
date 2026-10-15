@@ -7,6 +7,7 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
   const track = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
+  const navigationTarget = useRef<number | null>(null);
   const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [active, setActive] = useState(0);
   const slides = Children.toArray(children);
@@ -17,6 +18,7 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
 
   function settle(element: HTMLDivElement) {
     if (settleTimer.current !== null) clearTimeout(settleTimer.current);
+    navigationTarget.current = null;
     if (!drag.current) setActive(nearestSlide(element));
   }
 
@@ -39,6 +41,7 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
     const positions = slidePositions(element);
     if (!positions.length) return;
     const next = Math.max(0, Math.min(index, positions.length - 1));
+    navigationTarget.current = next;
     element.scrollTo({
       left: positions[next],
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
@@ -62,15 +65,23 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
           }
         }}
         onScroll={event => {
-          // Keep the selected dot stable while smooth scrolling, swiping or
-          // snapping. The timeout also supports browsers without scrollend.
           const element = event.currentTarget;
+          // Swipes follow the visible card immediately, including momentum.
+          // Arrow/dot navigation keeps its chosen destination highlighted.
+          if (navigationTarget.current === null) {
+            setActive(nearestSlide(element));
+          } else if (Math.abs(element.scrollLeft - slidePositions(element)[navigationTarget.current]) < 1) {
+            navigationTarget.current = null;
+          }
+          // Release programmatic navigation on browsers without scrollend.
           if (settleTimer.current !== null) clearTimeout(settleTimer.current);
           settleTimer.current = setTimeout(() => settle(element), 150);
         }}
         onScrollEnd={event => settle(event.currentTarget)}
         onDragStart={event => event.preventDefault()}
+        onWheel={() => { navigationTarget.current = null; }}
         onPointerDown={event => {
+          navigationTarget.current = null;
           if (event.pointerType !== 'mouse' || event.button !== 0) return;
           suppressClick.current = false;
           drag.current = { x: event.clientX, left: event.currentTarget.scrollLeft, moved: false };
