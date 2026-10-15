@@ -1941,3 +1941,11 @@ body {
   border-radius: 0 !important;
 }
 .cloudy-classic-game-card:focus-visible { outline: 2px solid #e51b2e; outline-offset: 5px; }
+
+/* Store uses the same 1px moving perimeter as the homepage on all screens.
+   Override only the old small-screen animation pause for these specific cards. */
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+  .cloudy-store-traced-panel::after {
+    animation: cloudy-trace-spin 7.5s linear infinite !important;
+  }
+}
