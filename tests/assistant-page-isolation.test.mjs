@@ -24,9 +24,9 @@ function fixture(phone = true) {
   });
   harness.mount(CloudyHelp);
   refs[0].current = { focus: options => focus.push(options) };
-  refs[1].current = { focus() {}, blur() {} };
-  refs[2].current = { scrollHeight: 20 };
-  refs[3].current = dock;
+  refs[2].current = { focus() {}, blur() {} };
+  refs[3].current = { scrollHeight: 20 };
+  refs[4].current = dock;
   const click = label => { elements(harness.tree, node => node.type === 'button' && node.props['aria-label'] === label)[0].props.onClick(); harness.render(); };
   return { harness, click, header, main, footer, body, scrolls, focus,
     rotate(matches) { media.matches = matches; listeners.get('change')?.(); } };

@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type MouseEvent, type PointerEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry } from './cloudy-knowledge';
 import { assistantKnowledge, type AssistantReply, type AssistantTurn } from '@/lib/cloudy-chat-context';
@@ -91,6 +91,15 @@ export function CloudyHelp() {
     launcherRef.current?.focus({ preventScroll: true });
   }
   closeRef.current = close;
+
+  function closeOnPhoneLinkClick(event: MouseEvent<HTMLDivElement>) {
+    if (!window.matchMedia('(max-width: 480px)').matches) return;
+    if (!(event.target instanceof Element) || !event.target.closest('a[href]')) return;
+    // Follow the link normally, but do not carry the open panel to its destination.
+    clearAssistantSession();
+    clearConversation();
+    setOpen(false);
+  }
 
   useEffect(() => {
     if (!open) return;
@@ -322,7 +331,7 @@ export function CloudyHelp() {
   }
 
   return (
-    <div className={styles.dock} data-open={open ? "true" : "false"} data-has-messages={messages.length > 0 ? "true" : "false"} data-active-phone-topic={activePhoneTopic ? "true" : "false"} ref={dockRef}>
+    <div className={styles.dock} data-open={open ? "true" : "false"} data-has-messages={messages.length > 0 ? "true" : "false"} data-active-phone-topic={activePhoneTopic ? "true" : "false"} ref={dockRef} onClickCapture={closeOnPhoneLinkClick}>
       {open && (
         <section id="cloudy-help-panel" className={styles.panel} role="dialog" aria-modal="false" aria-labelledby="cloudy-help-title">
           <header className={styles.header}>

@@ -45,6 +45,15 @@ test('ordinary smalltalk and general questions do not receive invented Cloudy po
   assert.deepEqual(context.links, []);
 });
 
+test('named store, purchase and appeal questions receive direct verified context', () => {
+  for (const question of ['Welke producten zijn er?', 'Ik heb een vraag over mijn aankopen', 'Waar kan ik bezwaar maken?']) {
+    const context = assistantKnowledge(question, [], findHelp);
+    const evidence = JSON.parse(context.evidence);
+    assert.ok(evidence.verifiedWebsiteInformation.length > 0, question);
+    assert.match(evidence.responseGuidance, /Answer the question directly/);
+  }
+});
+
 test('assistant route has a server-only Railway connection and never embeds secrets in client code', () => {
   const site = readFileSync(new URL('../app/api/assistant/chat/route.ts', import.meta.url), 'utf8');
   const frontend = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
@@ -174,8 +183,19 @@ test('closing assistant clears old chat and aborts responses through every close
   const close = client.match(/function close\(\) \{([\s\S]*?)\n  \}/)?.[1];
   assert.match(close || '', /clearConversation\(\)/, 'closing resets the conversation');
   assert.match(close || '', /setOpen\(false\)/);
-  assert.match(client, /if \(event\.key !== 'Escape'\) return;\s*close\(\)/, 'Escape uses the same close handler');
+  assert.match(client, /if \(event\.key !== 'Escape'\) return;\s*closeRef\.current\(\)/, 'Escape uses the current close handler');
   assert.match(client, /onClick=\{close\} aria-label="Close Cloudy assistant"/, 'X button closes');
   assert.match(client, /onClick=\{\(\) => open \? close\(\) : setOpen\(true\)\}/, 'launcher also closes via cleanup');
   assert.match(client, /function reset\(\) \{\s*clearConversation\(\)/, 'manual reset retains the same cleanup');
+});
+
+test('phone link navigation clears assistant state while desktop links keep it', () => {
+  const client = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
+  const navigation = client.match(/function closeOnPhoneLinkClick\([^)]*\) \{([\s\S]*?)\n  \}/)?.[1];
+  assert.ok(navigation);
+  assert.match(navigation, /max-width: 480px/);
+  assert.match(navigation, /closest\('a\[href\]'\)/);
+  assert.match(navigation, /clearAssistantSession\(\)/);
+  assert.match(navigation, /setOpen\(false\)/);
+  assert.match(client, /onClickCapture=\{closeOnPhoneLinkClick\}/);
 });
