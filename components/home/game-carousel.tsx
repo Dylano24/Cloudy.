@@ -13,7 +13,8 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
   function slidePositions(element: HTMLDivElement) {
     const cards = Array.from(element.children) as HTMLElement[];
     const first = cards[0]?.offsetLeft ?? 0;
-    return cards.map(card => card.offsetLeft - first);
+    const maxScroll = Math.max(0, element.scrollWidth - element.clientWidth);
+    return cards.map(card => Math.min(card.offsetLeft - first, maxScroll));
   }
 
   function nearestSlide(element: HTMLDivElement) {
