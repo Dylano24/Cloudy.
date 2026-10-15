@@ -3,7 +3,7 @@
 import { Children, useRef, useState, type ReactNode } from 'react';
 import styles from './game-carousel.module.css';
 
-export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cloudy games' }: { children: ReactNode; trackClassName?: string; labels?: readonly string[]; ariaLabel?: string }) {
+export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cloudy games', showArrows = true }: { children: ReactNode; trackClassName?: string; labels?: readonly string[]; ariaLabel?: string; showArrows?: boolean }) {
   const track = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
@@ -102,7 +102,7 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
       </div>
       {slides.length > 1 && (
         <div className={styles.controls} aria-label="Game carousel controls">
-          <button className={styles.arrow} type="button" aria-label="Previous game" disabled={active === 0} onClick={() => select(active - 1)}>‹</button>
+          {showArrows && <button className={styles.arrow} type="button" aria-label="Previous game" disabled={active === 0} onClick={() => select(active - 1)}>‹</button>}
           <div className={styles.dots} aria-label="Choose a game slide">
             {slides.map((_, index) => (
               <button
@@ -114,7 +114,7 @@ export function GameCarousel({ children, trackClassName, labels, ariaLabel = 'Cl
               />
             ))}
           </div>
-          <button className={styles.arrow} type="button" aria-label="Next game" disabled={active === slides.length - 1} onClick={() => select(active + 1)}>›</button>
+          {showArrows && <button className={styles.arrow} type="button" aria-label="Next game" disabled={active === slides.length - 1} onClick={() => select(active + 1)}>›</button>}
         </div>
       )}
     </div>
