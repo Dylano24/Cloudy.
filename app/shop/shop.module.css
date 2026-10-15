@@ -368,6 +368,38 @@
   opacity: .72;
 }
 
+.comingCard {
+  position: relative;
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 20px;
+  background: rgba(255,255,255,.018);
+  text-align: center;
+}
+
+.comingCard > div {
+  padding: 28px;
+  border-left: 0;
+}
+
+.comingCard strong {
+  display: block;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: clamp(28px, 3.2vw, 42px);
+  font-weight: 400;
+  letter-spacing: .04em;
+}
+
+.comingCard p {
+  margin: 8px 0 0;
+  color: #838389;
+  font-size: 13px;
+}
+
 .flow {
   display: grid;
   grid-template-columns: .8fr 1.6fr;
@@ -428,7 +460,8 @@
   .gameGrid { grid-template-columns: 1fr; }
   .gameCard,
   .gameCard:first-child,
-  .gameCard:not(:first-child) { grid-column: auto; min-height: 430px; }
+  .gameCard:not(:first-child),
+  .comingCard { grid-column: auto; min-height: 430px; }
   .cardTop,
   .cardBody { left: 18px; right: 18px; }
   .cardTop { top: 18px; }
