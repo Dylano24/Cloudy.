@@ -61,7 +61,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           </div>
         </header>
 
-        <GameCarousel trackClassName={styles.gameGrid} labels={games.map((item, index) => item.live ? item.name : `Coming soon ${index}`)} ariaLabel="Cloudy store games" showArrows={false}>
+        <GameCarousel trackClassName={styles.gameGrid} labels={games.map((item, index) => item.live ? item.name : `Coming soon ${index}`)} ariaLabel="Cloudy store games">
           {games.map((item, index) => {
             const card = (
               <>
