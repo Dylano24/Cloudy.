@@ -19,16 +19,16 @@ const games = [
     name: 'Coming soon',
     image: '',
     status: 'Coming soon',
-    description: 'The next Cloudy game will get its own storefront here.',
-    tags: ['New world', 'New store'],
+    description: 'New projects are on the way',
+    tags: [],
     live: false,
   },
   {
     name: 'Coming soon',
     image: '',
     status: 'Coming soon',
-    description: 'Cloudy is built to expand beyond a single game.',
-    tags: ['More games', 'One account'],
+    description: 'New projects are on the way',
+    tags: [],
     live: false,
   },
 ] as const;
@@ -95,8 +95,14 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                 {card}
               </Link>
             ) : (
-              <article key={`${item.name}-${index}`} className={`${styles.gameCard} ${styles.disabled}`}>
-                {card}
+              <article
+                key={`${item.name}-${index}`}
+                className={`${styles.comingCard} cloudy-classic-coming`}
+              >
+                <div>
+                  <strong>Coming soon</strong>
+                  <p>New projects are on the way</p>
+                </div>
               </article>
             );
           })}
