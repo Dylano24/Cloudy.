@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, Search, Server, Package, Crosshair, Hammer, HeartPulse, Boxes, Wrench } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronDown, Search, Server, Package, Crosshair, Hammer, HeartPulse, Boxes, Wrench } from 'lucide-react';
 import { previewKits, rustItems, type PreviewKit, type InventoryArea } from '@/lib/rust-kit-preview';
 import styles from './rust-kit-preview.module.css';
 
@@ -50,18 +50,19 @@ export function KitInventory({ kit }: { kit: PreviewKit }) {
 export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: string }) {
   const Icon = kitIcons[kit.id as keyof typeof kitIcons] ?? Package;
   return (
-    <article className={styles.card} aria-labelledby={`title-${kit.id}`}>
+    <article className={`${styles.card} cloudy-traced-panel`} aria-labelledby={`title-${kit.id}`}>
       <div className={styles.artwork} aria-hidden="true">
         <Image src="/images/cloudy-rust-premium-4k.avif" alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 390px" className={styles.cardPhoto} />
         <div className={styles.artShade} />
-        <span className={styles.artNumber}>{kit.number}</span>
-        <span className={styles.artLabel}>CLOUDY RUST</span>
         <span className={styles.kitSeal}><Icon size={26} strokeWidth={1.5} /></span>
       </div>
       <div className={styles.cardBody}>
-        <div className={styles.cardKicker}><span>{kit.category}</span><span>Kit {kit.number}</span></div>
+        <div className={styles.cardKicker}><span>{kit.category}</span></div>
         <h3 id={`title-${kit.id}`}>{kit.name}</h3>
-        <KitInventory kit={kit} />
+        <details className={styles.kitDetails}>
+          <summary>View details<ChevronDown size={16} aria-hidden="true" /></summary>
+          <KitInventory kit={kit} />
+        </details>
         <div className={styles.priceRow}><span>Price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
         <div className={styles.cardServer}><Server size={13} aria-hidden="true" /><span>{server}</span></div>
       </div>
