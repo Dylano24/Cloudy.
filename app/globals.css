@@ -1935,7 +1935,7 @@ body {
 .cloudy-restored-payment-brands .cloudy-payment-apple svg { width: 55px; height: 29px; transform: scale(1.5); }
 .cloudy-restored-payment-brands .cloudy-payment-mastercard { width: 34px; height: 22px; }
 .cloudy-restored-payment-brands .cloudy-payment-paypal { color: #fff; }
-.cloudy-restored-payment-brands .cloudy-payment-google-mark { justify-content: center; width: 43px; height: 29px; min-height: 0; padding: 0; border: 1px solid #fff; border-radius: 3px; background: transparent; }
+.cloudy-restored-payment-brands .cloudy-payment-google-mark { justify-content: center; width: 55px; height: 29px; min-height: 0; padding: 0; border: 1px solid #fff; border-radius: 3px; background: transparent; }
 .cloudy-restored-payment-brands .cloudy-payment-google-mark svg { width: 43px; height: 25px; transform: scale(1.35); }
 
 /* Preserve the same uncropped source proportions as the approved header logo. */
