@@ -39,8 +39,7 @@ export function EmailAccountForm({ mode }: { mode: 'create' | 'login' }) {
     <input id={`cloudy-email-${mode}`} name="email" type="email" autoComplete="email" value={email} onChange={event => setEmail(event.target.value)} required maxLength={254} disabled={busy} />
     <label htmlFor={`cloudy-password-${mode}`}>Cloudy password</label>
     <input id={`cloudy-password-${mode}`} name="password" type="password" autoComplete={mode === 'create' ? 'new-password' : 'current-password'} value={password} onChange={event => setPassword(event.target.value)} required minLength={10} disabled={busy} />
-    {mode === 'create' && <p className={styles.hint}>At least 10 characters. Your account name will come from your email address.</p>}
     {error && <p className={styles.error} role="alert">{error}</p>}
-    <button type="submit" disabled={busy}>{busy ? 'Please wait…' : mode === 'create' ? 'Create Cloudy account' : 'Sign in'}</button>
+    <button type="submit" disabled={busy}>{busy ? 'Please wait…' : mode === 'create' ? 'Create' : 'Sign in'}</button>
   </form>;
 }
