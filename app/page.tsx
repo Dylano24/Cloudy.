@@ -85,8 +85,8 @@ export default function HomePage() {
               <span className="cloudy-payment-visa" aria-label="Visa"><SiVisa aria-hidden="true" /></span>
               <span><svg className="cloudy-payment-mastercard" viewBox="0 0 34 22" aria-hidden="true"><defs><clipPath id="cloudy-mastercard-overlap"><circle cx="12" cy="11" r="10" /></clipPath></defs><circle cx="12" cy="11" r="10" fill="#EB001B" /><circle cx="22" cy="11" r="10" fill="#F79E1B" /><circle cx="22" cy="11" r="10" fill="#FF5F00" clipPath="url(#cloudy-mastercard-overlap)" /></svg>Mastercard</span>
               <span><SiPaypal className="cloudy-payment-paypal" aria-hidden="true" />PayPal</span>
-              <span><SiApplepay aria-hidden="true" />Apple Pay</span>
-              <span><Image className="cloudy-payment-google" src="/images/google-pay-mark.png" alt="" width={45} height={24} />Google Pay</span>
+              <span className="cloudy-payment-apple" aria-label="Apple Pay"><SiApplepay aria-hidden="true" /></span>
+              <span aria-label="Google Pay"><Image className="cloudy-payment-google" src="/images/google-pay-mark.png" alt="" width={55} height={29} /></span>
             </div>
           </div>
           <div className="cloudy-restored-pay-grid">
