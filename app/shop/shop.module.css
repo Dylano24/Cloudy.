@@ -612,3 +612,7 @@
   .stats > div, .comingCard, .steps article { animation: none; background-image: none; }
   .page :global(.cloudy-mobile-sheen) { display: none; }
 }
+
+@media (max-width: 700px) {
+  .hero h1 { font-size: clamp(35px, 10vw, 64px); white-space: nowrap; letter-spacing: -.065em; }
+}

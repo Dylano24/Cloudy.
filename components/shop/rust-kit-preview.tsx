@@ -14,6 +14,14 @@ const inventoryAreas: readonly { key: InventoryArea; name: string; slots: number
   { key: 'belt', name: 'Belt', slots: 6 },
 ];
 const quantity = new Intl.NumberFormat('en-GB');
+const kitArtwork: Record<PreviewKit['id'], string> = {
+  assault: '/images/kits/vip.png',
+  tactical: '/images/kits/elite.png',
+  builder: '/images/kits/builder.png',
+  resources: '/images/kits/resources.png',
+  medic: '/images/kits/medical.png',
+  components: '/images/kits/components.png',
+};
 
 export function KitInventory({ kit }: { kit: PreviewKit }) {
   return (
@@ -53,7 +61,7 @@ export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: strin
   return (
     <article className={`${styles.card} cloudy-traced-panel cloudy-store-traced-panel`} aria-labelledby={`title-${kit.id}`}>
       <div className={styles.artwork} aria-hidden="true">
-        <Image src="/images/cloudy-rust-premium-4k.avif" alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 390px" className={styles.cardPhoto} />
+        <Image src={kitArtwork[kit.id]} alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 980px) 50vw, 390px" className={styles.cardPhoto} />
         <div className={styles.artShade} />
       </div>
       <div className={styles.cardBody}>

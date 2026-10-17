@@ -6,8 +6,8 @@ export function validateDisplayName(value: unknown): string | null {
   return name.length >= 1 && name.length <= 50 ? name : null;
 }
 
-export async function resolveAccount(identity: AccountUser, intent: 'login' | 'create', find: (identity: AccountUser) => Promise<AccountUser | null>) {
+export async function resolveAccount(identity: AccountUser, find: (identity: AccountUser) => Promise<AccountUser | null>, create: (identity: AccountUser, name: string) => Promise<AccountUser>) {
   const user = await find(identity);
   if (user) return { kind: 'signed-in' as const, user };
-  return intent === 'create' ? { kind: 'register' as const, identity } : { kind: 'missing' as const };
+  return { kind: 'signed-in' as const, user: await create(identity, identity.name) };
 }

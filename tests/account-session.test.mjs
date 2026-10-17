@@ -3,6 +3,10 @@ import assert from 'node:assert/strict';
 import { encodeSession, decodeSession } from '../lib/account-session.ts';
 
 const user = { id: '123456789012345678', name: 'Cloudy member' };
+test('email sessions retain email identity', () => {
+  const email = { id: 'a'.repeat(64), name: 'Cloudy member', provider: 'email', email: 'member@example.com' };
+  assert.deepEqual(decodeSession(encodeSession(email, 'test-secret', 1000), 'test-secret', 1001), email);
+});
 test('Google sessions retain their provider without confusing Discord identity', () => {
   const google = { id: 'google-user-subject', name: 'Google member', provider: 'google' };
   assert.deepEqual(decodeSession(encodeSession(google, 'test-secret', 1000), 'test-secret', 1001), google);

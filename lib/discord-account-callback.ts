@@ -31,8 +31,6 @@ export async function completeAccountLogin(request: NextRequest) {
   if (!state || (!signedIntent && !cookieValid) || !code) return finish('failed');
   if (!process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_CLIENT_SECRET) return finish('unavailable');
 
-  const intent = signedIntent || (expected?.startsWith('cloudy-login:create:') ? 'create' : 'login');
-
   try {
     const token = await fetch('https://discord.com/api/v10/oauth2/token', {
       method: 'POST',
@@ -63,7 +61,6 @@ export async function completeAccountLogin(request: NextRequest) {
     const response = await finishAccountOAuth(
       request,
       { id: user.id, name: (user.global_name || user.username).slice(0, 100), provider: 'discord' },
-      intent
     );
     response.cookies.set(STATE_COOKIE, '', { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/api/oauth/discord/callback', maxAge: 0 });
     return response;

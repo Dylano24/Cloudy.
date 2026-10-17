@@ -1925,9 +1925,12 @@ body {
 .cloudy-classic-game-card:focus,
 .cloudy-classic-game-card:active,
 .cloudy-classic-game-card:visited {
-  border: 1px solid #c7192b !important;
-  box-shadow: 0 28px 70px rgba(0,0,0,.44), 0 0 0 1px rgba(229,27,46,.45), 0 0 14px rgba(229,27,46,.36) !important;
+  border: 1px solid #050505 !important;
+  box-shadow: 0 28px 70px rgba(0,0,0,.44) !important;
 }
+
+.cloudy-restored-payment-brands span { display: inline-flex; align-items: center; gap: 6px; }
+.cloudy-restored-payment-brands svg { width: 25px; height: 16px; color: #fff; flex: none; }
 
 /* Preserve the same uncropped source proportions as the approved header logo. */
 .cloudy-footer-brand img {

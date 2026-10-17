@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
     if (!profile.ok) return finish('failed');
     const user = await profile.json();
     if (typeof user.sub !== 'string' || !/^[A-Za-z0-9_-]{1,255}$/.test(user.sub) || typeof user.name !== 'string') return finish('failed');
-    const response = await finishAccountOAuth(request, { id: user.sub, name: user.name.slice(0, 100), provider: 'google' }, expected.startsWith('create:') ? 'create' : 'login');
+    const response = await finishAccountOAuth(request, { id: user.sub, name: user.name.slice(0, 100), provider: 'google' });
     response.cookies.set('cloudy-google-state', '', { httpOnly: true, secure: request.nextUrl.protocol === 'https:', sameSite: 'lax', path: '/api/account/google/callback', maxAge: 0 });
     return response;
   } catch { return finish('failed'); }

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { Gamepad2, ShoppingBag, CreditCard } from 'lucide-react';
 import { StoreFireworks } from '@/components/shop/store-fireworks';
 import styles from './shop.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
@@ -113,16 +112,6 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         </GameCarousel>
       </section>
 
-      <section className={styles.flow} aria-label="Store flow">
-        <div>
-          <h2>Store flow</h2>
-        </div>
-        <div className={styles.steps}>
-          <article data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>01</b><Gamepad2 size={27} aria-hidden="true" /></div><h3>Choose a game</h3><p>Select the Cloudy experience you play.</p></article>
-          <article data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>02</b><ShoppingBag size={27} aria-hidden="true" /></div><h3>Pick what you need</h3><p>Browse the game&apos;s kits &amp; servers.</p></article>
-          <article data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><div className={styles.stepHeader}><b>03</b><CreditCard size={27} aria-hidden="true" /></div><h3>Checkout</h3><p>Your basket stays connected to the correct game.</p></article>
-        </div>
-      </section>
     </main>
   );
 }
