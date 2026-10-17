@@ -1934,8 +1934,8 @@ body {
 .cloudy-restored-payment-brands .cloudy-payment-visa svg { width: 43px; height: 24px; }
 .cloudy-restored-payment-brands .cloudy-payment-apple svg { width: 55px; height: 29px; transform: scale(1.5); }
 .cloudy-restored-payment-brands .cloudy-payment-mastercard { width: 34px; height: 22px; }
-.cloudy-restored-payment-brands .cloudy-payment-paypal { color: #0070ba; }
-.cloudy-restored-payment-brands .cloudy-payment-google { width: 55px; height: 29px; object-fit: contain; flex: none; }
+.cloudy-restored-payment-brands .cloudy-payment-paypal { color: #fff; }
+.cloudy-restored-payment-brands .cloudy-payment-google { width: 55px; height: 29px; object-fit: contain; flex: none; filter: grayscale(1); }
 
 /* Preserve the same uncropped source proportions as the approved header logo. */
 .cloudy-footer-brand img {
