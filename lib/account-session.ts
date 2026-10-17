@@ -1,6 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 
-export type AccountUser = { id: string; name: string; provider?: 'discord' | 'google' };
+export type AccountUser = { id: string; name: string; provider?: 'discord' | 'google' | 'email'; email?: string };
 export function accountSigningSecret() { return process.env.ACCOUNT_SESSION_SECRET || process.env.DISCORD_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || ''; }
 export const SESSION_COOKIE = 'cloudy-session';
 export const STATE_COOKIE = 'cloudy-login-state';
@@ -24,8 +24,9 @@ export function decodeSession(token: string | undefined, secret: string, now = M
   if (supplied.length !== expected.length || !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) return null;
   try {
     const data = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
-    const validId = typeof data.id === 'string' && (data.provider === 'google' ? /^[A-Za-z0-9_-]{1,255}$/.test(data.id) : /^\d{17,20}$/.test(data.id));
-    if (!Number.isFinite(data.exp) || data.exp <= now || !validId || typeof data.name !== 'string' || data.name.length > 100 || (data.provider !== undefined && !['discord', 'google'].includes(data.provider))) return null;
-    return { id: data.id, name: data.name, ...(data.provider ? { provider: data.provider } : {}) };
+    const validId = typeof data.id === 'string' && (data.provider === 'google' ? /^[A-Za-z0-9_-]{1,255}$/.test(data.id) : data.provider === 'email' ? /^[a-f0-9]{64}$/.test(data.id) : /^\d{17,20}$/.test(data.id));
+    if (!Number.isFinite(data.exp) || data.exp <= now || !validId || typeof data.name !== 'string' || data.name.length > 100 || (data.provider !== undefined && !['discord', 'google', 'email'].includes(data.provider))) return null;
+    if (data.provider === 'email' && (typeof data.email !== 'string' || data.email.length > 254)) return null;
+    return { id: data.id, name: data.name, ...(data.provider ? { provider: data.provider } : {}), ...(data.provider === 'email' ? { email: data.email } : {}) };
   } catch { return null; }
 }

@@ -3,7 +3,7 @@ import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-rea
 import styles from './home.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
 import { MobilePanelSync } from '@/components/home/mobile-panel-sync';
-import { RedParticles } from '@/components/home/red-particles';
+import { SiApplepay, SiGooglepay, SiMastercard, SiPaypal, SiVisa } from 'react-icons/si';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/EGDVMmmSzF';
@@ -13,7 +13,6 @@ export default function HomePage() {
     <>
     <div className={`cloudy-classic-home ${styles.home}`}>
       <MobilePanelSync />
-      <RedParticles />
       <div className="cloudy-classic-smoke" aria-hidden="true" />
 
       <section className="cloudy-classic-hero">
@@ -82,7 +81,7 @@ export default function HomePage() {
             <h2>Secure <span className={styles.titleGlow}>payments</span></h2>
             <p>Simple, secure and reliable checkout.</p>
             <div className="cloudy-restored-payment-brands" aria-label="Payment methods">
-              <span>Visa</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span><span>Google Pay</span>
+              <span><SiVisa aria-hidden="true" />Visa</span><span><SiMastercard aria-hidden="true" />Mastercard</span><span><SiPaypal aria-hidden="true" />PayPal</span><span><SiApplepay aria-hidden="true" />Apple Pay</span><span><SiGooglepay aria-hidden="true" />Google Pay</span>
             </div>
           </div>
           <div className="cloudy-restored-pay-grid">

@@ -20,10 +20,8 @@ export function Footer() {
             <div className="cloudy-footer-title">Navigation</div>
             <div className="cloudy-footer-links">
               <Link href="/">Home</Link>
-              <Link href="/#games">Server</Link>
               <Link href="/shop">Store</Link>
-              <Link href="/appeal">Appeal form</Link>
-              <Link href="/support">Support &amp; Help</Link>
+              <Link href="/support">Support</Link>
             </div>
           </div>
 
