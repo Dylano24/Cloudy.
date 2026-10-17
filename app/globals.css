@@ -1932,7 +1932,7 @@ body {
 .cloudy-restored-payment-brands span { display: inline-flex; align-items: center; gap: 8px; min-height: 43px; font-size: 11px; letter-spacing: .04em; }
 .cloudy-restored-payment-brands svg { width: 31px; height: 21px; color: #fff; flex: none; }
 .cloudy-restored-payment-brands .cloudy-payment-visa svg { width: 43px; height: 24px; }
-.cloudy-restored-payment-brands .cloudy-payment-apple svg { width: 55px; height: 29px; }
+.cloudy-restored-payment-brands .cloudy-payment-apple svg { width: 55px; height: 29px; transform: scale(1.5); }
 .cloudy-restored-payment-brands .cloudy-payment-mastercard { width: 34px; height: 22px; }
 .cloudy-restored-payment-brands .cloudy-payment-paypal { color: #0070ba; }
 .cloudy-restored-payment-brands .cloudy-payment-google { width: 55px; height: 29px; object-fit: contain; flex: none; }
