@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeAccountEmail, validAccountPassword } from '../lib/email-account.ts';
+import { emailAccountPath, normalizeAccountEmail, validAccountPassword } from '../lib/email-account.ts';
+
+test('preview accounts use a separate storage path from live accounts', () => {
+  assert.match(emailAccountPath('player@example.com', 'preview'), /^accounts\/preview-v1\/[a-f0-9]{64}\.json$/);
+  assert.match(emailAccountPath('player@example.com', 'production'), /^accounts\/v1\/[a-f0-9]{64}\.json$/);
+});
 
 test('Cloudy email accounts normalize case and surrounding whitespace', () => {
   assert.equal(normalizeAccountEmail('  Player@Example.COM '), 'player@example.com');

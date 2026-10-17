@@ -5,7 +5,8 @@ import { validateDisplayName } from './account-registration';
 
 function pathname(identity: AccountUser) {
   if (!['google', 'discord'].includes(identity.provider || '')) throw new Error('Invalid provider');
-  return `accounts/v1/${createHash('sha256').update(`${identity.provider}:${identity.id}`).digest('hex')}.json`;
+  const environment = process.env.VERCEL_ENV === 'preview' ? 'preview-v1' : 'v1';
+  return `accounts/${environment}/${createHash('sha256').update(`${identity.provider}:${identity.id}`).digest('hex')}.json`;
 }
 
 export async function findAccount(identity: AccountUser): Promise<AccountUser | null> {

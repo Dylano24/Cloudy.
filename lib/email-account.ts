@@ -16,7 +16,10 @@ export function validAccountPassword(value: unknown): value is string {
 }
 
 function accountId(email: string) { return createHash('sha256').update(`email:${email}`).digest('hex'); }
-function pathname(email: string) { return `accounts/v1/${accountId(email)}.json`; }
+export function emailAccountPath(email: string, environment = process.env.VERCEL_ENV) {
+  return `accounts/${environment === 'preview' ? 'preview-v1' : 'v1'}/${accountId(email)}.json`;
+}
+function pathname(email: string) { return emailAccountPath(email); }
 
 async function passwordDigest(password: string, salt: Buffer): Promise<Buffer> {
   return await new Promise<Buffer>((resolve, reject) => {
