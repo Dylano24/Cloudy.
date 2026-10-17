@@ -1,9 +1,10 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-react';
 import styles from './home.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
 import { MobilePanelSync } from '@/components/home/mobile-panel-sync';
-import { SiApplepay, SiGooglepay, SiMastercard, SiPaypal, SiVisa } from 'react-icons/si';
+import { SiApplepay, SiPaypal, SiVisa } from 'react-icons/si';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/EGDVMmmSzF';
@@ -81,7 +82,11 @@ export default function HomePage() {
             <h2>Secure <span className={styles.titleGlow}>payments</span></h2>
             <p>Simple, secure and reliable checkout.</p>
             <div className="cloudy-restored-payment-brands" aria-label="Payment methods">
-              <span><SiVisa aria-hidden="true" />Visa</span><span><SiMastercard aria-hidden="true" />Mastercard</span><span><SiPaypal aria-hidden="true" />PayPal</span><span><SiApplepay aria-hidden="true" />Apple Pay</span><span><SiGooglepay aria-hidden="true" />Google Pay</span>
+              <span className="cloudy-payment-visa" aria-label="Visa"><SiVisa aria-hidden="true" /></span>
+              <span><svg className="cloudy-payment-mastercard" viewBox="0 0 34 22" aria-hidden="true"><defs><clipPath id="cloudy-mastercard-overlap"><circle cx="12" cy="11" r="10" /></clipPath></defs><circle cx="12" cy="11" r="10" fill="#EB001B" /><circle cx="22" cy="11" r="10" fill="#F79E1B" /><circle cx="22" cy="11" r="10" fill="#FF5F00" clipPath="url(#cloudy-mastercard-overlap)" /></svg>Mastercard</span>
+              <span><SiPaypal className="cloudy-payment-paypal" aria-hidden="true" />PayPal</span>
+              <span><SiApplepay aria-hidden="true" />Apple Pay</span>
+              <span><Image className="cloudy-payment-google" src="/images/google-pay-mark.png" alt="" width={45} height={24} />Google Pay</span>
             </div>
           </div>
           <div className="cloudy-restored-pay-grid">
