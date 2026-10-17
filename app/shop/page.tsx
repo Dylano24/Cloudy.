@@ -50,6 +50,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <div className={styles.stats}>
           <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Games</span><strong>01</strong></div>
           <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Purchases</span><strong>0</strong></div>
+          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Live</span><strong>X</strong></div>
+          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Players</span><strong>X</strong></div>
+          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Servers</span><strong>X</strong></div>
         </div>
       </section>
 

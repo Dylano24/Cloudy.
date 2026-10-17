@@ -5,7 +5,6 @@
 .form button { min-height: 51px; margin-top: 6px; padding: 12px 20px; color: #fff; background: #c7192b; border: 1px solid #f12c42; border-radius: 10px; font-weight: 850; cursor: pointer; box-shadow: 0 10px 30px #e51b2e24; }
 .form button:hover { background: #e51b2e; }
 .form button:disabled { opacity: .6; cursor: wait; }
-.hint { margin: -5px 0 0; color: #a5a5ad; font-size: 12px; line-height: 1.5; }
 .error { margin: 0; color: #ff6475; font-size: 13px; }
 .card { background: radial-gradient(circle at 100% 0%, #e51b2e11, transparent 45%), #080809; border-color: #39393d; box-shadow: 0 24px 70px #0009, 0 0 28px #e51b2e0c; }
 .eyebrow { display: inline-flex; gap: 8px; align-items: center; margin-bottom: 17px; color: #ff5b6d; font-size: 11px; font-weight: 850; letter-spacing: .17em; text-transform: uppercase; }
