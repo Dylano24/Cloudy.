@@ -35,7 +35,8 @@ async function readRecord(email: string): Promise<EmailRecord | null> {
   if (blob.statusCode !== 200 || !blob.stream || (blob.blob.size || 0) > 4096) throw new Error('Invalid account record');
   const record = await new Response(blob.stream).json() as EmailRecord;
   if (record.provider !== 'email' || record.id !== accountId(email) || record.email !== email ||
-      typeof record.name !== 'string' || !/^[a-f0-9]{32}$/.test(record.salt) ||
+      typeof record.name !== 'string' || !record.name.trim() || record.name.length > 50 ||
+      /[\p{Cc}\p{Cf}]/u.test(record.name) || !/^[a-f0-9]{32}$/.test(record.salt) ||
       !/^[a-f0-9]{128}$/.test(record.passwordHash)) throw new Error('Invalid account record');
   return record;
 }
@@ -75,4 +76,15 @@ export async function verifyEmailAccount(email: string, password: string): Promi
 export async function findEmailAccount(email: string): Promise<AccountUser | null> {
   const record = await readRecord(email);
   return record ? publicUser(record) : null;
+}
+
+export async function updateEmailAccountName(email: string, name: string): Promise<AccountUser | null> {
+  const record = await readRecord(email);
+  if (!record) return null;
+  const updated = { ...record, name, updatedAt: new Date().toISOString() };
+  await put(pathname(email), JSON.stringify(updated), {
+    access: 'private', addRandomSuffix: false, allowOverwrite: true,
+    contentType: 'application/json', cacheControlMaxAge: 60,
+  });
+  return publicUser(updated);
 }
