@@ -38,8 +38,8 @@ const games = [
 function StatusCount({ label, count, online }: { label: string; count: number | null; online: boolean }) {
   const status = online ? styles.statusOnline : styles.statusOffline;
   return <div className={`${styles.statMetric} ${styles.liveMetric}`}>
-    <span>{label}</span>
-    <div className={styles.liveValue}><i className={`${styles.statusDot} ${status}`} aria-hidden="true" /><strong>{count ?? '—'}</strong></div>
+    <strong className={styles.statNumber}>{count ?? '—'}</strong>
+    <div className={styles.statStatus}><i className={`${styles.statusDot} ${status}`} aria-hidden="true" /><span>Online {label}</span></div>
   </div>;
 }
 
@@ -57,8 +57,8 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
 
         <div className={styles.stats}>
           <div data-cloudy-store-sheen className={`${styles.statsPanel} cloudy-traced-panel cloudy-store-traced-panel`} aria-label="Cloudy store and server status">
-            <div className={styles.statMetric}><span>Games</span><strong>1</strong></div>
-            <div className={styles.statMetric}><span>Purchases</span><strong>0</strong></div>
+            <div className={styles.statMetric}><strong className={styles.statNumber}>1</strong><span className={styles.statLabel}>Games</span></div>
+            <div className={styles.statMetric}><strong className={styles.statNumber}>0</strong><span className={styles.statLabel}>Purchases</span></div>
             <StatusCount label="Players" count={0} online={false} />
             <StatusCount label="Servers" count={1} online />
           </div>
@@ -86,7 +86,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                 <div className={styles.shade} aria-hidden="true" />
                 <div className={styles.cardTop}>
                   <span className={item.live ? styles.live : styles.soon}>{item.status}</span>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <span className={styles.cardIndexNumber}>{String(index + 1).padStart(2, '0')}</span>
                 </div>
                 <div className={styles.cardBody}>
                   <div className={styles.titleRow}>
