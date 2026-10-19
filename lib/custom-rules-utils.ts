@@ -9,6 +9,20 @@ export interface CustomRuleValidation {
   max: number | null;
 }
 
+export function missingRequiredCustomFields(
+  fields: CustomField[] | undefined,
+  values: Record<string, unknown>,
+  isVisible: (field: CustomField) => boolean,
+): string[] {
+  return (fields || []).filter(field => {
+    if (!field.required || !isVisible(field)) return false;
+    const value = values[field.marker || field.id.toString()];
+    return value === undefined || value === null || value === false ||
+      (typeof value === 'number' && !Number.isFinite(value)) ||
+      (typeof value === 'string' && !value.trim());
+  }).map(field => field.marker || field.id.toString());
+}
+
 /**
  * Calculate the total value for a custom rule based on field values
  */

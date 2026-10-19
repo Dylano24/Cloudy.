@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, use, useEffect, useRef } from 'react';
 import type { CustomField } from '@/lib/schemas';
-import { validateCustomRules, getCustomRulesErrorMessage } from '@/lib/custom-rules-utils';
+import { validateCustomRules, getCustomRulesErrorMessage, missingRequiredCustomFields } from '@/lib/custom-rules-utils';
 import { calculateNumberRangeCharge } from '@/lib/cart-utils';
 
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -22,6 +22,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const [serverSelection, setServerSelection] = useState<number | undefined>(undefined);
   const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
+  const [missingFields, setMissingFields] = useState<string[]>([]);
   const [subscriptionType, setSubscriptionType] = useState<'onetime' | 'recurring'>('recurring');
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -259,17 +260,9 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
     
     // Validate required custom fields (only for visible fields)
     if (product.custom_fields) {
-      const missingRequired = product.custom_fields.some(
-        (field) => {
-          if (!isFieldVisible(field) || !field.required) return false;
-          const value = customFields[field.marker || field.id.toString()];
-          if (field.type === 'number' || field.type === 'range') {
-            return value === undefined || value === null;
-          }
-          return !value;
-        }
-      );
-      if (missingRequired) {
+      const missingRequired = missingRequiredCustomFields(product.custom_fields, customFields, isFieldVisible);
+      setMissingFields(missingRequired);
+      if (missingRequired.length) {
         setError('Please fill in all required fields');
         setTimeout(() => setError(null), 5000);
         return;
@@ -335,17 +328,9 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
     
     // Validate required custom fields (only for visible fields)
     if (product.custom_fields) {
-      const missingRequired = product.custom_fields.some(
-        (field) => {
-          if (!isFieldVisible(field) || !field.required) return false;
-          const value = customFields[field.marker || field.id.toString()];
-          if (field.type === 'number' || field.type === 'range') {
-            return value === undefined || value === null;
-          }
-          return !value;
-        }
-      );
-      if (missingRequired) {
+      const missingRequired = missingRequiredCustomFields(product.custom_fields, customFields, isFieldVisible);
+      setMissingFields(missingRequired);
+      if (missingRequired.length) {
         setError('Please fill in all required fields');
         setTimeout(() => setError(null), 5000);
         return;
@@ -387,6 +372,10 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
   const handleCustomFieldChange = (field: CustomField, value: any) => {
     const key = field.marker || field.id.toString();
+    if (value !== undefined && value !== null && value !== false &&
+        (typeof value !== 'number' || Number.isFinite(value)) && String(value).trim()) {
+      setMissingFields(previous => previous.filter(missing => missing !== key));
+    }
     setCustomFields((prev) => {
       const newState = {
         ...prev,
@@ -832,9 +821,10 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
                           {/* Checkbox */}
                           {field.type === 'checkbox' && (
-                            <label className="flex items-start gap-3 p-4 rounded-lg bg-card border border-border hover:border-primary transition-colors cursor-pointer">
+                            <label className={`flex items-start gap-3 p-4 rounded-lg bg-card border hover:border-primary transition-colors cursor-pointer ${missingFields.includes(key) ? 'border-red-500' : 'border-border'}`}>
                               <input
                                 type="checkbox"
+                                aria-invalid={missingFields.includes(key)}
                                 checked={customFields[key] || false}
                                 onChange={(e) => handleCustomFieldChange(field, e.target.checked)}
                                 className="w-5 h-5 mt-0.5 rounded border-border bg-card"
@@ -863,7 +853,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                               onChange={(e) => handleCustomFieldChange(field, e.target.value)}
                               placeholder={field.default_value?.toString() || ''}
                               required={field.required}
-                              className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
+                              aria-invalid={missingFields.includes(key)}
+                              className={`w-full px-4 py-3 rounded-lg bg-card border focus:border-primary outline-none transition-colors ${missingFields.includes(key) ? 'border-red-500' : 'border-border'}`}
                             />
                           )}
 
@@ -875,7 +866,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                               onChange={(e) => handleCustomFieldChange(field, e.target.value)}
                               placeholder={field.default_value?.toString() || ''}
                               required={field.required}
-                              className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
+                              aria-invalid={missingFields.includes(key)}
+                              className={`w-full px-4 py-3 rounded-lg bg-card border focus:border-primary outline-none transition-colors ${missingFields.includes(key) ? 'border-red-500' : 'border-border'}`}
                             />
                           )}
 
@@ -917,7 +909,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                     onChange={(e) => handleCustomFieldChange(field, parseFloat(e.target.value))}
                                     placeholder={field.default_value?.toString() || ''}
                                     required={field.required}
-                                    className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
+                                    aria-invalid={missingFields.includes(key)}
+                                    className={`w-full px-4 py-3 rounded-lg bg-card border focus:border-primary outline-none transition-colors ${missingFields.includes(key) ? 'border-red-500' : 'border-border'}`}
                                   />
                                 )}
                               </div>
@@ -931,7 +924,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                 value={customFields[key] || ''}
                                 onChange={(e) => handleCustomFieldChange(field, e.target.value)}
                                 required={field.required}
-                                className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors cursor-pointer appearance-none pr-10"
+                                aria-invalid={missingFields.includes(key)}
+                                className={`w-full px-4 py-3 rounded-lg bg-card border focus:border-primary outline-none transition-colors cursor-pointer appearance-none pr-10 ${missingFields.includes(key) ? 'border-red-500' : 'border-border'}`}
                               >
                                 <option value="" disabled>
                                   Choose your {field.name.toLowerCase()}
@@ -969,6 +963,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                               </p>
                             </div>
                           )}
+                          {missingFields.includes(key) && <p className="text-red-400 text-sm" role="alert">This field is required.</p>}
                         </div>
                       );
                     })}

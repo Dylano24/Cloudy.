@@ -30,3 +30,14 @@ export async function createAccount(identity: AccountUser, name: string): Promis
     throw error;
   }
 }
+
+export async function updateAccountName(identity: AccountUser, name: string): Promise<AccountUser | null> {
+  const account = await findAccount(identity);
+  if (!account) return null;
+  const user = { ...account, name };
+  await put(pathname(identity), JSON.stringify({ ...user, updatedAt: new Date().toISOString() }), {
+    access: 'private', addRandomSuffix: false, allowOverwrite: true,
+    contentType: 'application/json', cacheControlMaxAge: 60,
+  });
+  return user;
+}
