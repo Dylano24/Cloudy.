@@ -9,7 +9,7 @@ const sections = [
   },
   {
     title: '3. How we use information',
-    body: 'We use your information to manage your account, process orders and deliver purchases to the right game account. We also use it to answer account or order questions and protect the store against misuse.',
+    body: 'We use your information to manage your account, process orders and deliver purchases to the right account. We also use it to answer account or order questions and protect the store against misuse.',
   },
   {
     title: '4. Cookies and browser storage',
@@ -17,7 +17,7 @@ const sections = [
   },
   {
     title: '5. Service providers',
-    body: 'Vercel hosts the website and stores Cloudy account information. Google and Discord handle sign-in when you choose them. The payment provider handles payments. Each provider receives only the information needed for its service.',
+    body: 'Vercel hosts the website and stores account information. Google and Discord handle sign-in when you choose them. The payment provider handles payments. Each provider receives only the information needed for its service.',
   },
   {
     title: '6. How long we keep your information',
