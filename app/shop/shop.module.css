@@ -162,6 +162,7 @@
   width: 6px;
   height: 6px;
   margin: 0;
+  transform: translateX(-3px);
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,.34);
 }
