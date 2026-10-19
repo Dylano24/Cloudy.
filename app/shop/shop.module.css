@@ -77,11 +77,8 @@
 }
 
 .stats {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 198px));
-  justify-content: center;
-  gap: 12px;
-  margin-top: 34px;
+  width: min(920px, 100%);
+  margin: 34px auto 0;
 }
 
 .stats > div {
@@ -99,9 +96,8 @@
   display: block;
 }
 .stats .statsPanel {
-  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0;
   padding: 0;
   overflow: hidden;
@@ -111,38 +107,38 @@
   padding: 17px 18px 18px;
   background: transparent;
 }
-.statMetric:nth-child(even) { border-left: 1px solid rgba(255,255,255,.10); }
-.statMetric:nth-child(n + 3) { border-top: 1px solid rgba(255,255,255,.10); }
+.statMetric + .statMetric { border-left: 1px solid rgba(255,255,255,.10); }
 .liveMetric { background: transparent; }
 .stats .statNumber {
   display: block;
   margin: 0;
-  font-family: var(--font-display), Impact, sans-serif;
-  font-size: clamp(44px, 5vw, 58px);
-  font-weight: 400;
-  line-height: .9;
-  letter-spacing: .015em;
-  color: #f4f4f6;
-  -webkit-text-stroke: 1px rgba(255,255,255,.22);
+  font-family: var(--font-sans), "Manrope", sans-serif;
+  font-size: clamp(34px, 4vw, 46px);
+  font-weight: 620;
+  line-height: .95;
+  letter-spacing: -.045em;
+  color: #f7f7f8;
+  -webkit-text-stroke: .35px rgba(255,255,255,.18);
   text-shadow:
-    0 1px 0 #c8c8cc,
-    0 2px 0 #8b8b91,
-    0 5px 12px rgba(0,0,0,.88),
-    0 0 18px rgba(229,27,46,.10);
+    0 1px 0 rgba(255,255,255,.20),
+    0 3px 9px rgba(0,0,0,.72),
+    0 0 12px rgba(229,27,46,.08);
   font-variant-numeric: tabular-nums;
 }
 .stats .statLabel,
 .statStatus {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 13px;
-  color: #a6a6ac;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .13em;
-  line-height: 1.2;
+  gap: 8px;
+  margin-top: 10px;
+  color: #aaaab0;
+  font-family: var(--font-sans), "Manrope", sans-serif;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: .14em;
+  line-height: 1;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 .statStatus span {
   margin: 0;
@@ -180,13 +176,13 @@
 }
 .stats .statNumber {
   margin: 0;
-  font-size: clamp(44px, 5vw, 58px);
+  font-size: clamp(34px, 4vw, 46px);
 }
 .stats .statLabel,
 .stats .statStatus {
-  margin-top: 13px;
-  color: #a6a6ac;
-  font-size: 11px;
+  margin-top: 10px;
+  color: #aaaab0;
+  font-size: 9px;
 }
 
 .browser {
@@ -317,13 +313,13 @@
   font-size: 11px;
 }
 .cardIndexNumber {
-  font-family: var(--font-display), Impact, sans-serif;
-  font-size: 19px;
+  font-family: var(--font-sans), "Manrope", sans-serif;
+  font-size: 16px;
+  font-weight: 650;
   line-height: 1;
-  letter-spacing: .02em;
-  color: #f2f2f4;
-  -webkit-text-stroke: .6px rgba(255,255,255,.22);
-  text-shadow: 0 1px 0 #77777d, 0 3px 9px rgba(0,0,0,.78), 0 0 12px rgba(229,27,46,.10);
+  letter-spacing: -.03em;
+  color: #ededf0;
+  text-shadow: 0 2px 7px rgba(0,0,0,.72), 0 0 10px rgba(229,27,46,.08);
 }
 
 .live,
@@ -518,7 +514,12 @@
   .page { padding: 48px 14px 88px; }
   .hero { padding-top: 16px; }
   .hero h1 { font-size: clamp(54px, 17vw, 86px); }
-  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stats .statsPanel { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .statMetric { padding: 15px 10px 16px; }
+  .stats .statNumber { font-size: clamp(29px, 8vw, 38px); }
+  .stats .statLabel,
+  .stats .statStatus { gap: 5px; font-size: clamp(6.5px, 1.8vw, 8px); letter-spacing: .095em; }
+  .stats .statusDot { flex-basis: 7px; width: 7px; height: 7px; }
   .sectionHeader { flex-direction: column; align-items: flex-start; }
   .sectionHeader p { text-align: left; }
   .gameGrid { grid-template-columns: 1fr; }
