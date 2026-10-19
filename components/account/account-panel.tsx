@@ -21,14 +21,14 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
       {pending ? <p>Loading your account…</p> : !user ? <>
         <h2 className="text-2xl font-bold">Sign in to Cloudy</h2>
         <p className={styles.intro}>Use your Cloudy email and password, or continue with Google or Discord.</p>
-        {(params.has('login_error') || error) && <p role="alert" className="mt-3 text-sm text-red-500">{params.get('login_error') === 'unavailable' ? 'Google or Discord sign-in is unavailable on this preview.' : 'We could not sign you in. Please try again or contact Cloudy support.'}</p>}
+        {(params.has('login_error') || error) && <p role="alert" className="mt-3 text-sm text-red-500">{params.get('login_error') === 'unavailable' ? 'Google or Discord sign-in is temporarily unavailable.' : 'We could not sign you in. Please try again.'}</p>}
         <EmailAccountForm mode="login" />
         <div className={styles.providerActions}>
           <a href="/api/account/login">Continue with Discord</a>
           <a href="/api/account/google/login">Continue with Google</a>
         </div>
       </> : <>
-        {(section === 'account' || section === 'information' || section === 'create') ? <><h2 className="text-xl font-bold">{user.name}</h2>{(section === 'information' || section === 'account') && <AccountNameForm currentName={user.name} />}<dl className="mt-5 space-y-3 text-sm">{user.provider === 'email' ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div> : <div><dt className="text-muted">{user.provider === 'google' ? 'Google ID' : 'Discord ID'}</dt><dd>{user.id}</dd></div>}</dl></> : <>
+        {(section === 'account' || section === 'information' || section === 'create') ? <><h2 className="text-xl font-bold">{user.name}</h2>{section === 'account' && <AccountNameForm currentName={user.name} />}<dl className="mt-5 space-y-3 text-sm">{user.provider === 'email' ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div> : <div><dt className="text-muted">{user.provider === 'google' ? 'Google ID' : 'Discord ID'}</dt><dd>{user.id}</dd></div>}</dl></> : <>
           <p className="text-sm leading-7 text-muted">{section === 'orders' ? 'Your order history is not available here yet. Contact Cloudy support for help with a purchase.' : section === 'fidelity' ? 'Fidelity details are not available yet.' : 'Your saved favorites are not available here yet.'}</p>
           <Link href="/support" className="cloudy-classic-button mt-6" style={{ borderColor: '#e51b2e' }}>Contact support</Link>
         </>}
