@@ -98,6 +98,20 @@
 .stats span {
   display: block;
 }
+.stats .summaryStats {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+}
+.summaryMetric {
+  min-width: 0;
+  padding: 17px 18px 18px;
+  background: transparent;
+}
+.summaryMetric + .summaryMetric { border-left: 1px solid rgba(255,255,255,.10); }
+
 .stats .liveStats {
   grid-column: 1 / -1;
   display: grid;
