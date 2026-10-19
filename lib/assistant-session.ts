@@ -24,8 +24,8 @@ function tabStorage(): TabStorage | undefined {
   try { return window.sessionStorage; } catch { return undefined; }
 }
 
-// Session storage belongs to this tab only. A deliberate close removes it;
-// reloads can recover the open chat without creating a permanent chat archive.
+// Session storage belongs to this tab only. Closing the assistant keeps the
+// conversation available; closing the tab ends the browser session.
 export function readAssistantSession(storage = tabStorage()): AssistantSession | null {
   try {
     const raw = storage?.getItem(key);
