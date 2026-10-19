@@ -57,16 +57,18 @@ export function CloudyHelp() {
       setQuestion(session.question);
       setMessages(session.messages);
       setActivePhoneTopic(helpEntries.find(entry => entry.id === session.activePhoneTopicId) ?? null);
-      setOpen(true);
     }
     setSessionReady(true);
   }, []);
 
   useLayoutEffect(() => {
     if (!sessionReady) return;
-    if (open) saveAssistantSession(undefined, { question, messages, activePhoneTopicId: activePhoneTopic?.id ?? null });
-    else clearAssistantSession();
-  }, [sessionReady, open, question, messages, activePhoneTopic]);
+    if (question || messages.length || activePhoneTopic) {
+      saveAssistantSession(undefined, { question, messages, activePhoneTopicId: activePhoneTopic?.id ?? null });
+    } else {
+      clearAssistantSession();
+    }
+  }, [sessionReady, question, messages, activePhoneTopic]);
 
   function stopPendingReply() {
     requestGeneration.current += 1;
@@ -76,8 +78,7 @@ export function CloudyHelp() {
   }
 
   function clearConversation() {
-    // Closing the assistant ends this session. Clear both visible messages and
-    // any draft/topic, and invalidate pending replies so they cannot reappear.
+    // Starting a new conversation clears the history, draft and active topic.
     stopPendingReply();
     setActivePhoneTopic(null);
     setMessages([]);
@@ -85,8 +86,6 @@ export function CloudyHelp() {
   }
 
   function close() {
-    clearAssistantSession();
-    clearConversation();
     setOpen(false);
     launcherRef.current?.focus({ preventScroll: true });
   }
@@ -96,8 +95,6 @@ export function CloudyHelp() {
     if (!window.matchMedia('(max-width: 480px)').matches) return;
     if (!(event.target instanceof Element) || !event.target.closest('a[href]')) return;
     // Follow the link normally, but do not carry the open panel to its destination.
-    clearAssistantSession();
-    clearConversation();
     setOpen(false);
   }
 
