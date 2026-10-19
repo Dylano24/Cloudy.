@@ -36,7 +36,7 @@ const services = [
     title: 'Cloudy Studio',
     description: 'Custom Cloudy-built websites for businesses, brands and ideas — designed, developed and delivered with the same Cloudy standard.',
     status: 'View studio',
-    href: 'https://dylano-webstudio.vercel.app',
+    href: 'https://dylano-webstudio-8wxhg3ykc-cloudystore.vercel.app',
     icon: Code2,
     features: ['Cloudy design', 'Responsive build', 'From idea to launch'],
   },
