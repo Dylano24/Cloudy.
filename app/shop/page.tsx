@@ -59,7 +59,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
           <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Games</span><strong>01</strong></div>
           <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Purchases</span><strong>0</strong></div>
           <div data-cloudy-store-sheen className={`${styles.liveStats} cloudy-traced-panel cloudy-store-traced-panel`} aria-label="Cloudy Rust live server status">
-            <StatusCount label="Players" count={null} online={false} />
+            <StatusCount label="Players" count={0} online={false} />
             <StatusCount label="Servers" count={1} online />
           </div>
         </div>
