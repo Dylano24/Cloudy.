@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { CheckoutUser, ProductDetailed } from '@/lib/schemas';
 import { openTip4ServCheckout, type Tip4ServProductSimple } from '@/lib/tip4serv';
 import { convertCustomFieldsForApi } from '@/lib/cart-utils';
+import { isCloudyServiceProduct } from '@/lib/cloudy-service-products';
 
 const IDENTIFIER_LABELS: Record<string, string> = {
   email: 'Email Address',  username: 'Username',  minecraft_username: 'Minecraft Username',
@@ -34,7 +35,13 @@ function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
-  const productIds = useMemo(() => cart.items.map(item => item.product.id), [cart.items]);
+  const hasCloudyServiceItems = cart.items.some(item => isCloudyServiceProduct(item.product));
+  const hasStoreItems = cart.items.some(item => !isCloudyServiceProduct(item.product));
+  const isCloudyServicePreviewCheckout = hasCloudyServiceItems && !hasStoreItems;
+  const productIds = useMemo(
+    () => cart.items.filter(item => !isCloudyServiceProduct(item.product)).map(item => item.product.id),
+    [cart.items]
+  );
   // Use numeric store id when available
   const storeId = store?.id ? store.id.toString() : undefined;
   
@@ -54,6 +61,7 @@ function CheckoutContent() {
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [previewNotice, setPreviewNotice] = useState<string | null>(null);
   const [isHydrated, setIsHydrated] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
 
@@ -169,6 +177,20 @@ function CheckoutContent() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setCheckoutError(null);
+    setPreviewNotice(null);
+
+    if (hasCloudyServiceItems && hasStoreItems) {
+      setCheckoutError('Website packages and game products must be checked out separately.');
+      return;
+    }
+
+    if (isCloudyServicePreviewCheckout) {
+      if (!validateForm()) {
+        return;
+      }
+      setPreviewNotice('Preview checkout is working. The final payment action for Cloudy Studio stays disabled until you approve this preview and the real store product IDs are connected.');
+      return;
+    }
 
     if (!flagsLoaded) {
       setCheckoutError('Loading checkout configuration, please try again.');
@@ -385,7 +407,7 @@ function CheckoutContent() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold mb-2">Checkout</h1>
-            <p className="text-muted">Complete your purchase</p>
+            <p className="text-muted">{isCloudyServicePreviewCheckout ? 'Review your Cloudy Studio purchase. Payment is disabled in this preview.' : 'Complete your purchase'}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -505,6 +527,12 @@ function CheckoutContent() {
                   )}
                 </div>
 
+                {previewNotice && (
+                  <div className="p-4 rounded-lg bg-primary/10 border border-primary/20 text-sm text-primary">
+                    {previewNotice}
+                  </div>
+                )}
+
                 {/* Error Display */}
                 {(checkoutError || mutation.isError) && (
                   <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 flex items-start gap-3">
@@ -532,7 +560,7 @@ function CheckoutContent() {
                   ) : (
                     <>
                       <CheckCircle className="w-5 h-5" />
-                      Complete Purchase
+                      {isCloudyServicePreviewCheckout ? 'Continue to Payment (Preview)' : 'Complete Purchase'}
                     </>
                   )}
                 </button>
@@ -551,7 +579,106 @@ function CheckoutContent() {
                         {item.product.name} x{item.quantity}
                       </span>
                       <span className="font-semibold whitespace-nowrap">
-                        ${(item.product.price * item.quantity).toFixed(2)}
+                        {isCloudyServiceProduct(item.product) ? '€' : '
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4 border-t border-border">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-2xl font-bold text-primary">
+                      {isCloudyServicePreviewCheckout ? '€' : '
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
+          <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
+          <h1 className="text-2xl font-bold">Loading checkout...</h1>
+        </div>
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
+  );
+}
+}{(item.product.price * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4 border-t border-border">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-2xl font-bold text-primary">
+                      ${cart.getTotal().toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
+          <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
+          <h1 className="text-2xl font-bold">Loading checkout...</h1>
+        </div>
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
+  );
+}
+}{cart.getTotal().toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
+          <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
+          <h1 className="text-2xl font-bold">Loading checkout...</h1>
+        </div>
+      </div>
+    }>
+      <CheckoutContent />
+    </Suspense>
+  );
+}
+}{(item.product.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
