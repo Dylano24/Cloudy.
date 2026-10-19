@@ -183,6 +183,19 @@
   color: #7f7f86;
   font-size: 12px;
 }
+/* Keep the two online-status labels at the compact size of their own cell.
+   This intentionally overrides the generic .stats span rule above. */
+.stats .statStatus > span {
+  margin: 0;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-transform: inherit;
+  white-space: nowrap;
+}
 .stats .statNumber {
   margin: 0;
 }
