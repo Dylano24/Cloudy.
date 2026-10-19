@@ -114,24 +114,42 @@
 .statMetric:nth-child(even) { border-left: 1px solid rgba(255,255,255,.10); }
 .statMetric:nth-child(n + 3) { border-top: 1px solid rgba(255,255,255,.10); }
 .liveMetric { background: transparent; }
-.stats .liveMetric > span {
+.stats .statNumber {
+  display: block;
   margin: 0;
-  color: #a8a8ae;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .04em;
-  text-transform: uppercase;
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: clamp(44px, 5vw, 58px);
+  font-weight: 400;
+  line-height: .9;
+  letter-spacing: .015em;
+  color: #f4f4f6;
+  -webkit-text-stroke: 1px rgba(255,255,255,.22);
+  text-shadow:
+    0 1px 0 #c8c8cc,
+    0 2px 0 #8b8b91,
+    0 5px 12px rgba(0,0,0,.88),
+    0 0 18px rgba(229,27,46,.10);
+  font-variant-numeric: tabular-nums;
 }
-.liveValue {
+.stats .statLabel,
+.statStatus {
   display: flex;
   align-items: center;
-  gap: 11px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: 13px;
+  color: #a6a6ac;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
-.stats .liveValue strong {
+.statStatus span {
   margin: 0;
-  font-size: 24px;
-  line-height: 1;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
 }
 .stats .statusDot {
   display: inline-block;
@@ -159,6 +177,16 @@
   margin-top: 3px;
   color: #7f7f86;
   font-size: 12px;
+}
+.stats .statNumber {
+  margin: 0;
+  font-size: clamp(44px, 5vw, 58px);
+}
+.stats .statLabel,
+.stats .statStatus {
+  margin-top: 13px;
+  color: #a6a6ac;
+  font-size: 11px;
 }
 
 .browser {
@@ -287,6 +315,15 @@
   justify-content: space-between;
   color: rgba(255,255,255,.52);
   font-size: 11px;
+}
+.cardIndexNumber {
+  font-family: var(--font-display), Impact, sans-serif;
+  font-size: 19px;
+  line-height: 1;
+  letter-spacing: .02em;
+  color: #f2f2f4;
+  -webkit-text-stroke: .6px rgba(255,255,255,.22);
+  text-shadow: 0 1px 0 #77777d, 0 3px 9px rgba(0,0,0,.78), 0 0 12px rgba(229,27,46,.10);
 }
 
 .live,
