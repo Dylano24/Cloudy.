@@ -98,33 +98,22 @@
 .stats span {
   display: block;
 }
-.stats .summaryStats {
+.stats .statsPanel {
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0;
   padding: 0;
+  overflow: hidden;
 }
-.summaryMetric {
+.statMetric {
   min-width: 0;
   padding: 17px 18px 18px;
   background: transparent;
 }
-.summaryMetric + .summaryMetric { border-left: 1px solid rgba(255,255,255,.10); }
-
-.stats .liveStats {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0;
-  padding: 0;
-}
-.liveMetric {
-  min-width: 0;
-  padding: 17px 18px 18px;
-  background: transparent;
-}
-.liveMetric + .liveMetric { border-left: 1px solid rgba(255,255,255,.10); }
+.statMetric:nth-child(even) { border-left: 1px solid rgba(255,255,255,.10); }
+.statMetric:nth-child(n + 3) { border-top: 1px solid rgba(255,255,255,.10); }
+.liveMetric { background: transparent; }
 .stats .liveMetric > span {
   margin: 0;
   color: #a8a8ae;
