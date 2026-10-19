@@ -2,7 +2,7 @@ import { createHash, randomBytes } from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) return NextResponse.redirect(new URL('/account/create?login_error=unavailable', request.nextUrl.origin));
+  if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) return NextResponse.redirect(new URL('/account?login_error=unavailable', request.nextUrl.origin));
   const intent = request.nextUrl.searchParams.get('intent') === 'create' ? 'create' : 'login';
   const state = `${intent}:${randomBytes(32).toString('hex')}`;
   const verifier = randomBytes(32).toString('base64url');

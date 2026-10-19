@@ -35,6 +35,14 @@ const games = [
   },
 ] as const;
 
+function StatusCount({ label, count }: { label: string; count: number | null }) {
+  const status = count === null ? styles.statusUnknown : count > 0 ? styles.statusOnline : styles.statusOffline;
+  return <div className={styles.liveMetric}>
+    <span>{label}</span>
+    <div className={styles.liveValue}><i className={`${styles.statusDot} ${status}`} aria-hidden="true" /><strong>{count ?? 'X'}</strong></div>
+  </div>;
+}
+
 export default async function ShopPage({ searchParams }: ShopPageProps) {
   const { game } = await searchParams;
   if (game === 'rust') return <RustKitPreview />;
@@ -50,9 +58,10 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <div className={styles.stats}>
           <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Games</span><strong>01</strong></div>
           <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Purchases</span><strong>0</strong></div>
-          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Live</span><strong>X</strong></div>
-          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Players</span><strong>X</strong></div>
-          <div data-cloudy-store-sheen className="cloudy-traced-panel cloudy-store-traced-panel"><span>Servers</span><strong>X</strong></div>
+          <div data-cloudy-store-sheen className={`${styles.liveStats} cloudy-traced-panel cloudy-store-traced-panel`} aria-label="Player and server status coming soon">
+            <StatusCount label="Players" count={null} />
+            <StatusCount label="Servers" count={null} />
+          </div>
         </div>
       </section>
 
