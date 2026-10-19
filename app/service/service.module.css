@@ -143,7 +143,7 @@
 
 .card {
   position: relative;
-  min-height: 430px;
+  min-height: 405px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -165,7 +165,7 @@
   color: #fff;
   text-decoration: none;
   box-shadow: 0 24px 60px rgba(0,0,0,.32);
-  animation: serviceSheen 5.6s linear infinite;
+  animation: serviceSheen 7.2s linear infinite;
   transition: transform .26s ease, border-color .26s ease, background-color .26s ease;
 }
 
@@ -195,15 +195,7 @@ a.card:focus-visible {
 .cardTop {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-}
-
-.index {
-  color: #6f6f76;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .13em;
+  justify-content: flex-end;
 }
 
 .available,
@@ -236,7 +228,7 @@ a.card:focus-visible {
   height: 54px;
   display: grid;
   place-items: center;
-  margin-top: 54px;
+  margin-top: 34px;
   border: 1px solid rgba(255,255,255,.13);
   border-radius: 15px;
   background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
@@ -287,25 +279,54 @@ a.card:focus-visible {
   font-weight: 650;
 }
 
-.cardFoot {
-  min-height: 42px;
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 12px;
+.cardActions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
   margin-top: auto;
   padding-top: 18px;
   border-top: 1px solid rgba(255,255,255,.08);
-  color: #d6d6da;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
 }
 
-.cardFoot svg {
-  color: #e51b2e;
-  filter: drop-shadow(0 0 8px rgba(229,27,46,.35));
+.viewButton,
+.buyButton,
+.unavailable {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.viewButton {
+  border: 1px solid rgba(255,255,255,.13);
+  background: #0d0d0e;
+  color: #fff;
+}
+
+.viewButton:hover {
+  border-color: rgba(255,255,255,.24);
+  background: #121214;
+}
+
+.buyButton {
+  border: 1px solid #e51b2e;
+  background: #e51b2e;
+  color: #fff;
+}
+
+.buyButton:hover {
+  background: #f1253a;
+}
+
+.unavailable {
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.02);
+  color: #73737a;
 }
 
 .disabled {
@@ -364,7 +385,7 @@ a.card:focus-visible {
   }
 
   .card {
-    min-height: 365px;
+    min-height: 350px;
   }
 
   .iconShell {
@@ -416,9 +437,9 @@ a.card:focus-visible {
   }
 
   .card {
-    min-height: 380px;
+    min-height: 360px;
     padding: 21px;
-    animation-duration: 6.2s;
+    animation-duration: 7.4s;
   }
 
   .cardCopy h3 {
