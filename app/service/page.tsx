@@ -1,162 +1,435 @@
-import {
-  BrainCircuit,
-  Code2,
-  Globe2,
-  LockKeyhole,
-  ShieldCheck,
-  Sparkles,
-} from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCart } from '@/hooks/use-cart';
+import { cloudyWebsiteProducts, type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
 import styles from './service.module.css';
 
-const studioUrl = 'https://dylano-webstudio-h81p3t0g7-cloudystore.vercel.app';
+type Package = {
+  key: CloudyWebsitePackageKey;
+  label: string;
+  description: string;
+  pages: number;
+  price: number;
+  features: string[];
+  details: string;
+  featured?: boolean;
+};
 
-const services = [
+const packages: Package[] = [
   {
-    key: 'vpn',
-    kicker: 'Privacy',
-    title: 'Cloudy VPN',
-    description: 'A private internet connection designed to be simple to use. Cloudy VPN is still being built.',
-    status: 'Coming soon',
-    viewHref: null,
-    buyHref: null,
-    viewLabel: null,
-    icon: ShieldCheck,
-    features: ['Private connection', 'Simple setup', 'Cloudy experience'],
+    key: 'Starter',
+    label: 'Get started',
+    description: 'A complete, polished online presence for individuals, creators and new businesses.',
+    pages: 5,
+    price: 750,
+    features: [
+      'Custom website design',
+      'Responsive layout',
+      'Contact form setup',
+      'Basic SEO setup',
+      'Social media links',
+      'Five complete pages',
+    ],
+    details: 'Example pages: Home, About, Services, FAQ and Contact. Your website is designed to work on phones, tablets and computers. The basic SEO setup gives search engines clear page titles, descriptions and structure. Domain, hosting and ongoing maintenance are separate.',
   },
   {
-    key: 'ai',
-    kicker: 'Artificial intelligence',
-    title: 'Dylano AI',
-    description: 'Cloudy’s AI product for conversations, tools and everyday tasks in one focused interface.',
-    status: 'Available',
-    viewHref: 'https://dylano-ai.vercel.app',
-    buyHref: null,
-    viewLabel: 'View Dylano AI',
-    icon: BrainCircuit,
-    features: ['AI workspace', 'Simple interface', 'Part of Cloudy'],
+    key: 'Business',
+    label: 'Most popular',
+    description: 'A stronger digital presence for growing businesses that need more room to showcase their work.',
+    pages: 8,
+    price: 1500,
+    features: [
+      'Everything in Starter',
+      'Enhanced animations and interactions',
+      'Portfolio or gallery',
+      'Additional forms',
+      'Improved page structure',
+      'Eight complete pages',
+    ],
+    details: 'Example pages: Home, About, Services, Service Details, Portfolio, Testimonials, FAQ and Contact. You receive more room for content, smoother interactions and clearer ways for visitors to contact or buy from your business.',
+    featured: true,
   },
   {
-    key: 'web',
-    kicker: 'Websites',
-    title: 'Cloudy Studio',
-    description: 'Choose a website package, see exactly what is included and buy it directly. No call or discussion is required first.',
-    status: 'Available',
-    viewHref: studioUrl,
-    buyHref: `${studioUrl}#prijzen`,
-    viewLabel: 'View website',
-    icon: Code2,
-    features: ['Clear packages', 'View before buying', 'Direct checkout'],
+    key: 'Premium',
+    label: 'Advanced',
+    description: 'An expansive, highly refined website for established brands and ambitious projects.',
+    pages: 12,
+    price: 2500,
+    features: [
+      'Everything in Business',
+      'Advanced visual interactions',
+      'Expanded landing pages',
+      'Additional customization',
+      'Priority design refinements',
+      'Twelve complete pages',
+    ],
+    details: 'Built for larger websites with multiple services, campaigns or detailed content. The package gives more design freedom and more complete pages. Ecommerce, custom dashboards and paid third-party services are not automatically included unless they are added separately.',
   },
-] as const;
+];
+
+type WebsiteOrder = {
+  kind: 'website';
+  packageKey: CloudyWebsitePackageKey;
+  pages: number;
+  price: number;
+};
+
+type ServiceOrder = {
+  kind: 'service';
+  name: 'Dylano AI' | 'Custom Projects';
+};
+
+type OrderSelection = WebsiteOrder | ServiceOrder;
 
 export default function ServicePage() {
+  const cart = useCart();
+  const router = useRouter();
+
+  const [selection, setSelection] = useState<OrderSelection | null>(null);
+  const [step, setStep] = useState<'form' | 'review'>('form');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [project, setProject] = useState('');
+  const [copied, setCopied] = useState('');
+  const [infoService, setInfoService] = useState<'Dylano AI' | 'Custom Projects' | null>(null);
+
+  const openWebsiteOrder = (item: Package) => {
+    setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
+    setStep('form');
+    setCopied('');
+  };
+
+  const openServiceOrder = (name: ServiceOrder['name']) => {
+    setSelection({ kind: 'service', name });
+    setStep('form');
+    setCopied('');
+  };
+
+  const closeOrder = () => {
+    setSelection(null);
+    setStep('form');
+    setCopied('');
+  };
+
+  const orderName = selection?.kind === 'website'
+    ? `Cloudy Studio — ${selection.packageKey}`
+    : selection?.name || '';
+
+  const orderSummary = selection
+    ? [
+        'Cloudy Studio — Order',
+        `Selection: ${orderName}`,
+        ...(selection.kind === 'website'
+          ? [`Pages: ${selection.pages}`, `Price: €${selection.price.toLocaleString('en-GB')}`]
+          : ['Price: Not set in this preview']),
+        `Name: ${fullName || 'Not entered'}`,
+        `Email: ${email || 'Not entered'}`,
+        `Project: ${project || 'Not specified'}`,
+      ].join('\n')
+    : '';
+
+  const copyOrder = async () => {
+    try {
+      await navigator.clipboard.writeText(orderSummary);
+      setCopied('Order details copied.');
+    } catch {
+      setCopied('Copy is unavailable in this browser.');
+    }
+  };
+
+  const addWebsiteToBasket = () => {
+    if (!selection || selection.kind !== 'website') return;
+
+    const product = cloudyWebsiteProducts[selection.packageKey];
+    cart.addItem(product, 1, {
+      customer_name: fullName,
+      customer_email: email,
+      project_description: project,
+    });
+
+    try {
+      const current = JSON.parse(localStorage.getItem('checkout_form_data') || '{}');
+      localStorage.setItem('checkout_form_data', JSON.stringify({ ...current, email }));
+    } catch {
+      localStorage.setItem('checkout_form_data', JSON.stringify({ email }));
+    }
+
+    closeOrder();
+    router.push('/cart');
+  };
+
   return (
     <main className={styles.page}>
-      <div className={styles.backdrop} aria-hidden="true" />
-
       <section className={styles.hero}>
-        <div className={styles.eyebrow}>
-          <span className={styles.eyebrowDot} />
-          Cloudy services
-        </div>
+        <div className={styles.wrap}>
+          <div className={styles.eyebrow}>Cloudy Studio</div>
+          <h1>Your next website.<br /><em>Made to stand out.</em></h1>
+          <p>
+            Professional websites with clear packages, thoughtful design and a simple ordering
+            experience. No confusing jargon and no consultation required before buying.
+          </p>
+          <div className={styles.heroActions}>
+            <a className={styles.primaryButton} href="#websites">View website packages</a>
+            <a className={styles.secondaryButton} href="#process">How it works</a>
+          </div>
 
-        <h1>
-          Built beyond
-          <span> the game.</span>
-        </h1>
-
-        <p>
-          Cloudy products and services in one place. Each option explains what it does in plain
-          language, so you know what you are opening or buying.
-        </p>
-
-        <div className={styles.heroMeta} aria-label="Cloudy service areas">
-          <span><LockKeyhole size={15} /> VPN</span>
-          <span><Sparkles size={15} /> AI</span>
-          <span><Globe2 size={15} /> Websites</span>
+          <div className={styles.highlights}>
+            <div><strong>5–12 pages</strong><span>Included by package</span></div>
+            <div><strong>Responsive</strong><span>Built for every screen</span></div>
+            <div><strong>Cloudy quality</strong><span>Professional by design</span></div>
+          </div>
         </div>
       </section>
 
-      <section className={styles.services} aria-labelledby="services-title">
-        <header className={styles.sectionHeader}>
-          <div>
-            <span>What Cloudy offers</span>
-            <h2 id="services-title">Choose what you need</h2>
-          </div>
-          <p>Open a service to learn more. Website packages can be bought directly.</p>
-        </header>
+      <section id="websites" className={styles.section}>
+        <div className={styles.wrap}>
+          <header className={styles.sectionHead}>
+            <div className={styles.eyebrow}>Website development</div>
+            <h2>Choose what fits your vision.</h2>
+            <p>
+              Compare the packages, open the feature description if you want more detail,
+              then press Buy. Each package uses plain English and shows the complete price.
+            </p>
+          </header>
 
-        <div className={styles.grid}>
-          {services.map(service => {
-            const Icon = service.icon;
-            return (
+          <div className={styles.packageGrid}>
+            {packages.map(item => (
               <article
-                key={service.key}
-                className={`${styles.card} ${!service.viewHref ? styles.disabled : ''} cloudy-traced-panel`}
+                key={item.key}
+                className={`${styles.packageCard} ${item.featured ? styles.featured : ''}`}
               >
-                <div className={styles.cardTop}>
-                  <span className={service.viewHref ? styles.available : styles.soon}>
-                    {service.status}
-                  </span>
-                </div>
-
-                <div className={styles.iconShell}>
-                  <Icon size={25} strokeWidth={1.7} aria-hidden="true" />
-                </div>
-
-                <div className={styles.cardCopy}>
-                  <span className={styles.kicker}>{service.kicker}</span>
-                  <h3>{service.title}</h3>
-                  <p>{service.description}</p>
-                </div>
+                <span className={styles.pill}>{item.label}</span>
+                <h3>{item.key}</h3>
+                <p className={styles.packageDescription}>{item.description}</p>
+                <div className={styles.price}>€{item.price.toLocaleString('en-GB')}</div>
+                <div className={styles.priceNote}>One-time website development</div>
 
                 <div className={styles.features}>
-                  {service.features.map(feature => <span key={feature}>{feature}</span>)}
+                  {item.features.map(feature => (
+                    <div className={styles.feature} key={feature}>
+                      <span className={styles.check}>✓</span>
+                      <span>{feature}</span>
+                    </div>
+                  ))}
                 </div>
 
-                <div className={styles.cardActions}>
-                  {service.viewHref ? (
-                    <a
-                      href={service.viewHref}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.viewButton}
-                    >
-                      {service.viewLabel}
-                    </a>
-                  ) : (
-                    <span className={styles.unavailable}>Not available yet</span>
-                  )}
+                <details className={styles.packageDetails}>
+                  <summary>See everything included</summary>
+                  <p>{item.details}</p>
+                </details>
 
-                  {service.buyHref && (
-                    <a
-                      href={service.buyHref}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={styles.buyButton}
-                    >
-                      Buy website
-                    </a>
-                  )}
+                <div className={styles.cardBottom}>
+                  <button
+                    type="button"
+                    className={styles.buyButton}
+                    onClick={() => openWebsiteOrder(item)}
+                  >
+                    Buy
+                  </button>
                 </div>
               </article>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className={styles.statement}>
-        <div className={`${styles.statementPanel} cloudy-traced-panel`}>
-          <div>
-            <span>Cloudy standard</span>
-            <h2>Clear first. Professional second.</h2>
+            ))}
           </div>
-          <p>
-            No unexplained labels or unnecessary steps. Each service should tell you what it is,
-            what you get and what the next button will do.
+
+          <p className={styles.note}>
+            The package price is fixed for the features listed above. Anything outside the package
+            is never added automatically and would require separate approval.
           </p>
         </div>
       </section>
+
+      <section id="services" className={`${styles.section} ${styles.servicesSection}`}>
+        <div className={styles.wrap}>
+          <header className={styles.sectionHead}>
+            <div className={styles.eyebrow}>More from Cloudy</div>
+            <h2>More than a website.</h2>
+            <p>Additional digital services with the same clear, professional presentation.</p>
+          </header>
+
+          <div className={styles.serviceGrid}>
+            <article className={styles.serviceCard}>
+              <div className={styles.eyebrow}>Artificial intelligence</div>
+              <h3>Dylano AI</h3>
+              <p>AI assistance for writing, ideas and everyday productivity.</p>
+              <details className={styles.serviceDetails}>
+                <summary>View features</summary>
+                <p>
+                  Conversational assistance, writing support, brainstorming and productivity tools
+                  in a focused AI experience.
+                </p>
+              </details>
+              <div className={styles.serviceActions}>
+                <a
+                  className={styles.secondaryButton}
+                  href="https://dylano-ai.vercel.app"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  View
+                </a>
+                <button className={styles.primaryButton} type="button" onClick={() => openServiceOrder('Dylano AI')}>
+                  Buy
+                </button>
+              </div>
+            </article>
+
+            <article className={styles.serviceCard}>
+              <div className={styles.eyebrow}>Custom development</div>
+              <h3>Custom Projects</h3>
+              <p>Additional website development and tailored digital solutions outside the standard packages.</p>
+              <details className={styles.serviceDetails}>
+                <summary>View features</summary>
+                <p>
+                  Extra pages, custom layouts, interactive sections and suitable integrations can be
+                  planned for projects that need more than a standard website package.
+                </p>
+              </details>
+              <div className={styles.serviceActions}>
+                <button className={styles.secondaryButton} type="button" onClick={() => setInfoService('Custom Projects')}>
+                  View
+                </button>
+                <button className={styles.primaryButton} type="button" onClick={() => openServiceOrder('Custom Projects')}>
+                  Buy
+                </button>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="process" className={styles.section}>
+        <div className={styles.wrap}>
+          <header className={styles.sectionHead}>
+            <div className={styles.eyebrow}>Simple process</div>
+            <h2>From package to launch.</h2>
+            <p>A straightforward path with no required consultation before buying a website package.</p>
+          </header>
+
+          <div className={styles.steps}>
+            <article>
+              <strong>Choose your package</strong>
+              <p>Compare the pages and features and choose the website that fits your needs.</p>
+            </article>
+            <article>
+              <strong>Tell us about your project</strong>
+              <p>Enter your name, email and a short explanation of what you want the website to do.</p>
+            </article>
+            <article>
+              <strong>Continue through Cloudy checkout</strong>
+              <p>Your website order is added to the normal Cloudy basket and checkout flow.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {selection && (
+        <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="order-title" onMouseDown={event => {
+          if (event.target === event.currentTarget) closeOrder();
+        }}>
+          <div className={styles.dialog}>
+            <button className={styles.close} type="button" onClick={closeOrder} aria-label="Close">×</button>
+            <h2 id="order-title">{step === 'form' ? 'Start your order' : 'Review your order'}</h2>
+            <p>
+              {selection.kind === 'website'
+                ? 'Review your selected website package and enter the details needed to start.'
+                : 'Enter your details and review this service request.'}
+            </p>
+
+            <div className={styles.orderInfo}>
+              <strong>{orderName}</strong>
+              <span>
+                {selection.kind === 'website'
+                  ? `${selection.pages} pages · €${selection.price.toLocaleString('en-GB')}`
+                  : 'Service preview · price not set'}
+              </span>
+            </div>
+
+            {step === 'form' ? (
+              <form onSubmit={event => {
+                event.preventDefault();
+                setStep('review');
+              }}>
+                <label htmlFor="service-order-name">Full name</label>
+                <input
+                  id="service-order-name"
+                  value={fullName}
+                  onChange={event => setFullName(event.target.value)}
+                  required
+                  autoComplete="name"
+                  placeholder="Your full name"
+                />
+
+                <label htmlFor="service-order-email">Email address</label>
+                <input
+                  id="service-order-email"
+                  type="email"
+                  value={email}
+                  onChange={event => setEmail(event.target.value)}
+                  required
+                  autoComplete="email"
+                  placeholder="you@example.com"
+                />
+
+                <label htmlFor="service-order-project">Tell us about your project</label>
+                <textarea
+                  id="service-order-project"
+                  value={project}
+                  onChange={event => setProject(event.target.value)}
+                  required={selection.kind === 'website'}
+                  placeholder="What would you like us to build?"
+                />
+
+                <div className={styles.modalActions}>
+                  <button type="button" className={styles.secondaryButton} onClick={closeOrder}>Cancel</button>
+                  <button type="submit" className={styles.primaryButton}>Review order</button>
+                </div>
+              </form>
+            ) : (
+              <div>
+                <pre className={styles.reviewText}>{orderSummary}</pre>
+                <div className={styles.previewNotice}>
+                  Preview mode: website packages can continue through the Cloudy basket and checkout,
+                  but the final payment action stays disabled until you approve this preview.
+                </div>
+                <div className={styles.modalActions}>
+                  <button type="button" className={styles.secondaryButton} onClick={() => setStep('form')}>Back</button>
+                  <button type="button" className={styles.secondaryButton} onClick={copyOrder}>Copy order details</button>
+                  {selection.kind === 'website' && (
+                    <button type="button" className={styles.primaryButton} onClick={addWebsiteToBasket}>
+                      Continue to basket
+                    </button>
+                  )}
+                </div>
+                {copied && <p className={styles.copied} role="status">{copied}</p>}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {infoService && (
+        <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="service-info-title" onMouseDown={event => {
+          if (event.target === event.currentTarget) setInfoService(null);
+        }}>
+          <div className={styles.dialog}>
+            <button className={styles.close} type="button" onClick={() => setInfoService(null)} aria-label="Close">×</button>
+            <h2 id="service-info-title">{infoService}</h2>
+            <p>
+              Tailored development for requirements that do not fit one of the standard website
+              packages. This can include extra pages, custom layouts, interactive sections or
+              suitable integrations.
+            </p>
+            <button className={styles.primaryButton} type="button" onClick={() => {
+              setInfoService(null);
+              openServiceOrder('Custom Projects');
+            }}>
+              Buy
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
