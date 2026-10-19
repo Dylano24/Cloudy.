@@ -261,19 +261,6 @@
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .045);
 }
 
-.input[aria-invalid='true'],
-.select[aria-invalid='true'],
-.textarea[aria-invalid='true'] {
-  border-color: #ff5268;
-  box-shadow: 0 0 0 2px rgba(255, 82, 104, .15);
-}
-
-.fieldError {
-  color: #ff697b;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 .select option {
   color: #f1f1f1;
   background: #111;
