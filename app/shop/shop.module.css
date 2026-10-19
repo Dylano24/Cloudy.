@@ -77,8 +77,9 @@
 }
 
 .stats {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 198px));
+  justify-content: center;
   gap: 12px;
   margin-top: 34px;
 }
@@ -97,6 +98,14 @@
 .stats span {
   display: block;
 }
+.stats .liveStats { grid-column: 1 / -1; display: flex; justify-content: center; gap: 0; }
+.liveMetric { flex: 1 1 0; min-width: 0; padding: 0 14px; }
+.liveMetric + .liveMetric { border-left: 1px solid rgba(255,255,255,.12); }
+.liveValue { display: flex; align-items: center; gap: 9px; }
+.stats .statusDot { display: inline-block; flex: 0 0 9px; width: 9px; height: 9px; margin: 0; border-radius: 50%; }
+.statusUnknown { background: #888; }
+.statusOnline { background: #38d67a; box-shadow: 0 0 7px #38d67a, 0 0 15px #38d67a88; }
+.statusOffline { background: #ee445a; box-shadow: 0 0 7px #ee445a88; }
 
 .stats strong {
   font-size: 18px;
@@ -428,7 +437,7 @@
   .page { padding: 48px 14px 88px; }
   .hero { padding-top: 16px; }
   .hero h1 { font-size: clamp(54px, 17vw, 86px); }
-  .stats { display: grid; grid-template-columns: 1fr 1fr; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .sectionHeader { flex-direction: column; align-items: flex-start; }
   .sectionHeader p { text-align: left; }
   .gameGrid { grid-template-columns: 1fr; }

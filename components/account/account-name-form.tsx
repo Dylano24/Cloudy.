@@ -40,10 +40,10 @@ export function AccountNameForm({ currentName }: { currentName: string }) {
   }
 
   return <form className={styles.nameForm} onSubmit={submit} noValidate>
-    <label htmlFor="cloudy-account-name">Account name</label>
+    <label htmlFor="cloudy-account-name">Display name</label>
     <div className={styles.nameFormRow}>
       <input id="cloudy-account-name" name="name" value={name} onChange={event => { setName(event.target.value); setError(''); setSaved(false); }} maxLength={50} required aria-invalid={!!error} aria-describedby={error ? 'cloudy-account-name-error' : undefined} disabled={busy} />
-      <button type="submit" disabled={busy || name.trim() === currentName}>{busy ? 'Saving…' : 'Save name'}</button>
+      <button type="submit" disabled={busy || name.trim() === currentName}>{busy ? 'Saving…' : 'Save display name'}</button>
     </div>
     {error && <p id="cloudy-account-name-error" className={styles.error} role="alert">{error}</p>}
     {saved && <p className={styles.saved} role="status">Your account name has been updated.</p>}
