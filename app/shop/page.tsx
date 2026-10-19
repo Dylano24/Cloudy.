@@ -37,7 +37,7 @@ const games = [
 
 function StatusCount({ label, count, online }: { label: string; count: number | null; online: boolean }) {
   const status = online ? styles.statusOnline : styles.statusOffline;
-  return <div className={styles.liveMetric}>
+  return <div className={`${styles.statMetric} ${styles.liveMetric}`}>
     <span>{label}</span>
     <div className={styles.liveValue}><i className={`${styles.statusDot} ${status}`} aria-hidden="true" /><strong>{count ?? '—'}</strong></div>
   </div>;
@@ -56,11 +56,9 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
         <p>Every game has its own store, future products stay organised as the platform grows.</p>
 
         <div className={styles.stats}>
-          <div data-cloudy-store-sheen className={`${styles.summaryStats} cloudy-traced-panel cloudy-store-traced-panel`} aria-label="Cloudy store summary">
-            <div className={styles.summaryMetric}><span>Games</span><strong>01</strong></div>
-            <div className={styles.summaryMetric}><span>Purchases</span><strong>0</strong></div>
-          </div>
-          <div data-cloudy-store-sheen className={`${styles.liveStats} cloudy-traced-panel cloudy-store-traced-panel`} aria-label="Cloudy Rust live server status">
+          <div data-cloudy-store-sheen className={`${styles.statsPanel} cloudy-traced-panel cloudy-store-traced-panel`} aria-label="Cloudy store and server status">
+            <div className={styles.statMetric}><span>Games</span><strong>1</strong></div>
+            <div className={styles.statMetric}><span>Purchases</span><strong>0</strong></div>
             <StatusCount label="Players" count={0} online={false} />
             <StatusCount label="Servers" count={1} online />
           </div>
