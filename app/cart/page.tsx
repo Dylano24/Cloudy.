@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useStore } from '@/hooks/use-api';
 import { openTip4ServCheckout, type Tip4ServProductSimple } from '@/lib/tip4serv';
+import { isCloudyServiceProduct } from '@/lib/cloudy-service-products';
 
 export default function CartPage() {
   const cart = useCart();
@@ -19,6 +20,9 @@ export default function CartPage() {
   const [flagsLoaded, setFlagsLoaded] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [precheckoutError, setPrecheckoutError] = useState<string | null>(null);
+  const hasCloudyServiceItems = cart.items.some(item => isCloudyServiceProduct(item.product));
+  const hasStoreItems = cart.items.some(item => !isCloudyServiceProduct(item.product));
+  const hasMixedCheckout = hasCloudyServiceItems && hasStoreItems;
 
   useEffect(() => {
     cart.clearIfExpired();
@@ -42,6 +46,16 @@ export default function CartPage() {
   }, []);
 
   const handleCheckout = async () => {
+    if (hasMixedCheckout) {
+      setPrecheckoutError('Website packages and game products use separate checkout flows. Please checkout one type at a time.');
+      return;
+    }
+
+    if (hasCloudyServiceItems) {
+      router.push('/checkout');
+      return;
+    }
+
     if (!flagsLoaded || !store?.id) {
       return;
     }
@@ -143,6 +157,12 @@ export default function CartPage() {
             <p className="text-muted">{cart.getItemCount()} item{cart.getItemCount() !== 1 ? 's' : ''} in your basket</p>
           </div>
 
+          {hasMixedCheckout && (
+            <div className="mb-6 rounded-lg border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-300">
+              Website packages and game products cannot be paid together in this preview. Remove one type before continuing.
+            </div>
+          )}
+
           {precheckoutError && (
             <div className="mb-6 rounded-lg border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-400">
               {precheckoutError}
@@ -156,7 +176,7 @@ export default function CartPage() {
                 // Check if this product appears multiple times with different custom fields
                 const duplicateCount = cart.items.filter((i) => i.product.id === item.product.id).length;
                 const productQuantityInCart = cart.items.reduce((total, current) => current.product.id === item.product.id ? total + current.quantity : total, 0);
-                const showCustomFieldsDetail = duplicateCount > 1;
+                const showCustomFieldsDetail = duplicateCount > 1 || isCloudyServiceProduct(item.product);
                 const customFieldsDisplay = showCustomFieldsDetail && item.customFields && 'custom_fields' in item.product
                   ? formatCustomFieldsForDisplay(item.customFields, item.product.custom_fields || [])
                   : '';
@@ -192,13 +212,13 @@ export default function CartPage() {
 
                   {/* Details */}
                   <div className="flex-1 min-w-0">
-                    <Link href={`/product/${item.product.slug}`}>
+                    <Link href={isCloudyServiceProduct(item.product) ? '/service#websites' : `/product/${item.product.slug}`}>
                       <h3 className="font-semibold text-lg mb-1 hover:text-primary transition-colors truncate">
                         {item.product.name}
                       </h3>
                     </Link>
                     <p className="text-2xl font-bold text-primary mb-2">
-                      ${(() => {
+                      {isCloudyServiceProduct(item.product) ? '€' : '
                         // For donation products, use donation amount as the price
                         if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
                           return item.donationAmount.toFixed(2);
@@ -286,7 +306,880 @@ export default function CartPage() {
                 <div className="space-y-4 mb-6">
                   {cart.items.map((item, index) => {
                     const duplicateCount = cart.items.filter((i) => i.product.id === item.product.id).length;
-                    const showCustomFieldsDetail = duplicateCount > 1;
+                    const showCustomFieldsDetail = duplicateCount > 1 || isCloudyServiceProduct(item.product);
+                    const customFieldsDisplay = showCustomFieldsDetail && item.customFields && 'custom_fields' in item.product
+                      ? formatCustomFieldsForDisplay(item.customFields, item.product.custom_fields || [])
+                      : '';
+
+                    return (
+                    <div key={`${item.product.id}-${index}`} className="flex flex-col gap-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted truncate pr-2">
+                          {item.product.name} x{item.quantity}
+                        </span>
+                        <span className="font-semibold whitespace-nowrap">
+                          {isCloudyServiceProduct(item.product) ? '€' : '
+                            // For donation products, display the donation amount
+                            if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                              return item.donationAmount.toFixed(2);
+                            }
+
+                            let price = item.product.price;
+                            
+                            // Add custom field prices
+                            if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                              item.product.custom_fields.forEach((field) => {
+                                const value = getCustomFieldValue(item.customFields, field);
+                                
+                                if (field.type === 'checkbox' && value) {
+                                  price += field.price || 0;
+                                } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                                  const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                                  if (selectedOption) {
+                                    price += selectedOption.price || 0;
+                                  }
+                                } else if (field.type === 'number' || field.type === 'range') {
+                                  price += calculateNumberRangeCharge(field, value);
+                                }
+                              });
+                            }
+                          
+                            return (price * item.quantity).toFixed(2);
+                          })()}
+                        </span>
+                      </div>
+                      {customFieldsDisplay && (
+                        <span className="text-xs text-primary/60 italic ml-2">
+                          {customFieldsDisplay}
+                        </span>
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-6 border-t border-border">
+                  <div className="flex justify-between items-baseline mb-6">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-3xl font-bold text-primary">
+                      {hasMixedCheckout ? '—' : `${hasCloudyServiceItems ? '€' : '
+                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut || hasMixedCheckout || (!hasCloudyServiceItems && !flagsLoaded)}
+                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Proceed to Checkout
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+}{(() => {
+                        // For donation products, use donation amount as the price
+                        if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                          return item.donationAmount.toFixed(2);
+                        }
+
+                        let price = item.product.price;
+                        
+                        // Add custom field prices
+                        if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                          item.product.custom_fields.forEach((field) => {
+                            const value = getCustomFieldValue(item.customFields, field);
+                            
+                            if (field.type === 'checkbox' && value) {
+                              price += field.price || 0;
+                            } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                              const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                              if (selectedOption) {
+                                price += selectedOption.price || 0;
+                              }
+                            } else if (field.type === 'number' || field.type === 'range') {
+                              price += calculateNumberRangeCharge(field, value);
+                            }
+                          });
+                        }
+                        
+                        return price.toFixed(2);
+                      })()}
+                    </p>
+                    {item.product.subscription && item.subscriptionType === 'recurring' && (
+                      <p className="text-xs text-muted">
+                        Subscription - Renews every {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {item.product.subscription && item.subscriptionType === 'onetime' && (
+                      <p className="text-xs text-muted">
+                        One time purchase · {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {customFieldsDisplay && (
+                      <p className="text-xs text-primary/80 mt-2 italic">
+                        {customFieldsDisplay}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Quantity & Remove */}
+                  <div className="flex flex-col items-end justify-between">
+                    <button
+                      onClick={() => cart.removeItemByIndex(index)}
+                      className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors cursor-pointer"
+                      aria-label="Remove from basket"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity - 1, item.customFields)}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity + 1, item.customFields)}
+                        disabled={typeof item.product.stock === 'number' && productQuantityInCart >= item.product.stock}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                );
+              })}
+            </div>
+
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-20 p-6 rounded-xl bg-card border border-border">
+                <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+
+                <div className="space-y-4 mb-6">
+                  {cart.items.map((item, index) => {
+                    const duplicateCount = cart.items.filter((i) => i.product.id === item.product.id).length;
+                    const showCustomFieldsDetail = duplicateCount > 1 || isCloudyServiceProduct(item.product);
+                    const customFieldsDisplay = showCustomFieldsDetail && item.customFields && 'custom_fields' in item.product
+                      ? formatCustomFieldsForDisplay(item.customFields, item.product.custom_fields || [])
+                      : '';
+
+                    return (
+                    <div key={`${item.product.id}-${index}`} className="flex flex-col gap-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted truncate pr-2">
+                          {item.product.name} x{item.quantity}
+                        </span>
+                        <span className="font-semibold whitespace-nowrap">
+                          ${(() => {
+                            // For donation products, display the donation amount
+                            if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                              return item.donationAmount.toFixed(2);
+                            }
+
+                            let price = item.product.price;
+                            
+                            // Add custom field prices
+                            if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                              item.product.custom_fields.forEach((field) => {
+                                const value = getCustomFieldValue(item.customFields, field);
+                                
+                                if (field.type === 'checkbox' && value) {
+                                  price += field.price || 0;
+                                } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                                  const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                                  if (selectedOption) {
+                                    price += selectedOption.price || 0;
+                                  }
+                                } else if (field.type === 'number' || field.type === 'range') {
+                                  price += calculateNumberRangeCharge(field, value);
+                                }
+                              });
+                            }
+                          
+                            return (price * item.quantity).toFixed(2);
+                          })()}
+                        </span>
+                      </div>
+                      {customFieldsDisplay && (
+                        <span className="text-xs text-primary/60 italic ml-2">
+                          {customFieldsDisplay}
+                        </span>
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-6 border-t border-border">
+                  <div className="flex justify-between items-baseline mb-6">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-3xl font-bold text-primary">
+                      ${cart.getTotal().toFixed(2)}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut || !flagsLoaded}
+                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Proceed to Checkout
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+}{(() => {
+                            // For donation products, display the donation amount
+                            if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                              return item.donationAmount.toFixed(2);
+                            }
+
+                            let price = item.product.price;
+                            
+                            // Add custom field prices
+                            if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                              item.product.custom_fields.forEach((field) => {
+                                const value = getCustomFieldValue(item.customFields, field);
+                                
+                                if (field.type === 'checkbox' && value) {
+                                  price += field.price || 0;
+                                } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                                  const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                                  if (selectedOption) {
+                                    price += selectedOption.price || 0;
+                                  }
+                                } else if (field.type === 'number' || field.type === 'range') {
+                                  price += calculateNumberRangeCharge(field, value);
+                                }
+                              });
+                            }
+                          
+                            return (price * item.quantity).toFixed(2);
+                          })()}
+                        </span>
+                      </div>
+                      {customFieldsDisplay && (
+                        <span className="text-xs text-primary/60 italic ml-2">
+                          {customFieldsDisplay}
+                        </span>
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-6 border-t border-border">
+                  <div className="flex justify-between items-baseline mb-6">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-3xl font-bold text-primary">
+                      ${cart.getTotal().toFixed(2)}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut || !flagsLoaded}
+                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Proceed to Checkout
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+}{(() => {
+                        // For donation products, use donation amount as the price
+                        if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                          return item.donationAmount.toFixed(2);
+                        }
+
+                        let price = item.product.price;
+                        
+                        // Add custom field prices
+                        if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                          item.product.custom_fields.forEach((field) => {
+                            const value = getCustomFieldValue(item.customFields, field);
+                            
+                            if (field.type === 'checkbox' && value) {
+                              price += field.price || 0;
+                            } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                              const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                              if (selectedOption) {
+                                price += selectedOption.price || 0;
+                              }
+                            } else if (field.type === 'number' || field.type === 'range') {
+                              price += calculateNumberRangeCharge(field, value);
+                            }
+                          });
+                        }
+                        
+                        return price.toFixed(2);
+                      })()}
+                    </p>
+                    {item.product.subscription && item.subscriptionType === 'recurring' && (
+                      <p className="text-xs text-muted">
+                        Subscription - Renews every {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {item.product.subscription && item.subscriptionType === 'onetime' && (
+                      <p className="text-xs text-muted">
+                        One time purchase · {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {customFieldsDisplay && (
+                      <p className="text-xs text-primary/80 mt-2 italic">
+                        {customFieldsDisplay}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Quantity & Remove */}
+                  <div className="flex flex-col items-end justify-between">
+                    <button
+                      onClick={() => cart.removeItemByIndex(index)}
+                      className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors cursor-pointer"
+                      aria-label="Remove from basket"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity - 1, item.customFields)}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity + 1, item.customFields)}
+                        disabled={typeof item.product.stock === 'number' && productQuantityInCart >= item.product.stock}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                );
+              })}
+            </div>
+
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-20 p-6 rounded-xl bg-card border border-border">
+                <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+
+                <div className="space-y-4 mb-6">
+                  {cart.items.map((item, index) => {
+                    const duplicateCount = cart.items.filter((i) => i.product.id === item.product.id).length;
+                    const showCustomFieldsDetail = duplicateCount > 1 || isCloudyServiceProduct(item.product);
+                    const customFieldsDisplay = showCustomFieldsDetail && item.customFields && 'custom_fields' in item.product
+                      ? formatCustomFieldsForDisplay(item.customFields, item.product.custom_fields || [])
+                      : '';
+
+                    return (
+                    <div key={`${item.product.id}-${index}`} className="flex flex-col gap-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted truncate pr-2">
+                          {item.product.name} x{item.quantity}
+                        </span>
+                        <span className="font-semibold whitespace-nowrap">
+                          ${(() => {
+                            // For donation products, display the donation amount
+                            if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                              return item.donationAmount.toFixed(2);
+                            }
+
+                            let price = item.product.price;
+                            
+                            // Add custom field prices
+                            if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                              item.product.custom_fields.forEach((field) => {
+                                const value = getCustomFieldValue(item.customFields, field);
+                                
+                                if (field.type === 'checkbox' && value) {
+                                  price += field.price || 0;
+                                } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                                  const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                                  if (selectedOption) {
+                                    price += selectedOption.price || 0;
+                                  }
+                                } else if (field.type === 'number' || field.type === 'range') {
+                                  price += calculateNumberRangeCharge(field, value);
+                                }
+                              });
+                            }
+                          
+                            return (price * item.quantity).toFixed(2);
+                          })()}
+                        </span>
+                      </div>
+                      {customFieldsDisplay && (
+                        <span className="text-xs text-primary/60 italic ml-2">
+                          {customFieldsDisplay}
+                        </span>
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-6 border-t border-border">
+                  <div className="flex justify-between items-baseline mb-6">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-3xl font-bold text-primary">
+                      ${cart.getTotal().toFixed(2)}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut || !flagsLoaded}
+                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Proceed to Checkout
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+}${cart.getTotal().toFixed(2)}`}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut || !flagsLoaded}
+                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Proceed to Checkout
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+}{(() => {
+                        // For donation products, use donation amount as the price
+                        if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                          return item.donationAmount.toFixed(2);
+                        }
+
+                        let price = item.product.price;
+                        
+                        // Add custom field prices
+                        if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                          item.product.custom_fields.forEach((field) => {
+                            const value = getCustomFieldValue(item.customFields, field);
+                            
+                            if (field.type === 'checkbox' && value) {
+                              price += field.price || 0;
+                            } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                              const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                              if (selectedOption) {
+                                price += selectedOption.price || 0;
+                              }
+                            } else if (field.type === 'number' || field.type === 'range') {
+                              price += calculateNumberRangeCharge(field, value);
+                            }
+                          });
+                        }
+                        
+                        return price.toFixed(2);
+                      })()}
+                    </p>
+                    {item.product.subscription && item.subscriptionType === 'recurring' && (
+                      <p className="text-xs text-muted">
+                        Subscription - Renews every {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {item.product.subscription && item.subscriptionType === 'onetime' && (
+                      <p className="text-xs text-muted">
+                        One time purchase · {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {customFieldsDisplay && (
+                      <p className="text-xs text-primary/80 mt-2 italic">
+                        {customFieldsDisplay}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Quantity & Remove */}
+                  <div className="flex flex-col items-end justify-between">
+                    <button
+                      onClick={() => cart.removeItemByIndex(index)}
+                      className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors cursor-pointer"
+                      aria-label="Remove from basket"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity - 1, item.customFields)}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity + 1, item.customFields)}
+                        disabled={typeof item.product.stock === 'number' && productQuantityInCart >= item.product.stock}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                );
+              })}
+            </div>
+
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-20 p-6 rounded-xl bg-card border border-border">
+                <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+
+                <div className="space-y-4 mb-6">
+                  {cart.items.map((item, index) => {
+                    const duplicateCount = cart.items.filter((i) => i.product.id === item.product.id).length;
+                    const showCustomFieldsDetail = duplicateCount > 1 || isCloudyServiceProduct(item.product);
+                    const customFieldsDisplay = showCustomFieldsDetail && item.customFields && 'custom_fields' in item.product
+                      ? formatCustomFieldsForDisplay(item.customFields, item.product.custom_fields || [])
+                      : '';
+
+                    return (
+                    <div key={`${item.product.id}-${index}`} className="flex flex-col gap-1">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted truncate pr-2">
+                          {item.product.name} x{item.quantity}
+                        </span>
+                        <span className="font-semibold whitespace-nowrap">
+                          ${(() => {
+                            // For donation products, display the donation amount
+                            if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                              return item.donationAmount.toFixed(2);
+                            }
+
+                            let price = item.product.price;
+                            
+                            // Add custom field prices
+                            if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                              item.product.custom_fields.forEach((field) => {
+                                const value = getCustomFieldValue(item.customFields, field);
+                                
+                                if (field.type === 'checkbox' && value) {
+                                  price += field.price || 0;
+                                } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                                  const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                                  if (selectedOption) {
+                                    price += selectedOption.price || 0;
+                                  }
+                                } else if (field.type === 'number' || field.type === 'range') {
+                                  price += calculateNumberRangeCharge(field, value);
+                                }
+                              });
+                            }
+                          
+                            return (price * item.quantity).toFixed(2);
+                          })()}
+                        </span>
+                      </div>
+                      {customFieldsDisplay && (
+                        <span className="text-xs text-primary/60 italic ml-2">
+                          {customFieldsDisplay}
+                        </span>
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-6 border-t border-border">
+                  <div className="flex justify-between items-baseline mb-6">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-3xl font-bold text-primary">
+                      ${cart.getTotal().toFixed(2)}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut || !flagsLoaded}
+                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Proceed to Checkout
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+}{(() => {
+                            // For donation products, display the donation amount
+                            if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                              return item.donationAmount.toFixed(2);
+                            }
+
+                            let price = item.product.price;
+                            
+                            // Add custom field prices
+                            if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                              item.product.custom_fields.forEach((field) => {
+                                const value = getCustomFieldValue(item.customFields, field);
+                                
+                                if (field.type === 'checkbox' && value) {
+                                  price += field.price || 0;
+                                } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                                  const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                                  if (selectedOption) {
+                                    price += selectedOption.price || 0;
+                                  }
+                                } else if (field.type === 'number' || field.type === 'range') {
+                                  price += calculateNumberRangeCharge(field, value);
+                                }
+                              });
+                            }
+                          
+                            return (price * item.quantity).toFixed(2);
+                          })()}
+                        </span>
+                      </div>
+                      {customFieldsDisplay && (
+                        <span className="text-xs text-primary/60 italic ml-2">
+                          {customFieldsDisplay}
+                        </span>
+                      )}
+                    </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-6 border-t border-border">
+                  <div className="flex justify-between items-baseline mb-6">
+                    <span className="text-lg font-semibold">Total</span>
+                    <span className="text-3xl font-bold text-primary">
+                      ${cart.getTotal().toFixed(2)}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleCheckout}
+                    disabled={isCheckingOut || !flagsLoaded}
+                    className="w-full px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  >
+                    {isCheckingOut ? (
+                      <>
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                        Processing...
+                      </>
+                    ) : (
+                      <>
+                        Proceed to Checkout
+                        <ArrowRight className="w-5 h-5" />
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+}{(() => {
+                        // For donation products, use donation amount as the price
+                        if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
+                          return item.donationAmount.toFixed(2);
+                        }
+
+                        let price = item.product.price;
+                        
+                        // Add custom field prices
+                        if (item.customFields && 'custom_fields' in item.product && item.product.custom_fields) {
+                          item.product.custom_fields.forEach((field) => {
+                            const value = getCustomFieldValue(item.customFields, field);
+                            
+                            if (field.type === 'checkbox' && value) {
+                              price += field.price || 0;
+                            } else if ((field.type === 'select' || field.type === 'selection' || field.type === 'dropdown' || field.type === 'choice') && value && field.options) {
+                              const selectedOption = field.options.find((opt) => opt.id.toString() === value.toString());
+                              if (selectedOption) {
+                                price += selectedOption.price || 0;
+                              }
+                            } else if (field.type === 'number' || field.type === 'range') {
+                              price += calculateNumberRangeCharge(field, value);
+                            }
+                          });
+                        }
+                        
+                        return price.toFixed(2);
+                      })()}
+                    </p>
+                    {item.product.subscription && item.subscriptionType === 'recurring' && (
+                      <p className="text-xs text-muted">
+                        Subscription - Renews every {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {item.product.subscription && item.subscriptionType === 'onetime' && (
+                      <p className="text-xs text-muted">
+                        One time purchase · {item.product.period_num} {item.product.duration_periodicity}
+                        {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
+                      </p>
+                    )}
+                    {customFieldsDisplay && (
+                      <p className="text-xs text-primary/80 mt-2 italic">
+                        {customFieldsDisplay}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Quantity & Remove */}
+                  <div className="flex flex-col items-end justify-between">
+                    <button
+                      onClick={() => cart.removeItemByIndex(index)}
+                      className="p-2 rounded-lg hover:bg-red-500/10 text-red-500 transition-colors cursor-pointer"
+                      aria-label="Remove from basket"
+                    >
+                      <Trash2 className="w-5 h-5" />
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity - 1, item.customFields)}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer"
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                      <button
+                        onClick={() => cart.updateQuantity(item.product.id, item.quantity + 1, item.customFields)}
+                        disabled={typeof item.product.stock === 'number' && productQuantityInCart >= item.product.stock}
+                        className="w-8 h-8 rounded-lg bg-background border border-border hover:border-primary transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                );
+              })}
+            </div>
+
+            {/* Order Summary */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-20 p-6 rounded-xl bg-card border border-border">
+                <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+
+                <div className="space-y-4 mb-6">
+                  {cart.items.map((item, index) => {
+                    const duplicateCount = cart.items.filter((i) => i.product.id === item.product.id).length;
+                    const showCustomFieldsDetail = duplicateCount > 1 || isCloudyServiceProduct(item.product);
                     const customFieldsDisplay = showCustomFieldsDetail && item.customFields && 'custom_fields' in item.product
                       ? formatCustomFieldsForDisplay(item.customFields, item.product.custom_fields || [])
                       : '';
