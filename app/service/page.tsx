@@ -1,5 +1,4 @@
 import {
-  ArrowUpRight,
   BrainCircuit,
   Code2,
   Globe2,
@@ -9,36 +8,44 @@ import {
 } from 'lucide-react';
 import styles from './service.module.css';
 
+const studioUrl = 'https://dylano-webstudio-h81p3t0g7-cloudystore.vercel.app';
+
 const services = [
   {
     key: 'vpn',
     kicker: 'Privacy',
     title: 'Cloudy VPN',
-    description: 'A privacy-focused VPN experience built around speed, simplicity and control.',
+    description: 'A private internet connection designed to be simple to use. Cloudy VPN is still being built.',
     status: 'Coming soon',
-    href: null,
+    viewHref: null,
+    buyHref: null,
+    viewLabel: null,
     icon: ShieldCheck,
-    features: ['Private connection', 'Fast routing', 'Simple setup'],
+    features: ['Private connection', 'Simple setup', 'Cloudy experience'],
   },
   {
     key: 'ai',
-    kicker: 'Cloudy artificial intelligence',
+    kicker: 'Artificial intelligence',
     title: 'Dylano AI',
-    description: 'Cloudy’s AI experience for focused conversations, tools and everyday work — built as part of the Cloudy ecosystem.',
-    status: 'Explore',
-    href: 'https://dylano-ai.vercel.app',
+    description: 'Cloudy’s AI product for conversations, tools and everyday tasks in one focused interface.',
+    status: 'Available',
+    viewHref: 'https://dylano-ai.vercel.app',
+    buyHref: null,
+    viewLabel: 'View Dylano AI',
     icon: BrainCircuit,
-    features: ['Cloudy ecosystem', 'Focused interface', 'Built to grow'],
+    features: ['AI workspace', 'Simple interface', 'Part of Cloudy'],
   },
   {
     key: 'web',
-    kicker: 'Cloudy web development',
+    kicker: 'Websites',
     title: 'Cloudy Studio',
-    description: 'Custom Cloudy-built websites for businesses, brands and ideas — designed, developed and delivered with the same Cloudy standard.',
-    status: 'View studio',
-    href: 'https://dylano-webstudio-gfucpabe2-cloudystore.vercel.app',
+    description: 'Choose a website package, see exactly what is included and buy it directly. No call or discussion is required first.',
+    status: 'Available',
+    viewHref: studioUrl,
+    buyHref: `${studioUrl}#prijzen`,
+    viewLabel: 'View website',
     icon: Code2,
-    features: ['Cloudy design', 'Responsive build', 'From idea to launch'],
+    features: ['Clear packages', 'View before buying', 'Direct checkout'],
   },
 ] as const;
 
@@ -59,8 +66,8 @@ export default function ServicePage() {
         </h1>
 
         <p>
-          Privacy, artificial intelligence and web development — brought together in one place
-          with the same focus on quality, precision and experience.
+          Cloudy products and services in one place. Each option explains what it does in plain
+          language, so you know what you are opening or buying.
         </p>
 
         <div className={styles.heroMeta} aria-label="Cloudy service areas">
@@ -73,26 +80,28 @@ export default function ServicePage() {
       <section className={styles.services} aria-labelledby="services-title">
         <header className={styles.sectionHeader}>
           <div>
-            <span>What we build</span>
-            <h2 id="services-title">Choose a service</h2>
+            <span>What Cloudy offers</span>
+            <h2 id="services-title">Choose what you need</h2>
           </div>
-          <p>Three focused service areas. One Cloudy standard.</p>
+          <p>Open a service to learn more. Website packages can be bought directly.</p>
         </header>
 
         <div className={styles.grid}>
-          {services.map((service, index) => {
+          {services.map(service => {
             const Icon = service.icon;
-            const content = (
-              <>
+            return (
+              <article
+                key={service.key}
+                className={`${styles.card} ${!service.viewHref ? styles.disabled : ''} cloudy-traced-panel`}
+              >
                 <div className={styles.cardTop}>
-                  <span className={styles.index}>{String(index + 1).padStart(2, '0')}</span>
-                  <span className={service.href ? styles.available : styles.soon}>
+                  <span className={service.viewHref ? styles.available : styles.soon}>
                     {service.status}
                   </span>
                 </div>
 
                 <div className={styles.iconShell}>
-                  <Icon size={26} strokeWidth={1.7} aria-hidden="true" />
+                  <Icon size={25} strokeWidth={1.7} aria-hidden="true" />
                 </div>
 
                 <div className={styles.cardCopy}>
@@ -105,29 +114,31 @@ export default function ServicePage() {
                   {service.features.map(feature => <span key={feature}>{feature}</span>)}
                 </div>
 
-                <div className={styles.cardFoot}>
-                  <span>{service.href ? 'Open service' : 'In development'}</span>
-                  {service.href && <ArrowUpRight size={18} aria-hidden="true" />}
-                </div>
-              </>
-            );
+                <div className={styles.cardActions}>
+                  {service.viewHref ? (
+                    <a
+                      href={service.viewHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.viewButton}
+                    >
+                      {service.viewLabel}
+                    </a>
+                  ) : (
+                    <span className={styles.unavailable}>Not available yet</span>
+                  )}
 
-            return service.href ? (
-              <a
-                key={service.key}
-                href={service.href}
-                target="_blank"
-                rel="noreferrer"
-                className={`${styles.card} cloudy-traced-panel`}
-              >
-                {content}
-              </a>
-            ) : (
-              <article
-                key={service.key}
-                className={`${styles.card} ${styles.disabled} cloudy-traced-panel`}
-              >
-                {content}
+                  {service.buyHref && (
+                    <a
+                      href={service.buyHref}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.buyButton}
+                    >
+                      Buy website
+                    </a>
+                  )}
+                </div>
               </article>
             );
           })}
@@ -138,11 +149,11 @@ export default function ServicePage() {
         <div className={`${styles.statementPanel} cloudy-traced-panel`}>
           <div>
             <span>Cloudy standard</span>
-            <h2>Clean. Focused. Built with purpose.</h2>
+            <h2>Clear first. Professional second.</h2>
           </div>
           <p>
-            Every service keeps the same direction: a polished experience, clear design and
-            technology that feels simple to use.
+            No unexplained labels or unnecessary steps. Each service should tell you what it is,
+            what you get and what the next button will do.
           </p>
         </div>
       </section>
