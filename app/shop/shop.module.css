@@ -105,8 +105,8 @@
 }
 .statMetric {
   min-width: 0;
-  min-height: 112px;
-  padding: 18px 8px 16px;
+  min-height: 96px;
+  padding: 14px 4px 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,16 +120,17 @@
   display: block;
   margin: 0;
   font-family: var(--font-display), "Anton", Impact, sans-serif;
-  font-size: clamp(34px, 4.2vw, 43px);
+  font-size: clamp(28px, 3.6vw, 36px);
   font-weight: 400;
-  line-height: .88;
-  letter-spacing: -.035em;
+  line-height: .9;
+  letter-spacing: -.03em;
   color: #f7f7f9;
-  -webkit-text-stroke: .7px rgba(255,255,255,.18);
+  -webkit-text-stroke: .6px rgba(255,255,255,.18);
   text-shadow:
-    0 1px 0 #d0d0d4,
-    0 2px 0 #909096,
-    0 4px 8px rgba(0,0,0,.78);
+    0 1px 0 rgba(255,255,255,.20),
+    0 3px 8px rgba(0,0,0,.78),
+    0 0 8px rgba(255,255,255,.10),
+    0 0 14px rgba(229,27,46,.08);
   font-variant-numeric: tabular-nums;
 }
 .stats .statLabel,
@@ -137,13 +138,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  margin-top: 11px;
+  gap: 4px;
+  margin-top: 9px;
   color: #aaaab0;
   font-family: var(--font-sans), "Manrope", sans-serif;
-  font-size: 8px;
+  font-size: clamp(5.8px, 1.7vw, 7px);
   font-weight: 750;
-  letter-spacing: .11em;
+  letter-spacing: .06em;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
@@ -157,9 +158,9 @@
 }
 .stats .statusDot {
   display: inline-block;
-  flex: 0 0 10px;
-  width: 10px;
-  height: 10px;
+  flex: 0 0 6px;
+  width: 6px;
+  height: 6px;
   margin: 0;
   border-radius: 50%;
   border: 1px solid rgba(255,255,255,.34);
@@ -522,15 +523,15 @@
   .hero { padding-top: 16px; }
   .hero h1 { font-size: clamp(54px, 17vw, 86px); }
   .stats .statsPanel { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .statMetric { min-height: 104px; padding: 16px 4px 14px; }
-  .stats .statNumber { font-size: clamp(31px, 9vw, 39px); }
+  .statMetric { min-height: 90px; padding: 13px 3px 11px; }
+  .stats .statNumber { font-size: clamp(26px, 7.5vw, 32px); }
   .stats .statLabel,
   .stats .statStatus {
-    gap: 4px;
-    font-size: clamp(6px, 1.9vw, 7.5px);
-    letter-spacing: .075em;
+    gap: 3px;
+    font-size: 6px;
+    letter-spacing: .04em;
   }
-  .stats .statusDot { flex-basis: 7px; width: 7px; height: 7px; }
+  .stats .statusDot { flex-basis: 6px; width: 6px; height: 6px; }
   .sectionHeader { flex-direction: column; align-items: flex-start; }
   .sectionHeader p { text-align: left; }
   .gameGrid { grid-template-columns: 1fr; }
