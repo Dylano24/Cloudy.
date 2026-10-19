@@ -6,14 +6,6 @@ import { CheckCircle2, ChevronLeft, LoaderCircle, ShieldAlert } from 'lucide-rea
 import styles from './appeal.module.css';
 
 type AppealScope = 'discord' | 'rust';
-type AppealControl = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
-
-function fieldMessage(field: AppealControl): string | null {
-  if (!field.required) return null;
-  if (!field.value.trim()) return 'This field is required.';
-  if (field.validity.typeMismatch) return 'Enter a valid email address.';
-  return field.checkValidity() ? null : 'Enter a valid value.';
-}
 
 const DISCORD_APPEAL_EMOJI = 'https://cdn.discordapp.com/emojis/1543287452410716160.gif?size=64&quality=lossless';
 const RUST_APPEAL_EMOJI = 'https://cdn.discordapp.com/emojis/1543286621594583111.gif?size=64&quality=lossless';
@@ -26,22 +18,10 @@ export default function AppealPage() {
   const [submitted, setSubmitted] = useState(false);
   const [appealId, setAppealId] = useState('');
   const [error, setError] = useState('');
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   async function submitAppeal(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!scope || submitting) return;
-
-    const requiredFields = Array.from(event.currentTarget.querySelectorAll<AppealControl>('[required]'));
-    const invalid = Object.fromEntries(requiredFields.flatMap(field => {
-      const message = fieldMessage(field);
-      return message ? [[field.name, message]] : [];
-    }));
-    setFieldErrors(invalid);
-    if (Object.keys(invalid).length) {
-      requiredFields.find(field => invalid[field.name])?.focus();
-      return;
-    }
 
     setSubmitting(true);
     setError('');
@@ -91,23 +71,6 @@ export default function AppealPage() {
     setAction('');
     setOtherAction('');
     setError('');
-    setFieldErrors({});
-  }
-
-  function clearFieldError(event: FormEvent<HTMLFormElement>) {
-    const field = event.target;
-    if (!(field instanceof HTMLInputElement || field instanceof HTMLSelectElement || field instanceof HTMLTextAreaElement)) return;
-    if (fieldErrors[field.name] && !fieldMessage(field)) {
-      setFieldErrors(previous => {
-        const next = { ...previous };
-        delete next[field.name];
-        return next;
-      });
-    }
-  }
-
-  function fieldError(name: string) {
-    return fieldErrors[name] && <span className={styles.fieldError} role="alert">{fieldErrors[name]}</span>;
   }
 
   return (
@@ -171,14 +134,13 @@ export default function AppealPage() {
                 <p>Please answer every question honestly and provide as much relevant information as possible. False information, manipulation, or abusive behavior towards the staff team may result in your review request being denied.</p>
               </div>
 
-              <form className={styles.form} onSubmit={submitAppeal} onChangeCapture={clearFieldError} noValidate>
+              <form className={styles.form} onSubmit={submitAppeal}>
                 <label className={styles.field}>
                   <span className={styles.label}>What action are you appealing?</span>
                   <select
                     className={styles.select}
                     name="action"
                     required
-                    aria-invalid={!!fieldErrors.action}
                     value={action}
                     onChange={(event) => {
                       setAction(event.target.value);
@@ -190,7 +152,6 @@ export default function AppealPage() {
                     <option value="Ban">Ban</option>
                     <option value="Other">Other</option>
                   </select>
-                  {fieldError('action')}
                 </label>
 
                 {action === 'Other' && (
@@ -201,64 +162,55 @@ export default function AppealPage() {
                       className={styles.input}
                       name="otherAction"
                       required
-                      aria-invalid={!!fieldErrors.otherAction}
                       value={otherAction}
                       onChange={(event) => setOtherAction(event.target.value)}
                       placeholder="Required"
                       maxLength={100}
                       autoComplete="off"
                     />
-                    {fieldError('otherAction')}
                   </label>
                 )}
 
                 <label className={styles.field}>
                   <span className={styles.label}>What is your Discord username / ID?</span>
                   <span className={styles.help}>Please provide your current Discord username or User ID.</span>
-                  <input className={styles.input} name="discordIdentity" required aria-invalid={!!fieldErrors.discordIdentity} placeholder="Required" maxLength={100} autoComplete="off" />
-                  {fieldError('discordIdentity')}
+                  <input className={styles.input} name="discordIdentity" required placeholder="Required" maxLength={100} autoComplete="off" />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>What is your Gamertag?</span>
                   <span className={styles.help}>Please provide the username you use in game.</span>
-                  <input className={styles.input} name="gamertag" required aria-invalid={!!fieldErrors.gamertag} placeholder="Required" maxLength={100} autoComplete="off" />
-                  {fieldError('gamertag')}
+                  <input className={styles.input} name="gamertag" required placeholder="Required" maxLength={100} autoComplete="off" />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>What is your email address?</span>
                   <span className={styles.help}>Please provide a valid email address where you can receive notifications regarding the result of your review.</span>
-                  <input className={styles.input} type="email" name="email" required aria-invalid={!!fieldErrors.email} placeholder="Required" maxLength={254} autoComplete="email" />
-                  {fieldError('email')}
+                  <input className={styles.input} type="email" name="email" required placeholder="Required" maxLength={254} autoComplete="email" />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>Why did you receive this moderation action?</span>
                   <span className={styles.help}>Please explain what happened from your perspective.</span>
-                  <textarea className={styles.textarea} name="punishmentReason" required aria-invalid={!!fieldErrors.punishmentReason} placeholder="Required" maxLength={1000} />
-                  {fieldError('punishmentReason')}
+                  <textarea className={styles.textarea} name="punishmentReason" required placeholder="Required" maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>Do you believe the moderation action was justified?</span>
                   <span className={styles.help}>Explain why you believe the moderation action was or was not justified.</span>
-                  <textarea className={styles.textarea} name="punishmentJustified" required aria-invalid={!!fieldErrors.punishmentJustified} placeholder="Required" maxLength={1000} />
-                  {fieldError('punishmentJustified')}
+                  <textarea className={styles.textarea} name="punishmentJustified" required placeholder="Required" maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>Why should your appeal be accepted?</span>
                   <span className={styles.help}>Explain why you believe the moderation action taken against you should be removed or reconsidered.</span>
-                  <textarea className={styles.textarea} name="acceptanceReason" required aria-invalid={!!fieldErrors.acceptanceReason} placeholder="Required" maxLength={1000} />
-                  {fieldError('acceptanceReason')}
+                  <textarea className={styles.textarea} name="acceptanceReason" required placeholder="Required" maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
                   <span className={styles.label}>What will you do differently if your appeal is accepted?</span>
                   <span className={styles.help}>Please explain how you intend to avoid repeating the situation.</span>
-                  <textarea className={styles.textarea} name="futureChanges" required aria-invalid={!!fieldErrors.futureChanges} placeholder="Required" maxLength={1000} />
-                  {fieldError('futureChanges')}
+                  <textarea className={styles.textarea} name="futureChanges" required placeholder="Required" maxLength={1000} />
                 </label>
 
                 <label className={styles.field}>
