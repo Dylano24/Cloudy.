@@ -1,25 +1,54 @@
-import Link from 'next/link';
-
 const sections = [
-  ['Information used for sign-in', 'You can create a Cloudy account using your email address and a Cloudy password. Cloudy stores a salted password hash, not your password in plain text. When you choose Google or Discord sign-in, that provider authenticates you. Cloudy receives your provider account ID and display name; it does not receive your Google or Discord password. Google sign-in requests only openid and profile; Discord sign-in requests only identify.'],
-  ['How the information is used', 'Cloudy uses your email address or provider account ID, account name and sign-in method to identify your account and display account information. The Google and Discord sign-in integration does not request access to private messages, contacts or files, and does not use profile information for advertising.'],
-  ['Cookies and retention', 'The website stores a signed session cookie containing your account ID, account name and sign-in method; for email accounts it also contains your email address. The cookie expires after seven days, or is removed from your browser when you log off. Temporary provider sign-in cookies expire after ten minutes. Cloudy saves account information and, for email accounts, a salted password hash in private storage on Vercel. These records remain when you log off so you can sign in again. Contact Cloudy support to request account deletion.'],
-  ['Service providers', 'Google or Discord processes the authentication according to its own privacy policies. The website is hosted on Vercel, which processes requests needed to run the website. Technical hosting logs may contain request information, such as an IP address. This notice does not promise a particular retention period for those providers’ own records.'],
-  ['Your choices', 'You can log off, clear the site’s cookies, or revoke the website’s access through your Google or Discord account settings. You can contact Cloudy support with a request concerning the personal information processed by Cloudy.'],
-  ['Other website features', 'This notice describes account sign-in. Purchases, payments and appeal submissions involve additional information you choose to provide and the services used to process those requests. Contact Cloudy support for information about those records.'],
-] as const;
+  {
+    title: '1. Legal information',
+    body: 'Cloudy runs this website, online store and related gaming services. This policy explains what information we use and why.',
+  },
+  {
+    title: '2. Information we collect',
+    body: 'When you create an account, we collect your email address and password. We use your password only to protect your account and check your sign-in.\n\nIf you sign in with Google or Discord, we receive the name and account ID needed to recognize you. We do not receive your Google or Discord password or access to those accounts.\n\nWhen you make a purchase, we collect the details needed to deliver it.',
+  },
+  {
+    title: '3. How we use information',
+    body: 'We use your information to manage your account, process orders and deliver purchases to the right account. We also use it to answer account or order questions and protect the store against misuse.',
+  },
+  {
+    title: '4. Cookies and browser storage',
+    body: 'A cookie keeps you signed in. Your browser may save your basket and checkout details so you can continue later.',
+  },
+  {
+    title: '5. Service providers',
+    body: 'Vercel hosts the website and stores account information. Google and Discord handle sign-in when you choose them. The payment provider handles payments. Each provider receives only the information needed for its service.',
+  },
+  {
+    title: '6. How long we keep your information',
+    body: 'We keep your account information while your account exists. We keep purchase details as long as needed to handle your order.',
+  },
+];
 
 export default function PrivacyPage() {
-  return <div className="cloudy-terms-page">
-    <div className="cloudy-terms-wrap">
-      <header className="cloudy-terms-head">
-        <h1>Privacy notice</h1>
-        <p>Cloudy account sign-in</p>
-      </header>
-      <div className="cloudy-terms-list">
-        <section className="cloudy-term-card"><p>Cloudy operates the account sign-in on this website. For questions about your account data or a privacy request, contact Cloudy through the <Link href="/support" className="underline">Support page</Link>.</p></section>
-        {sections.map(([title, body]) => <section className="cloudy-term-card" key={title}><h2>{title}</h2><p>{body}</p></section>)}
+  return (
+    <main className="cloudy-terms-page">
+      <div className="cloudy-terms-wrap">
+        <header className="cloudy-terms-head">
+          <img
+            src="https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif"
+            alt="Cloudy"
+            width={80}
+            height={80}
+            style={{ borderRadius: '50%', objectFit: 'cover' }}
+          />
+          <h1>Privacy policy</h1>
+        </header>
+
+        <div className="cloudy-terms-list">
+          {sections.map(section => (
+            <section className="cloudy-term-card" key={section.title}>
+              <h2>{section.title}</h2>
+              <p>{section.body}</p>
+            </section>
+          ))}
+        </div>
       </div>
-    </div>
-  </div>;
+    </main>
+  );
 }
