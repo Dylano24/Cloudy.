@@ -102,18 +102,15 @@
   grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  padding: 8px;
+  gap: 0;
+  padding: 0;
 }
 .liveMetric {
   min-width: 0;
-  padding: 12px 14px 13px;
-  border: 1px solid rgba(255,255,255,.075);
-  border-radius: 9px;
-  background: rgba(0,0,0,.42);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+  padding: 17px 18px 18px;
+  background: transparent;
 }
-.liveMetric + .liveMetric { border-left: 1px solid rgba(255,255,255,.075); }
+.liveMetric + .liveMetric { border-left: 1px solid rgba(255,255,255,.10); }
 .stats .liveMetric > span {
   margin: 0;
   color: #a8a8ae;
