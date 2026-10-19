@@ -98,14 +98,58 @@
 .stats span {
   display: block;
 }
-.stats .liveStats { grid-column: 1 / -1; display: flex; justify-content: center; gap: 0; }
-.liveMetric { flex: 1 1 0; min-width: 0; padding: 0 14px; }
-.liveMetric + .liveMetric { border-left: 1px solid rgba(255,255,255,.12); }
-.liveValue { display: flex; align-items: center; gap: 9px; }
-.stats .statusDot { display: inline-block; flex: 0 0 9px; width: 9px; height: 9px; margin: 0; border-radius: 50%; }
-.statusUnknown { background: #888; }
-.statusOnline { background: #38d67a; box-shadow: 0 0 7px #38d67a, 0 0 15px #38d67a88; }
-.statusOffline { background: #ee445a; box-shadow: 0 0 7px #ee445a88; }
+.stats .liveStats {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  padding: 8px;
+}
+.liveMetric {
+  min-width: 0;
+  padding: 12px 14px 13px;
+  border: 1px solid rgba(255,255,255,.075);
+  border-radius: 9px;
+  background: rgba(0,0,0,.42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+}
+.liveMetric + .liveMetric { border-left: 1px solid rgba(255,255,255,.075); }
+.stats .liveMetric > span {
+  margin: 0;
+  color: #a8a8ae;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.liveValue {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 8px;
+}
+.stats .liveValue strong {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1;
+}
+.stats .statusDot {
+  display: inline-block;
+  flex: 0 0 10px;
+  width: 10px;
+  height: 10px;
+  margin: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.34);
+}
+.statusOnline {
+  background: #3cff83;
+  box-shadow: 0 0 4px #3cff83, 0 0 10px #3cff83, 0 0 20px rgba(60,255,131,.72), 0 0 32px rgba(60,255,131,.32);
+}
+.statusOffline {
+  background: #ff334f;
+  box-shadow: 0 0 4px #ff334f, 0 0 10px #ff334f, 0 0 20px rgba(255,51,79,.72), 0 0 32px rgba(255,51,79,.32);
+}
 
 .stats strong {
   font-size: 18px;
