@@ -10,6 +10,23 @@ import { useAccount } from '@/hooks/use-account';
 import { useCart } from '@/hooks/use-cart';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
+
+let cloudyLogoBlobPromise: Promise<Blob> | null = null;
+function loadCloudyLogoBlob() {
+  if (!cloudyLogoBlobPromise) {
+    cloudyLogoBlobPromise = fetch(CLOUDY_LOGO_URL, { cache: 'force-cache' })
+      .then(response => {
+        if (!response.ok) throw new Error('Unable to load Cloudy logo');
+        return response.blob();
+      })
+      .catch(error => {
+        cloudyLogoBlobPromise = null;
+        throw error;
+      });
+  }
+  return cloudyLogoBlobPromise;
+}
+
 const subscribeCartHydration = (listener: () => void) => useCart.persist.onFinishHydration(listener);
 const cartHasHydrated = () => useCart.persist.hasHydrated();
 const serverCartHasHydrated = () => false;
@@ -23,6 +40,62 @@ export function Header() {
   const cartReady = useSyncExternalStore(subscribeCartHydration, cartHasHydrated, serverCartHasHydrated);
   const basketCount = cartReady ? items.reduce((total, item) => total + item.quantity, 0) : 0;
   const [menuOffset, setMenuOffset] = useState<number>();
+  const [headerLogoSrc, setHeaderLogoSrc] = useState(CLOUDY_LOGO_URL);
+  const logoObjectUrlRef = useRef<string | null>(null);
+  const logoRestartRef = useRef(0);
+  const initialPathRef = useRef<string | null>(null);
+
+  // Safari can occasionally leave an animated GIF frozen after a client-side
+  // route transition. Keep the already-loaded logo visible, then restart the
+  // same GIF from an in-memory Blob whenever the pathname changes.
+  useEffect(() => {
+    let cancelled = false;
+
+    if (initialPathRef.current === null) {
+      initialPathRef.current = pathname;
+      void loadCloudyLogoBlob().catch(() => undefined);
+      return;
+    }
+
+    initialPathRef.current = pathname;
+
+    const restartLogo = async () => {
+      try {
+        const blob = await loadCloudyLogoBlob();
+        if (cancelled) return;
+
+        const nextObjectUrl = URL.createObjectURL(blob);
+        const previousObjectUrl = logoObjectUrlRef.current;
+        logoObjectUrlRef.current = nextObjectUrl;
+        setHeaderLogoSrc(nextObjectUrl);
+
+        if (previousObjectUrl) {
+          requestAnimationFrame(() => URL.revokeObjectURL(previousObjectUrl));
+        }
+      } catch {
+        if (cancelled) return;
+
+        // Fallback: use a unique CDN URL so Safari treats it as a fresh
+        // animated image resource without ever hiding the current logo first.
+        const nextSrc = `${CLOUDY_LOGO_URL}?restart=${++logoRestartRef.current}`;
+        const preloader = new Image();
+        preloader.onload = () => {
+          if (!cancelled) setHeaderLogoSrc(nextSrc);
+        };
+        preloader.src = nextSrc;
+      }
+    };
+
+    void restartLogo();
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
+
+  useEffect(() => () => {
+    if (logoObjectUrlRef.current) URL.revokeObjectURL(logoObjectUrlRef.current);
+  }, []);
+
   useEffect(() => {
     if (!accountOpen || !accountRef.current) return;
     const account = accountRef.current;
@@ -61,7 +134,7 @@ export function Header() {
       <div className="cloudy-header-inner">
         <Link href="/" className="cloudy-header-brand" aria-label="Cloudy Inc. home">
           <span className="cloudy-logo-orbit">
-            <img src={CLOUDY_LOGO_URL} alt="Cloudy" width={48} height={48} />
+            <img src={headerLogoSrc} alt="Cloudy" width={48} height={48} />
           </span>
           <span className="cloudy-brand-copy">
             <strong>CLOUDY INC.</strong>
