@@ -16,6 +16,7 @@ const services = [
     title: 'Cloudy VPN',
     description: 'A privacy-focused VPN experience built around speed, simplicity and control.',
     status: 'Coming soon',
+    href: null,
     icon: ShieldCheck,
     features: ['Private connection', 'Fast routing', 'Simple setup'],
   },
