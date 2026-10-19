@@ -97,47 +97,53 @@
 }
 .stats .statsPanel {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0;
   padding: 0;
   overflow: hidden;
+  border-radius: 18px;
 }
 .statMetric {
   min-width: 0;
-  padding: 17px 18px 18px;
+  min-height: 112px;
+  padding: 18px 8px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   background: transparent;
 }
-.statMetric:nth-child(even) { border-left: 1px solid rgba(255,255,255,.10); }
-.statMetric:nth-child(n + 3) { border-top: 1px solid rgba(255,255,255,.10); }
+.statMetric + .statMetric { border-left: 1px solid rgba(255,255,255,.10); }
 .liveMetric { background: transparent; }
 .stats .statNumber {
   display: block;
   margin: 0;
   font-family: var(--font-display), "Anton", Impact, sans-serif;
-  font-size: clamp(46px, 5.4vw, 62px);
+  font-size: clamp(34px, 4.2vw, 43px);
   font-weight: 400;
   line-height: .88;
-  letter-spacing: -.025em;
-  color: #f6f6f8;
-  -webkit-text-stroke: 1px rgba(255,255,255,.20);
+  letter-spacing: -.035em;
+  color: #f7f7f9;
+  -webkit-text-stroke: .7px rgba(255,255,255,.18);
   text-shadow:
-    0 2px 0 #bfc0c5,
-    0 4px 0 #74757b,
-    0 7px 14px rgba(0,0,0,.82),
-    0 0 16px rgba(229,27,46,.08);
+    0 1px 0 #d0d0d4,
+    0 2px 0 #909096,
+    0 4px 8px rgba(0,0,0,.78);
   font-variant-numeric: tabular-nums;
 }
 .stats .statLabel,
 .statStatus {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin-top: 12px;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 11px;
   color: #aaaab0;
   font-family: var(--font-sans), "Manrope", sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .13em;
+  font-size: 8px;
+  font-weight: 750;
+  letter-spacing: .11em;
   line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
@@ -181,9 +187,9 @@
 }
 .stats .statLabel,
 .stats .statStatus {
-  margin-top: 12px;
+  margin-top: 11px;
   color: #aaaab0;
-  font-size: 10px;
+  font-size: 8px;
 }
 
 .browser {
@@ -515,12 +521,16 @@
   .page { padding: 48px 14px 88px; }
   .hero { padding-top: 16px; }
   .hero h1 { font-size: clamp(54px, 17vw, 86px); }
-  .stats .statsPanel { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .statMetric { padding: 18px 18px 19px; }
-  .stats .statNumber { font-size: clamp(44px, 13vw, 58px); }
+  .stats .statsPanel { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .statMetric { min-height: 104px; padding: 16px 4px 14px; }
+  .stats .statNumber { font-size: clamp(31px, 9vw, 39px); }
   .stats .statLabel,
-  .stats .statStatus { gap: 8px; font-size: clamp(8px, 2.4vw, 10px); letter-spacing: .11em; }
-  .stats .statusDot { flex-basis: 9px; width: 9px; height: 9px; }
+  .stats .statStatus {
+    gap: 4px;
+    font-size: clamp(6px, 1.9vw, 7.5px);
+    letter-spacing: .075em;
+  }
+  .stats .statusDot { flex-basis: 7px; width: 7px; height: 7px; }
   .sectionHeader { flex-direction: column; align-items: flex-start; }
   .sectionHeader p { text-align: left; }
   .gameGrid { grid-template-columns: 1fr; }
