@@ -188,7 +188,7 @@ function CheckoutContent() {
       if (!validateForm()) {
         return;
       }
-      setPreviewNotice('Preview checkout is working. The final payment action for Cloudy Studio stays disabled until you approve this preview and the real store product IDs are connected.');
+      setPreviewNotice('Preview checkout is working. Final Cloudy Studio payment stays disabled until this preview is approved and the real store product IDs are connected.');
       return;
     }
 
@@ -579,42 +579,7 @@ function CheckoutContent() {
                         {item.product.name} x{item.quantity}
                       </span>
                       <span className="font-semibold whitespace-nowrap">
-                        {isCloudyServiceProduct(item.product) ? '€' : '
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-4 border-t border-border">
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-lg font-semibold">Total</span>
-                    <span className="text-2xl font-bold text-primary">
-                      {isCloudyServicePreviewCheckout ? '€' : '
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function CheckoutPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
-          <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
-          <h1 className="text-2xl font-bold">Loading checkout...</h1>
-        </div>
-      </div>
-    }>
-      <CheckoutContent />
-    </Suspense>
-  );
-}
-}{(item.product.price * item.quantity).toFixed(2)}
+                        {isCloudyServiceProduct(item.product) ? '€' : '$'}{(item.product.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -624,71 +589,7 @@ export default function CheckoutPage() {
                   <div className="flex justify-between items-baseline">
                     <span className="text-lg font-semibold">Total</span>
                     <span className="text-2xl font-bold text-primary">
-                      ${cart.getTotal().toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function CheckoutPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
-          <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
-          <h1 className="text-2xl font-bold">Loading checkout...</h1>
-        </div>
-      </div>
-    }>
-      <CheckoutContent />
-    </Suspense>
-  );
-}
-}{cart.getTotal().toFixed(2)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export default function CheckoutPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
-          <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
-          <h1 className="text-2xl font-bold">Loading checkout...</h1>
-        </div>
-      </div>
-    }>
-      <CheckoutContent />
-    </Suspense>
-  );
-}
-}{(item.product.price * item.quantity).toFixed(2)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="pt-4 border-t border-border">
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-lg font-semibold">Total</span>
-                    <span className="text-2xl font-bold text-primary">
-                      ${cart.getTotal().toFixed(2)}
+                      {isCloudyServicePreviewCheckout ? '€' : '$'}{cart.getTotal().toFixed(2)}
                     </span>
                   </div>
                 </div>
