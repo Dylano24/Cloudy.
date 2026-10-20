@@ -179,7 +179,7 @@ export default function ServicePage() {
             {packages.map(item => (
               <article
                 key={item.key}
-                className={`${styles.packageCard} ${item.featured ? styles.featured : ''}`}
+                className={`${styles.packageCard} ${item.featured ? styles.featured : ''} cloudy-traced-panel`}
               >
                 <span className={styles.pill}>{item.label}</span>
                 <h3>{item.key}</h3>
@@ -230,15 +230,15 @@ export default function ServicePage() {
           </header>
 
           <div className={styles.steps}>
-            <article>
+            <article className="cloudy-traced-panel">
               <strong>Choose your package</strong>
               <p>Compare the pages and features and choose the website that fits your needs.</p>
             </article>
-            <article>
+            <article className="cloudy-traced-panel">
               <strong>Tell us about your project</strong>
               <p>Enter your name, email and a short explanation of what you want the website to do.</p>
             </article>
-            <article>
+            <article className="cloudy-traced-panel">
               <strong>Continue through Cloudy checkout</strong>
               <p>Your website order is added to the normal Cloudy basket and checkout flow.</p>
             </article>
