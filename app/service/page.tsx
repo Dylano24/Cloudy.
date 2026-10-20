@@ -150,19 +150,13 @@ export default function ServicePage() {
       <section className={styles.hero}>
         <div className={styles.wrap}>
           <div className={styles.eyebrow}>Cloudy Studio</div>
-          <h1>Your next website.<br /><em>Made to stand out.</em></h1>
+          <h1>A website<br /><em>built for you.</em></h1>
           <p>
             Professional websites built around your brand. Choose a package and order directly.
           </p>
           <div className={styles.heroActions}>
             <a className={styles.primaryButton} href="#websites">View website packages</a>
             <a className={styles.secondaryButton} href="#process">How it works</a>
-          </div>
-
-          <div className={styles.highlights}>
-            <div><strong>5–12 pages</strong><span>Included by package</span></div>
-            <div><strong>Responsive</strong><span>Built for every screen</span></div>
-            <div><strong>Cloudy quality</strong><span>Professional by design</span></div>
           </div>
         </div>
       </section>
