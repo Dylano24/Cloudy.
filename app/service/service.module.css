@@ -802,3 +802,41 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* iPhone/touch: first tap must activate Buy immediately, not a hover state. */
+.buyButton,
+.primaryButton,
+.secondaryButton {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .packageCard:hover,
+  .primaryButton:hover,
+  .secondaryButton:hover,
+  .buyButton:hover {
+    transform: none;
+  }
+
+  .packageCard:hover {
+    border-color: var(--line);
+    box-shadow: 0 20px 58px rgba(0,0,0,.35);
+  }
+
+  .featured:hover {
+    border-color: rgba(230,56,81,.66);
+  }
+}
+
+@media (max-width: 600px) {
+  .modal {
+    align-items: flex-start;
+    padding-top: max(6px, env(safe-area-inset-top));
+  }
+
+  .dialog {
+    margin: 8px 0 auto;
+  }
+}
