@@ -853,3 +853,120 @@
     grid-template-columns: 1fr 1fr;
   }
 }
+
+
+/* Native browser order popover: opening is handled by Safari itself on the first tap. */
+.orderPopover {
+  position: fixed;
+  inset: 0;
+  width: min(560px, calc(100% - 28px));
+  max-height: calc(100dvh - 28px);
+  margin: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 29px;
+  border: 1px solid #3c3c44;
+  border-radius: 16px;
+  background: #121216;
+  color: #fff;
+  box-shadow: 0 35px 110px rgba(0,0,0,.72);
+}
+
+.orderPopover::backdrop {
+  background: rgba(0,0,0,.80);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.orderPopover h2 {
+  margin: 0 38px 7px 0;
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -.035em;
+}
+
+.orderPopover > p {
+  margin: 0;
+  color: #aaaab6;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.orderPopover label {
+  display: block;
+  margin: 16px 0 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.orderPopover input,
+.orderPopover textarea {
+  width: 100%;
+  min-height: 50px;
+  padding: 13px 14px;
+  border: 1px solid #41414a;
+  border-radius: 9px;
+  outline: none;
+  background: #09090c;
+  color: #fff;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.orderPopover input:focus,
+.orderPopover textarea:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(240,42,70,.12);
+}
+
+.orderPopover textarea {
+  min-height: 132px;
+  resize: vertical;
+}
+
+.orderPopover .reviewText {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 10px;
+  background: #09090c;
+  white-space: normal;
+}
+
+.orderPopover .reviewText p {
+  margin: 0;
+  color: #e5e5ec;
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .orderPopover {
+    inset: max(8px, env(safe-area-inset-top)) 10px auto;
+    width: auto;
+    max-height: calc(100dvh - max(18px, env(safe-area-inset-top)) - max(14px, env(safe-area-inset-bottom)));
+    margin: 0;
+    padding: 22px 18px 18px;
+    border-radius: 15px;
+  }
+
+  .orderPopover h2 {
+    margin-right: 34px;
+    font-size: 28px;
+  }
+
+  .orderPopover .modalActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .orderPopover .modalActions > * {
+    min-width: 0;
+    width: 100%;
+  }
+}
