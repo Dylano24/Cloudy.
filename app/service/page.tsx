@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import { cloudyWebsiteProducts, type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
+import { StudioMobilePanelSync } from '@/components/service/studio-mobile-panel-sync';
 import styles from './service.module.css';
 
 type Package = {
@@ -146,7 +147,8 @@ export default function ServicePage() {
   };
 
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} cloudy-studio-page`}>
+      <StudioMobilePanelSync />
       <section className={styles.hero}>
         <div className={styles.wrap}>
           <div className={styles.eyebrow}>Cloudy Studio</div>
@@ -173,7 +175,7 @@ export default function ServicePage() {
             {packages.map(item => (
               <article
                 key={item.key}
-                className={`${styles.packageCard} ${item.featured ? styles.featured : ''} cloudy-traced-panel`}
+                className={`${styles.packageCard} ${item.featured ? styles.featured : ''} cloudy-traced-panel cloudy-studio-sheen-panel`}
               >
                 <span className={styles.pill}>{item.label}</span>
                 <h3>{item.key}</h3>
@@ -224,15 +226,15 @@ export default function ServicePage() {
           </header>
 
           <div className={styles.steps}>
-            <article className="cloudy-traced-panel">
+            <article className="cloudy-traced-panel cloudy-studio-sheen-panel">
               <strong>Choose your package</strong>
               <p>Compare the pages and features and choose the website that fits your needs.</p>
             </article>
-            <article className="cloudy-traced-panel">
+            <article className="cloudy-traced-panel cloudy-studio-sheen-panel">
               <strong>Tell us about your project</strong>
               <p>Enter your name, email and a short explanation of what you want the website to do.</p>
             </article>
-            <article className="cloudy-traced-panel">
+            <article className="cloudy-traced-panel cloudy-studio-sheen-panel">
               <strong>Continue through Cloudy checkout</strong>
               <p>Your website order is added to the normal Cloudy basket and checkout flow.</p>
             </article>
