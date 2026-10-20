@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import { cloudyWebsiteProducts, type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
@@ -90,6 +90,38 @@ export default function ServicePage() {
   const [project, setProject] = useState('');
   const [copied, setCopied] = useState('');
 
+  useEffect(() => {
+    if (!selection) return;
+
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const previous = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = '0';
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+
+    return () => {
+      body.style.position = previous.position;
+      body.style.top = previous.top;
+      body.style.left = previous.left;
+      body.style.right = previous.right;
+      body.style.width = previous.width;
+      body.style.overflow = previous.overflow;
+      window.scrollTo(0, scrollY);
+    };
+  }, [selection]);
+
   const scrollToSection = (id: 'websites' | 'process') => {
     const target = document.getElementById(id);
     if (!target) return;
@@ -116,12 +148,12 @@ export default function ServicePage() {
     setCopied('');
   };
 
-  const orderName = selection ? `Cloudy Studio — ${selection.packageKey}` : '';
+  const orderName = selection ? `Cloudy Studio ${selection.packageKey.toLowerCase()}` : '';
 
   const orderSummary = selection
     ? [
-        'Cloudy Studio — Order',
-        `Selection: ${orderName}`,
+        'Cloudy Studio order',
+        `Package: ${orderName}`,
         `Pages: ${selection.pages}`,
         `Price: €${selection.price.toLocaleString('en-GB')}`,
         `Name: ${fullName || 'Not entered'}`,
@@ -266,13 +298,12 @@ export default function ServicePage() {
         }}>
           <div className={styles.dialog}>
             <button className={styles.close} type="button" onClick={closeOrder} aria-label="Close">×</button>
-            <h2 id="order-title">{step === 'form' ? 'Start your order' : 'Review your order'}</h2>
-            <p>Review your package and enter the details needed to start.</p>
-
-            <div className={styles.orderInfo}>
-              <strong>{orderName}</strong>
-              <span>{selection.pages} pages · €{selection.price.toLocaleString('en-GB')}</span>
-            </div>
+            <h2 id="order-title">{orderName}</h2>
+            <p>
+              {step === 'form'
+                ? `${selection.pages} pages · €${selection.price.toLocaleString('en-GB')}. Enter your details below.`
+                : 'Check your details before continuing.'}
+            </p>
 
             {step === 'form' ? (
               <form onSubmit={event => {
@@ -300,18 +331,18 @@ export default function ServicePage() {
                   placeholder="you@example.com"
                 />
 
-                <label htmlFor="service-order-project">Tell us about your project</label>
+                <label htmlFor="service-order-project">Your website</label>
                 <textarea
                   id="service-order-project"
                   value={project}
                   onChange={event => setProject(event.target.value)}
                   required
-                  placeholder="What would you like us to build?"
+                  placeholder="Tell us what the website is for and what you want on it."
                 />
 
                 <div className={styles.modalActions}>
                   <button type="button" className={styles.secondaryButton} onClick={closeOrder}>Cancel</button>
-                  <button type="submit" className={styles.primaryButton}>Review order</button>
+                  <button type="submit" className={styles.primaryButton}>Review</button>
                 </div>
               </form>
             ) : (
@@ -323,7 +354,7 @@ export default function ServicePage() {
                 </div>
                 <div className={styles.modalActions}>
                   <button type="button" className={styles.secondaryButton} onClick={() => setStep('form')}>Back</button>
-                  <button type="button" className={styles.secondaryButton} onClick={copyOrder}>Copy order details</button>
+                  <button type="button" className={styles.secondaryButton} onClick={copyOrder}>Copy details</button>
                   <button type="button" className={styles.primaryButton} onClick={addWebsiteToBasket}>
                     Continue to basket
                   </button>
