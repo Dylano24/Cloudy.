@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type TouchEvent as ReactTouchEvent } from 'react';
-import { flushSync } from 'react-dom';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import { cloudyWebsiteProducts, type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
@@ -89,8 +88,6 @@ export default function ServicePage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [project, setProject] = useState('');
-  const [copied, setCopied] = useState('');
-  const touchBuyHandled = useRef(false);
 
   useEffect(() => {
     if (!selection) return;
@@ -143,29 +140,11 @@ export default function ServicePage() {
   const openWebsiteOrder = (item: Package) => {
     setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
     setStep('form');
-    setCopied('');
-  };
-
-  const openWebsiteOrderOnTouchEnd = (event: ReactTouchEvent<HTMLButtonElement>, item: Package) => {
-    event.preventDefault();
-    event.stopPropagation();
-    touchBuyHandled.current = true;
-
-    flushSync(() => {
-      setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
-      setStep('form');
-      setCopied('');
-    });
-
-    window.setTimeout(() => {
-      touchBuyHandled.current = false;
-    }, 500);
   };
 
   const closeOrder = () => {
     setSelection(null);
     setStep('form');
-    setCopied('');
   };
 
   const orderName = selection ? `Cloudy Studio ${selection.packageKey.toLowerCase()}` : '';
@@ -181,15 +160,6 @@ export default function ServicePage() {
         `Project: ${project || 'Not specified'}`,
       ].join('\n')
     : '';
-
-  const copyOrder = async () => {
-    try {
-      await navigator.clipboard.writeText(orderSummary);
-      setCopied('Order details copied.');
-    } catch {
-      setCopied('Copy is unavailable in this browser.');
-    }
-  };
 
   const addWebsiteToBasket = () => {
     if (!selection) return;
@@ -271,9 +241,9 @@ export default function ServicePage() {
                   <button
                     type="button"
                     className={styles.buyButton}
-                    onTouchEnd={event => openWebsiteOrderOnTouchEnd(event, item)}
-                    onClick={() => {
-                      if (touchBuyHandled.current) return;
+                    onClick={event => {
+                      event.preventDefault();
+                      event.stopPropagation();
                       openWebsiteOrder(item);
                     }}
                   >
@@ -317,9 +287,7 @@ export default function ServicePage() {
       </section>
 
       {selection && (
-        <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="order-title" onMouseDown={event => {
-          if (event.target === event.currentTarget) closeOrder();
-        }}>
+        <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="order-title">
           <div className={styles.dialog}>
             <button className={styles.close} type="button" onClick={closeOrder} aria-label="Close">×</button>
             <h2 id="order-title">{orderName}</h2>
@@ -378,12 +346,10 @@ export default function ServicePage() {
                 </div>
                 <div className={styles.modalActions}>
                   <button type="button" className={styles.secondaryButton} onClick={() => setStep('form')}>Back</button>
-                  <button type="button" className={styles.secondaryButton} onClick={copyOrder}>Copy details</button>
                   <button type="button" className={styles.primaryButton} onClick={addWebsiteToBasket}>
                     Continue to basket
                   </button>
                 </div>
-                {copied && <p className={styles.copied} role="status">{copied}</p>}
               </div>
             )}
           </div>
