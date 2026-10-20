@@ -76,12 +76,7 @@ type WebsiteOrder = {
   price: number;
 };
 
-type ServiceOrder = {
-  kind: 'service';
-  name: 'Dylano AI' | 'Custom Projects';
-};
-
-type OrderSelection = WebsiteOrder | ServiceOrder;
+type OrderSelection = WebsiteOrder;
 
 export default function ServicePage() {
   const cart = useCart();
@@ -93,16 +88,9 @@ export default function ServicePage() {
   const [email, setEmail] = useState('');
   const [project, setProject] = useState('');
   const [copied, setCopied] = useState('');
-  const [infoService, setInfoService] = useState<'Dylano AI' | 'Custom Projects' | null>(null);
 
   const openWebsiteOrder = (item: Package) => {
     setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
-    setStep('form');
-    setCopied('');
-  };
-
-  const openServiceOrder = (name: ServiceOrder['name']) => {
-    setSelection({ kind: 'service', name });
     setStep('form');
     setCopied('');
   };
@@ -113,17 +101,14 @@ export default function ServicePage() {
     setCopied('');
   };
 
-  const orderName = selection?.kind === 'website'
-    ? `Cloudy Studio — ${selection.packageKey}`
-    : selection?.name || '';
+  const orderName = selection ? `Cloudy Studio — ${selection.packageKey}` : '';
 
   const orderSummary = selection
     ? [
         'Cloudy Studio — Order',
         `Selection: ${orderName}`,
-        ...(selection.kind === 'website'
-          ? [`Pages: ${selection.pages}`, `Price: €${selection.price.toLocaleString('en-GB')}`]
-          : ['Price: Not set in this preview']),
+        `Pages: ${selection.pages}`,
+        `Price: €${selection.price.toLocaleString('en-GB')}`,
         `Name: ${fullName || 'Not entered'}`,
         `Email: ${email || 'Not entered'}`,
         `Project: ${project || 'Not specified'}`,
@@ -140,7 +125,7 @@ export default function ServicePage() {
   };
 
   const addWebsiteToBasket = () => {
-    if (!selection || selection.kind !== 'website') return;
+    if (!selection) return;
 
     const product = cloudyWebsiteProducts[selection.packageKey];
     cart.addItem(product, 1, {
@@ -167,8 +152,7 @@ export default function ServicePage() {
           <div className={styles.eyebrow}>Cloudy Studio</div>
           <h1>Your next website.<br /><em>Made to stand out.</em></h1>
           <p>
-            Professional websites with clear packages, thoughtful design and a simple ordering
-            experience. No confusing jargon and no consultation required before buying.
+            Professional websites built around your brand. Choose a package and order directly.
           </p>
           <div className={styles.heroActions}>
             <a className={styles.primaryButton} href="#websites">View website packages</a>
@@ -188,10 +172,7 @@ export default function ServicePage() {
           <header className={styles.sectionHead}>
             <div className={styles.eyebrow}>Website development</div>
             <h2>Choose what fits your vision.</h2>
-            <p>
-              Compare the packages, open the feature description if you want more detail,
-              then press Buy. Each package uses plain English and shows the complete price.
-            </p>
+            <p>Choose your package, see what is included and buy directly.</p>
           </header>
 
           <div className={styles.packageGrid}>
@@ -240,65 +221,6 @@ export default function ServicePage() {
         </div>
       </section>
 
-      <section id="services" className={`${styles.section} ${styles.servicesSection}`}>
-        <div className={styles.wrap}>
-          <header className={styles.sectionHead}>
-            <div className={styles.eyebrow}>More from Cloudy</div>
-            <h2>More than a website.</h2>
-            <p>Additional digital services with the same clear, professional presentation.</p>
-          </header>
-
-          <div className={styles.serviceGrid}>
-            <article className={styles.serviceCard}>
-              <div className={styles.eyebrow}>Artificial intelligence</div>
-              <h3>Dylano AI</h3>
-              <p>AI assistance for writing, ideas and everyday productivity.</p>
-              <details className={styles.serviceDetails}>
-                <summary>View features</summary>
-                <p>
-                  Conversational assistance, writing support, brainstorming and productivity tools
-                  in a focused AI experience.
-                </p>
-              </details>
-              <div className={styles.serviceActions}>
-                <a
-                  className={styles.secondaryButton}
-                  href="https://dylano-ai.vercel.app"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  View
-                </a>
-                <button className={styles.primaryButton} type="button" onClick={() => openServiceOrder('Dylano AI')}>
-                  Buy
-                </button>
-              </div>
-            </article>
-
-            <article className={styles.serviceCard}>
-              <div className={styles.eyebrow}>Custom development</div>
-              <h3>Custom Projects</h3>
-              <p>Additional website development and tailored digital solutions outside the standard packages.</p>
-              <details className={styles.serviceDetails}>
-                <summary>View features</summary>
-                <p>
-                  Extra pages, custom layouts, interactive sections and suitable integrations can be
-                  planned for projects that need more than a standard website package.
-                </p>
-              </details>
-              <div className={styles.serviceActions}>
-                <button className={styles.secondaryButton} type="button" onClick={() => setInfoService('Custom Projects')}>
-                  View
-                </button>
-                <button className={styles.primaryButton} type="button" onClick={() => openServiceOrder('Custom Projects')}>
-                  Buy
-                </button>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <section id="process" className={styles.section}>
         <div className={styles.wrap}>
           <header className={styles.sectionHead}>
@@ -331,19 +253,11 @@ export default function ServicePage() {
           <div className={styles.dialog}>
             <button className={styles.close} type="button" onClick={closeOrder} aria-label="Close">×</button>
             <h2 id="order-title">{step === 'form' ? 'Start your order' : 'Review your order'}</h2>
-            <p>
-              {selection.kind === 'website'
-                ? 'Review your selected website package and enter the details needed to start.'
-                : 'Enter your details and review this service request.'}
-            </p>
+            <p>Review your package and enter the details needed to start.</p>
 
             <div className={styles.orderInfo}>
               <strong>{orderName}</strong>
-              <span>
-                {selection.kind === 'website'
-                  ? `${selection.pages} pages · €${selection.price.toLocaleString('en-GB')}`
-                  : 'Service preview · price not set'}
-              </span>
+              <span>{selection.pages} pages · €{selection.price.toLocaleString('en-GB')}</span>
             </div>
 
             {step === 'form' ? (
@@ -377,7 +291,7 @@ export default function ServicePage() {
                   id="service-order-project"
                   value={project}
                   onChange={event => setProject(event.target.value)}
-                  required={selection.kind === 'website'}
+                  required
                   placeholder="What would you like us to build?"
                 />
 
@@ -396,37 +310,13 @@ export default function ServicePage() {
                 <div className={styles.modalActions}>
                   <button type="button" className={styles.secondaryButton} onClick={() => setStep('form')}>Back</button>
                   <button type="button" className={styles.secondaryButton} onClick={copyOrder}>Copy order details</button>
-                  {selection.kind === 'website' && (
-                    <button type="button" className={styles.primaryButton} onClick={addWebsiteToBasket}>
-                      Continue to basket
-                    </button>
-                  )}
+                  <button type="button" className={styles.primaryButton} onClick={addWebsiteToBasket}>
+                    Continue to basket
+                  </button>
                 </div>
                 {copied && <p className={styles.copied} role="status">{copied}</p>}
               </div>
             )}
-          </div>
-        </div>
-      )}
-
-      {infoService && (
-        <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="service-info-title" onMouseDown={event => {
-          if (event.target === event.currentTarget) setInfoService(null);
-        }}>
-          <div className={styles.dialog}>
-            <button className={styles.close} type="button" onClick={() => setInfoService(null)} aria-label="Close">×</button>
-            <h2 id="service-info-title">{infoService}</h2>
-            <p>
-              Tailored development for requirements that do not fit one of the standard website
-              packages. This can include extra pages, custom layouts, interactive sections or
-              suitable integrations.
-            </p>
-            <button className={styles.primaryButton} type="button" onClick={() => {
-              setInfoService(null);
-              openServiceOrder('Custom Projects');
-            }}>
-              Buy
-            </button>
           </div>
         </div>
       )}
