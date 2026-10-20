@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
@@ -89,7 +89,7 @@ export default function ServicePage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [project, setProject] = useState('');
-  const touchBuyHandled = useRef(false);
+  const lastTouchBuyAt = useRef(0);
 
   useEffect(() => {
     if (!selection) return;
@@ -139,29 +139,46 @@ export default function ServicePage() {
     });
   };
 
+  useEffect(() => {
+    const buttons = Array.from(
+      document.querySelectorAll<HTMLButtonElement>('[data-studio-buy]')
+    );
+
+    const cleanups = buttons.map(button => {
+      const onTouchStart = (event: TouchEvent) => {
+        const key = button.dataset.studioBuy as CloudyWebsitePackageKey | undefined;
+        const item = packages.find(pkg => pkg.key === key);
+        if (!item) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        lastTouchBuyAt.current = Date.now();
+
+        flushSync(() => {
+          setSelection({
+            kind: 'website',
+            packageKey: item.key,
+            pages: item.pages,
+            price: item.price,
+          });
+          setStep('form');
+        });
+      };
+
+      button.addEventListener('touchstart', onTouchStart, {
+        passive: false,
+        capture: true,
+      });
+
+      return () => button.removeEventListener('touchstart', onTouchStart, true);
+    });
+
+    return () => cleanups.forEach(cleanup => cleanup());
+  }, []);
+
   const openWebsiteOrder = (item: Package) => {
     setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
     setStep('form');
-  };
-
-  const openWebsiteOrderImmediately = (
-    event: ReactPointerEvent<HTMLButtonElement>,
-    item: Package,
-  ) => {
-    if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-
-    event.preventDefault();
-    event.stopPropagation();
-    touchBuyHandled.current = true;
-
-    flushSync(() => {
-      setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
-      setStep('form');
-    });
-
-    window.setTimeout(() => {
-      touchBuyHandled.current = false;
-    }, 700);
   };
 
   const closeOrder = () => {
@@ -263,12 +280,12 @@ export default function ServicePage() {
                   <button
                     type="button"
                     className={styles.buyButton}
-                    onPointerDown={event => openWebsiteOrderImmediately(event, item)}
+                    data-studio-buy={item.key}
                     onClick={event => {
                       event.preventDefault();
                       event.stopPropagation();
 
-                      if (touchBuyHandled.current) return;
+                      if (Date.now() - lastTouchBuyAt.current < 1000) return;
                       openWebsiteOrder(item);
                     }}
                   >
