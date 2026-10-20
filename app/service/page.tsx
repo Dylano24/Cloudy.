@@ -1,11 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { flushSync } from 'react-dom';
-import { useRouter } from 'next/navigation';
-import { useCart } from '@/hooks/use-cart';
-import { cloudyWebsiteProducts, type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
+import { type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
 import { StudioMobilePanelSync } from '@/components/service/studio-mobile-panel-sync';
+import { WebsiteOrderPopover } from '@/components/service/website-order-popover';
 import styles from './service.module.css';
 
 type Package = {
@@ -71,60 +68,7 @@ const packages: Package[] = [
   },
 ];
 
-type WebsiteOrder = {
-  kind: 'website';
-  packageKey: CloudyWebsitePackageKey;
-  pages: number;
-  price: number;
-};
-
-type OrderSelection = WebsiteOrder;
-
 export default function ServicePage() {
-  const cart = useCart();
-  const router = useRouter();
-
-  const [selection, setSelection] = useState<OrderSelection | null>(null);
-  const [step, setStep] = useState<'form' | 'review'>('form');
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [project, setProject] = useState('');
-  const lastTouchBuyAt = useRef(0);
-
-  useEffect(() => {
-    if (!selection) return;
-
-    const scrollY = window.scrollY;
-    const body = document.body;
-    const previous = {
-      position: body.style.position,
-      top: body.style.top,
-      left: body.style.left,
-      right: body.style.right,
-      width: body.style.width,
-      overflow: body.style.overflow,
-    };
-
-    body.dataset.cloudyOrderOpen = 'true';
-    body.style.position = 'fixed';
-    body.style.top = `-${scrollY}px`;
-    body.style.left = '0';
-    body.style.right = '0';
-    body.style.width = '100%';
-    body.style.overflow = 'hidden';
-
-    return () => {
-      delete body.dataset.cloudyOrderOpen;
-      body.style.position = previous.position;
-      body.style.top = previous.top;
-      body.style.left = previous.left;
-      body.style.right = previous.right;
-      body.style.width = previous.width;
-      body.style.overflow = previous.overflow;
-      window.scrollTo(0, scrollY);
-    };
-  }, [selection]);
-
   const scrollToSection = (id: 'websites' | 'process') => {
     const target = document.getElementById(id);
     if (!target) return;
@@ -139,87 +83,9 @@ export default function ServicePage() {
     });
   };
 
-  useEffect(() => {
-    const buttons = Array.from(
-      document.querySelectorAll<HTMLButtonElement>('[data-studio-buy]')
-    );
 
-    const cleanups = buttons.map(button => {
-      const onTouchStart = (event: TouchEvent) => {
-        const key = button.dataset.studioBuy as CloudyWebsitePackageKey | undefined;
-        const item = packages.find(pkg => pkg.key === key);
-        if (!item) return;
 
-        event.preventDefault();
-        event.stopPropagation();
-        lastTouchBuyAt.current = Date.now();
 
-        flushSync(() => {
-          setSelection({
-            kind: 'website',
-            packageKey: item.key,
-            pages: item.pages,
-            price: item.price,
-          });
-          setStep('form');
-        });
-      };
-
-      button.addEventListener('touchstart', onTouchStart, {
-        passive: false,
-        capture: true,
-      });
-
-      return () => button.removeEventListener('touchstart', onTouchStart, true);
-    });
-
-    return () => cleanups.forEach(cleanup => cleanup());
-  }, []);
-
-  const openWebsiteOrder = (item: Package) => {
-    setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
-    setStep('form');
-  };
-
-  const closeOrder = () => {
-    setSelection(null);
-    setStep('form');
-  };
-
-  const orderName = selection ? `Cloudy Studio ${selection.packageKey.toLowerCase()}` : '';
-
-  const orderSummary = selection
-    ? [
-        'Cloudy Studio order',
-        `Package: ${orderName}`,
-        `Pages: ${selection.pages}`,
-        `Price: €${selection.price.toLocaleString('en-GB')}`,
-        `Name: ${fullName || 'Not entered'}`,
-        `Email: ${email || 'Not entered'}`,
-        `Project: ${project || 'Not specified'}`,
-      ].join('\n')
-    : '';
-
-  const addWebsiteToBasket = () => {
-    if (!selection) return;
-
-    const product = cloudyWebsiteProducts[selection.packageKey];
-    cart.addItem(product, 1, {
-      customer_name: fullName,
-      customer_email: email,
-      project_description: project,
-    });
-
-    try {
-      const current = JSON.parse(localStorage.getItem('checkout_form_data') || '{}');
-      localStorage.setItem('checkout_form_data', JSON.stringify({ ...current, email }));
-    } catch {
-      localStorage.setItem('checkout_form_data', JSON.stringify({ email }));
-    }
-
-    closeOrder();
-    router.push('/cart');
-  };
 
   return (
     <main className={`${styles.page} cloudy-studio-page`}>
@@ -277,20 +143,11 @@ export default function ServicePage() {
                 </details>
 
                 <div className={styles.cardBottom}>
-                  <button
-                    type="button"
-                    className={styles.buyButton}
-                    data-studio-buy={item.key}
-                    onClick={event => {
-                      event.preventDefault();
-                      event.stopPropagation();
-
-                      if (Date.now() - lastTouchBuyAt.current < 1000) return;
-                      openWebsiteOrder(item);
-                    }}
-                  >
-                    Buy
-                  </button>
+                  <WebsiteOrderPopover
+                    packageKey={item.key}
+                    pages={item.pages}
+                    price={item.price}
+                  />
                 </div>
               </article>
             ))}
@@ -328,75 +185,6 @@ export default function ServicePage() {
         </div>
       </section>
 
-      {selection && (
-        <div className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="order-title">
-          <div className={styles.dialog}>
-            <button className={styles.close} type="button" onClick={closeOrder} aria-label="Close">×</button>
-            <h2 id="order-title">{orderName}</h2>
-            <p>
-              {step === 'form'
-                ? `${selection.pages} pages · €${selection.price.toLocaleString('en-GB')}. Enter your details below.`
-                : 'Check your details before continuing.'}
-            </p>
-
-            {step === 'form' ? (
-              <form onSubmit={event => {
-                event.preventDefault();
-                setStep('review');
-              }}>
-                <label htmlFor="service-order-name">Full name</label>
-                <input
-                  id="service-order-name"
-                  value={fullName}
-                  onChange={event => setFullName(event.target.value)}
-                  required
-                  autoComplete="name"
-                  placeholder="Your full name"
-                />
-
-                <label htmlFor="service-order-email">Email address</label>
-                <input
-                  id="service-order-email"
-                  type="email"
-                  value={email}
-                  onChange={event => setEmail(event.target.value)}
-                  required
-                  autoComplete="email"
-                  placeholder="you@example.com"
-                />
-
-                <label htmlFor="service-order-project">Your website</label>
-                <textarea
-                  id="service-order-project"
-                  value={project}
-                  onChange={event => setProject(event.target.value)}
-                  required
-                  placeholder="Tell us what the website is for and what you want on it."
-                />
-
-                <div className={styles.modalActions}>
-                  <button type="button" className={styles.secondaryButton} onClick={closeOrder}>Cancel</button>
-                  <button type="submit" className={styles.primaryButton}>Review</button>
-                </div>
-              </form>
-            ) : (
-              <div>
-                <pre className={styles.reviewText}>{orderSummary}</pre>
-                <div className={styles.previewNotice}>
-                  Preview mode: website packages can continue through the Cloudy basket and checkout,
-                  but the final payment action stays disabled until you approve this preview.
-                </div>
-                <div className={styles.modalActions}>
-                  <button type="button" className={styles.secondaryButton} onClick={() => setStep('form')}>Back</button>
-                  <button type="button" className={styles.primaryButton} onClick={addWebsiteToBasket}>
-                    Continue to basket
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
     </main>
   );
 }
