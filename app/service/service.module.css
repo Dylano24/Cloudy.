@@ -876,3 +876,10 @@
     -webkit-touch-callout: none;
   }
 }
+
+
+@media (max-width: 600px) {
+  .modalActions {
+    grid-template-columns: 1fr 1fr;
+  }
+}
