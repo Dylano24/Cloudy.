@@ -241,3 +241,8 @@
   .linkLabel, .topicLabel { display: block; flex: 1 1 auto; min-width: 0; white-space: normal; overflow: visible; overflow-wrap: break-word; word-break: normal; }
   .links a, .topics button { height: auto; min-height: 36px; overflow: visible; }
 }
+
+
+:global(body[data-cloudy-order-open="true"]) .dock {
+  display: none !important;
+}
