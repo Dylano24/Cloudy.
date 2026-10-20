@@ -153,7 +153,7 @@ export default function CartPage() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Shopping Basket</h1>
+            <h1 className="text-4xl font-bold mb-2">Shopping basket</h1>
             <p className="text-muted">{cart.getItemCount()} item{cart.getItemCount() !== 1 ? 's' : ''} in your basket</p>
           </div>
 
@@ -298,10 +298,10 @@ export default function CartPage() {
               })}
             </div>
 
-            {/* Order Summary */}
+            {/* Order summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-20 p-6 rounded-xl bg-card border border-border">
-                <h2 className="text-2xl font-bold mb-6">Order Summary</h2>
+                <h2 className="text-2xl font-bold mb-6">Order summary</h2>
 
                 <div className="space-y-4 mb-6">
                   {cart.items.map((item, index) => {
