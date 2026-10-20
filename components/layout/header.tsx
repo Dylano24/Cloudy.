@@ -125,9 +125,7 @@ export function Header() {
   const nav = [
     ['Home', '/'],
     ['Store', '/shop'],
-    ['Service', '/service'],
-    ['Discord', 'https://discord.gg/EGDVMmmSzF'],
-    ['Support', '/support'],
+    ['Website', '/service'],
   ] as const;
 
   return (
