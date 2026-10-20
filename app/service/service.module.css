@@ -840,3 +840,20 @@
     margin: 8px 0 auto;
   }
 }
+
+
+/* Buy must always sit above decorative card layers and react on the first touch. */
+.cardBottom {
+  position: relative;
+  z-index: 30;
+  pointer-events: auto;
+}
+
+.buyButton {
+  position: relative;
+  z-index: 31;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
