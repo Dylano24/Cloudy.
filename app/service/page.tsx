@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { flushSync } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import { cloudyWebsiteProducts, type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
@@ -88,6 +89,7 @@ export default function ServicePage() {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [project, setProject] = useState('');
+  const touchBuyHandled = useRef(false);
 
   useEffect(() => {
     if (!selection) return;
@@ -140,6 +142,26 @@ export default function ServicePage() {
   const openWebsiteOrder = (item: Package) => {
     setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
     setStep('form');
+  };
+
+  const openWebsiteOrderImmediately = (
+    event: ReactPointerEvent<HTMLButtonElement>,
+    item: Package,
+  ) => {
+    if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    touchBuyHandled.current = true;
+
+    flushSync(() => {
+      setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
+      setStep('form');
+    });
+
+    window.setTimeout(() => {
+      touchBuyHandled.current = false;
+    }, 700);
   };
 
   const closeOrder = () => {
@@ -241,9 +263,12 @@ export default function ServicePage() {
                   <button
                     type="button"
                     className={styles.buyButton}
+                    onPointerDown={event => openWebsiteOrderImmediately(event, item)}
                     onClick={event => {
                       event.preventDefault();
                       event.stopPropagation();
+
+                      if (touchBuyHandled.current) return;
                       openWebsiteOrder(item);
                     }}
                   >
