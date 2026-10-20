@@ -857,3 +857,22 @@
   -webkit-user-select: none;
   touch-action: manipulation;
 }
+
+
+.packageCard::before,
+.packageCard::after {
+  pointer-events: none !important;
+}
+
+@media (max-width: 900px) {
+  .packageCard:hover,
+  .buyButton:hover,
+  .primaryButton:hover,
+  .secondaryButton:hover {
+    transform: none !important;
+  }
+
+  .buyButton {
+    -webkit-touch-callout: none;
+  }
+}
