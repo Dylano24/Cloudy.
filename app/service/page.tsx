@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useRef, useState, type TouchEvent as ReactTouchEvent } from 'react';
 import { flushSync } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
@@ -90,6 +90,7 @@ export default function ServicePage() {
   const [email, setEmail] = useState('');
   const [project, setProject] = useState('');
   const [copied, setCopied] = useState('');
+  const touchBuyHandled = useRef(false);
 
   useEffect(() => {
     if (!selection) return;
@@ -145,17 +146,20 @@ export default function ServicePage() {
     setCopied('');
   };
 
-  const openWebsiteOrderOnTouch = (event: ReactPointerEvent<HTMLButtonElement>, item: Package) => {
-    if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-
+  const openWebsiteOrderOnTouchEnd = (event: ReactTouchEvent<HTMLButtonElement>, item: Package) => {
     event.preventDefault();
     event.stopPropagation();
+    touchBuyHandled.current = true;
 
     flushSync(() => {
       setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
       setStep('form');
       setCopied('');
     });
+
+    window.setTimeout(() => {
+      touchBuyHandled.current = false;
+    }, 500);
   };
 
   const closeOrder = () => {
@@ -267,9 +271,9 @@ export default function ServicePage() {
                   <button
                     type="button"
                     className={styles.buyButton}
-                    onPointerDown={event => openWebsiteOrderOnTouch(event, item)}
-                    onClick={event => {
-                      if (event.detail !== 0 && window.matchMedia('(pointer: coarse)').matches) return;
+                    onTouchEnd={event => openWebsiteOrderOnTouchEnd(event, item)}
+                    onClick={() => {
+                      if (touchBuyHandled.current) return;
                       openWebsiteOrder(item);
                     }}
                   >
