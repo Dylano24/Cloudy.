@@ -246,3 +246,8 @@
 :global(body[data-cloudy-order-open="true"]) .dock {
   display: none !important;
 }
+
+
+:global(body:has([data-cloudy-order]:popover-open)) .dock {
+  display: none !important;
+}
