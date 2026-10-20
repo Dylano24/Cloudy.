@@ -40,7 +40,7 @@ function makeWebsiteProduct(
 ): ProductDetailed {
   return {
     id,
-    name: `Cloudy Studio — ${name}`,
+    name: `Cloudy Studio ${name.toLowerCase()}`,
     status: true,
     slug,
     price,
