@@ -90,6 +90,20 @@ export default function ServicePage() {
   const [project, setProject] = useState('');
   const [copied, setCopied] = useState('');
 
+  const scrollToSection = (id: 'websites' | 'process') => {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const header = document.querySelector<HTMLElement>('.cloudy-header');
+    const headerHeight = header?.getBoundingClientRect().height ?? 0;
+    const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 14;
+
+    window.scrollTo({
+      top: Math.max(0, top),
+      behavior: 'smooth',
+    });
+  };
+
   const openWebsiteOrder = (item: Package) => {
     setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
     setStep('form');
@@ -157,13 +171,17 @@ export default function ServicePage() {
             Professional websites built around your brand. Choose a package and order directly.
           </p>
           <div className={styles.heroActions}>
-            <a className={styles.primaryButton} href="#websites">View website packages</a>
-            <a className={styles.secondaryButton} href="#process">How it works</a>
+            <button className={styles.primaryButton} type="button" onClick={() => scrollToSection('websites')}>
+              View website packages
+            </button>
+            <button className={styles.secondaryButton} type="button" onClick={() => scrollToSection('process')}>
+              How it works
+            </button>
           </div>
         </div>
       </section>
 
-      <section id="websites" className={styles.section}>
+      <section id="websites" className={`${styles.section} ${styles.websitesSection}`}>
         <div className={styles.wrap}>
           <header className={styles.sectionHead}>
             <div className={styles.eyebrow}>Website development</div>
@@ -217,7 +235,7 @@ export default function ServicePage() {
         </div>
       </section>
 
-      <section id="process" className={styles.section}>
+      <section id="process" className={`${styles.section} ${styles.processSection}`}>
         <div className={styles.wrap}>
           <header className={styles.sectionHead}>
             <div className={styles.eyebrow}>Simple process</div>
