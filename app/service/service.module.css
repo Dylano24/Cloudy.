@@ -146,22 +146,10 @@
   box-shadow: 0 4px 24px rgba(240,38,68,.15);
 }
 
-.primaryButton:hover,
-.buyButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 32px rgba(239,41,75,.32);
-}
-
 .secondaryButton {
   border: 1px solid rgba(255,255,255,.13);
   background: #17171d;
   color: #fff;
-}
-
-.secondaryButton:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255,91,113,.6);
-  background: #1d1d24;
 }
 
 
@@ -229,12 +217,6 @@
   box-shadow: 0 20px 58px rgba(0,0,0,.35);
   animation: studioPanelSheen 6.5s linear infinite;
   transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease;
-}
-
-.packageCard:hover {
-  transform: translateY(-5px);
-  border-color: rgba(229,27,46,.32);
-  box-shadow: 0 24px 70px rgba(0,0,0,.56), 0 0 34px rgba(229,27,46,.08);
 }
 
 @keyframes studioPanelSheen {
@@ -393,12 +375,6 @@
   border-radius: 14px;
   background: #141419;
   transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-}
-
-.serviceCard:hover {
-  transform: translateY(-4px);
-  border-color: rgba(232,58,83,.7);
-  box-shadow: 0 18px 45px rgba(0,0,0,.32);
 }
 
 .serviceCard h3 {
@@ -804,7 +780,7 @@
 }
 
 
-/* iPhone/touch: first tap must activate Buy immediately, not a hover state. */
+/* Touch devices get no hover selectors at all. Desktop hover is defined below. */
 .buyButton,
 .primaryButton,
 .secondaryButton {
@@ -812,21 +788,29 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-@media (hover: none), (pointer: coarse) {
-  .packageCard:hover,
+@media (hover: hover) and (pointer: fine) {
   .primaryButton:hover,
-  .secondaryButton:hover,
   .buyButton:hover {
-    transform: none;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(239,41,75,.32);
+  }
+
+  .secondaryButton:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,91,113,.6);
+    background: #1d1d24;
   }
 
   .packageCard:hover {
-    border-color: var(--line);
-    box-shadow: 0 20px 58px rgba(0,0,0,.35);
+    transform: translateY(-5px);
+    border-color: rgba(229,27,46,.32);
+    box-shadow: 0 24px 70px rgba(0,0,0,.56), 0 0 34px rgba(229,27,46,.08);
   }
 
-  .featured:hover {
-    border-color: rgba(230,56,81,.66);
+  .serviceCard:hover {
+    transform: translateY(-4px);
+    border-color: rgba(232,58,83,.7);
+    box-shadow: 0 18px 45px rgba(0,0,0,.32);
   }
 }
 
@@ -863,20 +847,6 @@
 .packageCard::after {
   pointer-events: none !important;
 }
-
-@media (max-width: 900px) {
-  .packageCard:hover,
-  .buyButton:hover,
-  .primaryButton:hover,
-  .secondaryButton:hover {
-    transform: none !important;
-  }
-
-  .buyButton {
-    -webkit-touch-callout: none;
-  }
-}
-
 
 @media (max-width: 600px) {
   .modalActions {
