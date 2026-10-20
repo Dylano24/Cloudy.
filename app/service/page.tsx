@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { flushSync } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import { cloudyWebsiteProducts, type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
@@ -144,6 +145,19 @@ export default function ServicePage() {
     setCopied('');
   };
 
+  const openWebsiteOrderOnTouch = (event: ReactPointerEvent<HTMLButtonElement>, item: Package) => {
+    if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    flushSync(() => {
+      setSelection({ kind: 'website', packageKey: item.key, pages: item.pages, price: item.price });
+      setStep('form');
+      setCopied('');
+    });
+  };
+
   const closeOrder = () => {
     setSelection(null);
     setStep('form');
@@ -253,7 +267,11 @@ export default function ServicePage() {
                   <button
                     type="button"
                     className={styles.buyButton}
-                    onClick={() => openWebsiteOrder(item)}
+                    onPointerDown={event => openWebsiteOrderOnTouch(event, item)}
+                    onClick={event => {
+                      if (event.detail !== 0 && window.matchMedia('(pointer: coarse)').matches) return;
+                      openWebsiteOrder(item);
+                    }}
                   >
                     Buy
                   </button>
