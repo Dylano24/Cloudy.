@@ -214,7 +214,9 @@ export default function CartPage() {
                   <div className="flex-1 min-w-0">
                     <Link href={isCloudyServiceProduct(item.product) ? '/service#websites' : `/product/${item.product.slug}`}>
                       <h3 className="font-semibold text-lg mb-1 hover:text-primary transition-colors truncate">
-                        {item.product.name}
+                        {isCloudyServiceProduct(item.product)
+                          ? `Cloudy Studio ${item.product.slug.replace('cloudy-studio-', '')}`
+                          : item.product.name}
                       </h3>
                     </Link>
                     <p className="text-2xl font-bold text-primary mb-2">
@@ -315,7 +317,9 @@ export default function CartPage() {
                     <div key={`${item.product.id}-${index}`} className="flex flex-col gap-1">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted truncate pr-2">
-                          {item.product.name} x{item.quantity}
+                          {isCloudyServiceProduct(item.product)
+                            ? `Cloudy Studio ${item.product.slug.replace('cloudy-studio-', '')}`
+                            : item.product.name} x{item.quantity}
                         </span>
                         <span className="font-semibold whitespace-nowrap">
                           {isCloudyServiceProduct(item.product) ? '€' : '$'}{(() => {
