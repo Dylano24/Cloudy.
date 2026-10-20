@@ -104,6 +104,7 @@ export default function ServicePage() {
       overflow: body.style.overflow,
     };
 
+    body.dataset.cloudyOrderOpen = 'true';
     body.style.position = 'fixed';
     body.style.top = `-${scrollY}px`;
     body.style.left = '0';
@@ -112,6 +113,7 @@ export default function ServicePage() {
     body.style.overflow = 'hidden';
 
     return () => {
+      delete body.dataset.cloudyOrderOpen;
       body.style.position = previous.position;
       body.style.top = previous.top;
       body.style.left = previous.left;
