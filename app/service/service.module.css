@@ -458,10 +458,17 @@
   position: fixed;
   inset: 0;
   z-index: 200;
+  height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 16px;
+  padding:
+    max(14px, env(safe-area-inset-top))
+    14px
+    max(18px, env(safe-area-inset-bottom));
   background: rgba(0,0,0,.78);
   backdrop-filter: blur(10px);
 }
@@ -469,19 +476,19 @@
 .dialog {
   position: relative;
   width: min(560px, 100%);
-  max-height: 90vh;
-  overflow: auto;
+  margin: auto 0;
   padding: 29px;
-  border: 1px solid #494950;
+  border: 1px solid #3c3c44;
   border-radius: 16px;
-  background: #15151b;
+  background: #121216;
   box-shadow: 0 35px 110px rgba(0,0,0,.7);
 }
 
 .dialog h2 {
-  margin: 0 0 7px;
-  font-size: 28px;
-  letter-spacing: -.03em;
+  margin: 0 38px 7px 0;
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -.035em;
 }
 
 .dialog > p {
@@ -501,21 +508,6 @@
   cursor: pointer;
 }
 
-.orderInfo {
-  display: grid;
-  gap: 2px;
-  margin: 19px 0;
-  padding: 14px;
-  border: 1px solid #49414a;
-  border-radius: 10px;
-  background: #22151c;
-}
-
-.orderInfo span {
-  color: #b9a8af;
-  font-size: 11px;
-}
-
 .dialog label {
   display: block;
   margin: 14px 0 6px;
@@ -526,13 +518,16 @@
 .dialog input,
 .dialog textarea {
   width: 100%;
-  padding: 12px;
+  min-height: 50px;
+  padding: 13px 14px;
   border: 1px solid #41414a;
-  border-radius: 8px;
+  border-radius: 9px;
   outline: none;
-  background: #0c0c10;
+  background: #09090c;
   color: #fff;
   font: inherit;
+  font-size: 16px;
+  line-height: 1.45;
 }
 
 .dialog input:focus,
@@ -542,7 +537,7 @@
 }
 
 .dialog textarea {
-  min-height: 100px;
+  min-height: 132px;
   resize: vertical;
 }
 
@@ -747,5 +742,63 @@
   #websites,
   #process {
     scroll-margin-top: 86px;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .modal {
+    padding:
+      max(10px, env(safe-area-inset-top))
+      10px
+      max(14px, env(safe-area-inset-bottom));
+  }
+
+  .dialog {
+    width: 100%;
+    margin: auto 0;
+    padding: 22px 18px 18px;
+    border-radius: 15px;
+  }
+
+  .dialog h2 {
+    margin-right: 34px;
+    font-size: 28px;
+  }
+
+  .dialog > p {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .dialog label {
+    margin-top: 16px;
+    font-size: 12px;
+  }
+
+  .modalActions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-wrap: nowrap;
+  }
+
+  .modalActions > * {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .reviewText {
+    max-height: 34dvh;
+    overflow: auto;
+    padding: 12px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 9px;
+    background: #09090c;
+  }
+}
+
+@media (max-width: 390px) {
+  .modalActions {
+    grid-template-columns: 1fr;
   }
 }
