@@ -570,7 +570,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  .page,
+  .page * {
     scroll-behavior: auto !important;
     transition: none !important;
   }
