@@ -184,36 +184,38 @@ export default function CartPage() {
                 return (
                 <div
                   key={`${item.product.id}-${index}`}
-                  className="flex gap-4 p-4 rounded-xl bg-card border border-border"
+                  className="flex gap-3 sm:gap-4 p-4 rounded-xl bg-card border border-border"
                 >
                   {/* Image */}
-                  <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-gradient-card flex-shrink-0">
-                    {(() => {
-                      const imageSrc = item.product.image || ("gallery" in item.product ? item.product.gallery?.[0] : undefined);
-                      if (!imageSrc) {
-                        return (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <ShoppingCart className="w-8 h-8 text-primary/30" />
-                          </div>
-                        );
-                      }
+                  {!isCloudyServiceProduct(item.product) && (
+                    <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-gradient-card flex-shrink-0">
+                      {(() => {
+                        const imageSrc = item.product.image || ("gallery" in item.product ? item.product.gallery?.[0] : undefined);
+                        if (!imageSrc) {
+                          return (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <ShoppingCart className="w-8 h-8 text-primary/30" />
+                            </div>
+                          );
+                        }
 
-                      return (
-                        <Image
-                          src={imageSrc}
-                          alt={item.product.name}
-                          fill
-                          className="object-cover"
-                          unoptimized
-                        />
-                      );
-                    })()}
-                  </div>
+                        return (
+                          <Image
+                            src={imageSrc}
+                            alt={item.product.name}
+                            fill
+                            className="object-cover"
+                            unoptimized
+                          />
+                        );
+                      })()}
+                    </div>
+                  )}
 
                   {/* Details */}
                   <div className="flex-1 min-w-0">
                     <Link href={isCloudyServiceProduct(item.product) ? '/service#websites' : `/product/${item.product.slug}`}>
-                      <h3 className="font-semibold text-lg mb-1 hover:text-primary transition-colors truncate">
+                      <h3 className={`font-semibold text-lg mb-1 hover:text-primary transition-colors ${isCloudyServiceProduct(item.product) ? 'whitespace-normal break-words leading-snug' : 'truncate'}`}>
                         {isCloudyServiceProduct(item.product)
                           ? `Cloudy Studio ${item.product.slug.replace('cloudy-studio-', '')}`
                           : item.product.name}
@@ -261,11 +263,26 @@ export default function CartPage() {
                         {item.product.period_num && item.product.period_num > 1 ? 's' : ''}
                       </p>
                     )}
-                    {customFieldsDisplay && (
+                    {isCloudyServiceProduct(item.product) && item.customFields ? (
+                      <div className="mt-3 grid gap-1.5 text-sm">
+                        <div className="grid grid-cols-[88px_minmax(0,1fr)] gap-2">
+                          <span className="text-muted">Full name</span>
+                          <span className="break-words">{String(item.customFields.customer_name || '')}</span>
+                        </div>
+                        <div className="grid grid-cols-[88px_minmax(0,1fr)] gap-2">
+                          <span className="text-muted">Email</span>
+                          <span className="break-all">{String(item.customFields.customer_email || '')}</span>
+                        </div>
+                        <div className="grid grid-cols-[88px_minmax(0,1fr)] gap-2">
+                          <span className="text-muted">Website</span>
+                          <span className="break-words">{String(item.customFields.project_description || '')}</span>
+                        </div>
+                      </div>
+                    ) : customFieldsDisplay ? (
                       <p className="text-xs text-primary/80 mt-2 italic">
                         {customFieldsDisplay}
                       </p>
-                    )}
+                    ) : null}
                   </div>
 
                   {/* Quantity & Remove */}
@@ -316,7 +333,7 @@ export default function CartPage() {
                     return (
                     <div key={`${item.product.id}-${index}`} className="flex flex-col gap-1">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted truncate pr-2">
+                        <span className={`text-muted pr-2 ${isCloudyServiceProduct(item.product) ? 'whitespace-normal break-words leading-snug' : 'truncate'}`}>
                           {isCloudyServiceProduct(item.product)
                             ? `Cloudy Studio ${item.product.slug.replace('cloudy-studio-', '')}`
                             : item.product.name} x{item.quantity}
@@ -352,11 +369,26 @@ export default function CartPage() {
                           })()}
                         </span>
                       </div>
-                      {customFieldsDisplay && (
+                      {isCloudyServiceProduct(item.product) && item.customFields ? (
+                        <div className="mt-2 grid gap-1 text-xs">
+                          <div className="grid grid-cols-[72px_minmax(0,1fr)] gap-2">
+                            <span className="text-muted">Full name</span>
+                            <span className="break-words">{String(item.customFields.customer_name || '')}</span>
+                          </div>
+                          <div className="grid grid-cols-[72px_minmax(0,1fr)] gap-2">
+                            <span className="text-muted">Email</span>
+                            <span className="break-all">{String(item.customFields.customer_email || '')}</span>
+                          </div>
+                          <div className="grid grid-cols-[72px_minmax(0,1fr)] gap-2">
+                            <span className="text-muted">Website</span>
+                            <span className="break-words">{String(item.customFields.project_description || '')}</span>
+                          </div>
+                        </div>
+                      ) : customFieldsDisplay ? (
                         <span className="text-xs text-primary/60 italic ml-2">
                           {customFieldsDisplay}
                         </span>
-                      )}
+                      ) : null}
                     </div>
                     );
                   })}
@@ -382,7 +414,7 @@ export default function CartPage() {
                       </>
                     ) : (
                       <>
-                        Proceed to Checkout
+                        Proceed to checkout
                         <ArrowRight className="w-5 h-5" />
                       </>
                     )}
