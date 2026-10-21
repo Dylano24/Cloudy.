@@ -11,3 +11,5 @@
 }
 @keyframes panelGlowSweep { from { background-position: 0% 50%; } to { background-position: 100% 50%; } }
 @media (prefers-reduced-motion: reduce) { .page .card { animation: none; background-image: none !important; } }
+
+.redLine { width: 72px; height: 2px; margin-top: 24px; background: #e51b2e; box-shadow: 0 0 18px #e51b2e55; }

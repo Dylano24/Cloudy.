@@ -2,6 +2,7 @@ import Link from 'next/link';
 import styles from './footer.module.css';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
+const preview = process.env.VERCEL_ENV === 'preview';
 const DISCORD_URL = 'https://discord.gg/EGDVMmmSzF';
 
 export function Footer() {
@@ -21,13 +22,14 @@ export function Footer() {
             <div className="cloudy-footer-links">
               <Link href="/">Home</Link>
               <Link href="/shop">Store</Link>
-              <Link href="/support">Support</Link>
+              <Link href="/services">Web development</Link>
             </div>
           </div>
 
           <div className={styles.community}>
-            <div className="cloudy-footer-title">Community</div>
+            <div className="cloudy-footer-title">Contact us</div>
             <div className="cloudy-footer-links">
+              <Link href="/support">Support</Link>
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
             </div>
 
@@ -44,6 +46,7 @@ export function Footer() {
         </div>
 
         <div className="cloudy-footer-bottom">
+          {preview && <span><Link href="/preview/finance">Finance preview</Link> · <Link href="/admin/finance">Private overview</Link></span>}
           <span>© {new Date().getFullYear()} Cloudy Inc. All rights reserved.</span>
         </div>
       </div>
