@@ -114,3 +114,9 @@ test('every visitor language receives the approved creator and Doriane wording a
     assert.match(evidence.verifiedLeadership.guidance, /every other language/);
   }
 });
+
+test('leadership evidence stays compact without duplicating the full biography', () => {
+  const context = assistantKnowledge('Qui est Doriane et quel est son rôle chez Cloudy Inc. ?', [], findHelp);
+  assert.ok(context.evidence.length < 3500);
+  assert.equal(context.evidence.split('created the Cloudy website').length - 1, 1);
+});
