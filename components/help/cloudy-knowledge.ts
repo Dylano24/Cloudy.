@@ -36,6 +36,14 @@ export function findHelp(question: string): HelpResult {
 // Legal prose is copied verbatim from the approved website pages. No external knowledge.
 export const helpEntries: HelpEntry[] = [
   {
+    id: 'cloudy-leadership',
+    title: 'Cloudy Inc. owners, founder and creators',
+    answer: 'Doriane and Dylano are both owners of Cloudy Inc. Doriane is the Founder, Owner and Managing Director: she originated the idea, created the Discord and brought the community together. She leads business operations, organisation, community management, promotion and all Cloudy social media, including Discord, TikTok and YouTube, and holds final decision-making authority. Dylano is Owner and Lead Developer: he leads technical development and created the Cloudy website, Cloudy assistant, Cloudy bot and technical systems.',
+    keywords: ['Doriane', 'Dylano', 'who owns Cloudy', 'who made Cloudy', 'who created Cloudy', 'who founded Cloudy', 'Cloudy owner', 'Cloudy owners', 'Cloudy founder', 'Cloudy developer', 'wie heeft Cloudy', 'wie is de eigenaar', 'wie zijn de eigenaren', 'wie is de oprichter', 'wie beheert Cloudy', 'Cloudy bot', 'Cloudy assistant creator'],
+    links: [],
+    source: 'Approved Cloudy ownership information',
+  },
+  {
     "id": "missing-delivery",
     "title": "Product not received",
     "answer": "Cloudy’s Store terms say digital products are normally delivered immediately after successful payment, except for technical or processing issues. Delivery also requires the correct linked account or purchase information. Check that your payment succeeded and that you used the correct account details.",
