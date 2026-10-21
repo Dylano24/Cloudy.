@@ -1672,14 +1672,15 @@
 .processGrid .processCard p { font-size: 12px; line-height: 1.7; }
 .packageCard { min-height: 0; }
 .packageCard .packageTitle {
-  align-self: stretch;
+  align-self: flex-start;
+  width: fit-content;
   margin: 0 0 4px;
-  padding: 11px 14px;
+  padding: 6px 10px;
   border: 1px solid #ec4257;
   border-radius: 6px;
   background: linear-gradient(110deg, #ac1527, #dc2038);
   color: #fff;
-  font-size: 26px;
+  font-size: 16px;
   line-height: 1.15;
   text-transform: none;
   letter-spacing: -.025em;
