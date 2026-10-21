@@ -185,7 +185,7 @@ export default function ServicePage() {
               >
                 <h3 className={`${styles.pill} ${styles.packageTitle}`}>{item.key}</h3>
                 <div className={styles.price}>€{item.price.toLocaleString('en-GB')}</div>
-                <div className={styles.priceNote}>One-time website development</div>
+                <div className={styles.priceNote}>Website development</div>
 
                 <div className={styles.features}>
                   {[item.features[0], item.label, ...item.features.slice(1, -1)].map(feature => (
