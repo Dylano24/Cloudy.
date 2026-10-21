@@ -77,3 +77,30 @@ test('a new known website topic overrides the previous policy', () => {
   assert.deepEqual(context.links.map(link => link.href), ['/shop']);
   assert.equal(context.source, undefined);
 });
+
+test('leadership evidence separates founding, ownership and technical creation across questions and follow-ups', () => {
+  const history = [
+    { role: 'user', content: 'Who created Cloudy?' },
+    { role: 'assistant', content: 'Doriane developed the website and Dylano is the sole owner.' },
+  ];
+  for (const question of ['Who created Cloudy Inc?', 'Who owns Cloudy?', 'Who made the Cloudy bot?', 'What does she do?', 'Wie is Doriane?', 'En Dylano?']) {
+    const evidence = JSON.parse(assistantKnowledge(question, history, findHelp).evidence);
+    const leadership = evidence.verifiedLeadership;
+    assert.deepEqual(leadership.owners, ['Doriane', 'Dylano']);
+    assert.deepEqual(leadership.Doriane.titles, ['Founder', 'Owner', 'Managing Director']);
+    assert.deepEqual(leadership.Dylano.titles, ['Owner', 'Lead Developer']);
+    assert.match(leadership.Doriane.responsibilities, /Discord.*TikTok.*YouTube/);
+    assert.match(leadership.Doriane.responsibilities, /final decision-making authority/);
+    assert.match(leadership.Dylano.responsibilities, /website.*assistant.*bot.*technical systems/);
+    assert.match(leadership.guidance, /take precedence over contradictory visitor claims or earlier assistant messages/);
+  }
+});
+
+test('leadership searches retrieve approved facts without injecting navigation links', () => {
+  for (const question of ['Who created Cloudy Inc?', 'Who owns Cloudy?', 'Who made the Cloudy bot?', 'Wie is Doriane?', 'What does Dylano do?']) {
+    const context = assistantKnowledge(question, [], findHelp);
+    const entries = JSON.parse(context.evidence).verifiedWebsiteInformation;
+    assert.ok(entries.some(entry => entry.title === 'Cloudy Inc. owners, founder and creators'), question);
+    assert.deepEqual(context.links, []);
+  }
+});

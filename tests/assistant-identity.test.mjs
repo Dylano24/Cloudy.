@@ -14,3 +14,13 @@ test('direct identity questions use Cloudy and Dylano without inventing a model 
 test('ordinary questions still reach the existing AI', () => {
   for (const question of ['How does GPT-4 work?', 'Who created Rust?', 'Write a poem', 'What are Cloudy products?']) assert.equal(assistantIdentityReply(question), null);
 });
+
+test('creator attribution includes Dylano as owner and lead developer, including informal wording', () => {
+  for (const question of ['Who made u?', 'Who created Cloudy Assistant?', 'Who built the Cloudy Assistant?', 'Wie heeft je gemaakt?']) {
+    const reply = assistantIdentityReply(question);
+    assert.match(reply, /Dylano/);
+    assert.match(reply, /owner/);
+    assert.match(reply, /lead developer/);
+    assert.doesNotMatch(reply, /Doriane|sole owner|co-owner/);
+  }
+});

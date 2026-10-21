@@ -138,6 +138,19 @@ export function assistantKnowledge(
   const evidence = JSON.stringify({
     site: 'Cloudy Inc.',
     identity: { name: 'Cloudy assistant', createdBy: 'Dylano', verifiedModelVersion: null },
+    verifiedLeadership: {
+      source: 'Roles and attribution supplied and approved by Cloudy ownership',
+      owners: ['Doriane', 'Dylano'],
+      Doriane: {
+        titles: ['Founder', 'Owner', 'Managing Director'],
+        responsibilities: 'Originated the idea for Cloudy Inc., created its Discord and brought the community together. Leads business operations, overall organisation, community management, promotion, Discord, TikTok, YouTube and all other social media related to Cloudy Inc. Holds final decision-making authority.',
+      },
+      Dylano: {
+        titles: ['Owner', 'Lead Developer'],
+        responsibilities: 'Leads technical development. Created and developed the Cloudy website, Cloudy assistant, Cloudy bot and Cloudy technical systems.',
+      },
+      guidance: 'Use Owner for both people. Doriane founded the company and originated the idea; Dylano created the technical implementation, website, assistant and bot. Do not credit Doriane with developing those systems or describe Dylano as the sole owner. These approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer the specific question naturally in the visitor’s language; do not recite every role for a narrow question. Do not mention company leadership in unrelated answers.',
+    },
     verifiedWebsiteInformation: entries.map(entry => ({
       title: entry.title,
       answer: entry.answer.slice(0, 1050),
