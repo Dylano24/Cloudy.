@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-react';
+import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target, Monitor, Code2, Gamepad2 } from 'lucide-react';
 import styles from './home.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
 import { MobilePanelSync } from '@/components/home/mobile-panel-sync';
-import { SiApplepay, SiGooglepay, SiPaypal } from 'react-icons/si';
+import { SiApplepay, SiDiscord, SiGooglepay, SiPaypal } from 'react-icons/si';
 
 const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 const DISCORD_URL = 'https://discord.gg/EGDVMmmSzF';
@@ -74,10 +74,12 @@ export default function HomePage() {
         </section>
         <section className={`cloudy-classic-feature ${styles.featureBackdrop} ${styles.studioFeature}`} aria-labelledby="cloudy-studio-title">
           <div><span className="cloudy-classic-eyebrow">Cloudy Studio</span><h2 id="cloudy-studio-title">Web <span className={styles.titleGlow}>development</span></h2><p>Bring your website to life. Explore our website packages for a clear, responsive online presence.</p></div>
+          <div className={`${styles.featureVisual} ${styles.studioVisual}`} aria-hidden="true"><Monitor /><Code2 /></div>
           <Link href="/service" className="cloudy-classic-button">Visit the website <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
         <section className={`cloudy-classic-feature ${styles.featureBackdrop} ${styles.experienceFeature}`}>
           <div><h2>Enhance your <span className={styles.titleGlow}>experience</span></h2><p>From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.</p></div>
+          <div className={`${styles.featureVisual} ${styles.storeVisual}`} aria-hidden="true"><Gamepad2 /></div>
           <Link href="/shop" className="cloudy-classic-button">Visit the store <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
         <section className="cloudy-restored-payments" aria-label="Secure payments">
@@ -85,7 +87,7 @@ export default function HomePage() {
             <h2>Secure <span className={styles.titleGlow}>payments</span></h2>
             <p>Simple, secure and reliable checkout.</p>
             <div className="cloudy-restored-payment-brands" aria-label="Payment methods">
-              <span className="cloudy-payment-visa" aria-label="Visa"><span className="cloudy-payment-visa-wordmark" aria-hidden="true"><span className="cloudy-payment-visa-v">V</span><span className="cloudy-payment-visa-rest">ISA</span></span></span>
+              <span className="cloudy-payment-visa" aria-label="Visa"><strong className="cloudy-payment-visa-wordmark" aria-hidden="true">VISA</strong></span>
               <span><svg className="cloudy-payment-mastercard" viewBox="0 0 34 22" aria-hidden="true"><circle cx="12" cy="11" r="10" fill="#fff" /><circle cx="22" cy="11" r="10" fill="#fff" fillOpacity=".5" /></svg>Mastercard</span>
               <span><SiPaypal className="cloudy-payment-paypal" aria-hidden="true" />PayPal</span>
               <span className="cloudy-payment-apple" aria-label="Apple Pay"><SiApplepay aria-hidden="true" /></span>
@@ -104,6 +106,7 @@ export default function HomePage() {
             <h2>Join the <span className={styles.titleGlow}>community</span></h2>
             <p>Connect with other players, stay up to date with Cloudy, get support and discover what’s coming next.</p>
           </div>
+          <div className={`${styles.featureVisual} ${styles.communityVisual}`} aria-hidden="true"><SiDiscord /></div>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-classic-button">Join our Discord <ArrowRight size={15} aria-hidden="true" /></a>
         </section>
 
