@@ -1978,15 +1978,13 @@ body {
    Home-style moving light, without adding red lines around FAQs, terms,
    messages, details, or support content. */
 .cloud-panel,
-.cloudy-term-card,
-.cloudy-studio-page details {
+.cloudy-term-card {
   position: relative;
   isolation: isolate;
   overflow: hidden;
 }
 .cloud-panel::before,
-.cloudy-term-card::before,
-.cloudy-studio-page details::before {
+.cloudy-term-card::before {
   content: "";
   position: absolute;
   z-index: 0;
@@ -2010,8 +2008,7 @@ body {
 }
 @media (prefers-reduced-motion: reduce) {
   .cloud-panel::before,
-  .cloudy-term-card::before,
-  .cloudy-studio-page details::before {
+  .cloudy-term-card::before {
     animation: none !important;
     background-image: none;
   }
