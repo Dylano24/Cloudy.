@@ -2005,7 +2005,7 @@ body {
   animation: none !important;
 }
 
-/* Visa: real vector wordmark in white. The authentic V is enlarged only slightly. */
+/* Visa: simple white wordmark; only the V is slightly larger. */
 .cloudy-restored-payment-brands .cloudy-payment-visa {
   display: inline-flex;
   align-items: center;
@@ -2018,42 +2018,38 @@ body {
   background: linear-gradient(135deg,#1a1a20,#09090b);
 }
 .cloudy-restored-payment-brands .cloudy-payment-visa-wordmark {
-  position: relative;
-  display: block;
-  width: 54px;
-  height: 30px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
   padding: 0;
   border: 0;
   background: none;
   color: #fff;
-  line-height: 0;
+  font-family: Arial Black, Arial, Helvetica, sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -.08em;
+  white-space: nowrap;
 }
-.cloudy-restored-payment-brands .cloudy-payment-visa-base,
-.cloudy-restored-payment-brands .cloudy-payment-visa-v-overlay {
-  position: absolute;
-  inset: 0;
-  width: 54px !important;
-  height: 30px !important;
+.cloudy-restored-payment-brands .cloudy-payment-visa-v,
+.cloudy-restored-payment-brands .cloudy-payment-visa-isa {
+  display: inline-block;
   margin: 0;
-  color: #fff !important;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
 }
-.cloudy-restored-payment-brands .cloudy-payment-visa-base {
-  transform: scale(.94);
-  transform-origin: center;
+.cloudy-restored-payment-brands .cloudy-payment-visa-v {
+  font-size: 22px;
 }
-.cloudy-restored-payment-brands .cloudy-payment-visa-v-overlay {
-  clip-path: inset(0 72% 0 0);
-  transform: translateX(-.5px) scale(1.045);
-  transform-origin: left center;
+.cloudy-restored-payment-brands .cloudy-payment-visa-isa {
+  font-size: 18px;
 }
 @media (max-width: 600px) {
-  .cloudy-restored-payment-brands .cloudy-payment-visa-wordmark {
-    width: 52px;
-    height: 29px;
-  }
-  .cloudy-restored-payment-brands .cloudy-payment-visa-base,
-  .cloudy-restored-payment-brands .cloudy-payment-visa-v-overlay {
-    width: 52px !important;
-    height: 29px !important;
-  }
+  .cloudy-restored-payment-brands .cloudy-payment-visa-v { font-size: 21px; }
+  .cloudy-restored-payment-brands .cloudy-payment-visa-isa { font-size: 17px; }
 }
