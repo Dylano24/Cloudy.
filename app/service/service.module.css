@@ -1459,3 +1459,21 @@
     font-size: 22px;
   }
 }
+
+
+/* Keep the Crafted around your needs heading on one line on phones. */
+@media (max-width: 600px) {
+  .introPanel h2 {
+    max-width: none;
+    white-space: nowrap;
+    font-size: clamp(25px, 7.2vw, 30px);
+    line-height: 1.05;
+    letter-spacing: -.045em;
+  }
+}
+
+@media (max-width: 350px) {
+  .introPanel h2 {
+    font-size: 24px;
+  }
+}
