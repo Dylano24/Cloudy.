@@ -30,3 +30,15 @@ test('the approved introduction includes the website, bot and technical systems'
   const dutch = assistantIdentityReply('Wie heeft jou gemaakt?');
   assert.match(dutch, /Cloudy-website, Cloudy bot en de technische systemen/);
 });
+
+test('Cloudy employee counts are explicitly unknown and owners are never relabelled staff', () => {
+  for (const q of ['How many employees work at Cloudy Inc?', 'How many employees?', 'How many people work here?', 'Hoeveel mensen werken hier?', 'How many people work at Cloudy?', 'Hoeveel medewerkers werken bij Cloudy?', 'Combien de personnes travaillent chez Cloudy ?']) {
+    const answer = assistantIdentityReply(q);
+    assert.ok(answer, q);
+    assert.match(answer, /Doriane/);
+    assert.match(answer, /Dylano/);
+    assert.doesNotMatch(answer, /at least|confirmed staff|two employees|2 employees/i);
+  }
+  assert.match(assistantIdentityReply('How many employees work at Cloudy Inc?'), /Doriane is Founder and Owner.*Dylano is Owner and Lead Developer/);
+  assert.equal(assistantIdentityReply('How many people work at Microsoft?'), null);
+});
