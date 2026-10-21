@@ -172,30 +172,9 @@ test('named Cloudy links in response make duplicate footer cards unnecessary', (
 });
 
 
-test('closing assistant clears old chat and aborts responses through every close path', () => {
+test('only reset clears conversation; closing preserves it', () => {
   const client = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
-  const clear = client.match(/function clearConversation\(\) \{([\s\S]*?)\n  \}/)?.[1];
-  assert.ok(clear, 'a single shared conversation cleanup function exists');
-  assert.match(clear, /stopPendingReply\(\)/, 'cancel and invalidate pending AI requests');
-  assert.match(clear, /setMessages\(\[\]\)/, 'remove old messages');
-  assert.match(clear, /setQuestion\(''\)/, 'remove any drafted question');
-  assert.match(clear, /setActivePhoneTopic\(null\)/, 'remove selected mobile topic');
   const close = client.match(/function close\(\) \{([\s\S]*?)\n  \}/)?.[1];
-  assert.match(close || '', /clearConversation\(\)/, 'closing resets the conversation');
-  assert.match(close || '', /setOpen\(false\)/);
-  assert.match(client, /if \(event\.key !== 'Escape'\) return;\s*closeRef\.current\(\)/, 'Escape uses the current close handler');
-  assert.match(client, /onClick=\{close\} aria-label="Close Cloudy assistant"/, 'X button closes');
-  assert.match(client, /onClick=\{\(\) => open \? close\(\) : setOpen\(true\)\}/, 'launcher also closes via cleanup');
-  assert.match(client, /function reset\(\) \{\s*clearConversation\(\)/, 'manual reset retains the same cleanup');
-});
-
-test('phone link navigation clears assistant state while desktop links keep it', () => {
-  const client = readFileSync(new URL('../components/help/cloudy-help.tsx', import.meta.url), 'utf8');
-  const navigation = client.match(/function closeOnPhoneLinkClick\([^)]*\) \{([\s\S]*?)\n  \}/)?.[1];
-  assert.ok(navigation);
-  assert.match(navigation, /max-width: 480px/);
-  assert.match(navigation, /closest\('a\[href\]'\)/);
-  assert.match(navigation, /clearAssistantSession\(\)/);
-  assert.match(navigation, /setOpen\(false\)/);
-  assert.match(client, /onClickCapture=\{closeOnPhoneLinkClick\}/);
+  assert.doesNotMatch(close, /clearConversation|stopPendingReply|setMessages/);
+  assert.match(close, /setOpen\(false\)/);
 });

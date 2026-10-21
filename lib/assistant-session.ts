@@ -7,11 +7,11 @@ export type AssistantSessionMessage =
   | { role: 'visitor'; text: string }
   | { role: 'assistant'; result: HelpResult }
   | { role: 'assistant'; response: AssistantReply };
-export type AssistantSession = { question: string; messages: AssistantSessionMessage[]; activePhoneTopicId: string | null };
+export type AssistantSession = { open?: boolean; question: string; messages: AssistantSessionMessage[]; activePhoneTopicId: string | null };
 type TabStorage = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 const key = 'cloudy-assistant-session-v1';
 const schema = z.object({
-  version: z.literal(1), question: z.string().max(1000), activePhoneTopicId: z.string().max(100).nullable(),
+  version: z.literal(1), open: z.boolean().optional(), question: z.string().max(1000), activePhoneTopicId: z.string().max(100).nullable(),
   messages: z.array(z.union([
     z.object({ role: z.literal('visitor'), text: z.string().max(1000) }),
     z.object({ role: z.literal('assistant'), response: z.object({ answer: z.string().max(3500),
@@ -38,7 +38,7 @@ export function readAssistantSession(storage = tabStorage()): AssistantSession |
         entries: message.result.entryIds.flatMap(id => helpEntries.find(entry => entry.id === id) ?? []) } };
       return message;
     });
-    return { question, messages, activePhoneTopicId };
+    return { ...(parsed.data.open !== undefined ? { open: parsed.data.open } : {}), question, messages, activePhoneTopicId };
   } catch { return null; }
 }
 export function saveAssistantSession(storage: TabStorage | undefined, session: AssistantSession): void {

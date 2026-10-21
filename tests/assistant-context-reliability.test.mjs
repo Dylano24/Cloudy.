@@ -129,3 +129,14 @@ test('policy questions retain their verified policy without carrying unrelated r
   assert.ok(evidence.verifiedWebsiteInformation.some(entry => entry.title === 'Refund policy'));
   assert.ok(context.evidence.length < 3000);
 });
+
+test('owners retain their required titles and never imply an employee count', () => {
+  for (const q of ['How many employees work at Cloudy Inc?', 'Hoeveel mensen werken er bij Cloudy?', 'Combien de personnes travaillent chez Cloudy ?', 'Who is Doriane?', 'Who is Dylano?']) {
+    const evidence = JSON.parse(assistantKnowledge(q, [], findHelp).evidence);
+    assert.match(evidence.workforce, /headcount is unverified/);
+    assert.match(evidence.workforce, /does not mean two employees/);
+    assert.match(evidence.verifiedLeadership.guidance, /Doriane as Founder and Owner/);
+    assert.match(evidence.verifiedLeadership.guidance, /Dylano as Owner and Lead Developer/);
+    assert.ok(JSON.stringify(evidence).length < 3000, q);
+  }
+});

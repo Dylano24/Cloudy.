@@ -1,5 +1,7 @@
 import { parseAssistantInline, parseAssistantMessage, type MessageInline } from '@/lib/cloudy-message-format';
 import styles from './cloudy-help.module.css';
+import Link from 'next/link';
+import type { Route } from 'next';
 
 function InlineText({ text }: { text: string }) {
   return (
@@ -10,9 +12,9 @@ function InlineText({ text }: { text: string }) {
         if (piece.kind === 'code') return <code key={index}>{piece.text}</code>;
         if (piece.kind === 'link' && piece.href) {
           return (
-            <a
+            <Link
               key={index}
-              href={piece.href}
+              href={piece.href as Route}
               {...(piece.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               {piece.emphasis === 'strong'
@@ -20,7 +22,7 @@ function InlineText({ text }: { text: string }) {
                 : piece.emphasis === 'emphasis'
                   ? <em>{piece.text}</em>
                   : piece.text}
-            </a>
+            </Link>
           );
         }
         return <span key={index}>{piece.text}</span>;

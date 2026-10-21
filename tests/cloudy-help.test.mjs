@@ -81,13 +81,13 @@ test('website service and sale terms are both available', () => {
   assert.equal(answerId('join the discord'), 'discord');
 });
 
-test('every answer comes from an approved source with a safe official link', () => {
+test('every answer has an approved source and any navigation link is safe', () => {
   const ids = new Set();
   for (const entry of helpEntries) {
     assert.ok(!ids.has(entry.id), entry.id);
     ids.add(entry.id);
     assert.ok(entry.source && entry.answer && entry.title && entry.keywords.length);
-    assert.ok(entry.links.length);
+    if (entry.id !== 'cloudy-leadership') assert.ok(entry.links.length);
     for (const link of entry.links) assert.match(link.href, /^(\/(?!\/)|https:\/\/discord\.gg\/EGDVMmmSzF$)/);
   }
 });
