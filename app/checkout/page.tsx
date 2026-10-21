@@ -176,11 +176,13 @@ function CheckoutContent() {
 
     let verifiedLinks: Partial<CheckoutUser> = {};
     if(requiredIdentifiers.some(id=>id==='discord_id'||id==='steam_id')){
-      const response=await fetch('/api/account/links',{cache:'no-store'});
-      const data=await response.json();
-      if(!response.ok){setCheckoutError(data.error||'Link your account before purchasing.');return;}
-      verifiedLinks={discord_id:data.links.discord_id||'',steam_id:data.links.steam_id||''};
-      setFormData(previous=>({...previous,...verifiedLinks}));
+      try {
+        const response=await fetch('/api/account/links',{cache:'no-store'});
+        const data=await response.json();
+        if(!response.ok){setCheckoutError(data.error||'Link your account before purchasing.');return;}
+        verifiedLinks={discord_id:data.links.discord_id||'',steam_id:data.links.steam_id||''};
+        setFormData(previous=>({...previous,...verifiedLinks}));
+      } catch { setCheckoutError('Could not verify your account links. Please try again.'); return; }
     }
     if (!validateForm(verifiedLinks)) return;
     // Identity is always checked again by the server before checkout.
