@@ -85,7 +85,7 @@ export default function HomePage() {
             <h2>Secure <span className={styles.titleGlow}>payments</span></h2>
             <p>Simple, secure and reliable checkout.</p>
             <div className="cloudy-restored-payment-brands" aria-label="Payment methods">
-              <span className="cloudy-payment-visa" aria-label="Visa"><strong className="cloudy-payment-visa-wordmark" aria-hidden="true">VISA</strong></span>
+              <span className="cloudy-payment-visa" aria-label="Visa"><strong className="cloudy-payment-visa-wordmark" aria-hidden="true"><b className="cloudy-payment-visa-v">V</b><i className="cloudy-payment-visa-isa">ISA</i></strong></span>
               <span><svg className="cloudy-payment-mastercard" viewBox="0 0 34 22" aria-hidden="true"><circle cx="12" cy="11" r="10" fill="#fff" /><circle cx="22" cy="11" r="10" fill="#fff" fillOpacity=".5" /></svg>Mastercard</span>
               <span><SiPaypal className="cloudy-payment-paypal" aria-hidden="true" />PayPal</span>
               <span className="cloudy-payment-apple" aria-label="Apple Pay"><SiApplepay aria-hidden="true" /></span>
