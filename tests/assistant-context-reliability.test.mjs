@@ -104,3 +104,13 @@ test('leadership searches retrieve approved facts without injecting navigation l
     assert.deepEqual(context.links, []);
   }
 });
+
+test('every visitor language receives the approved creator and Doriane wording as reference', () => {
+  for (const question of ['Qui t’a créé ?', '¿Quién te creó?', 'Wer hat dich erstellt?', 'Qui est Doriane ?', 'Wie is Doriane?']) {
+    const evidence = JSON.parse(assistantKnowledge(question, [], findHelp).evidence);
+    assert.match(evidence.identity.approvedIntroduction, /Cloudy website, Cloudy bot, and Cloudy’s technical systems/);
+    assert.match(evidence.identity.languageGuidance, /any requested language/);
+    assert.match(evidence.verifiedLeadership.Doriane.approvedDescriptionFrench, /elle a créé le serveur Discord et elle a rassemblé la communauté\. Elle dirige également/);
+    assert.match(evidence.verifiedLeadership.guidance, /every other language/);
+  }
+});

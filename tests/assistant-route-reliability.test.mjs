@@ -74,7 +74,7 @@ test('identity answers cannot be replaced by an invented upstream model claim', 
   const response = await fixture.POST(request(new AbortController().signal, 'Are you ChatGPT 4?'));
   assert.equal(response.status, 200);
   const data = await response.json();
-  assert.match(data.answer, /Cloudy assistant/);
+  assert.match(data.answer, /Cloudy assistant/i);
   assert.match(data.answer, /Dylano/);
   assert.doesNotMatch(data.answer, /ChatGPT|GPT.?4/);
   assert.equal(fixture.upstreamSignal, undefined);

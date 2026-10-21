@@ -137,19 +137,24 @@ export function assistantKnowledge(
   // "Ik heb support nodig" has no verified-navigation evidence or automatic links.
   const evidence = JSON.stringify({
     site: 'Cloudy Inc.',
-    identity: { name: 'Cloudy assistant', createdBy: 'Dylano', verifiedModelVersion: null },
+    identity: {
+      name: 'Cloudy assistant', createdBy: 'Dylano', verifiedModelVersion: null,
+      approvedIntroduction: 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy bot, and Cloudy’s technical systems.',
+      languageGuidance: 'When asked who you are or who made you, use this approved introduction in the visitor’s language. Translate it naturally and faithfully into any requested language, preserving Dylano’s title and all three additional creations. Do not substitute the company founder for the assistant creator. Do not claim these biographical facts identify the underlying AI model or its provider.',
+    },
     verifiedLeadership: {
       source: 'Roles and attribution supplied and approved by Cloudy ownership',
       owners: ['Doriane', 'Dylano'],
       Doriane: {
         titles: ['Founder', 'Owner', 'Managing Director'],
+        approvedDescriptionFrench: 'Doriane est la fondatrice, propriétaire et directrice générale de Cloudy Inc. Elle a eu l’idée du projet, elle a créé le serveur Discord et elle a rassemblé la communauté. Elle dirige également les opérations commerciales, l’organisation, la gestion de la communauté, la promotion et tous les réseaux sociaux (Discord, TikTok, YouTube, etc.) de l’entreprise.',
         responsibilities: 'Originated the idea for Cloudy Inc., created its Discord and brought the community together. Leads business operations, overall organisation, community management, promotion, Discord, TikTok, YouTube and all other social media related to Cloudy Inc. Holds final decision-making authority.',
       },
       Dylano: {
         titles: ['Owner', 'Lead Developer'],
         responsibilities: 'Leads technical development. Created and developed the Cloudy website, Cloudy assistant, Cloudy bot and Cloudy technical systems.',
       },
-      guidance: 'Use Owner for both people. Doriane founded the company and originated the idea; Dylano created the technical implementation, website, assistant and bot. Do not credit Doriane with developing those systems or describe Dylano as the sole owner. These approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer the specific question naturally in the visitor’s language; do not recite every role for a narrow question. Do not mention company leadership in unrelated answers.',
+      guidance: 'Use Owner for both people. Doriane’s approved French description is the reference wording for a full role description: use it in French and translate it naturally and faithfully for every other language. Explicitly call Discord a server when describing its creation, and keep the founding/community history in separate sentences from her ongoing management duties. Keep the same facts and responsibilities across languages. Doriane founded the company and originated the idea; Dylano created the technical implementation, website, assistant and bot. Do not credit Doriane with developing those systems or describe Dylano as the sole owner. These approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer the specific question naturally in the visitor’s language; do not recite every role for a narrow question. Do not mention company leadership in unrelated answers.',
     },
     verifiedWebsiteInformation: entries.map(entry => ({
       title: entry.title,
