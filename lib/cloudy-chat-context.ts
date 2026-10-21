@@ -158,7 +158,11 @@ export function assistantKnowledge(
     },
     verifiedWebsiteInformation: entries.map(entry => ({
       title: entry.title,
-      answer: entry.answer.slice(0, 1050),
+      // Leadership already has its full approved wording above. Avoid sending
+      // a second biography through the upstream evidence-size limit.
+      answer: entry.id === 'cloudy-leadership'
+        ? 'Doriane founded Cloudy Inc. Doriane and Dylano are both owners. Use verifiedLeadership above for their approved roles and descriptions.'
+        : entry.answer.slice(0, 1050),
       source: entry.source,
       // Never feed support/Discord URLs to the model unless the visitor asked
       // for a specific resource. The site renders verified buttons separately.
