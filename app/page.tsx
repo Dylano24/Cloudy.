@@ -72,11 +72,11 @@ export default function HomePage() {
             </article>
           </GameCarousel>
         </section>
-        <section className={`cloudy-classic-feature ${styles.featureBackdrop} ${styles.studioFeature}`} aria-labelledby="cloudy-studio-title">
+        <section className="cloudy-classic-feature" aria-labelledby="cloudy-studio-title">
           <div><span className="cloudy-classic-eyebrow">Cloudy Studio</span><h2 id="cloudy-studio-title">Web <span className={styles.titleGlow}>development</span></h2><p>Bring your website to life. Explore our website packages for a clear, responsive online presence.</p></div>
           <Link href="/service" className="cloudy-classic-button">Visit the website <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
-        <section className={`cloudy-classic-feature ${styles.featureBackdrop} ${styles.experienceFeature}`}>
+        <section className="cloudy-classic-feature">
           <div><h2>Enhance your <span className={styles.titleGlow}>experience</span></h2><p>From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.</p></div>
           <Link href="/shop" className="cloudy-classic-button">Visit the store <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
@@ -99,7 +99,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className={`cloudy-classic-feature cloudy-classic-community ${styles.featureBackdrop} ${styles.communityFeature}`}>
+        <section className="cloudy-classic-feature cloudy-classic-community">
           <div>
             <h2>Join the <span className={styles.titleGlow}>community</span></h2>
             <p>Connect with other players, stay up to date with Cloudy, get support and discover what’s coming next.</p>
