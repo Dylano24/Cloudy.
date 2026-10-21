@@ -74,26 +74,10 @@ export default function HomePage() {
         </section>
         <section className={`cloudy-classic-feature ${styles.featureBackdrop} ${styles.studioFeature}`} aria-labelledby="cloudy-studio-title">
           <div><span className="cloudy-classic-eyebrow">Cloudy Studio</span><h2 id="cloudy-studio-title">Web <span className={styles.titleGlow}>development</span></h2><p>Bring your website to life. Explore our website packages for a clear, responsive online presence.</p></div>
-          <div className={`${styles.featureVisual} ${styles.studioVisual}`} aria-hidden="true">
-            <div className={styles.browserChrome}><i /><i /><i /></div>
-            <div className={styles.codePane}>
-              <span className={styles.codeLineLong} />
-              <span className={styles.codeLineMid} />
-              <span className={styles.codeLineShort} />
-              <span className={styles.codeLineLong} />
-              <span className={styles.codeLineMid} />
-            </div>
-          </div>
           <Link href="/service" className="cloudy-classic-button">Visit the website <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
         <section className={`cloudy-classic-feature ${styles.featureBackdrop} ${styles.experienceFeature}`}>
           <div><h2>Enhance your <span className={styles.titleGlow}>experience</span></h2><p>From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.</p></div>
-          <div className={`${styles.featureVisual} ${styles.storeVisual}`} aria-hidden="true">
-            <div className={styles.gameWindow}>
-              <span className={styles.gameBadge}>LIVE</span>
-              <div className={styles.gameUiLines}><i /><i /><i /></div>
-            </div>
-          </div>
           <Link href="/shop" className="cloudy-classic-button">Visit the store <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
         <section className="cloudy-restored-payments" aria-label="Secure payments">
@@ -119,13 +103,6 @@ export default function HomePage() {
           <div>
             <h2>Join the <span className={styles.titleGlow}>community</span></h2>
             <p>Connect with other players, stay up to date with Cloudy, get support and discover what’s coming next.</p>
-          </div>
-          <div className={`${styles.featureVisual} ${styles.communityVisual}`} aria-hidden="true">
-            <div className={styles.discordWindow}>
-              <div className={styles.discordRail}><SiDiscord /><i /><i /><i /></div>
-              <div className={styles.discordChannels}><span /><span /><span /><span /></div>
-              <div className={styles.discordChat}><i /><i /><i /><i /></div>
-            </div>
           </div>
           <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-classic-button">Join our Discord <ArrowRight size={15} aria-hidden="true" /></a>
         </section>
