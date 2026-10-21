@@ -38,7 +38,6 @@ export default function TermsPage() {
     <main className="cloudy-terms-page">
       <div className="cloudy-terms-wrap">
         <header className="cloudy-terms-head">
-          <img src="https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif" alt="Cloudy" width={80} height={80} style={{ borderRadius: '50%', objectFit: 'cover' }} />
           <h1>Terms of service</h1>
         </header>
 
