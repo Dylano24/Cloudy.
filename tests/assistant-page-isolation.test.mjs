@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { loadTypeScript } from './helpers/load-typescript.mjs';
 import { componentHarness, elements } from './helpers/component-harness.mjs';
 
-function fixture(phone = true) {
+function fixture(phone = true, session = null) {
   const harness = componentHarness();
   const refs = [];
   const listeners = new Map();
@@ -18,7 +18,8 @@ function fixture(phone = true) {
   const { CloudyHelp } = loadTypeScript('components/help/cloudy-help.tsx', {
     imports: { react, '@/components/help/cloudy-knowledge': { helpEntries: [] },
       './cloudy-knowledge': { helpEntries: [] }, '@/lib/cloudy-chat-context': { assistantKnowledge() {} },
-      './cloudy-message': { CloudyMessage: () => null } },
+      './cloudy-message': { CloudyMessage: () => null },
+      '@/lib/assistant-session': { readAssistantSession: () => session, saveAssistantSession() {}, clearAssistantSession() {} } },
     globals: { window: { matchMedia: () => media, scrollY: 650, scrollTo: (...args) => scrolls.push(args) },
       document: { body, addEventListener() {}, removeEventListener() {} } },
   });
@@ -67,4 +68,19 @@ test('desktop retains background navigation and rotation releases only the mobil
   mobile.rotate(true);
   assert.equal(mobile.header.inert, true);
   assert.ok(elements(mobile.harness.tree, node => node.props.role === 'dialog').length);
+});
+
+test('a restored phone session stays open through typing and ordinary rerenders until explicitly closed', () => {
+  const f = fixture(true, { open: true, question: 'Saved draft', messages: [], activePhoneTopicId: null });
+  const launcher = () => elements(f.harness.tree, node => node.type === 'button' && node.props['aria-label'] === 'Assistant')[0];
+  const input = () => elements(f.harness.tree, node => node.type === 'input')[0];
+  assert.equal(launcher().props['aria-expanded'], true);
+  assert.equal(input().props.value, 'Saved draft');
+  input().props.onChange({ target: { value: 'Still typing' } });
+  f.harness.render();
+  for (let i = 0; i < 25; i++) f.harness.render();
+  assert.equal(launcher().props['aria-expanded'], true);
+  assert.equal(input().props.value, 'Still typing');
+  f.click('Close Cloudy assistant');
+  assert.equal(launcher().props['aria-expanded'], false);
 });
