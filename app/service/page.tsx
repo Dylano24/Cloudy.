@@ -181,7 +181,7 @@ export default function ServicePage() {
             {packages.map(item => (
               <article
                 key={item.key}
-                className={`${styles.packageCard} ${item.featured ? styles.featured : ''} cloudy-traced-panel cloudy-studio-sheen-panel`}
+                className={`${styles.packageCard} cloudy-traced-panel cloudy-studio-sheen-panel`}
               >
                 <h3 className={`${styles.pill} ${styles.packageTitle}`}>{item.key}</h3>
                 <div className={styles.price}>€{item.price.toLocaleString('en-GB')}</div>
