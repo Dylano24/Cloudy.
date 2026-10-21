@@ -335,7 +335,7 @@ export function CloudyHelp() {
             <span className={styles.brandIcon}><Bot size={21} aria-hidden="true" /></span>
             <div className={styles.brandCopy}>
               <h2 id="cloudy-help-title">Cloudy assistant</h2>
-              <p>Your AI assistant</p>
+              <p>Your Cloudy companion</p>
             </div>
             <button type="button" className={styles.iconButton} onClick={reset} aria-label="Start a new chat" title="Start a new chat"><RotateCcw size={17} aria-hidden="true" /></button>
             <button type="button" className={styles.iconButton} onClick={close} aria-label="Close Cloudy assistant"><X size={20} aria-hidden="true" /></button>
@@ -345,7 +345,7 @@ export function CloudyHelp() {
             <div className={styles.welcome}>
               <span className={styles.eyebrow}>HOW CAN WE HELP?</span>
               <h3>Chat with our assistant.</h3>
-              <p>Ask me anything or choose a topic below. Don’t share passwords or payment details in chat.</p>
+              <p>Ask me anything or choose a topic below. I can help in multiple languages — write in the language you prefer. Don’t share passwords or payment details in chat.</p>
             </div>
             <div className={styles.topics} aria-label="Help topics">
               {helpEntries.filter(entry => shortcuts.includes(entry.id)).map(entry => (

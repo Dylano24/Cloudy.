@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 11px;
+  gap: 0;
   min-height: 52px;
   margin-left: auto;
   padding: 0 19px;
@@ -28,6 +28,7 @@
 }
 .launcher svg, .brandIcon svg { color: #e51b2e; }
 .launcher:hover { border-color: #e51b2e; }
+.launcher > svg { transform: translateX(-4px); }
 .panel {
   pointer-events: auto;
   display: flex;

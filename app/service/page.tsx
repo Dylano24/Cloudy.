@@ -1,5 +1,6 @@
 'use client';
 
+import { PackageCheck, Lightbulb, ClipboardCheck, Timer } from 'lucide-react';
 import { type CloudyWebsitePackageKey } from '@/lib/cloudy-service-products';
 import { StudioMobilePanelSync } from '@/components/service/studio-mobile-panel-sync';
 import { WebsiteOrderPopover } from '@/components/service/website-order-popover';
@@ -71,18 +72,22 @@ const packages: Package[] = [
 const processSteps = [
   {
     title: 'Choose your package',
+    icon: PackageCheck,
     text: 'Choose your preferred package and add any optional features or services to customise your order.',
   },
   {
     title: 'Share your vision',
+    icon: Lightbulb,
     text: 'Tell us about your ideas, goals, preferences, and vision for your project. The more we understand your expectations, the better we can tailor the final result to your vision.',
   },
   {
     title: 'Place your order',
+    icon: ClipboardCheck,
     text: "Complete your order and submit your project details. We'll contact you within one business day to discuss your requirements, finalise the project plan, and agree on the next steps.",
   },
   {
     title: 'Delivery & Timeline',
+    icon: Timer,
     text: 'Most projects take around 2–3 weeks, with the estimated delivery timeframe confirmed once your project plan is established. Simpler projects may be completed sooner, while complex projects may require more time. Expedited delivery is available upon request for an additional 20% of the total project cost, subject to availability and project complexity.',
   },
 ] as const;
@@ -176,15 +181,14 @@ export default function ServicePage() {
             {packages.map(item => (
               <article
                 key={item.key}
-                className={`${styles.packageCard} ${item.featured ? styles.featured : ''} cloudy-traced-panel cloudy-studio-sheen-panel`}
+                className={`${styles.packageCard} cloudy-traced-panel cloudy-studio-sheen-panel`}
               >
-                <span className={styles.pill}>{item.label}</span>
-                <h3>{item.key}</h3>
+                <h3 className={`${styles.pill} ${styles.packageTitle}`}>{item.key}</h3>
                 <div className={styles.price}>€{item.price.toLocaleString('en-GB')}</div>
-                <div className={styles.priceNote}>One-time website development</div>
+                <div className={styles.priceNote}>Website development</div>
 
                 <div className={styles.features}>
-                  {item.features.map(feature => (
+                  {[item.features[0], item.label, ...item.features.slice(1, -1)].map(feature => (
                     <div className={styles.feature} key={feature}>
                       <span className={styles.check}>✓</span>
                       <span>{feature}</span>
@@ -218,9 +222,10 @@ export default function ServicePage() {
             <p>From choosing your package to bringing your vision to life.</p>
           </header>
 
-          <div className={styles.processGrid}>
+          <div className={`${styles.processGrid} cloudy-classic-why-grid cloudy-traced-panel cloudy-studio-sheen-panel`}>
             {processSteps.map(step => (
-              <article key={step.title} className={`${styles.processCard} cloudy-traced-panel cloudy-studio-sheen-panel`}>
+              <article key={step.title} className={styles.processCard}>
+                <step.icon size={27} aria-hidden="true" />
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
               </article>
