@@ -8,7 +8,7 @@ export function MobilePanelSync() {
     if (!home) return;
     const media = window.matchMedia('(max-width: 820px)');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const panels = [...home.querySelectorAll<HTMLElement>('.cloudy-classic-intro, .cloudy-classic-coming, .cloudy-classic-feature, .cloudy-classic-future, .cloudy-restored-pay-grid article, .cloudy-classic-why-grid article')];
+    const panels = [...home.querySelectorAll<HTMLElement>('.cloudy-classic-intro, .cloudy-classic-coming, .cloudy-classic-feature, .cloudy-classic-future, .cloudy-restored-pay-grid article, .cloudy-classic-why-grid article')].filter(panel => !panel.classList.contains('cloudy-no-sheen'));
     const lights = new Map<HTMLElement, HTMLSpanElement>();
     const clock = createMobileSheenClock();
     const visibleTextures = new Set<HTMLSpanElement>();

@@ -72,11 +72,11 @@ export default function HomePage() {
             </article>
           </GameCarousel>
         </section>
-        <section className="cloudy-classic-feature" aria-labelledby="cloudy-studio-title">
+        <section className="cloudy-classic-feature cloudy-no-sheen" aria-labelledby="cloudy-studio-title">
           <div><span className="cloudy-classic-eyebrow">Cloudy Studio</span><h2 id="cloudy-studio-title">Web <span className={styles.titleGlow}>development</span></h2><p>Bring your website to life. Explore our website packages for a clear, responsive online presence.</p></div>
           <Link href="/service" className="cloudy-classic-button">Visit the website <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>
-        <section className="cloudy-classic-feature">
+        <section className="cloudy-classic-feature cloudy-no-sheen">
           <div><h2>Enhance your <span className={styles.titleGlow}>experience</span></h2><p>From in-game kits to exclusive features, Cloudy offers additional ways to personalize and enhance your gaming experience.</p></div>
           <Link href="/shop" className="cloudy-classic-button">Visit the store <ArrowRight size={15} aria-hidden="true" /></Link>
         </section>

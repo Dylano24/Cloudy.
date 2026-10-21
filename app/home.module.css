@@ -298,6 +298,13 @@
   border-color: #e51b2e;
 }
 
+/* These two callouts keep their outline without a light sweep. */
+.home :global(.cloudy-no-sheen) {
+  background-image: none !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
 /* Phone only: synchronize the diagonal silver sheen across every homepage
    surface on one shared timeline. Individual 5-second animations can start
    in different frames, making stacked panels look out of alignment on iOS. */
