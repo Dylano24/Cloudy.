@@ -125,7 +125,7 @@ export function Header() {
   const nav = [
     ['Home', '/'],
     ['Store', '/shop'],
-    ['Website', '/service'],
+    ['Web solutions', '/service'],
   ] as const;
 
   return (
