@@ -44,3 +44,12 @@ test('corrupted or unsafe saved content is ignored', () => {
   s.setItem(key, '{');
   assert.equal(readAssistantSession(s), null);
 });
+
+test('open state survives navigation and explicit close remains closed without losing history', () => {
+  const s = storage();
+  saveAssistantSession(s, { ...chat, open: true });
+  assert.equal(readAssistantSession(s).open, true);
+  saveAssistantSession(s, { ...chat, open: false });
+  assert.equal(readAssistantSession(s).open, false);
+  assert.deepEqual(readAssistantSession(s).messages, chat.messages);
+});

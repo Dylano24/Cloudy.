@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type MouseEvent, type PointerEvent } from 'react';
+import { memo, useEffect, useLayoutEffect, useRef, useState, type FormEvent, type PointerEvent } from 'react';
 import { ArrowUp, ArrowUpRight, Bot, RotateCcw, X } from 'lucide-react';
 import { findHelp, helpEntries, type HelpEntry } from './cloudy-knowledge';
 import { assistantKnowledge, type AssistantReply, type AssistantTurn } from '@/lib/cloudy-chat-context';
@@ -9,6 +9,8 @@ import { assistantInlineDestinationHrefs } from '@/lib/cloudy-message-format';
 import { buildAssistantRequest } from '@/lib/assistant-request';
 import { readAssistantSession, saveAssistantSession, clearAssistantSession, type AssistantSessionMessage } from '@/lib/assistant-session';
 import styles from './cloudy-help.module.css';
+import Link from 'next/link';
+import type { Route } from 'next';
 
 type Message = AssistantSessionMessage;
 
@@ -28,7 +30,7 @@ const AssistantReplyContent = memo(function AssistantReplyContent({ response }: 
   return <>
     <CloudyMessage text={response.answer} />
     {links.length > 0 && <div className={styles.links}>
-      {links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
+      {links.map(link => <Link key={link.href} href={link.href as Route} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></Link>)}
     </div>}
     {response.source && <small className={styles.source}>Source: {response.source}</small>}
   </>;
@@ -54,6 +56,7 @@ export function CloudyHelp() {
   useEffect(() => {
     const session = readAssistantSession();
     if (session) {
+      setOpen(session.open === true);
       setQuestion(session.question);
       setMessages(session.messages);
       setActivePhoneTopic(helpEntries.find(entry => entry.id === session.activePhoneTopicId) ?? null);
@@ -63,12 +66,12 @@ export function CloudyHelp() {
 
   useLayoutEffect(() => {
     if (!sessionReady) return;
-    if (question || messages.length || activePhoneTopic) {
-      saveAssistantSession(undefined, { question, messages, activePhoneTopicId: activePhoneTopic?.id ?? null });
+    if (open || question || messages.length || activePhoneTopic) {
+      saveAssistantSession(undefined, { open, question, messages, activePhoneTopicId: activePhoneTopic?.id ?? null });
     } else {
       clearAssistantSession();
     }
-  }, [sessionReady, question, messages, activePhoneTopic]);
+  }, [sessionReady, open, question, messages, activePhoneTopic]);
 
   function stopPendingReply() {
     requestGeneration.current += 1;
@@ -91,13 +94,6 @@ export function CloudyHelp() {
   }
   closeRef.current = close;
 
-  function closeOnPhoneLinkClick(event: MouseEvent<HTMLDivElement>) {
-    if (!window.matchMedia('(max-width: 480px)').matches) return;
-    if (!(event.target instanceof Element) || !event.target.closest('a[href]')) return;
-    // Follow the link normally, but do not carry the open panel to its destination.
-    setOpen(false);
-  }
-
   useEffect(() => {
     if (!open) return;
     // Do not trigger the phone keyboard when the assistant first opens:
@@ -106,7 +102,7 @@ export function CloudyHelp() {
       inputRef.current?.focus({ preventScroll: true });
     }
     const escape = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
+      if (event.key !== 'Escape' || event.isComposing || event.defaultPrevented) return;
       closeRef.current();
     };
     document.addEventListener('keydown', escape);
@@ -147,10 +143,15 @@ export function CloudyHelp() {
       if (!dock) return;
       // Use the actual visible part of the screen, not 100vh. On iPhone
       // the software keyboard changes visualViewport independently.
-      dock.style.setProperty('--help-available-height', `${Math.round(viewport.height)}px`);
-      dock.style.setProperty('--help-viewport-top', `${Math.round(viewport.offsetTop)}px`);
       const covered = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
-      dock.style.setProperty('--help-keyboard-inset', `${covered > 140 ? covered : 0}px`);
+      const values = {
+        '--help-available-height': `${Math.round(viewport.height)}px`,
+        '--help-viewport-top': `${Math.round(viewport.offsetTop)}px`,
+        '--help-keyboard-inset': `${covered > 140 ? covered : 0}px`,
+      };
+      for (const [name, value] of Object.entries(values)) {
+        if (dock.style.getPropertyValue(name) !== value) dock.style.setProperty(name, value);
+      }
     };
     let animationFrame = 0;
     const scheduleFit = () => {
@@ -328,7 +329,7 @@ export function CloudyHelp() {
   }
 
   return (
-    <div className={styles.dock} data-open={open ? "true" : "false"} data-has-messages={messages.length > 0 ? "true" : "false"} data-active-phone-topic={activePhoneTopic ? "true" : "false"} ref={dockRef} onClickCapture={closeOnPhoneLinkClick}>
+    <div className={styles.dock} data-open={open ? "true" : "false"} data-has-messages={messages.length > 0 ? "true" : "false"} data-active-phone-topic={activePhoneTopic ? "true" : "false"} ref={dockRef}>
       {open && (
         <section id="cloudy-help-panel" className={styles.panel} role="dialog" aria-modal="false" aria-labelledby="cloudy-help-title">
           <header className={styles.header}>
@@ -360,9 +361,9 @@ export function CloudyHelp() {
                 <p>{activePhoneTopic.answer}</p>
                 <div className={styles.links}>
                   {activePhoneTopic.links.map(link => (
-                    <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                    <Link key={link.href} href={link.href as Route} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                       <span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" />
-                    </a>
+                    </Link>
                   ))}
                 </div>
                 <small className={styles.source}>Source: {activePhoneTopic.source}</small>
@@ -382,7 +383,7 @@ export function CloudyHelp() {
                       <h3>{entry.title}</h3>
                       <p>{entry.answer}</p>
                       <div className={styles.links}>
-                        {entry.links.map(link => <a key={link.href} href={link.href} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></a>)}
+                        {entry.links.map(link => <Link key={link.href} href={link.href as Route} {...(link.href.startsWith('https://') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}><span className={styles.linkLabel}>{link.label}</span><ArrowUpRight size={14} aria-hidden="true" /></Link>)}
                       </div>
                       <small className={styles.source}>Source: {entry.source}</small>
                     </div>
@@ -394,7 +395,7 @@ export function CloudyHelp() {
                   ) : (
                     <>
                       <p>I don’t have an approved answer for that question. Try a more specific question or choose a help topic. For details that are not available here, contact Cloudy support.</p>
-                      <div className={styles.links}><a href="/support">Contact support<ArrowUpRight size={14} aria-hidden="true" /></a></div>
+                      <div className={styles.links}><Link href="/support">Contact support<ArrowUpRight size={14} aria-hidden="true" /></Link></div>
                     </>
                   )}
                 </div>

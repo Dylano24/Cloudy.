@@ -146,18 +146,18 @@ export function assistantKnowledge(
       languageGuidance: 'Translate the approved introduction faithfully into any requested language, retaining Dylano’s title and all creations. It describes the assistant’s creator, not the underlying AI model or provider.' } : {}),
     },
     verifiedLeadership: includeLeadership ? {
-      source: 'Roles and attribution supplied and approved by Cloudy ownership',
+      source: 'Cloudy ownership',
       owners: ['Doriane', 'Dylano'],
       Doriane: {
         titles: ['Founder', 'Owner', 'Managing Director'],
         approvedDescriptionFrench: 'Doriane est la fondatrice, propriétaire et directrice générale de Cloudy Inc. Elle a eu l’idée du projet, elle a créé le serveur Discord et elle a rassemblé la communauté. Elle dirige également les opérations commerciales, l’organisation, la gestion de la communauté, la promotion et tous les réseaux sociaux (Discord, TikTok, YouTube, etc.) de l’entreprise.',
-        responsibilities: 'Founded Cloudy, originated the idea, created its Discord server and community. Directs business, organisation, community, promotion, Discord, TikTok, YouTube and other social media. Holds final decision-making authority.',
+        responsibilities: 'Holds final decision-making authority. Leads business, community, promotion, Discord, TikTok, YouTube and other social media.',
       },
       Dylano: {
         titles: ['Owner', 'Lead Developer'],
         responsibilities: 'Leads technical development. Created and developed the Cloudy website, Cloudy assistant, Cloudy bot and Cloudy technical systems.',
       },
-      guidance: 'Use Owner for both people. For a full French description, copy Doriane’s approved wording exactly, including each elle a and également. Translate it faithfully into every other language. Separate her founding/community history from ongoing management duties. Doriane founded the company; Dylano built the technical systems and is not the sole owner. Approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer only the requested topic in the visitor’s language.',
+      guidance: 'Always identify Doriane as Founder and Owner, plus Managing Director when relevant. Always identify Dylano as Owner and Lead Developer. Never label either merely staff, employees or managers. Use approved French wording exactly; translate faithfully into every other language. Approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer only requested topics.',
     } : undefined,
     verifiedWebsiteInformation: entries.filter(entry => entry.id !== 'cloudy-leadership').map(entry => ({
       title: entry.title,
@@ -170,6 +170,7 @@ export function assistantKnowledge(
     responseGuidance: entries.some(entry => entry.id !== 'cloudy-leadership')
       ? 'The visitor has named a Cloudy topic. Answer the question directly using the verified information above. Do not ask which topic they mean when the question already identifies products, purchases, support or appeals. Ask for details only when essential to answer accurately. If order-specific facts are unavailable, explain that limit without guessing an order status.'
       : undefined,
+    workforce: 'Employee/staff headcount is unverified. Two confirmed owners does not mean two employees or at least two workers. Say the employee count is unknown; distinguish ownership from employment. Do not invent staff names, numbers or a larger team.',
     navigationRequested: links.length > 0,
     limitations: 'No access to visitor accounts, order status, payment records, refund decisions, live web data or private Discord messages. Talk naturally about general questions. Never direct a visitor to the support page or Discord without a specific request. Do not invent private Cloudy facts. Do not present Cloudy purchases as income, investments, resale opportunities or ways to earn money. No Cloudy earning or affiliate program has been verified. Do not guess your model version or claim to be ChatGPT 4. Distinguish general Rust advice from verified Cloudy offerings; ask what the visitor means when earning money is ambiguous. Explain assumptions and uncertainty rather than filling gaps with invented facts.',
   });
