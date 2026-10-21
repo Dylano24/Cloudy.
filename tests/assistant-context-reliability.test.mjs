@@ -120,3 +120,12 @@ test('leadership evidence stays compact without duplicating the full biography',
   assert.ok(context.evidence.length < 3000);
   assert.equal(context.evidence.split('created the Cloudy website').length - 1, 1);
 });
+
+test('policy questions retain their verified policy without carrying unrelated role biographies', () => {
+  const context = assistantKnowledge('What is your refund policy?', [], findHelp);
+  const evidence = JSON.parse(context.evidence);
+  assert.equal(evidence.verifiedLeadership, undefined);
+  assert.equal(evidence.identity.approvedIntroduction, undefined);
+  assert.ok(evidence.verifiedWebsiteInformation.some(entry => entry.title === 'Refund policy'));
+  assert.ok(context.evidence.length < 3000);
+});

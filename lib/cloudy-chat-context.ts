@@ -135,14 +135,17 @@ export function assistantKnowledge(
 
   // The website controls sources and link buttons, not the model. In particular,
   // "Ik heb support nodig" has no verified-navigation evidence or automatic links.
+  // Keep role biographies out of unrelated policy/product requests so their
+  // verified information stays within the upstream evidence budget.
+  const includeLeadership = !entries.some(entry => entry.id !== 'cloudy-leadership');
   const evidence = JSON.stringify({
     site: 'Cloudy Inc.',
     identity: {
       name: 'Cloudy assistant', createdBy: 'Dylano', verifiedModelVersion: null,
-      approvedIntroduction: 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy bot, and Cloudy’s technical systems.',
-      languageGuidance: 'Translate the approved introduction faithfully into any requested language, retaining Dylano’s title and all creations. It describes the assistant’s creator, not the underlying AI model or provider.',
+      ...(includeLeadership ? { approvedIntroduction: 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy bot, and Cloudy’s technical systems.',
+      languageGuidance: 'Translate the approved introduction faithfully into any requested language, retaining Dylano’s title and all creations. It describes the assistant’s creator, not the underlying AI model or provider.' } : {}),
     },
-    verifiedLeadership: {
+    verifiedLeadership: includeLeadership ? {
       source: 'Roles and attribution supplied and approved by Cloudy ownership',
       owners: ['Doriane', 'Dylano'],
       Doriane: {
@@ -154,8 +157,8 @@ export function assistantKnowledge(
         titles: ['Owner', 'Lead Developer'],
         responsibilities: 'Leads technical development. Created and developed the Cloudy website, Cloudy assistant, Cloudy bot and Cloudy technical systems.',
       },
-      guidance: 'Use Owner for both people. Use Doriane’s approved French description in French; translate it faithfully into every other language. Separate her founding/community history from ongoing management duties. Doriane founded the company; Dylano built the technical systems and is not the sole owner. Approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer only the requested topic in the visitor’s language.',
-    },
+      guidance: 'Use Owner for both people. For a full French description, copy Doriane’s approved wording exactly, including each elle a and également. Translate it faithfully into every other language. Separate her founding/community history from ongoing management duties. Doriane founded the company; Dylano built the technical systems and is not the sole owner. Approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer only the requested topic in the visitor’s language.',
+    } : undefined,
     verifiedWebsiteInformation: entries.filter(entry => entry.id !== 'cloudy-leadership').map(entry => ({
       title: entry.title,
       answer: entry.answer.slice(0, 1050),
