@@ -131,3 +131,18 @@
 .login:hover { transform: translateY(-2px); }
 @keyframes accountReveal { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .accountMenu { animation: none; } .accountMenu a, .accountMenu button, .login { transition: none; } }
+
+
+/* Compact active navigation marker. */
+.header :global(.cloudy-header-nav a.active)::after {
+  left: 50% !important;
+  right: auto !important;
+  width: 34px;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 900px) {
+  .header :global(.cloudy-header-nav a.active)::after {
+    width: 28px;
+  }
+}
