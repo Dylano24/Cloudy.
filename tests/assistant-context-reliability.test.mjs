@@ -100,7 +100,7 @@ test('leadership searches retrieve approved facts without injecting navigation l
   for (const question of ['Who created Cloudy Inc?', 'Who owns Cloudy?', 'Who made the Cloudy bot?', 'Wie is Doriane?', 'What does Dylano do?']) {
     const context = assistantKnowledge(question, [], findHelp);
     const entries = JSON.parse(context.evidence).verifiedWebsiteInformation;
-    assert.ok(entries.some(entry => entry.title === 'Cloudy Inc. owners, founder and creators'), question);
+    assert.deepEqual(JSON.parse(context.evidence).verifiedLeadership.owners, ['Doriane', 'Dylano'], question);
     assert.deepEqual(context.links, []);
   }
 });
@@ -117,6 +117,6 @@ test('every visitor language receives the approved creator and Doriane wording a
 
 test('leadership evidence stays compact without duplicating the full biography', () => {
   const context = assistantKnowledge('Qui est Doriane et quel est son rôle chez Cloudy Inc. ?', [], findHelp);
-  assert.ok(context.evidence.length < 3500);
+  assert.ok(context.evidence.length < 3000);
   assert.equal(context.evidence.split('created the Cloudy website').length - 1, 1);
 });

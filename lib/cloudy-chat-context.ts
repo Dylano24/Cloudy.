@@ -156,19 +156,15 @@ export function assistantKnowledge(
       },
       guidance: 'Use Owner for both people. Use Doriane’s approved French description in French; translate it faithfully into every other language. Separate her founding/community history from ongoing management duties. Doriane founded the company; Dylano built the technical systems and is not the sole owner. Approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer only the requested topic in the visitor’s language.',
     },
-    verifiedWebsiteInformation: entries.map(entry => ({
+    verifiedWebsiteInformation: entries.filter(entry => entry.id !== 'cloudy-leadership').map(entry => ({
       title: entry.title,
-      // Leadership already has its full approved wording above. Avoid sending
-      // a second biography through the upstream evidence-size limit.
-      answer: entry.id === 'cloudy-leadership'
-        ? 'Doriane founded Cloudy Inc. Doriane and Dylano are both owners. Use verifiedLeadership above for their approved roles and descriptions.'
-        : entry.answer.slice(0, 1050),
+      answer: entry.answer.slice(0, 1050),
       source: entry.source,
       // Never feed support/Discord URLs to the model unless the visitor asked
       // for a specific resource. The site renders verified buttons separately.
       ...(showLinksForEntry(entry, topicQuestion) ? { links: relevantLinksForEntry(entry, topicQuestion) } : {}),
     })),
-    responseGuidance: entries.length
+    responseGuidance: entries.some(entry => entry.id !== 'cloudy-leadership')
       ? 'The visitor has named a Cloudy topic. Answer the question directly using the verified information above. Do not ask which topic they mean when the question already identifies products, purchases, support or appeals. Ask for details only when essential to answer accurately. If order-specific facts are unavailable, explain that limit without guessing an order status.'
       : undefined,
     navigationRequested: links.length > 0,
