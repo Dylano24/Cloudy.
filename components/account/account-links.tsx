@@ -1,0 +1,8 @@
+'use client';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+export function AccountLinks(){
+  const [data,setData]=useState<{cloudyId:string;googleId?:string;links:{discord_id?:string;steam_id?:string}}|null>(null),[error,setError]=useState('');
+  useEffect(()=>{fetch('/api/account/links',{cache:'no-store'}).then(async r=>{const d=await r.json();if(!r.ok)throw new Error(d.error);return d;}).then(setData).catch(e=>setError(e.message));},[]);
+  return <section className="cloud-panel mt-8 rounded-2xl border p-7 sm:p-10"><h2 className="text-xl font-bold">Your linked accounts</h2><p className="mt-3 text-sm leading-7 text-muted">Sign in to Cloudy, then link the account required by your purchase. Provider sign-in verifies ownership; typing an ID does not link an account.</p>{error?<p role="alert" className="mt-5 text-sm">{error} <Link className="underline" href="/account">Sign in to Cloudy</Link></p>:!data?<p role="status" className="mt-5">Loading account links…</p>:<><p className="mt-5 text-xs text-muted break-all">Cloudy ID · {data.cloudyId}</p><div className="mt-6 grid gap-6 sm:grid-cols-2">{(['discord','steam'] as const).map(provider=><div key={provider}><h3 className="font-bold capitalize">{provider}</h3><p className="mt-2 text-sm text-muted break-all">{data.links[`${provider}_id`]||'Not linked'}</p><a href={`/api/account/links/start?provider=${provider}`} className="cloudy-classic-button mt-4">{data.links[`${provider}_id`]?'Reconnect':'Link'} {provider==='steam'?'Steam':'Discord'}</a></div>)}</div>{data.googleId&&<p className="mt-6 text-xs text-muted break-all">Signed in with Google · {data.googleId}</p>}<Link href="/checkout" className="cloudy-classic-button mt-8">Return to checkout →</Link></>}</section>;
+}

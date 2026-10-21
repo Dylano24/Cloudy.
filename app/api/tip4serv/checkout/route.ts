@@ -1,3 +1,4 @@
+import { guardCheckout } from '@/lib/checkout-guard';
 import { NextRequest, NextResponse } from 'next/server';
 import { config } from '@/lib/config';
 import { CheckoutRequestSchema, CheckoutResponseSchema } from '@/lib/schemas';
@@ -19,6 +20,9 @@ export async function POST(request: NextRequest) {
     
     // Validate request body
     const validatedBody = CheckoutRequestSchema.parse(body);
+    const guard = await guardCheckout(request, store, validatedBody.products, validatedBody.user.email);
+    if (!guard.ok) return NextResponse.json({error:guard.error,linkAccount:'/link-account'},{status:guard.status});
+    validatedBody.user = {...validatedBody.user, ...guard.verified};
 
     const url = `${config.api.baseUrl}/store/checkout?store=${store}`;
 
@@ -34,7 +38,7 @@ export async function POST(request: NextRequest) {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Checkout error:', errorText);
-      console.error('Checkout request was:', JSON.stringify(validatedBody, null, 2));
+
       
       // Try to parse error as JSON to extract error message
       let errorMessage = 'Failed to create checkout';

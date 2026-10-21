@@ -237,6 +237,7 @@ for (const identifiers of [['minecraft_uuid'], ['minecraft_uid'], ['minecraft_uu
         localStorage: storage(),
         fetch: async url => {
           if (url === '/api/config') return { ok: true, json: async () => ({ handleCustomerIdentification: true }) };
+          if (url === '/api/account') return { ok: true, json: async () => ({user:{id:'fixture-account',provider:'google',name:'FixturePlayer'}}) };
           assert.equal(url, '/api/minecraft/uuid?username=FixturePlayer');
           return { ok: true, json: async () => ({ uuid: '0123456789abcdef0123456789abcdef' }) };
         },
