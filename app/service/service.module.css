@@ -1253,8 +1253,8 @@
 }
 
 .packageDetails[open] {
-  border-color: rgba(255,73,98,.30);
-  background: rgba(229,27,46,.035);
+  border-color: rgba(255,255,255,.14);
+  background: rgba(255,255,255,.025);
 }
 
 .cardBottom {
@@ -1324,7 +1324,7 @@
   .introPanel:hover,
   .processCard:hover,
   .faqItem:hover {
-    border-color: rgba(255,75,98,.24);
+    border-color: rgba(255,255,255,.14);
   }
 }
 
