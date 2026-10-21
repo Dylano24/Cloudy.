@@ -1974,24 +1974,84 @@ body {
 
 
 
-/* Visa stays one wordmark; only the V is slightly larger. */
+
+
+/* Restore the original fixed Terms accents: static center line and static side line. */
+.cloudy-terms-head {
+  position: relative;
+  padding-bottom: 30px;
+}
+.cloudy-terms-head::after {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 0 !important;
+  width: 76px !important;
+  height: 2px !important;
+  transform: translateX(-50%) !important;
+  background: #e51b2e !important;
+  box-shadow: 0 0 20px #e51b2e55 !important;
+  animation: none !important;
+}
+.cloudy-term-card {
+  border: 1px solid rgba(255,255,255,.10) !important;
+  border-left: 2px solid #8c1a28 !important;
+  border-radius: 12px !important;
+  background-image: linear-gradient(120deg,#e51b2e05,transparent 55%) !important;
+}
+.cloudy-term-card::before,
+.cloudy-term-card::after {
+  animation: none !important;
+}
+
+/* Visa: one clean blue wordmark. Only the V is slightly larger. */
+.cloudy-restored-payment-brands .cloudy-payment-visa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 82px;
+  min-height: 42px;
+  padding: 8px 16px;
+  border: 1px solid #ffffff24;
+  border-radius: 8px;
+  background: linear-gradient(135deg,#1a1a20,#09090b);
+}
 .cloudy-restored-payment-brands .cloudy-payment-visa-wordmark {
-  display: inline-block;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
   padding: 0;
   border: 0;
   background: none;
-  color: #fff;
+  color: #1434cb;
   font-family: Arial Black, Arial, Helvetica, sans-serif;
-  font-size: 20px;
   font-style: italic;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: -.10em;
+  letter-spacing: -.07em;
   white-space: nowrap;
 }
-.cloudy-restored-payment-brands .cloudy-payment-visa-wordmark::first-letter {
-  font-size: 1.16em;
+.cloudy-restored-payment-brands .cloudy-payment-visa-v,
+.cloudy-restored-payment-brands .cloudy-payment-visa-isa {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+}
+.cloudy-restored-payment-brands .cloudy-payment-visa-v {
+  font-size: 22px;
+  transform: scaleX(1.03);
+  transform-origin: left bottom;
+}
+.cloudy-restored-payment-brands .cloudy-payment-visa-isa {
+  font-size: 20px;
 }
 @media (max-width: 600px) {
-  .cloudy-restored-payment-brands .cloudy-payment-visa-wordmark { font-size: 19px; }
+  .cloudy-restored-payment-brands .cloudy-payment-visa-v { font-size: 21px; }
+  .cloudy-restored-payment-brands .cloudy-payment-visa-isa { font-size: 19px; }
 }
