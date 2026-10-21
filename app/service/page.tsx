@@ -19,8 +19,8 @@ type Package = {
 const packages: Package[] = [
   {
     key: 'Starter',
-    label: 'Get started',
-    description: 'A complete, professional website for individuals, creators and growing ideas.',
+    label: 'Minimum 5 pages',
+    description: 'Minimum 5 pages',
     pages: 5,
     price: 750,
     features: [
@@ -31,12 +31,12 @@ const packages: Package[] = [
       'Social media links',
       'Five complete pages',
     ],
-    details: 'A strong foundation for a professional online presence. Example pages can include Home, About, Services, FAQ and Contact. The website is designed for phones, tablets and computers. Domain, hosting and ongoing maintenance are separate.',
+    details: 'Includes a custom responsive website with five complete pages, contact form setup, basic SEO setup and social media links. The design is tailored to your project. Domain, hosting, ongoing maintenance and features outside this package are not included unless added separately.',
   },
   {
     key: 'Business',
-    label: 'Most popular',
-    description: 'A more complete website for businesses that need additional pages, presentation and interaction.',
+    label: 'Minimum 8 pages',
+    description: 'Minimum 8 pages',
     pages: 8,
     price: 1500,
     features: [
@@ -47,13 +47,13 @@ const packages: Package[] = [
       'Improved page structure',
       'Eight complete pages',
     ],
-    details: 'Designed for growing businesses that need more space to explain services, present work and guide visitors clearly. Example pages can include Home, About, Services, Service Details, Portfolio, Testimonials, FAQ and Contact.',
+    details: 'Includes everything in Starter, expanded to eight complete pages with enhanced animations and interactions, a portfolio or gallery, additional forms and improved page structure. Domain, hosting, ongoing maintenance and features outside this package are not included unless added separately.',
     featured: true,
   },
   {
     key: 'Premium',
-    label: 'Advanced',
-    description: 'A larger, highly refined website for established brands and more ambitious projects.',
+    label: 'Minimum 12 pages',
+    description: 'Minimum 12 pages',
     pages: 12,
     price: 2500,
     features: [
@@ -64,26 +64,26 @@ const packages: Package[] = [
       'Priority design refinements',
       'Twelve complete pages',
     ],
-    details: 'Built for larger websites with multiple services, campaigns or more detailed content. The package provides greater design flexibility, more complete pages and additional refinement. Ecommerce, custom dashboards and paid third-party services are not automatically included unless added separately.',
+    details: 'Includes everything in Business, expanded to twelve complete pages with advanced visual interactions, expanded landing pages, additional customization and priority design refinements. Ecommerce, custom dashboards, paid third-party services, domain, hosting and ongoing maintenance are not included unless added separately.',
   },
 ];
 
 const processSteps = [
   {
     title: 'Choose your package',
-    text: 'Choose your preferred package and add any optional features or services that are relevant to your project.',
+    text: 'Choose your preferred package and add any optional features or services to customise your order.',
   },
   {
     title: 'Share your vision',
-    text: 'Tell us about your ideas, goals, preferences and vision. The more we understand your expectations, the more precisely we can shape the final result around them.',
+    text: 'Tell us about your ideas, goals, preferences, and vision for your project. The more we understand your expectations, the better we can tailor the final result to your vision.',
   },
   {
     title: 'Place your order',
-    text: 'Complete your order and submit your project details. We will contact you within one business day to review your requirements, finalise the project plan and confirm the next steps.',
+    text: "Complete your order and submit your project details. We'll contact you within one business day to discuss your requirements, finalise the project plan, and agree on the next steps.",
   },
   {
-    title: 'Delivery & timeline',
-    text: 'Most projects take around 2–3 weeks. Your estimated delivery timeframe is confirmed once the project plan is established. Simpler projects may be completed sooner, while more complex work can require additional time. Expedited delivery is available on request for an additional 20% of the total project cost, subject to availability and project complexity.',
+    title: 'Delivery & Timeline',
+    text: 'Most projects take around 2–3 weeks, with the estimated delivery timeframe confirmed once your project plan is established. Simpler projects may be completed sooner, while complex projects may require more time. Expedited delivery is available upon request for an additional 20% of the total project cost, subject to availability and project complexity.',
   },
 ] as const;
 
@@ -137,10 +137,9 @@ export default function ServicePage() {
         <div className={styles.wrap}>
           <div className={styles.eyebrow}>Cloudy Studio</div>
           <h1>Web development</h1>
-          <h2>Websites designed for your ambitions.</h2>
+          <h2>Websites designed for your ambitions</h2>
           <p>
-            Explore our website creation packages and discover a range of additional features,
-            services and ongoing support options.
+            Explore our website creation packages and discover a range of additional features, services, and ongoing support options.
           </p>
           <div className={styles.heroActions}>
             <button className={styles.primaryButton} type="button" onClick={() => scrollToSection('packages')}>
@@ -156,16 +155,12 @@ export default function ServicePage() {
       <section className={`${styles.section} ${styles.introSection}`}>
         <div className={styles.wrap}>
           <div className={`${styles.introPanel} cloudy-traced-panel cloudy-studio-sheen-panel`}>
-            <div className={styles.eyebrow}>Built around your project</div>
             <h2>Crafted around your needs</h2>
             <p>
-              Every project is different. That is why we offer flexible website development
-              packages tailored to your needs, goals and vision.
+              Every project is different. That’s why we offer flexible website development packages tailored to your needs, goals, and vision.
             </p>
             <p>
-              Whether you are looking for a simple, professional website or a more advanced,
-              fully customised solution, explore the possibilities and choose the features that
-              best suit your project.
+              Whether you’re looking for a simple, professional website or a more advanced, fully customized solution, explore the possibilities and find the features that best suit your project.
             </p>
           </div>
         </div>
@@ -175,11 +170,6 @@ export default function ServicePage() {
         <div className={styles.wrap}>
           <header className={styles.sectionHead}>
             <div className={styles.eyebrow}>Website packages</div>
-            <h2>Choose the right foundation.</h2>
-            <p>
-              Start with the package that best matches your project. Each option can be reviewed
-              in detail before you order.
-            </p>
           </header>
 
           <div className={styles.packageGrid}>
@@ -190,7 +180,6 @@ export default function ServicePage() {
               >
                 <span className={styles.pill}>{item.label}</span>
                 <h3>{item.key}</h3>
-                <p className={styles.packageDescription}>{item.description}</p>
                 <div className={styles.price}>€{item.price.toLocaleString('en-GB')}</div>
                 <div className={styles.priceNote}>One-time website development</div>
 
@@ -204,7 +193,7 @@ export default function ServicePage() {
                 </div>
 
                 <details className={styles.packageDetails}>
-                  <summary>See everything included</summary>
+                  <summary>View package details</summary>
                   <p>{item.details}</p>
                 </details>
 
@@ -216,8 +205,7 @@ export default function ServicePage() {
           </div>
 
           <p className={styles.note}>
-            Anything outside the selected package is discussed and approved before additional work
-            or costs are added.
+            Optional features or services can be added separately where available.
           </p>
         </div>
       </section>
@@ -225,8 +213,8 @@ export default function ServicePage() {
       <section id="process" className={`${styles.section} ${styles.processSection}`}>
         <div className={styles.wrap}>
           <header className={styles.sectionHead}>
-            <div className={styles.eyebrow}>How it works</div>
-            <h2>Your project, made simple.</h2>
+            <div className={styles.eyebrow}>HOW IT WORKS</div>
+            <h2>Your project, Made simple.</h2>
             <p>From choosing your package to bringing your vision to life.</p>
           </header>
 
@@ -244,9 +232,7 @@ export default function ServicePage() {
       <section className={`${styles.section} ${styles.faqSection}`}>
         <div className={styles.wrap}>
           <header className={styles.sectionHead}>
-            <div className={styles.eyebrow}>Support</div>
-            <h2>Frequently asked questions</h2>
-            <p>Clear answers to the most common questions before starting your project.</p>
+            <h2>Frequently asked questions.</h2>
           </header>
 
           <div className={styles.faqList}>
