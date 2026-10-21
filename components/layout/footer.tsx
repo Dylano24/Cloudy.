@@ -22,7 +22,7 @@ export function Footer() {
             <div className="cloudy-footer-links">
               <Link href="/">Home</Link>
               <Link href="/shop">Store</Link>
-              <Link href="/services">Web development</Link>
+              <Link href="/service">Web development</Link>
             </div>
           </div>
 
