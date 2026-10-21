@@ -2005,7 +2005,7 @@ body {
   animation: none !important;
 }
 
-/* Visa: one clean blue wordmark. Only the V is slightly larger. */
+/* Visa: unified white wordmark with a subtly larger V and the small Visa-style left stroke. */
 .cloudy-restored-payment-brands .cloudy-payment-visa {
   display: inline-flex;
   align-items: center;
@@ -2024,12 +2024,12 @@ body {
   padding: 0;
   border: 0;
   background: none;
-  color: #1434cb;
+  color: #fff;
   font-family: Arial Black, Arial, Helvetica, sans-serif;
   font-style: italic;
   font-weight: 900;
   line-height: 1;
-  letter-spacing: -.07em;
+  letter-spacing: -.08em;
   white-space: nowrap;
 }
 .cloudy-restored-payment-brands .cloudy-payment-visa-v,
@@ -2044,14 +2044,27 @@ body {
   line-height: 1;
 }
 .cloudy-restored-payment-brands .cloudy-payment-visa-v {
+  position: relative;
   font-size: 22px;
-  transform: scaleX(1.03);
+  transform: scaleX(1.04);
   transform-origin: left bottom;
 }
+.cloudy-restored-payment-brands .cloudy-payment-visa-v::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 2px;
+  width: 7px;
+  height: 2px;
+  border-radius: 999px;
+  background: #fff;
+  transform: rotate(-12deg) skewX(-24deg);
+  transform-origin: right center;
+}
 .cloudy-restored-payment-brands .cloudy-payment-visa-isa {
-  font-size: 20px;
+  font-size: 17px;
 }
 @media (max-width: 600px) {
   .cloudy-restored-payment-brands .cloudy-payment-visa-v { font-size: 21px; }
-  .cloudy-restored-payment-brands .cloudy-payment-visa-isa { font-size: 19px; }
+  .cloudy-restored-payment-brands .cloudy-payment-visa-isa { font-size: 16px; }
 }
