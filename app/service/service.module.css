@@ -1153,3 +1153,267 @@
     font-size: 13px;
   }
 }
+
+
+/* Web development V2 refinements */
+.hero {
+  padding-top: 88px;
+  padding-bottom: 64px;
+}
+
+.hero .wrap {
+  max-width: 1060px;
+}
+
+.hero h1 {
+  max-width: 980px;
+}
+
+.hero h2 {
+  max-width: 900px;
+  text-wrap: balance;
+}
+
+.hero > .wrap > p {
+  max-width: 760px;
+}
+
+.introSection {
+  padding-top: 18px;
+}
+
+.introPanel {
+  max-width: 980px;
+  padding: 38px 40px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.018), transparent),
+    #070708;
+  box-shadow: 0 24px 70px rgba(0,0,0,.28);
+}
+
+.introPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--red-bright), transparent);
+  opacity: .9;
+}
+
+.introPanel h2 {
+  max-width: 720px;
+}
+
+.websitesSection .sectionHead {
+  margin-bottom: 22px;
+}
+
+.packageGrid {
+  align-items: stretch;
+}
+
+.packageCard {
+  min-height: 585px;
+  padding: 30px;
+  border-color: rgba(255,255,255,.11);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.018), transparent 28%),
+    #070708;
+}
+
+.packageCard h3 {
+  margin-top: 18px;
+  font-size: 32px;
+}
+
+.price {
+  margin-top: 18px;
+  font-size: 36px;
+}
+
+.priceNote {
+  margin-top: 2px;
+}
+
+.features {
+  margin-top: 4px;
+  padding-top: 18px;
+}
+
+.feature {
+  margin: 11px 0;
+  line-height: 1.5;
+}
+
+.packageDetails {
+  margin-top: 14px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px;
+  background: rgba(255,255,255,.018);
+}
+
+.packageDetails summary {
+  padding: 14px 15px;
+}
+
+.packageDetails p {
+  margin: 0;
+  padding: 0 15px 15px;
+  color: #b4b4bd;
+  font-size: 12px;
+  line-height: 1.72;
+}
+
+.packageDetails[open] {
+  border-color: rgba(255,73,98,.30);
+  background: rgba(229,27,46,.035);
+}
+
+.cardBottom {
+  padding-top: 18px;
+}
+
+.buyButton {
+  min-height: 50px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.processSection {
+  padding-top: 68px;
+}
+
+.processSection .sectionHead {
+  max-width: 820px;
+}
+
+.processGrid {
+  gap: 20px;
+}
+
+.processCard {
+  min-height: 250px;
+  padding: 30px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.018), transparent 36%),
+    #070708;
+  box-shadow: 0 20px 55px rgba(0,0,0,.20);
+}
+
+.processCard h3 {
+  font-size: 23px;
+  line-height: 1.2;
+}
+
+.processCard p {
+  font-size: 13px;
+  line-height: 1.78;
+}
+
+.faqSection .sectionHead {
+  margin-bottom: 24px;
+}
+
+.faqList {
+  gap: 12px;
+}
+
+.faqItem {
+  background: #070708;
+}
+
+.faqItem summary {
+  padding: 19px 54px 19px 20px;
+  font-size: 14px;
+}
+
+.faqItem p {
+  padding: 0 20px 20px;
+  max-width: 780px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .introPanel:hover,
+  .processCard:hover,
+  .faqItem:hover {
+    border-color: rgba(255,75,98,.24);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 62px;
+    padding-bottom: 46px;
+  }
+
+  .introPanel {
+    padding: 30px;
+  }
+
+  .processCard {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding-top: 46px;
+    padding-bottom: 36px;
+  }
+
+  .hero h1 {
+    font-size: clamp(44px, 12.8vw, 60px);
+    line-height: .98;
+  }
+
+  .hero h2 {
+    font-size: clamp(26px, 7.7vw, 36px);
+    line-height: 1.08;
+  }
+
+  .hero > .wrap > p {
+    line-height: 1.65;
+  }
+
+  .introPanel {
+    padding: 24px 22px;
+  }
+
+  .introPanel h2 {
+    font-size: clamp(32px, 10vw, 44px);
+  }
+
+  .packageCard {
+    padding: 24px;
+  }
+
+  .packageCard h3 {
+    font-size: 30px;
+  }
+
+  .price {
+    font-size: 34px;
+  }
+
+  .packageDetails summary {
+    min-height: 48px;
+    align-items: center;
+  }
+
+  .processCard {
+    padding: 24px;
+  }
+
+  .processCard h3 {
+    font-size: 21px;
+  }
+
+  .faqItem summary {
+    padding: 17px 50px 17px 17px;
+  }
+
+  .faqItem p {
+    padding: 0 17px 17px;
+  }
+}
