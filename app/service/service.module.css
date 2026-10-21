@@ -234,13 +234,7 @@
 }
 
 .featured::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #a81229, #ff4c66, #a81229);
+  display: none;
 }
 
 .pill {
