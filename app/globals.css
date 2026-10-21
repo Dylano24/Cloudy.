@@ -1974,46 +1974,6 @@ body {
 
 
 
-/* ================= SITE-WIDE HOME SHEEN — 2026-10-21 =================
-   Home-style moving light, without adding red lines around FAQs, terms,
-   messages, details, or support content. */
-.cloud-panel,
-.cloudy-term-card {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-}
-.cloud-panel::before,
-.cloudy-term-card::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  background-image: linear-gradient(
-    110deg,
-    transparent 42%,
-    rgba(160,160,170,.03) 46%,
-    rgba(210,210,220,.10) 50%,
-    rgba(160,160,170,.03) 54%,
-    transparent 58%
-  );
-  background-size: 400% 100%;
-  background-repeat: no-repeat;
-  animation: cloudy-site-panel-sheen 5s linear infinite;
-}
-@keyframes cloudy-site-panel-sheen {
-  from { background-position: 0% 50%; }
-  to { background-position: 100% 50%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .cloud-panel::before,
-  .cloudy-term-card::before {
-    animation: none !important;
-    background-image: none;
-  }
-}
-
 /* Visa stays one wordmark; only the V is slightly larger. */
 .cloudy-restored-payment-brands .cloudy-payment-visa-wordmark {
   display: inline-block;
