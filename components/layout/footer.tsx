@@ -21,13 +21,14 @@ export function Footer() {
             <div className="cloudy-footer-links">
               <Link href="/">Home</Link>
               <Link href="/shop">Store</Link>
-              <Link href="/support">Support</Link>
+              <Link href="/service">Web development</Link>
             </div>
           </div>
 
           <div className={styles.community}>
-            <div className="cloudy-footer-title">Community</div>
+            <div className="cloudy-footer-title">Contact us</div>
             <div className="cloudy-footer-links">
+              <Link href="/support">Support</Link>
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
             </div>
 

@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 
 import { useCart } from '@/hooks/use-cart';
 import { useStore, useCheckoutIdentifiers, useCheckout } from '@/hooks/use-api';
@@ -6,7 +7,6 @@ import { ShoppingCart, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import type { CheckoutUser, ProductDetailed } from '@/lib/schemas';
-import { openTip4ServCheckout, type Tip4ServProductSimple } from '@/lib/tip4serv';
 import { convertCustomFieldsForApi } from '@/lib/cart-utils';
 import { isCloudyServiceProduct } from '@/lib/cloudy-service-products';
 
@@ -50,8 +50,7 @@ function CheckoutContent() {
     productIds
   );
   
-  const [handleCustomerIdentification, setHandleCustomerIdentification] = useState(false);
-  const [flagsLoaded, setFlagsLoaded] = useState(false);
+    const [flagsLoaded, setFlagsLoaded] = useState(false);
   
   const checkoutMutation = useCheckout(storeId || '');
   const mutation = checkoutMutation;
@@ -87,41 +86,20 @@ function CheckoutContent() {
     setIsHydrated(true);
   }, []);
 
-  // Handle OAuth callbacks
+  // Load provider-verified links after hydration; URL/localStorage IDs are not proof.
   useEffect(() => {
-    if (!isHydrated) return;
-    
-    const discordId = searchParams.get('discord_id');
-    const steamId = searchParams.get('steam_id');
-    
-    if (discordId) {
-      setFormData(prev => {
-        const updated = { ...prev, discord_id: discordId };
-        localStorage.setItem('checkout_form_data', JSON.stringify(updated));
-        return updated;
-      });
-      // Clean up URL
-      window.history.replaceState({}, '', '/checkout');
-    }
-    
-    if (steamId) {
-      setFormData(prev => {
-        const updated = { ...prev, steam_id: steamId };
-        localStorage.setItem('checkout_form_data', JSON.stringify(updated));
-        return updated;
-      });
-      // Clean up URL
-      window.history.replaceState({}, '', '/checkout');
-    }
-  }, [searchParams, isHydrated]);
+    if(!isHydrated || !requiredIdentifiers.some(id=>id==='steam_id'||id==='discord_id'))return;
+    fetch('/api/account/links',{cache:'no-store'}).then(async response=>response.ok?response.json():null).then(data=>{
+      if(data?.links)setFormData(previous=>({...previous,discord_id:data.links.discord_id||'',steam_id:data.links.steam_id||''}));
+    }).catch(()=>{});
+  },[isHydrated,requiredIdentifiers.join(',')]);
 
   useEffect(() => {
     const loadFlags = async () => {
       try {
         const res = await fetch('/api/config');
         if (res.ok) {
-          const data = await res.json();
-          setHandleCustomerIdentification(!!data.handleCustomerIdentification);
+          await res.json();
         }
       } catch (err) {
         console.error('Failed to load feature flags', err);
@@ -149,7 +127,7 @@ function CheckoutContent() {
     }
   };
 
-  const validateForm = (): boolean => {
+  const validateForm = (verified: Partial<CheckoutUser> = {}): boolean => {
     const newErrors: Record<string, string> = {};
 
     // Validate email (always required)
@@ -161,7 +139,7 @@ function CheckoutContent() {
     requiredIdentifiers.forEach(identifier => {
       // Map UUID/UID to username field
       const fieldKey = IDENTIFIER_FIELD_MAPPING[identifier] || identifier;
-      const value = formData[fieldKey as keyof CheckoutUser];
+      const value = verified[fieldKey as keyof CheckoutUser] ?? formData[fieldKey as keyof CheckoutUser];
       if (!value || (typeof value === 'string' && value.trim() === '')) {
         newErrors[fieldKey] = `${IDENTIFIER_LABELS[identifier] || identifier} is required`;
       }
@@ -169,7 +147,6 @@ function CheckoutContent() {
 
     console.log('Validation errors:', newErrors);
     console.log('Required identifiers:', requiredIdentifiers);
-    console.log('Form data:', formData);
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -197,76 +174,22 @@ function CheckoutContent() {
       return;
     }
 
-    // In precheckout mode (handleCustomerIdentification=false), use tip4serv.js
-    if (!handleCustomerIdentification) {
-      // Build cart in tip4serv.js Expert format
-      const tip4servProducts: Tip4ServProductSimple[] = cart.items.map(item => {
-        const product: Tip4ServProductSimple = {
-          product: item.product.id,
-          quantity: item.quantity,
-        };
-        
-        // Handle subscription type
-        if (item.product.subscription && item.subscriptionType === 'onetime') {
-          product.subscription = false; // Disable auto-renewal
-        }
-        
-        // Handle custom fields - convert marker keys to ID keys
-        if (item.customFields && Object.keys(item.customFields).length > 0) {
-          const productCustomFields = 'custom_fields' in item.product ? (item.product as ProductDetailed).custom_fields : undefined;
-          product.customFields = convertCustomFieldsForApi(item.customFields, productCustomFields);
-        }
-        
-        // Handle server selection
-        if (item.serverSelection !== undefined && item.serverSelection !== null) {
-          product.serverSelection = item.serverSelection;
-        }
-        
-        // Handle donation amount
-        if (item.donationAmount !== undefined && item.donationAmount !== null && item.donationAmount > 0) {
-          product.donationAmount = item.donationAmount;
-        }
-        
-        return product;
-      });
-
+    let verifiedLinks: Partial<CheckoutUser> = {};
+    if(requiredIdentifiers.some(id=>id==='discord_id'||id==='steam_id')){
       try {
-        setIsRedirecting(true);
-        
-        await openTip4ServCheckout({
-          storeId: storeId ? parseInt(storeId, 10) : undefined,
-          products: tip4servProducts,
-          successUrl: `${window.location.origin}/checkout/success`,
-        });
-        
-        // If we get here, checkout was successful or pending
-        // The library will handle the redirect
-      } catch (error) {
-        console.error('Tip4Serv checkout error:', error);
-        setIsRedirecting(false);
-        
-        // Check if error has htmlMessage property (Tip4ServError)
-        if (error && typeof error === 'object' && 'htmlMessage' in error) {
-          setCheckoutError((error as { htmlMessage: string }).htmlMessage);
-        } else if (error instanceof Error) {
-          if (error.message === 'Checkout cancelled') {
-            // User cancelled, no need to show error
-            return;
-          }
-          setCheckoutError(error.message);
-        } else {
-          setCheckoutError('An error occurred during checkout. Please try again.');
-        }
-      }
-      return;
+        const response=await fetch('/api/account/links',{cache:'no-store'});
+        const data=await response.json();
+        if(!response.ok){setCheckoutError(data.error||'Link your account before purchasing.');return;}
+        verifiedLinks={discord_id:data.links.discord_id||'',steam_id:data.links.steam_id||''};
+        setFormData(previous=>({...previous,...verifiedLinks}));
+      } catch { setCheckoutError('Could not verify your account links. Please try again.'); return; }
     }
+    if (!validateForm(verifiedLinks)) return;
+    // Identity is always checked again by the server before checkout.
+    const account = await fetch('/api/account', {cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null);
+    if (!account?.user) { setCheckoutError('Sign in to your Cloudy account before purchasing.'); return; }
 
-    // Standard checkout mode (handleCustomerIdentification=true)
-    if (!validateForm()) {
-      return;
-    }
-
-    let finalFormData: any = { ...formData };
+    let finalFormData: any = { ...formData, ...verifiedLinks };
 
     // Ensure email is always included
     if (!finalFormData.email) {
@@ -413,6 +336,7 @@ function CheckoutContent() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Checkout Form */}
             <div className="lg:col-span-2">
+              {!isCloudyServicePreviewCheckout && <div className="mb-6 rounded-xl border border-red-900/50 p-5 text-sm leading-7"><p>Use your Cloudy account for your purchase. Link Steam or Discord first when your product requires it.</p><Link href="/account" className="mr-5 underline">Sign in</Link><Link href="/link-account" className="underline">Manage linked accounts</Link></div>}
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Required User Information */}
                 <div className="p-6 rounded-xl bg-card border border-border">
@@ -460,6 +384,7 @@ function CheckoutContent() {
                               <input
                                 type="text"
                                 id={identifier}
+                                readOnly={hasOAuth}
                                 value={(formData[identifier as keyof CheckoutUser] as string) || ''}
                                 onChange={(e) => handleInputChange(identifier, e.target.value)}
                                 className={`flex-1 px-4 py-3 rounded-lg bg-background border ${
@@ -471,14 +396,7 @@ function CheckoutContent() {
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    const clientId = process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID || '';
-                                    // Build redirect from current origin so it matches the domain the user is on
-                                    const redirectUri = `${window.location.origin}/api/oauth/discord/callback`;
-                                    // Include current path in state so callback knows where to return
-                                    const returnPath = window.location.pathname + window.location.search;
-                                    const state = `${window.location.origin}|${returnPath}`; // format: origin|path
-                                    const discordUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify&state=${encodeURIComponent(state)}`;
-                                    window.location.href = discordUrl;
+                                    window.location.assign('/api/account/links/start?provider=discord');
                                   }}
                                   className="px-4 py-3 rounded-lg bg-[#5865F2] hover:bg-[#4752C4] text-white font-semibold transition-colors whitespace-nowrap flex items-center gap-2"
                                 >
@@ -497,11 +415,7 @@ function CheckoutContent() {
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    const origin = window.location.origin;
-                                    const returnUrl = `${origin}/api/oauth/steam/callback?origin=${encodeURIComponent(origin)}`;
-                                    const realm = origin;
-                                    const steamUrl = `https://steamcommunity.com/openid/login?openid.ns=http://specs.openid.net/auth/2.0&openid.mode=checkid_setup&openid.return_to=${encodeURIComponent(returnUrl)}&openid.realm=${encodeURIComponent(realm)}&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select`;
-                                    window.location.href = steamUrl;
+                                    window.location.assign('/api/account/links/start?provider=steam');
                                   }}
                                   className="px-4 py-3 rounded-lg bg-[#1B2838] hover:bg-[#2A3F5F] text-white font-semibold transition-colors whitespace-nowrap flex items-center gap-2"
                                 >
