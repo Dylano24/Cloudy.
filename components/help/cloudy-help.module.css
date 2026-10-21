@@ -28,7 +28,7 @@
 }
 .launcher svg, .brandIcon svg { color: #e51b2e; }
 .launcher:hover { border-color: #e51b2e; }
-.launcher > span { transform: translateX(-5px); }
+.launcher > svg { transform: translateX(-5px); }
 .panel {
   pointer-events: auto;
   display: flex;
