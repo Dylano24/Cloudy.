@@ -94,7 +94,7 @@ const faqs = [
   },
   {
     question: 'Can I request faster delivery?',
-    answer: 'Yes. Expedited delivery can be requested for an additional 20% of the total project cost. Availability depends on the project scope, complexity and current workload.',
+    answer: 'Yes. Expedited delivery can be requested for an additional 20% of the total project cost.',
   },
   {
     question: 'Can I add features outside the standard package?',
