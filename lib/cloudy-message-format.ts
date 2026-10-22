@@ -49,7 +49,7 @@ function friendlyLinkLabel(href: string): string {
 // Link only fixed, verified Cloudy destinations. Never trust model-generated
 // links to arbitrary domains and never turn ordinary brand mentions into
 // advertisements. Exact page names can appear in Dutch, French or English text.
-const TRUSTED_MENTION = /\b(?:Cloudy Store|Cloudy Discord|Cloudy website|Support\s*&\s*Help|Appeal form|Terms of (?:service|sale)|Privacy policy|Link your account|Shopping basket|My account|Cloudy checkout|Cloudy winkel|Cloudy boutique)\b/gi;
+const TRUSTED_MENTION = /\b(?:Cloudy Store|Cloudy Discord(?![\s-]+bot\b)|Cloudy website|Support\s*&\s*Help|Appeal form|Terms of (?:service|sale)|Privacy policy|Link your account|Shopping basket|My account|Cloudy checkout|Cloudy winkel|Cloudy boutique)\b/gi;
 
 export function trustedMentionHref(mention: string): string | null {
   const key = mention.toLowerCase().replace(/\s+/g, ' ').trim();

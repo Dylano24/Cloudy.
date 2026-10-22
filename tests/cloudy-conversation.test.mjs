@@ -153,6 +153,14 @@ test('Cloudy Store mention is a blue-linkable trusted destination in French and 
   assert.equal(trustedMentionHref('Not a real destination'), null);
 });
 
+test('the Cloudy Discord bot is not mistaken for a Discord server invite', () => {
+  const text = 'He also created the Cloudy website, Cloudy Discord bot, and Cloudy’s technical systems.';
+  const parts = parseAssistantInline(text);
+  assert.equal(parts.map(part => part.text).join(''), text);
+  assert.deepEqual(parts.filter(part => part.kind === 'link').map(part => part.href), ['/']);
+  assert.ok(parseAssistantInline('Join Cloudy Discord.').some(part => part.href === 'https://discord.gg/EGDVMmmSzF'));
+});
+
 test('approved link names remain clickable without exposing untrusted external URLs', () => {
   const formatted = parseAssistantInline('Lees de **Terms of service** of kijk in Support & Help.');
   assert.equal(formatted.filter(piece => piece.kind === 'link').length, 2);
