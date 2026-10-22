@@ -102,7 +102,8 @@
 .form { display: flex; align-items: center; flex-shrink: 0; gap: 8px; padding: 13px; border-top: 1px solid #ffffff16; background: #0b0b0b; }
 .form input { flex: 1; min-width: 0; height: 42px; padding: 0 11px; border: 1px solid #ffffff24; border-radius: 10px; background: #121212; color: #fff; font-size: 16px; }
 .form input::placeholder { color: #93939d; font-size: 12px; }
-.form button { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; padding: 0; border: 1px solid #f53042; border-radius: 10px; background: #b71324; color: #fff; cursor: pointer; }
+.form button { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; padding: 0; border: 1px solid var(--cloudy-action-border); border-radius: 10px; background: var(--cloudy-action-bg); color: #fff; cursor: pointer; }
+.form button:hover:not(:disabled) { background: var(--cloudy-action-hover); }
 .form button:disabled { border-color: #ffffff18; background: #1c1c1c; color: #6d6d76; cursor: default; }
 .dock button:focus-visible, .dock a:focus-visible, .dock input:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 .srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

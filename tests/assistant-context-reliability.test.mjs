@@ -83,7 +83,7 @@ test('leadership evidence separates founding, ownership and technical creation a
     { role: 'user', content: 'Who created Cloudy?' },
     { role: 'assistant', content: 'Doriane developed the website and Dylano is the sole owner.' },
   ];
-  for (const question of ['Who created Cloudy Inc?', 'Who owns Cloudy?', 'Who made the Cloudy bot?', 'What does she do?', 'Wie is Doriane?', 'En Dylano?']) {
+  for (const question of ['Who created Cloudy Inc?', 'Who owns Cloudy?', 'Who made the Cloudy Discord bot?', 'What does she do?', 'Wie is Doriane?', 'En Dylano?']) {
     const evidence = JSON.parse(assistantKnowledge(question, history, findHelp).evidence);
     const leadership = evidence.verifiedLeadership;
     assert.deepEqual(leadership.owners, ['Doriane', 'Dylano']);
@@ -97,7 +97,7 @@ test('leadership evidence separates founding, ownership and technical creation a
 });
 
 test('leadership searches retrieve approved facts without injecting navigation links', () => {
-  for (const question of ['Who created Cloudy Inc?', 'Who owns Cloudy?', 'Who made the Cloudy bot?', 'Wie is Doriane?', 'What does Dylano do?']) {
+  for (const question of ['Who created Cloudy Inc?', 'Who owns Cloudy?', 'Who made the Cloudy Discord bot?', 'Wie is Doriane?', 'What does Dylano do?']) {
     const context = assistantKnowledge(question, [], findHelp);
     const entries = JSON.parse(context.evidence).verifiedWebsiteInformation;
     assert.deepEqual(JSON.parse(context.evidence).verifiedLeadership.owners, ['Doriane', 'Dylano'], question);
@@ -108,7 +108,7 @@ test('leadership searches retrieve approved facts without injecting navigation l
 test('every visitor language receives the approved creator and Doriane wording as reference', () => {
   for (const question of ['Qui t’a créé ?', '¿Quién te creó?', 'Wer hat dich erstellt?', 'Qui est Doriane ?', 'Wie is Doriane?']) {
     const evidence = JSON.parse(assistantKnowledge(question, [], findHelp).evidence);
-    assert.match(evidence.identity.approvedIntroduction, /Cloudy website, Cloudy bot, and Cloudy’s technical systems/);
+    assert.match(evidence.identity.approvedIntroduction, /Cloudy website, Cloudy Discord bot, and Cloudy’s technical systems/);
     assert.match(evidence.identity.languageGuidance, /any requested language/);
     assert.match(evidence.verifiedLeadership.Doriane.approvedDescriptionFrench, /elle a créé le serveur Discord et elle a rassemblé la communauté\. Elle dirige également/);
     assert.match(evidence.verifiedLeadership.guidance, /every other language/);

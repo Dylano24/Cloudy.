@@ -14,8 +14,8 @@ export function assistantIdentityReply(question: string): string | null {
   if (!identity.test(q) && !model.test(q)) return null;
   const dutch = /^(?:wie|welk|ben)\b/.test(q);
   const introduction = dutch
-    ? 'Ik ben de Cloudy assistant, gemaakt en ingericht door Dylano, owner en lead developer van Cloudy Inc. Hij heeft ook de Cloudy-website, Cloudy bot en de technische systemen van Cloudy gemaakt.'
-    : 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy bot, and Cloudy’s technical systems.';
+    ? 'Ik ben de Cloudy assistant, gemaakt en ingericht door Dylano, owner en lead developer van Cloudy Inc. Hij heeft ook de Cloudy-website, Cloudy Discord bot en de technische systemen van Cloudy gemaakt.'
+    : 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy Discord bot, and Cloudy’s technical systems.';
   return introduction + (model.test(q)
     ? dutch ? ' Ik kan hier geen exacte modelversie bevestigen.' : ' I can’t confirm an exact model version here.'
     : '');

@@ -3,8 +3,8 @@
 .form input { width: 100%; min-height: 50px; margin-bottom: 10px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
 .form input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .form input[aria-invalid='true'] { border-color: #ff5268; box-shadow: 0 0 0 2px #ff526824; }
-.form button { min-height: 51px; margin-top: 6px; padding: 12px 20px; color: #fff; background: #c7192b; border: 1px solid #f12c42; border-radius: 10px; font-weight: 850; cursor: pointer; box-shadow: 0 10px 30px #e51b2e24; }
-.form button:hover { background: #e51b2e; }
+.form button { min-height: 51px; margin-top: 6px; padding: 12px 20px; color: #fff; background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; box-shadow: 0 10px 30px #e51b2e24; }
+.form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { background: var(--cloudy-action-hover); }
 .form button:disabled { opacity: .6; cursor: wait; }
 .error { margin: 0; color: #ff6475; font-size: 13px; }
 .card { background: radial-gradient(circle at 100% 0%, #e51b2e11, transparent 45%), #080809; border-color: #39393d; box-shadow: 0 24px 70px #0009, 0 0 28px #e51b2e0c; }
@@ -24,6 +24,15 @@
 .nameForm input { flex: 1 1 220px; min-height: 50px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
 .nameForm input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .nameForm input[aria-invalid='true'] { border-color: #ff6475; }
-.nameForm button { min-height: 50px; padding: 12px 20px; color: #fff; background: #c7192b; border: 1px solid #f12c42; border-radius: 10px; font-weight: 850; cursor: pointer; }
+.nameForm button { min-height: 50px; padding: 12px 20px; color: #fff; background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; }
 .nameForm button:disabled { opacity: .6; cursor: default; }
 .saved { margin: 0; color: #88e3ae; font-size: 13px; }
+.accountIdentity { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+.accountIdentity h2 { min-width: 0; overflow-wrap: anywhere; }
+.connected { display: inline-flex; align-items: center; gap: 7px; margin: 0; color: #acd68a; font-size: 13px; line-height: 1.6; }
+.connected svg { flex-shrink: 0; }
+.nameHelp { margin: 0 0 8px; color: #aaaab0; font-size: 13px; line-height: 1.7; }
+.accountInformation { margin-top: 20px; font-size: 14px; line-height: 1.7; }
+.accountInformation dd { overflow-wrap: anywhere; }
+.form button:focus-visible, .nameForm button:focus-visible { outline: 2px solid #f3b6c0; outline-offset: 3px; }
+.nameForm input { min-width: 0; }

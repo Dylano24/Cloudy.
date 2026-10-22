@@ -125,7 +125,7 @@ export function Header() {
   const nav = [
     ['Home', '/'],
     ['Store', '/shop'],
-    ['Website', '/service'],
+    ['Web solutions', '/service'],
   ] as const;
 
   return (
@@ -163,7 +163,7 @@ export function Header() {
                 {user && ([['My account', '/account'], ['My orders', '/account/orders'], ['Favorites', '/account/favorites'], ['Fidelity', '/account/fidelity'], ['My information', '/account/information']] as const).map(([label, href]) => (
                   <Link key={href} href={href} onClick={() => setAccountOpen(false)}>{label}</Link>
                 ))}
-                {user ? <button type="button" className={styles.authAction} disabled={loggingOut} onClick={() => { void logout().then(() => setAccountOpen(false)).catch(() => window.alert('Unable to sign out. Please try again.')); }}>Log off</button> : !pending && <><Link href="/account" className={styles.authAction} onClick={() => setAccountOpen(false)}>Login</Link><Link href="/account/create" onClick={() => setAccountOpen(false)}>Create account</Link></>}
+                {user ? <button type="button" className={`${styles.authAction} ${styles.logOff}`} disabled={loggingOut} onClick={() => { void logout().then(() => setAccountOpen(false)).catch(() => window.alert('Unable to sign out. Please try again.')); }}>Log off</button> : !pending && <><Link href="/account" className={styles.authAction} onClick={() => setAccountOpen(false)}>Login</Link><Link href="/account/create" onClick={() => setAccountOpen(false)}>Create account</Link></>}
               </nav>
             )}
           </div>

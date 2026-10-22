@@ -26,9 +26,9 @@ test('creator attribution includes Dylano as owner and lead developer, including
 });
 
 test('the approved introduction includes the website, bot and technical systems', () => {
-  assert.equal(assistantIdentityReply('Who created u?'), 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy bot, and Cloudy’s technical systems.');
+  assert.equal(assistantIdentityReply('Who created u?'), 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy Discord bot, and Cloudy’s technical systems.');
   const dutch = assistantIdentityReply('Wie heeft jou gemaakt?');
-  assert.match(dutch, /Cloudy-website, Cloudy bot en de technische systemen/);
+  assert.match(dutch, /Cloudy-website, Cloudy Discord bot en de technische systemen/);
 });
 
 test('Cloudy employee counts are explicitly unknown and owners are never relabelled staff', () => {

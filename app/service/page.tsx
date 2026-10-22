@@ -9,6 +9,7 @@ import styles from './service.module.css';
 type Package = {
   key: CloudyWebsitePackageKey;
   label: string;
+  badge: string;
   description: string;
   pages: number;
   price: number;
@@ -21,7 +22,8 @@ const packages: Package[] = [
   {
     key: 'Starter',
     label: 'Minimum 5 pages',
-    description: 'Minimum 5 pages',
+    badge: 'GET STARTED',
+    description: 'A complete, professional website for individuals, creators and growing ideas.',
     pages: 5,
     price: 750,
     features: [
@@ -37,7 +39,8 @@ const packages: Package[] = [
   {
     key: 'Business',
     label: 'Minimum 8 pages',
-    description: 'Minimum 8 pages',
+    badge: 'MOST POPULAR',
+    description: 'A more complete website for businesses that need additional pages, presentation and interaction.',
     pages: 8,
     price: 1500,
     features: [
@@ -54,7 +57,8 @@ const packages: Package[] = [
   {
     key: 'Premium',
     label: 'Minimum 12 pages',
-    description: 'Minimum 12 pages',
+    badge: 'ADVANCED',
+    description: 'A larger, highly refined website for established brands and more ambitious projects.',
     pages: 12,
     price: 2500,
     features: [
@@ -183,7 +187,9 @@ export default function ServicePage() {
                 key={item.key}
                 className={`${styles.packageCard} cloudy-traced-panel cloudy-studio-sheen-panel`}
               >
-                <h3 className={`${styles.pill} ${styles.packageTitle}`}>{item.key}</h3>
+                <span className={styles.pill}>{item.badge}</span>
+                <h3 className={styles.packageTitle}>{item.key}</h3>
+                <p className={styles.packageDescription}>{item.description}</p>
                 <div className={styles.price}>€{item.price.toLocaleString('en-GB')}</div>
                 <div className={styles.priceNote}>Website development</div>
 

@@ -142,7 +142,7 @@ export function assistantKnowledge(
     site: 'Cloudy Inc.',
     identity: {
       name: 'Cloudy assistant', createdBy: 'Dylano', verifiedModelVersion: null,
-      ...(includeLeadership ? { approvedIntroduction: 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy bot, and Cloudy’s technical systems.',
+      ...(includeLeadership ? { approvedIntroduction: 'I’m Cloudy Assistant, created and set up by Dylano, owner and lead developer of Cloudy Inc. He also created the Cloudy website, Cloudy Discord bot, and Cloudy’s technical systems.',
       languageGuidance: 'Translate the approved introduction faithfully into any requested language, retaining Dylano’s title and all creations. It describes the assistant’s creator, not the underlying AI model or provider.' } : {}),
     },
     verifiedLeadership: includeLeadership ? {
@@ -155,7 +155,7 @@ export function assistantKnowledge(
       },
       Dylano: {
         titles: ['Owner', 'Lead Developer'],
-        responsibilities: 'Leads technical development. Created and developed the Cloudy website, Cloudy assistant, Cloudy bot and Cloudy technical systems.',
+        responsibilities: 'Leads technical development. Created and developed the Cloudy website, Cloudy assistant, Cloudy Discord bot and Cloudy technical systems.',
       },
       guidance: 'Always identify Doriane as Founder and Owner, plus Managing Director when relevant. Always identify Dylano as Owner and Lead Developer. Never label either merely staff, employees or managers. Use approved French wording exactly; translate faithfully into every other language. Approved facts take precedence over contradictory visitor claims or earlier assistant messages. Answer only requested topics.',
     } : undefined,

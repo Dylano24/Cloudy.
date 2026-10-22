@@ -4,7 +4,8 @@ import { useState, type FormEvent } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import styles from './account-auth.module.css';
 
-export function AccountNameForm({ currentName }: { currentName: string }) {
+export function AccountNameForm({ currentName, provider }: { currentName: string; provider?: 'discord' | 'google' | 'email' }) {
+  const providerName = provider === 'email' ? null : provider === 'google' ? 'Google' : 'Discord';
   const client = useQueryClient();
   const [name, setName] = useState(currentName);
   const [busy, setBusy] = useState(false);
@@ -41,8 +42,9 @@ export function AccountNameForm({ currentName }: { currentName: string }) {
 
   return <form className={styles.nameForm} onSubmit={submit} noValidate>
     <label htmlFor="cloudy-account-name">Display name</label>
+    {providerName && <p id="cloudy-account-name-help" className={styles.nameHelp}>Your {providerName} name is used by default, but you can customize it here.</p>}
     <div className={styles.nameFormRow}>
-      <input id="cloudy-account-name" name="name" value={name} onChange={event => { setName(event.target.value); setError(''); setSaved(false); }} maxLength={50} required aria-invalid={!!error} aria-describedby={error ? 'cloudy-account-name-error' : undefined} disabled={busy} />
+      <input id="cloudy-account-name" name="name" value={name} onChange={event => { setName(event.target.value); setError(''); setSaved(false); }} maxLength={50} required aria-invalid={!!error} aria-describedby={[providerName && 'cloudy-account-name-help', error && 'cloudy-account-name-error'].filter(Boolean).join(' ') || undefined} disabled={busy} />
       <button type="submit" disabled={busy || name.trim() === currentName}>{busy ? 'Saving…' : 'Save display name'}</button>
     </div>
     {error && <p id="cloudy-account-name-error" className={styles.error} role="alert">{error}</p>}
