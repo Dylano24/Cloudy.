@@ -223,7 +223,7 @@ export default function ServicePage() {
         <div className={styles.wrap}>
           <header className={styles.sectionHead}>
             <div className={styles.eyebrow}>HOW IT WORKS</div>
-            <h2>Your project, Made simple.</h2>
+            <h2>Your project. Made simple.</h2>
             <p>From choosing your package to bringing your vision to life.</p>
           </header>
 
