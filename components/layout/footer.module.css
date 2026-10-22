@@ -1,6 +1,11 @@
 
 .footer :global(.cloudy-footer-grid) {
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.footer :global(.cloudy-footer-links) > span {
+  color: #667b8d;
+  font-size: 10px;
 }
 
 @media (max-width: 900px) {
@@ -9,9 +14,6 @@
     gap: 28px 16px;
   }
 
-  .brand {
-    grid-column: 1 / -1;
-  }
 }
 
 /* Keep the three mobile link groups side by side. */
@@ -21,8 +23,7 @@
     position: static;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
-      "navigation community information"
-      "brand brand brand";
+      "navigation community information";
     gap: 24px 12px;
     align-items: start;
   }
@@ -31,16 +32,4 @@
   .community { grid-area: community; min-width: 0; }
   .information { grid-area: information; min-width: 0; }
 
-  .brand {
-    position: static;
-    grid-area: brand;
-    min-width: 0;
-    width: auto;
-    justify-self: end;
-    align-self: end;
-  }
-
-  .footer :global(.cloudy-footer-brand) {
-    justify-content: flex-end;
-  }
 }

@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { CircleCheck } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useAccount } from '@/hooks/use-account';
 import { EmailAccountForm } from './email-account-form';
@@ -28,7 +29,18 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
           <a href="/api/account/google/login">Continue with Google</a>
         </div>
       </> : <>
-        {(section === 'account' || section === 'information' || section === 'create') ? <><h2 className="text-xl font-bold">{user.name}</h2>{section === 'account' && <AccountNameForm currentName={user.name} />}<dl className="mt-5 space-y-3 text-sm">{user.provider === 'email' ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div> : <div><dt className="text-muted">{user.provider === 'google' ? 'Google ID' : 'Discord ID'}</dt><dd>{user.id}</dd></div>}</dl></> : <>
+        {(section === 'account' || section === 'information' || section === 'create') ? <>
+          <div className={styles.accountIdentity}>
+            <h2 className="text-xl font-bold">{user.name}</h2>
+            {section === 'account' && <p className={styles.connected}><CircleCheck size={18} aria-hidden="true" />Successfully connected!</p>}
+          </div>
+          {section === 'account' && <AccountNameForm currentName={user.name} provider={user.provider} />}
+          {section === 'information' && <dl className={styles.accountInformation}>
+            {user.provider === 'email'
+              ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div>
+              : <div><dt className="text-muted">{user.provider === 'google' ? 'Google ID' : 'Discord ID'}</dt><dd>{user.id}</dd></div>}
+          </dl>}
+        </> : <>
           <p className="text-sm leading-7 text-muted">{section === 'orders' ? 'Your order history is not available here yet. Contact Cloudy support for help with a purchase.' : section === 'fidelity' ? 'Fidelity details are not available yet.' : 'Your saved favorites are not available here yet.'}</p>
           <Link href="/support" className="cloudy-classic-button mt-6" style={{ borderColor: '#e51b2e' }}>Contact support</Link>
         </>}

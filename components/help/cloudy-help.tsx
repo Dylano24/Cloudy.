@@ -335,8 +335,8 @@ export function CloudyHelp() {
           <header className={styles.header}>
             <span className={styles.brandIcon}><Bot size={21} aria-hidden="true" /></span>
             <div className={styles.brandCopy}>
-              <h2 id="cloudy-help-title">Cloudy assistant</h2>
-              <p>Your Cloudy companion</p>
+              <h2 id="cloudy-help-title">AI ASSISTANT</h2>
+              <p>Designed to help</p>
             </div>
             <button type="button" className={styles.iconButton} onClick={reset} aria-label="Start a new chat" title="Start a new chat"><RotateCcw size={17} aria-hidden="true" /></button>
             <button type="button" className={styles.iconButton} onClick={close} aria-label="Close Cloudy assistant"><X size={20} aria-hidden="true" /></button>
@@ -344,9 +344,9 @@ export function CloudyHelp() {
 
           <div className={styles.body} ref={logRef}>
             <div className={styles.welcome}>
-              <span className={styles.eyebrow}>HOW CAN WE HELP?</span>
-              <h3>Chat with our assistant.</h3>
-              <p>Ask me anything or choose a topic below. I can help in multiple languages — write in the language you prefer. Don’t share passwords or payment details in chat.</p>
+              <span className={styles.eyebrow}>Welcome to Cloudy</span>
+              <h3>How can I assist you?</h3>
+              <p>Have a question? I&apos;m here to guide you. Choose a topic below or ask me anything. You can write in any language, and I&apos;ll reply in the same one. For your security, please don&apos;t share passwords or payment details in the chat.</p>
             </div>
             <div className={styles.topics} aria-label="Help topics">
               {helpEntries.filter(entry => shortcuts.includes(entry.id)).map(entry => (
@@ -418,7 +418,7 @@ export function CloudyHelp() {
       )}
       <button ref={launcherRef} type="button" className={styles.launcher} aria-label="Assistant" aria-expanded={open} aria-controls="cloudy-help-panel" onClick={() => open ? close() : setOpen(true)}>
         <Bot size={23} aria-hidden="true" />
-        <span>Assistant</span>
+        <span>assistant</span>
       </button>
     </div>
   );

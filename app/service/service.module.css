@@ -144,16 +144,21 @@
 
 .primaryButton,
 .buyButton {
-  border: 1px solid #f04b61;
-  background: linear-gradient(110deg, #d91c37, #fa3450);
+  border: 1px solid var(--cloudy-action-border);
+  background: var(--cloudy-action-bg);
   color: #fff;
-  box-shadow: 0 4px 24px rgba(240,38,68,.15);
+  box-shadow: 0 4px 20px rgba(80,15,25,.12);
 }
 
 .secondaryButton {
   border: 1px solid rgba(255,255,255,.13);
   background: #17171d;
   color: #fff;
+}
+
+.primaryButton:focus-visible, .buyButton:focus-visible {
+  outline: 2px solid #f3b6c0;
+  outline-offset: 3px;
 }
 
 
@@ -790,7 +795,8 @@
   .primaryButton:hover,
   .buyButton:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 32px rgba(239,41,75,.32);
+    background: var(--cloudy-action-hover);
+    box-shadow: 0 8px 24px rgba(80,15,25,.2);
   }
 
   .secondaryButton:hover {
@@ -1666,18 +1672,29 @@
 .processGrid .processCard p { font-size: 12px; line-height: 1.7; }
 .packageCard { min-height: 0; }
 .packageCard .packageTitle {
-  align-self: flex-start;
-  width: fit-content;
-  margin: 0 0 4px;
-  padding: 6px 10px;
-  border: 1px solid #ec4257;
-  border-radius: 6px;
-  background: linear-gradient(110deg, #ac1527, #dc2038);
-  color: #fff;
-  font-size: 16px;
+  margin: 24px 0 14px;
+  color: #f5f5f5;
+  font-size: 36px;
+  font-weight: 500;
   line-height: 1.15;
-  text-transform: none;
-  letter-spacing: -.025em;
+  letter-spacing: -.04em;
+}
+.packageCard .pill {
+  padding: 7px 10px;
+  border-color: rgba(175, 61, 77, .4);
+  background: rgba(100, 20, 35, .18);
+  color: #e99aa5;
+  font-size: 10px;
+  font-weight: 750;
+}
+.packageCard .packageDescription {
+  min-height: 4.95em;
+  color: #99999f;
+  font-size: 13px;
+  line-height: 1.65;
+}
+@media (max-width: 900px) {
+  .packageCard .packageDescription { min-height: 0; }
 }
 @media(max-width:820px) {
   .processSection .processGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
