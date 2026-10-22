@@ -1,6 +1,22 @@
 
+.footer :global(.cloudy-footer-inner) {
+  width: min(640px, calc(100% - 40px));
+  padding: 32px 0 22px;
+}
+
 .footer :global(.cloudy-footer-grid) {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
+  align-items: start;
+  gap: 24px clamp(20px, 6vw, 76px);
+}
+
+.footer :global(.cloudy-footer-bottom) {
+  justify-content: center;
+  align-items: center;
+  margin-top: 26px;
+  padding-top: 18px;
+  text-align: center;
 }
 
 .footer :global(.cloudy-footer-links) > span {
@@ -8,28 +24,14 @@
   font-size: 10px;
 }
 
-@media (max-width: 900px) {
-  .footer :global(.cloudy-footer-grid) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 28px 16px;
-  }
-
-}
-
 /* Keep the three mobile link groups side by side. */
 @media (max-width: 700px) {
   .footer :global(.cloudy-footer-grid) {
-    display: grid;
-    position: static;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
       "navigation community information";
-    gap: 24px 12px;
-    align-items: start;
   }
 
   .navigation { grid-area: navigation; min-width: 0; }
   .community { grid-area: community; min-width: 0; }
   .information { grid-area: information; min-width: 0; }
-
 }
