@@ -276,12 +276,6 @@
   letter-spacing: -.04em;
 }
 
-.priceNote {
-  margin-bottom: 18px;
-  color: #9999a5;
-  font-size: 11px;
-}
-
 .features {
   padding: 16px 0 9px;
   border-top: 1px solid rgba(255,255,255,.08);
@@ -1221,11 +1215,8 @@
 
 .price {
   margin-top: 18px;
+  margin-bottom: 20px;
   font-size: 36px;
-}
-
-.priceNote {
-  margin-top: 2px;
 }
 
 .features {
@@ -1661,8 +1652,11 @@
   box-shadow: none;
 }
 .processGrid .processCard + .processCard { border-left: 1px solid rgba(255,255,255,.07); }
-.processCard > svg { color: #e51b2e; margin-bottom: 20px; }
+.processCard h3 > svg { color: #e51b2e; flex-shrink: 0; }
 .processGrid .processCard h3 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0 0 14px;
   font-family: var(--font-display), Impact, sans-serif;
   font-size: 22px;
