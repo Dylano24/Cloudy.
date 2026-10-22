@@ -191,7 +191,6 @@ export default function ServicePage() {
                 <h3 className={styles.packageTitle}>{item.key}</h3>
                 <p className={styles.packageDescription}>{item.description}</p>
                 <div className={styles.price}>€{item.price.toLocaleString('en-GB')}</div>
-                <div className={styles.priceNote}>Website development</div>
 
                 <div className={styles.features}>
                   {[item.features[0], item.label, ...item.features.slice(1, -1)].map(feature => (
@@ -231,8 +230,7 @@ export default function ServicePage() {
           <div className={`${styles.processGrid} cloudy-classic-why-grid cloudy-traced-panel cloudy-studio-sheen-panel`}>
             {processSteps.map(step => (
               <article key={step.title} className={styles.processCard}>
-                <step.icon size={27} aria-hidden="true" />
-                <h3>{step.title}</h3>
+                <h3><step.icon size={24} aria-hidden="true" /><span>{step.title}</span></h3>
                 <p>{step.text}</p>
               </article>
             ))}

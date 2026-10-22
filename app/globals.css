@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --cloudy-action-bg: rgba(115, 25, 40, .56);
-  --cloudy-action-hover: rgba(143, 31, 49, .7);
-  --cloudy-action-border: rgba(198, 69, 88, .55);
+  --cloudy-action-bg: rgba(173, 32, 53, .82);
+  --cloudy-action-hover: rgba(201, 40, 65, .92);
+  --cloudy-action-border: rgba(238, 80, 105, .72);
   --background: #050505;
   --foreground: #f5f5f5;
   --primary: #f1f1f1;
