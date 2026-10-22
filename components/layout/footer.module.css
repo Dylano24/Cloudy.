@@ -7,9 +7,10 @@
 .footer :global(.cloudy-footer-grid) {
   width: min(840px, 100%);
   margin: 0 auto;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, max-content);
+  justify-content: center;
   align-items: start;
-  gap: 24px 48px;
+  gap: 24px clamp(48px, 14vw, 180px);
 }
 
 .footer :global(.cloudy-footer-bottom) {
@@ -17,15 +18,33 @@
   padding-top: 20px;
 }
 
-.footer :global(.cloudy-footer-links) > span {
+.footer :global(.cloudy-footer-title),
+.footer :global(.cloudy-footer-links) > a,
+.footer :global(.cloudy-footer-links) > span,
+.footer :global(.cloudy-footer-bottom) {
   color: #fff;
+  opacity: 1;
+}
+
+.footer :global(.cloudy-footer-links) > span {
   font-size: 10px;
+}
+
+.footer :global(.cloudy-footer-links) > a:hover,
+.footer :global(.cloudy-footer-links) > a:focus-visible,
+.footer :global(.cloudy-footer-links) > a:visited {
+  color: #fff;
+}
+.footer :global(.cloudy-footer-links) > a:hover,
+.footer :global(.cloudy-footer-links) > a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* Keep the three mobile link groups side by side. */
 @media (max-width: 700px) {
   .footer :global(.cloudy-footer-grid) {
-    gap: 24px 14px;
+    gap: 24px clamp(16px, 5vw, 28px);
     grid-template-areas:
       "navigation community information";
   }
