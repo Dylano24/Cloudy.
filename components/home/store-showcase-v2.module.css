@@ -114,7 +114,7 @@
 .heroContent p {
   max-width: 650px;
   margin-top: 24px;
-  color: #a4b7c9;
+  color: #fff;
   font-size: 14px;
   line-height: 1.8;
 }
@@ -326,7 +326,7 @@
 .rankCard > p {
   margin-top: 5px;
   text-align: center;
-  color: #6e8193;
+  color: #fff;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .08em;
@@ -352,7 +352,7 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  color: #aabac8;
+  color: #fff;
   font-size: 11px;
   line-height: 1.45;
 }
@@ -374,7 +374,7 @@
   gap: 8px;
   border: 1px solid rgba(103, 207, 255, .20);
   border-radius: 10px;
-  color: #e9faff;
+  color: #fff;
   background: linear-gradient(135deg, rgba(34, 144, 219, .13), rgba(59, 95, 210, .13));
   font-size: 9px;
   font-weight: 950;

@@ -5,7 +5,7 @@
   --red: #e51b2e;
   --red-bright: #ff334f;
   --text: #f8f8fa;
-  --muted: #9a9aa2;
+  --muted: #fff;
   --line: rgba(255,255,255,.10);
   position: relative;
   isolation: isolate;
@@ -70,7 +70,7 @@
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  color: #b0b0b7;
+  color: #fff;
   font-size: 11px;
   font-weight: 850;
   letter-spacing: .18em;
@@ -111,7 +111,7 @@
 .hero > .wrap > p {
   max-width: 690px;
   margin: 0 0 31px;
-  color: #b6b6c1;
+  color: #fff;
   font-size: 17px;
   line-height: 1.75;
 }
@@ -286,7 +286,7 @@
   gap: 9px;
   align-items: flex-start;
   margin: 10px 0;
-  color: #e3e3e7;
+  color: #fff;
   font-size: 12px;
 }
 
@@ -307,7 +307,7 @@
   display: flex;
   justify-content: space-between;
   list-style: none;
-  color: #f0f0f2;
+  color: #fff;
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
@@ -334,7 +334,7 @@
 .packageDetails p,
 .serviceDetails p {
   margin: 12px 0 0;
-  color: #aaaab5;
+  color: #fff;
   font-size: 11px;
   line-height: 1.65;
 }
@@ -350,7 +350,7 @@
 
 .note {
   margin: 19px 0 0;
-  color: #898994;
+  color: #fff;
   font-size: 11px;
 }
 
@@ -466,7 +466,7 @@
 
 .dialog > p {
   margin: 0;
-  color: #aaaab6;
+  color: #fff;
   font-size: 12px;
 }
 
@@ -476,7 +476,7 @@
   right: 15px;
   border: 0;
   background: transparent;
-  color: #ccc;
+  color: #fff;
   font-size: 25px;
   cursor: pointer;
 }
@@ -525,7 +525,7 @@
 .reviewText {
   margin: 0 0 15px;
   white-space: pre-wrap;
-  color: #e5e5ec;
+  color: #fff;
   font: inherit;
   font-size: 12px;
   line-height: 1.7;
@@ -536,7 +536,7 @@
   border: 1px solid #68404a;
   border-radius: 8px;
   background: #262027;
-  color: #f2c8d0;
+  color: #fff;
   font-size: 11px;
   line-height: 1.6;
 }
@@ -887,7 +887,7 @@
 
 .orderPopover > p {
   margin: 0;
-  color: #aaaab6;
+  color: #fff;
   font-size: 13px;
   line-height: 1.55;
 }
@@ -938,7 +938,7 @@
 
 .orderPopover .reviewText p {
   margin: 0;
-  color: #e5e5ec;
+  color: #fff;
   font-size: 12px;
   line-height: 1.55;
   overflow-wrap: anywhere;
@@ -1058,7 +1058,7 @@
   position: relative;
   list-style: none;
   padding: 18px 52px 18px 18px;
-  color: #f2f2f4;
+  color: #fff;
   font-size: 14px;
   font-weight: 760;
   line-height: 1.45;
@@ -1245,7 +1245,7 @@
 .packageDetails p {
   margin: 0;
   padding: 0 15px 15px;
-  color: #b4b4bd;
+  color: #fff;
   font-size: 12px;
   line-height: 1.72;
 }
@@ -1684,7 +1684,7 @@
 }
 .packageCard .packageDescription {
   min-height: 4.95em;
-  color: #99999f;
+  color: #fff;
   font-size: 13px;
   line-height: 1.65;
 }
@@ -1741,4 +1741,23 @@
   .page .introPanel,
   .page .packageCard,
   .page .processGrid { background-image: none; animation: none; }
+}
+
+/* Each section contributes half the same gap, including the hero transition. */
+.page { --studio-section-half-gap: 48px; }
+.page > .hero { padding-bottom: var(--studio-section-half-gap); }
+.page > .section {
+  padding-top: var(--studio-section-half-gap);
+  padding-bottom: var(--studio-section-half-gap);
+}
+.faqSection .sectionHead h2 { margin-top: 0; }
+.packageCard .buyButton { background: transparent; }
+@media (hover: hover) and (pointer: fine) {
+  .packageCard .buyButton:hover { background: rgba(255,255,255,.025); }
+}
+@media (max-width: 900px) {
+  .page { --studio-section-half-gap: 32px; }
+}
+@media (max-width: 600px) {
+  .page { --studio-section-half-gap: 24px; }
 }

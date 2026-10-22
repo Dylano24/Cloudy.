@@ -53,7 +53,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #9b9ba1;
+  color: #fff;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .18em;
@@ -97,7 +97,7 @@
 
 .heroCopy p {
   margin: 0 0 24px;
-  color: #aaaab0;
+  color: #fff;
   font-size: 17px;
   line-height: 1.65;
 }
@@ -141,7 +141,7 @@
   padding: 18px 0;
   border-top: 1px solid rgba(255,255,255,.08);
   border-bottom: 1px solid rgba(255,255,255,.08);
-  color: #6f6f76;
+  color: #fff;
   font-size: 10px;
   font-weight: 900;
   letter-spacing: .18em;
@@ -178,7 +178,7 @@
 .sectionHeader > p {
   max-width: 360px;
   margin: 0 0 7px;
-  color: #7e7e84;
+  color: #fff;
   text-align: right;
   line-height: 1.55;
 }
@@ -229,7 +229,7 @@
 }
 
 .cardHead > span {
-  color: #66666d;
+  color: #fff;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .14em;
@@ -239,7 +239,7 @@
   padding: 6px 8px;
   border: 1px solid rgba(255,255,255,.09);
   border-radius: 999px;
-  color: #8c8c92;
+  color: #fff;
   font-size: 9px;
   font-weight: 900;
   letter-spacing: .12em;
@@ -280,7 +280,7 @@
 
 .card > p {
   margin: 10px 0 18px;
-  color: #96969c;
+  color: #fff;
   font-size: 14px;
   line-height: 1.6;
 }
@@ -297,7 +297,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: #b4b4b9;
+  color: #fff;
   font-size: 12px;
 }
 
@@ -321,7 +321,7 @@
   gap: 16px;
   padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,.08);
-  color: #dedee1;
+  color: #fff;
   text-decoration: none;
   font-size: 12px;
   font-weight: 800;
@@ -365,7 +365,7 @@
 
 .timeline p {
   margin: 0;
-  color: #7f7f86;
+  color: #fff;
   font-size: 13px;
   line-height: 1.55;
 }
@@ -387,7 +387,7 @@
 .finalCta p {
   max-width: 650px;
   margin: 12px 0 0;
-  color: #8d8d93;
+  color: #fff;
 }
 
 .bigCta {
