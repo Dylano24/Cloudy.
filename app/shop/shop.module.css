@@ -38,7 +38,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: #9d9da4;
+  color: #fff;
   font-size: 11px;
   font-weight: 900;
   letter-spacing: .18em;
@@ -71,7 +71,7 @@
 .hero > p {
   max-width: 720px;
   margin: 0;
-  color: #aaaab0;
+  color: #fff;
   font-size: clamp(16px, 2vw, 20px);
   line-height: 1.65;
 }
@@ -124,7 +124,7 @@
   font-weight: 400;
   line-height: .9;
   letter-spacing: -.03em;
-  color: #f7f7f9;
+  color: #fff;
   -webkit-text-stroke: .6px rgba(255,255,255,.18);
   text-shadow:
     0 1px 0 rgba(255,255,255,.20),
@@ -140,7 +140,7 @@
   justify-content: center;
   gap: 4px;
   margin-top: 9px;
-  color: #aaaab0;
+  color: #fff;
   font-family: var(--font-sans), "Manrope", sans-serif;
   font-size: clamp(5.8px, 1.7vw, 7px);
   font-weight: 750;
@@ -181,7 +181,7 @@
 
 .stats span {
   margin-top: 3px;
-  color: #7f7f86;
+  color: #fff;
   font-size: 12px;
 }
 /* Keep the two online-status labels at the compact size of their own cell.
@@ -203,7 +203,7 @@
 .stats .statLabel,
 .stats .statStatus {
   margin-top: 11px;
-  color: #aaaab0;
+  color: #fff;
   font-size: 8px;
 }
 
@@ -230,7 +230,7 @@
 .sectionHeader p {
   max-width: 360px;
   margin: 0 0 7px;
-  color: #7e7e85;
+  color: #fff;
   text-align: right;
   line-height: 1.55;
 }
@@ -304,7 +304,7 @@
 }
 
 .placeholder b {
-  color: rgba(255,255,255,.045);
+  color: #fff;
   font-size: 90px;
   letter-spacing: -.08em;
 }
@@ -331,7 +331,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: rgba(255,255,255,.52);
+  color: #fff;
   font-size: 11px;
 }
 .cardIndexNumber {
@@ -340,7 +340,7 @@
   font-weight: 650;
   line-height: 1;
   letter-spacing: -.03em;
-  color: #ededf0;
+  color: #fff;
   text-shadow: 0 2px 7px rgba(0,0,0,.72), 0 0 10px rgba(229,27,46,.08);
 }
 
@@ -366,7 +366,7 @@
 .soon {
   border: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.32);
-  color: #8d8d93;
+  color: #fff;
 }
 
 .cardBody {
@@ -398,7 +398,7 @@
 .cardBody > p {
   max-width: 520px;
   margin: 9px 0 16px;
-  color: #b6b6bc;
+  color: #fff;
   font-size: 14px;
   line-height: 1.55;
 }
@@ -414,7 +414,7 @@
   border: 1px solid rgba(255,255,255,.10);
   border-radius: 7px;
   background: rgba(0,0,0,.28);
-  color: #aaaab0;
+  color: #fff;
   font-size: 11px;
 }
 
@@ -425,7 +425,7 @@
   margin-top: 22px;
   padding-top: 14px;
   border-top: 1px solid rgba(255,255,255,.10);
-  color: #d9d9dd;
+  color: #fff;
   font-size: 12px;
 }
 
@@ -468,7 +468,7 @@
 
 .comingCard p {
   margin: 8px 0 0;
-  color: #838389;
+  color: #fff;
   font-size: 13px;
 }
 
@@ -520,7 +520,7 @@
 
 .steps p {
   margin: 0;
-  color: #7e7e85;
+  color: #fff;
   font-size: 13px;
   line-height: 1.55;
 }
@@ -644,7 +644,7 @@
   position: relative;
   z-index: 1;
   margin: 0;
-  color: #a6a6ac;
+  color: #fff;
   font-size: 12px;
   font-weight: 550;
 }
@@ -732,4 +732,11 @@
 
 @media (max-width: 700px) {
   .hero h1 { font-size: clamp(35px, 10vw, 64px); white-space: nowrap; letter-spacing: -.065em; }
+}
+
+@media (min-width: 901px) {
+  .hero h1, .hero > p {
+    margin-inline: auto;
+    text-align: center;
+  }
 }

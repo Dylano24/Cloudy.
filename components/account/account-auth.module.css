@@ -1,16 +1,16 @@
 .form { display: grid; gap: 10px; margin-top: 28px; }
-.form label { color: #f4f4f5; font-size: 13px; font-weight: 750; }
+.form label { color: #fff; font-size: 13px; font-weight: 750; }
 .form input { width: 100%; min-height: 50px; margin-bottom: 10px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
 .form input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .form input[aria-invalid='true'] { border-color: #ff5268; box-shadow: 0 0 0 2px #ff526824; }
 .form button { min-height: 51px; margin-top: 6px; padding: 12px 20px; color: var(--cloudy-action-text); background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; box-shadow: 0 10px 30px #e51b2e24; }
 .form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { background: var(--cloudy-action-hover); }
-.form button:disabled { opacity: .6; cursor: wait; }
+.form button:disabled { opacity: 1; border-color: rgba(229,40,69,.3); box-shadow: none; cursor: wait; }
 .error { margin: 0; color: #ff6475; font-size: 13px; }
 .card { background: radial-gradient(circle at 100% 0%, #e51b2e11, transparent 45%), #080809; border-color: #39393d; box-shadow: 0 24px 70px #0009, 0 0 28px #e51b2e0c; }
 .eyebrow { display: inline-flex; gap: 8px; align-items: center; margin-bottom: 17px; color: #ff5b6d; font-size: 11px; font-weight: 850; letter-spacing: .17em; text-transform: uppercase; }
 .eyebrow::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: #e51b2e; box-shadow: 0 0 12px #e51b2e; }
-.intro { margin-top: 12px; color: #aaaab0; line-height: 1.65; }
+.intro { margin-top: 12px; color: #fff; line-height: 1.65; }
 .providerActions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 23px; }
 .providerActions a { display: inline-flex; align-items: center; justify-content: center; min-height: 45px; padding: 10px 18px; border: 1px solid #e51b2e; border-radius: 999px; color: #fff; font-size: 13px; font-weight: 750; text-decoration: none; }
 .providerActions a:hover { background: #e51b2e20; }
@@ -19,19 +19,19 @@
   .providerActions a { flex: 1 1 0; min-width: 0; padding: 10px 6px; font-size: 11px; line-height: 1.25; text-align: center; }
 }
 .nameForm { display: grid; gap: 10px; margin-top: 30px; }
-.nameForm label { color: #f4f4f5; font-size: 13px; font-weight: 750; }
+.nameForm label { color: #fff; font-size: 13px; font-weight: 750; }
 .nameFormRow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .nameForm input { width: 100%; min-height: 50px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
 .nameForm input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .nameForm input[aria-invalid='true'] { border-color: #ff6475; }
 .nameForm button { min-height: 50px; padding: 12px 20px; color: var(--cloudy-action-text); background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; }
-.nameForm button:disabled { opacity: .6; cursor: default; }
+.nameForm button:disabled { opacity: 1; border-color: rgba(229,40,69,.3); box-shadow: none; cursor: default; }
 .saved { margin: 0; color: #88e3ae; font-size: 13px; }
 .accountIdentity { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
 .accountIdentity h2 { min-width: 0; overflow-wrap: anywhere; }
 .connected { display: inline-flex; align-items: center; gap: 7px; margin: 0; color: #acd68a; font-size: 13px; line-height: 1.6; }
 .connected svg { flex-shrink: 0; }
-.nameHelp { margin: 0 0 8px; color: #aaaab0; font-size: 13px; line-height: 1.7; }
+.nameHelp { margin: 0 0 8px; color: #fff; font-size: 13px; line-height: 1.7; }
 .accountInformation { margin-top: 20px; font-size: 14px; line-height: 1.7; }
 .accountInformation dd { overflow-wrap: anywhere; }
 .form button:focus-visible, .nameForm button:focus-visible { outline: 2px solid #f3b6c0; outline-offset: 3px; }
