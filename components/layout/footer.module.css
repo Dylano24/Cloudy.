@@ -44,7 +44,8 @@
 /* Keep the three mobile link groups side by side. */
 @media (max-width: 700px) {
   .footer :global(.cloudy-footer-grid) {
-    gap: 24px clamp(16px, 5vw, 28px);
+    justify-content: space-between;
+    gap: 24px 16px;
     grid-template-areas:
       "navigation community information";
   }
