@@ -3,7 +3,7 @@
 .form input { width: 100%; min-height: 50px; margin-bottom: 10px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
 .form input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .form input[aria-invalid='true'] { border-color: #ff5268; box-shadow: 0 0 0 2px #ff526824; }
-.form button { min-height: 51px; margin-top: 6px; padding: 12px 20px; color: #fff; background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; box-shadow: 0 10px 30px #e51b2e24; }
+.form button { min-height: 51px; margin-top: 6px; padding: 12px 20px; color: var(--cloudy-action-text); background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; box-shadow: 0 10px 30px #e51b2e24; }
 .form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { background: var(--cloudy-action-hover); }
 .form button:disabled { opacity: .6; cursor: wait; }
 .error { margin: 0; color: #ff6475; font-size: 13px; }
@@ -24,7 +24,7 @@
 .nameForm input { flex: 1 1 220px; min-height: 50px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
 .nameForm input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .nameForm input[aria-invalid='true'] { border-color: #ff6475; }
-.nameForm button { min-height: 50px; padding: 12px 20px; color: #fff; background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; }
+.nameForm button { min-height: 50px; padding: 12px 20px; color: var(--cloudy-action-text); background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; }
 .nameForm button:disabled { opacity: .6; cursor: default; }
 .saved { margin: 0; color: #88e3ae; font-size: 13px; }
 .accountIdentity { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
@@ -36,3 +36,6 @@
 .accountInformation dd { overflow-wrap: anywhere; }
 .form button:focus-visible, .nameForm button:focus-visible { outline: 2px solid #f3b6c0; outline-offset: 3px; }
 .nameForm input { min-width: 0; }
+
+.form button, .nameForm button { box-shadow: var(--cloudy-action-shadow); }
+.form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { border-color: var(--cloudy-action-hover-border); box-shadow: var(--cloudy-action-hover-shadow); }

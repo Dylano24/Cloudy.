@@ -146,8 +146,8 @@
 .buyButton {
   border: 1px solid var(--cloudy-action-border);
   background: var(--cloudy-action-bg);
-  color: #fff;
-  box-shadow: 0 4px 20px rgba(80,15,25,.12);
+  color: var(--cloudy-action-text);
+  box-shadow: var(--cloudy-action-shadow);
 }
 
 .secondaryButton {
@@ -790,7 +790,8 @@
   .buyButton:hover {
     transform: translateY(-2px);
     background: var(--cloudy-action-hover);
-    box-shadow: 0 8px 24px rgba(80,15,25,.2);
+    border-color: var(--cloudy-action-hover-border);
+    box-shadow: var(--cloudy-action-hover-shadow);
   }
 
   .secondaryButton:hover {
