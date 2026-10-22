@@ -35,3 +35,9 @@
   .community { grid-area: community; min-width: 0; }
   .information { grid-area: information; min-width: 0; }
 }
+
+@media (max-width: 480px) {
+  .footer :global(.cloudy-footer-bottom) {
+    padding-bottom: 52px;
+  }
+}
