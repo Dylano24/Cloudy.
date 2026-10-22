@@ -1702,6 +1702,15 @@
   .processGrid .processCard { padding: 24px 22px; }
 }
 
+@media (max-width: 900px) {
+  .websitesSection { padding-bottom: 28px; }
+  .processSection { padding-top: 32px; }
+}
+@media (max-width: 600px) {
+  .websitesSection { padding-bottom: 20px; }
+  .processSection { padding-top: 24px; }
+}
+
 /* Match the homepage sweep; phones use the shared compositor clock. */
 .page .introPanel,
 .page .packageCard,

@@ -20,8 +20,8 @@
 }
 .nameForm { display: grid; gap: 10px; margin-top: 30px; }
 .nameForm label { color: #f4f4f5; font-size: 13px; font-weight: 750; }
-.nameFormRow { display: flex; flex-wrap: wrap; gap: 10px; }
-.nameForm input { flex: 1 1 220px; min-height: 50px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
+.nameFormRow { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.nameForm input { width: 100%; min-height: 50px; padding: 12px 15px; color: #fff; background: #0b0b0d; border: 1px solid #39393d; border-radius: 10px; outline: none; }
 .nameForm input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .nameForm input[aria-invalid='true'] { border-color: #ff6475; }
 .nameForm button { min-height: 50px; padding: 12px 20px; color: var(--cloudy-action-text); background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; }
@@ -36,6 +36,7 @@
 .accountInformation dd { overflow-wrap: anywhere; }
 .form button:focus-visible, .nameForm button:focus-visible { outline: 2px solid #f3b6c0; outline-offset: 3px; }
 .nameForm input { min-width: 0; }
+.nameFormRow button { justify-self: center; min-width: min(190px, 100%); max-width: 100%; text-align: center; }
 
 .form button, .nameForm button { box-shadow: var(--cloudy-action-shadow); }
 .form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { border-color: var(--cloudy-action-hover-border); box-shadow: var(--cloudy-action-hover-shadow); }

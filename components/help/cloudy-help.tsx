@@ -335,7 +335,7 @@ export function CloudyHelp() {
           <header className={styles.header}>
             <span className={styles.brandIcon}><Bot size={21} aria-hidden="true" /></span>
             <div className={styles.brandCopy}>
-              <h2 id="cloudy-help-title">AI ASSISTANT</h2>
+              <h2 id="cloudy-help-title">Cloudy assistant</h2>
               <p>Designed to help</p>
             </div>
             <button type="button" className={styles.iconButton} onClick={reset} aria-label="Start a new chat" title="Start a new chat"><RotateCcw size={17} aria-hidden="true" /></button>
