@@ -461,3 +461,5 @@
   .submitButton { width: 100%; }
   .success { padding: 30px 18px 34px; }
 }
+
+.page { padding-bottom: calc(var(--cloudy-section-gap) + 16px); }

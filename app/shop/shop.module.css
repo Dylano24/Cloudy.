@@ -29,7 +29,7 @@
 }
 
 .hero {
-  padding: 28px 0 58px;
+  padding: 28px 0 var(--cloudy-section-gap);
 }
 
 .eyebrow,
@@ -740,3 +740,5 @@
     text-align: center;
   }
 }
+
+.page { padding-bottom: calc(var(--cloudy-section-gap) + 16px); }
