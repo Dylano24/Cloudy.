@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 import styles from './account-auth.module.css';
 
 export function PasswordResetForm({ token }: { token?: string }) {
@@ -49,7 +50,7 @@ export function PasswordResetForm({ token }: { token?: string }) {
         {message && <p className={styles.saved} role="status">{message}</p>}
         <button type="submit" disabled={busy || !!message}>{busy ? 'Please wait…' : resetting ? 'Reset password' : 'Send reset link'}</button>
       </form>
-      <Link className={styles.forgotLink} href="/account">Back to sign in</Link>
+      <Link className={styles.resetBack} href="/account"><ArrowLeft size={16} aria-hidden="true" />Back</Link>
     </section>
   </div></div>;
 }
