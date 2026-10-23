@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+  --cloudy-section-gap: 48px;
+  --cloudy-card-gap: 24px;
   --cloudy-action-bg: #050505;
   --cloudy-action-hover: #090909;
   --cloudy-action-border: rgba(229, 40, 69, .8);
@@ -16,6 +18,10 @@
   --card: #0b0b0c;
   --border: #252527;
   --muted: #fff;
+}
+
+@media (max-width: 700px) {
+  :root { --cloudy-section-gap: 32px; --cloudy-card-gap: 16px; }
 }
 
 @theme inline {
@@ -309,7 +315,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .cloudy-community-card .cloudy-cta-primary { position:relative; z-index:2; }
 
 /* ================= TERMS ================= */
-.cloudy-terms-page { min-height: 100vh; padding: 95px 0 120px; background: radial-gradient(circle at 50% 0%, rgba(48,159,225,.07), transparent 30rem), #05080d; }
+.cloudy-terms-page { min-height: 100vh; padding: calc(var(--cloudy-section-gap) + 16px) 0; background: radial-gradient(circle at 50% 0%, rgba(48,159,225,.07), transparent 30rem), #05080d; }
 .cloudy-terms-wrap { width:min(980px,calc(100% - 32px)); margin:auto; }
 .cloudy-terms-head { text-align:center; margin-bottom:38px; }
 .cloudy-terms-head img { width:80px; height:80px; margin:auto; filter:drop-shadow(0 0 18px rgba(68,193,255,.20)); }
@@ -322,7 +328,7 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .cloudy-term-card p { margin-top:10px; color:#fff; font-size:11px; line-height:1.8; white-space:pre-line; }
 
 /* ================= FOOTER ================= */
-.cloudy-footer { margin-top: 70px; border-top:1px solid rgba(78,174,225,.10); background:#04070b; }
+.cloudy-footer { margin-top: 0; border-top:1px solid rgba(78,174,225,.10); background:#04070b; }
 .cloudy-footer-inner { width:min(1220px,calc(100% - 34px)); margin:auto; padding:42px 0 26px; }
 .cloudy-footer-grid { display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; }
 .cloudy-footer-brand { display:flex; align-items:center; gap:11px; }
@@ -1765,7 +1771,7 @@ body {
 /* ================= LEGAL PAGES — BLACK THEME ================= */
 .cloudy-terms-page {
   min-height: 100vh !important;
-  padding: 95px 0 120px !important;
+  padding: calc(var(--cloudy-section-gap) + 16px) 0 !important;
   background: #000 !important;
 }
 .cloudy-terms-head img {

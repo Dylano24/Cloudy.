@@ -44,7 +44,7 @@
 }
 
 .hero {
-  padding: 28px 0 76px;
+  padding: 28px 0 var(--cloudy-card-gap);
 }
 
 .eyebrow,
@@ -137,7 +137,7 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-top: 72px;
+  margin-top: var(--cloudy-section-gap);
   padding: 18px 0;
   border-top: 1px solid rgba(255,255,255,.08);
   border-bottom: 1px solid rgba(255,255,255,.08);
@@ -156,7 +156,7 @@
 }
 
 .services {
-  padding-top: 54px;
+  padding-top: var(--cloudy-card-gap);
 }
 
 .sectionHeader {
@@ -335,7 +335,7 @@
   display: grid;
   grid-template-columns: .8fr 1.4fr;
   gap: 70px;
-  margin-top: 94px;
+  margin-top: var(--cloudy-section-gap);
   padding-top: 38px;
   border-top: 1px solid rgba(255,255,255,.08);
 }
@@ -375,7 +375,7 @@
   align-items: end;
   justify-content: space-between;
   gap: 40px;
-  margin-top: 96px;
+  margin-top: var(--cloudy-section-gap);
   padding: 38px;
   border: 1px solid rgba(229,27,46,.28);
   border-radius: 20px;
@@ -417,3 +417,5 @@
   .finalCta { flex-direction: column; align-items: stretch; padding: 24px; }
   .bigCta { width: 100%; }
 }
+
+.page { padding-bottom: calc(var(--cloudy-section-gap) + 16px); }
