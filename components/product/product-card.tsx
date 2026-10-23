@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingCart, Zap, Check, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
+import { ShoppingCart, Zap, Check, ArrowRight, Loader2, AlertCircle, Heart } from 'lucide-react';
 import type { ProductGeneral, ProductDetailed } from '@/lib/schemas';
 import { useCart } from '@/hooks/use-cart';
 import { motion } from 'framer-motion';
@@ -10,6 +10,7 @@ import { useState, useRef } from 'react';
 import { useProduct } from '@/hooks/use-api';
 import { CustomFieldsModal } from './custom-fields-modal';
 import { useRouter } from 'next/navigation';
+import { useFavorites } from '@/hooks/use-favorites';
 
 type ProductCardProps = {
   product: ProductGeneral;
@@ -28,6 +29,8 @@ function needsCustomization(product: ProductDetailed | undefined) {
 export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardProps) {
   const addItem = useCart(state => state.addItem);
   const router = useRouter();
+  const { user, favorites, toggle } = useFavorites();
+  const [favoriteError, setFavoriteError] = useState('');
   const [added, setAdded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [loadingDetails, setLoadingDetails] = useState(false);
@@ -223,6 +226,7 @@ export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardP
 
   return (
     <motion.div
+      className="relative"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -234,6 +238,13 @@ export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardP
           {CardContent}
         </Link>
       )}
+      <button type="button" aria-label={favorites.some(item => item.id === product.id) ? `Remove ${product.name} from favorites` : `Save ${product.name} to favorites`}
+        aria-pressed={favorites.some(item => item.id === product.id)}
+        className="absolute left-3 top-3 z-20 rounded-full border border-white/20 bg-black/80 p-2 text-white hover:text-red-400"
+        onClick={() => { if (!user) { router.push('/account'); return; } toggle({ id: product.id, slug: product.slug, name: product.name }).catch(() => setFavoriteError('Could not save favorite.')); }}>
+        <Heart size={18} fill={favorites.some(item => item.id === product.id) ? 'currentColor' : 'none'} />
+      </button>
+      {favoriteError && <p role="alert" className="mt-2 text-sm text-red-400">{favoriteError}</p>}
 
       {/* Custom Fields Modal */}
       {needsCustomFields && detailedProduct && (
