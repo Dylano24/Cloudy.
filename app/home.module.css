@@ -82,14 +82,14 @@
   .home :global(.cloudy-classic-hero) { min-height: 340px; padding: 38px 16px 28px; }
   .home :global(.cloudy-classic-intro) { margin-top: -16px; }
   .home :global(.cloudy-classic-wrap) { padding-bottom: 36px; }
-  .statement { margin-top: calc(var(--cloudy-section-gap) + 16px); }
+  .statement { margin-top: 48px; }
 }
 
 @media (min-width: 621px) {
   .home :global(.cloudy-classic-hero) { min-height: 410px; padding: 48px 20px 32px; }
   .home :global(.cloudy-classic-intro) { margin-top: -16px; }
   .home :global(.cloudy-classic-wrap) { padding-bottom: 44px; }
-  .statement { margin-top: 60px; }
+  .statement { margin-top: 52px; }
 }
 
 /* Visible cloud artwork, moving only behind the homepage hero. */
