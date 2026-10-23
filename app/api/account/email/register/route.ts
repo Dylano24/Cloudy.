@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
   const input = body && typeof body === 'object' ? body as Record<string, unknown> : {};
   const email = normalizeAccountEmail(input.email);
   if (!email || !validAccountPassword(input.password)) return NextResponse.json({ error: 'Enter a valid email and a password of at least 10 characters.' }, { status: 400, headers });
+  if (input.confirmPassword !== input.password) return NextResponse.json({ error: 'Passwords do not match.' }, { status: 400, headers });
   try {
     const user = await createEmailAccount(email, input.password);
     const response = NextResponse.json({ user }, { headers });
