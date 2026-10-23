@@ -33,7 +33,7 @@ export function TipJar({ productSlug }: { productSlug: string }) {
     <form onSubmit={submit} className={styles.tipForm} noValidate>
       <label htmlFor="cloudy-tip-amount">Your tip amount</label>
       <div className={styles.tipAmount}><span aria-hidden="true">$</span><input id="cloudy-tip-amount" type="number" inputMode="decimal" min={minimum} max="10000" step="0.01" placeholder="5.00" value={amount} onChange={event => { setAmount(event.target.value); setError(''); }} disabled={!ready} required /></div>
-      <button type="submit" disabled={!ready}>Tip</button>
+      <button type="submit" disabled={!ready}>Pay</button>
       {error && <p className={styles.tipError} role="alert">{error}</p>}
     </form>
   </section>;
