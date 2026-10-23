@@ -212,10 +212,6 @@ export default function ServicePage() {
               </article>
             ))}
           </div>
-
-          <p className={styles.note}>
-            Optional features or services can be added separately where available.
-          </p>
         </div>
       </section>
 

@@ -3,6 +3,7 @@
 :root {
   /* Use this scale between major sections; keep adjacent cards compact. */
   --cloudy-section-gap: 64px;
+  --cloudy-section-half-gap: 32px;
   --cloudy-card-gap: 24px;
   --cloudy-action-bg: #050505;
   --cloudy-action-hover: #090909;
@@ -22,7 +23,7 @@
 }
 
 @media (max-width: 700px) {
-  :root { --cloudy-section-gap: 44px; --cloudy-card-gap: 16px; }
+  :root { --cloudy-section-gap: 44px; --cloudy-section-half-gap: 22px; --cloudy-card-gap: 16px; }
 }
 
 @theme inline {
