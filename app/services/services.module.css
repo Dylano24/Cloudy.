@@ -44,7 +44,7 @@
 }
 
 .hero {
-  padding: 28px 0 var(--cloudy-card-gap);
+  padding: 28px 0 var(--cloudy-section-half-gap);
 }
 
 .eyebrow,
@@ -156,7 +156,7 @@
 }
 
 .services {
-  padding-top: var(--cloudy-card-gap);
+  padding-top: var(--cloudy-section-half-gap);
 }
 
 .sectionHeader {
