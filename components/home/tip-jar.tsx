@@ -8,7 +8,7 @@ import styles from '@/app/home.module.css';
 
 export function TipJar({ productSlug }: { productSlug: string }) {
   const router = useRouter();
-  const { data: product, isLoading } = useProduct(productSlug, true, !!productSlug);
+  const { data: product } = useProduct(productSlug, true, !!productSlug);
   const [amount, setAmount] = useState('');
   const [error, setError] = useState('');
   const ready = !!product?.donation && product.status && product.stock !== 0;
@@ -33,9 +33,7 @@ export function TipJar({ productSlug }: { productSlug: string }) {
     <form onSubmit={submit} className={styles.tipForm} noValidate>
       <label htmlFor="cloudy-tip-amount">Your tip amount</label>
       <div className={styles.tipAmount}><span aria-hidden="true">$</span><input id="cloudy-tip-amount" type="number" inputMode="decimal" min={minimum} max="10000" step="0.01" placeholder="5.00" value={amount} onChange={event => { setAmount(event.target.value); setError(''); }} disabled={!ready} required /></div>
-      <button type="submit" disabled={!ready}>{ready ? 'Continue to payment' : 'Tips unavailable'}</button>
-      {!productSlug && <p className={styles.tipNotice}>Tips will open when Cloudy adds a donation product.</p>}
-      {productSlug && !ready && !isLoading && <p className={styles.tipNotice}>Tips are temporarily unavailable.</p>}
+      <button type="submit" disabled={!ready}>Tip</button>
       {error && <p className={styles.tipError} role="alert">{error}</p>}
     </form>
   </section>;
