@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  /* Keep future page sections and adjacent cards on this shared spacing scale. */
-  --cloudy-section-gap: 56px;
-  --cloudy-card-gap: 30px;
+  /* Use this scale between major sections; keep adjacent cards compact. */
+  --cloudy-section-gap: 64px;
+  --cloudy-card-gap: 24px;
   --cloudy-action-bg: #050505;
   --cloudy-action-hover: #090909;
   --cloudy-action-border: rgba(229, 40, 69, .8);
@@ -22,7 +22,7 @@
 }
 
 @media (max-width: 700px) {
-  :root { --cloudy-section-gap: 38px; --cloudy-card-gap: 20px; }
+  :root { --cloudy-section-gap: 44px; --cloudy-card-gap: 16px; }
 }
 
 @theme inline {
