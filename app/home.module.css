@@ -64,7 +64,6 @@
 .tipAmount input:disabled { opacity: .55; }
 .tipForm button { min-height: 50px; padding: 10px 18px; border: 1px solid #f12c42; border-radius: 10px; background: #c7192b; color: #fff; font-weight: 800; }
 .tipForm button:disabled { border-color: #555; background: #242426; color: #aaa; cursor: not-allowed; }
-.tipJar .tipNotice { color: #aaa; font-size: 12px; }
 .tipJar .tipError { color: #ff6475; font-size: 12px; }
 
 /* Visible cloud artwork, moving only behind the homepage hero. */
