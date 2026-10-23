@@ -877,6 +877,10 @@ body {
   .cloudy-footer { margin-top: 0; background: #030303 !important; }
   .cloudy-footer-inner { padding-top: 28px; }
 }
+@media (min-width: 621px) {
+  body:has(.cloudy-classic-home) .cloudy-footer { margin-top: 0; background: #030303 !important; }
+  body:has(.cloudy-classic-home) .cloudy-footer-inner { padding-top: 28px; }
+}
 .cloudy-classic-home::before {
   content: "";
   position: absolute;
