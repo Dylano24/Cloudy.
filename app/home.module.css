@@ -53,6 +53,19 @@
 .discordJoin img { width: 30px; height: 30px; object-fit: contain; }
 
 .statement { color: #fff; text-shadow: 0 0 14px rgba(255,255,255,.22); }
+.tipJar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 28px; margin-top: 28px; padding: clamp(30px, 5vw, 60px); border: 1px solid #292326; border-radius: 20px; background: #050505; }
+.tipJar h2 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
+.tipJar p { margin: 0; color: #eee; }
+.tipForm { display: grid; gap: 10px; width: min(100%, 310px); }
+.tipForm label { color: #fff; font-size: 13px; font-weight: 700; }
+.tipAmount { display: flex; align-items: center; gap: 7px; min-height: 50px; padding: 0 15px; border: 1px solid #555; border-radius: 10px; color: #fff; }
+.tipAmount:focus-within { border-color: #e51b2e; }
+.tipAmount input { width: 100%; min-width: 0; background: transparent; color: #fff; outline: none; }
+.tipAmount input:disabled { opacity: .55; }
+.tipForm button { min-height: 50px; padding: 10px 18px; border: 1px solid #f12c42; border-radius: 10px; background: #c7192b; color: #fff; font-weight: 800; }
+.tipForm button:disabled { border-color: #555; background: #242426; color: #aaa; cursor: not-allowed; }
+.tipJar .tipNotice { color: #aaa; font-size: 12px; }
+.tipJar .tipError { color: #ff6475; font-size: 12px; }
 
 /* Visible cloud artwork, moving only behind the homepage hero. */
 .home :global(.cloudy-classic-smoke) { display: none; }
