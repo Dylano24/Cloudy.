@@ -1,6 +1,6 @@
 .page {
   min-height: calc(100vh - 78px);
-  padding: 72px 18px 96px;
+  padding: var(--cloudy-page-pad) 18px;
   background: #000;
 }
 
@@ -11,7 +11,7 @@
 
 .hero {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: var(--cloudy-section-gap);
 }
 
 .eyebrow {
@@ -451,7 +451,7 @@
 }
 
 @media (max-width: 700px) {
-  .page { padding: 46px 13px 70px; }
+  .page { padding: var(--cloudy-page-pad) 13px; }
   .panelInner { padding: 22px 17px; }
   .scopeGrid { grid-template-columns: 1fr; }
   .scopeButton { min-height: 112px; }
@@ -462,4 +462,4 @@
   .success { padding: 30px 18px 34px; }
 }
 
-.page { padding-bottom: calc(var(--cloudy-section-gap) + 16px); }
+.page { padding-bottom: var(--cloudy-page-pad); }

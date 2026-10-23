@@ -1738,7 +1738,7 @@
 }
 
 /* Each section contributes half the same gap, including the hero transition. */
-.page { --studio-section-half-gap: 56px; }
+.page { --studio-section-half-gap: var(--cloudy-section-half-gap); }
 .page > .hero { padding-bottom: var(--studio-section-half-gap); }
 .page > .section {
   padding-top: var(--studio-section-half-gap);
@@ -1748,10 +1748,4 @@
 .packageCard .buyButton { background: transparent; }
 @media (hover: hover) and (pointer: fine) {
   .packageCard .buyButton:hover { background: rgba(255,255,255,.025); }
-}
-@media (max-width: 900px) {
-  .page { --studio-section-half-gap: 40px; }
-}
-@media (max-width: 600px) {
-  .page { --studio-section-half-gap: 28px; }
 }

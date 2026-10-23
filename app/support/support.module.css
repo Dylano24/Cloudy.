@@ -1,5 +1,6 @@
 .page .heading { text-transform: none; }
-.page { background: #000 !important; }
+.page { padding-block: var(--cloudy-page-pad); background: #000 !important; }
+.cards { margin-top: var(--cloudy-section-gap); }
 .page .card {
   position: relative;
   isolation: isolate;

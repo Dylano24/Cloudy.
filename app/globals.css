@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  /* Use this scale between major sections; keep adjacent cards compact. */
+  /* Site-wide page rhythm: page edges, major sections, then grouped cards. */
+  --cloudy-page-pad: 80px;
   --cloudy-section-gap: 64px;
   --cloudy-section-half-gap: 32px;
   --cloudy-card-gap: 24px;
@@ -23,8 +24,10 @@
 }
 
 @media (max-width: 700px) {
-  :root { --cloudy-section-gap: 44px; --cloudy-section-half-gap: 22px; --cloudy-card-gap: 16px; }
+  :root { --cloudy-page-pad: 60px; --cloudy-section-gap: 44px; --cloudy-section-half-gap: 22px; --cloudy-card-gap: 16px; }
 }
+
+.cloudy-page-shell { padding-block: var(--cloudy-page-pad); }
 
 @theme inline {
   --color-background: var(--background);
@@ -317,9 +320,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .cloudy-community-card .cloudy-cta-primary { position:relative; z-index:2; }
 
 /* ================= TERMS ================= */
-.cloudy-terms-page { min-height: 100vh; padding: calc(var(--cloudy-section-gap) + 16px) 0; background: radial-gradient(circle at 50% 0%, rgba(48,159,225,.07), transparent 30rem), #05080d; }
+.cloudy-terms-page { min-height: 100vh; padding: var(--cloudy-page-pad) 0; background: radial-gradient(circle at 50% 0%, rgba(48,159,225,.07), transparent 30rem), #05080d; }
 .cloudy-terms-wrap { width:min(980px,calc(100% - 32px)); margin:auto; }
-.cloudy-terms-head { text-align:center; margin-bottom:38px; }
+.cloudy-terms-head { text-align:center; margin-bottom:var(--cloudy-section-gap); }
 .cloudy-terms-head img { width:80px; height:80px; margin:auto; filter:drop-shadow(0 0 18px rgba(68,193,255,.20)); }
 .cloudy-terms-head span { display:block; margin-top:15px; color:#55c8f5; font-size:8px; font-weight:950; letter-spacing:.21em; text-transform:uppercase; }
 .cloudy-terms-head h1 { margin-top:8px; color:white; font-size:clamp(2.4rem,5vw,4.5rem); font-weight:1000; letter-spacing:-.04em; }
@@ -1773,7 +1776,7 @@ body {
 /* ================= LEGAL PAGES — BLACK THEME ================= */
 .cloudy-terms-page {
   min-height: 100vh !important;
-  padding: calc(var(--cloudy-section-gap) + 16px) 0 !important;
+  padding: var(--cloudy-page-pad) 0 !important;
   background: #000 !important;
 }
 .cloudy-terms-head img {
@@ -1800,6 +1803,7 @@ body {
   background: #000 !important;
   box-shadow: none !important;
 }
+.cloudy-black-page { padding-block: var(--cloudy-page-pad) !important; }
 .cloudy-term-card h2 {
   color: #f1f1f2 !important;
 }

@@ -29,7 +29,7 @@
 }
 
 .hero {
-  padding: 28px 0 var(--cloudy-section-gap);
+  padding: 28px 0 var(--cloudy-section-half-gap);
 }
 
 .eyebrow,
@@ -208,7 +208,7 @@
 }
 
 .browser {
-  padding-top: 30px;
+  padding-top: var(--cloudy-section-half-gap);
   border-top: 1px solid rgba(255,255,255,.08);
 }
 
@@ -741,4 +741,4 @@
   }
 }
 
-.page { padding-top: calc(var(--cloudy-section-gap) + 16px); padding-bottom: calc(var(--cloudy-section-gap) + 16px); }
+.page { padding-top: var(--cloudy-page-pad); padding-bottom: var(--cloudy-page-pad); }
