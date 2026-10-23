@@ -42,6 +42,6 @@
 }
 
 .form button, .nameForm button { box-shadow: var(--cloudy-action-shadow); }
-.forgotLink { justify-self: end; margin: -10px 0 4px; color: #fff; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; }
+.forgotLink { justify-self: start; margin: -10px 0 4px; color: #fff; font-size: 13px; text-decoration: none; }
 .forgotLink:hover { color: #ff6475; }
 .form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { border-color: var(--cloudy-action-hover-border); box-shadow: var(--cloudy-action-hover-shadow); }
