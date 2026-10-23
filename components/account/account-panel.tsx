@@ -29,6 +29,7 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
           <a href="/api/account/login">Continue with Discord</a>
           <a href="/api/account/google/login">Continue with Google</a>
         </div>
+        <Link className={styles.forgotLink} href="/account/forgot-password">Forgot password?</Link>
       </> : <>
         {(section === 'account' || section === 'information' || section === 'create') ? <>
           <div className={styles.accountIdentity}>
