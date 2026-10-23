@@ -113,7 +113,7 @@
   .cardBody { padding-top: 21px; }
 }
 
-.serverSection { padding-top: 40px; }
+.serverSection { padding-top: var(--cloudy-section-gap); }
 .cardPhoto { object-fit: cover; object-position: center 42%; }
 .artShade { position: absolute; inset: 0; background: linear-gradient(180deg,#0004,transparent 45%,#000a); }
 .cardServer svg { color: #e51b2e; }
@@ -131,7 +131,7 @@
 .emptySlot { padding-bottom: 30px; }
 .slot:hover .slotImage { border-color: #ff334e; background: #e51b2e15; }
 @media (max-width: 700px) {
-  .serverSection { padding-top: 28px; }
+  .serverSection { padding-top: var(--cloudy-section-gap); }
   .filters { flex-wrap: wrap; justify-content: flex-start; }
   .filters button { font-size: 11px; padding: 9px 10px; }
   .cardBody { padding-inline: 15px; }
