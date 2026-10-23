@@ -1,6 +1,7 @@
-import { createHash, randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, randomBytes, scrypt as scryptCallback, timingSafeEqual } from 'node:crypto';
 import { get, put } from '@vercel/blob';
 import type { AccountUser } from './account-session';
+import { accountSigningSecret } from './account-session';
 
 const options = { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 };
 const duplicate = 'An account with this email already exists.';
@@ -87,4 +88,36 @@ export async function updateEmailAccountName(email: string, name: string): Promi
     contentType: 'application/json', cacheControlMaxAge: 60,
   });
   return publicUser(updated);
+}
+
+const RESET_SECONDS = 30 * 60;
+
+function resetSignature(payload: string, record: EmailRecord): string {
+  return createHmac('sha256', accountSigningSecret()).update(`${payload}.${record.passwordHash}`).digest('base64url');
+}
+
+export async function createPasswordResetToken(email: string): Promise<string | null> {
+  const record = await readRecord(email);
+  if (!record) return null;
+  const payload = Buffer.from(JSON.stringify({ email, expires: Date.now() + RESET_SECONDS * 1000, nonce: randomBytes(16).toString('hex') })).toString('base64url');
+  return `${payload}.${resetSignature(payload, record)}`;
+}
+
+export async function resetEmailAccountPassword(token: string, password: string): Promise<boolean> {
+  if (!validAccountPassword(password) || token.length > 1024) return false;
+  const parts = token.split('.');
+  if (parts.length !== 2 || !/^[A-Za-z0-9_-]+$/.test(parts[0]) || !/^[A-Za-z0-9_-]+$/.test(parts[1])) return false;
+  let payload: { email?: unknown; expires?: unknown; nonce?: unknown };
+  try { payload = JSON.parse(Buffer.from(parts[0], 'base64url').toString('utf8')); } catch { return false; }
+  const email = normalizeAccountEmail(payload.email);
+  if (!email || payload.email !== email || typeof payload.expires !== 'number' || payload.expires < Date.now() || payload.expires > Date.now() + RESET_SECONDS * 1000 || typeof payload.nonce !== 'string' || !/^[a-f0-9]{32}$/.test(payload.nonce)) return false;
+  const record = await readRecord(email);
+  if (!record) return false;
+  const expected = Buffer.from(resetSignature(parts[0], record));
+  const supplied = Buffer.from(parts[1]);
+  if (expected.length !== supplied.length || !timingSafeEqual(expected, supplied)) return false;
+  const salt = randomBytes(16);
+  const updated = { ...record, salt: salt.toString('hex'), passwordHash: (await passwordDigest(password, salt)).toString('hex'), updatedAt: new Date().toISOString() };
+  await put(pathname(email), JSON.stringify(updated), { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json', cacheControlMaxAge: 60 });
+  return true;
 }
