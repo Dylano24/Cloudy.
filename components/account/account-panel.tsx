@@ -26,10 +26,12 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
         {(params.has('login_error') || error) && <p role="alert" className="mt-3 text-sm text-red-500">{params.get('login_error') === 'unavailable' ? 'Google or Discord sign-in is temporarily unavailable.' : 'We could not sign you in. Please try again.'}</p>}
         <EmailAccountForm mode="login" />
         <div className={styles.providerActions}>
-          <a href="/api/account/login">Continue with Discord</a>
+          <div className={styles.discordProvider}>
+            <a href="/api/account/login">Continue with Discord</a>
+            <Link className={styles.forgotLink} href="/account/forgot-password">Forgot password?</Link>
+          </div>
           <a href="/api/account/google/login">Continue with Google</a>
         </div>
-        <Link className={styles.forgotLink} href="/account/forgot-password">Forgot password?</Link>
       </> : <>
         {(section === 'account' || section === 'information' || section === 'create') ? <>
           <div className={styles.accountIdentity}>
