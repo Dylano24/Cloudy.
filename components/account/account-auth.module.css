@@ -42,7 +42,8 @@
 }
 
 .form button, .nameForm button { box-shadow: var(--cloudy-action-shadow); }
-.forgotLink { display: inline-block; margin-top: 28px; color: #fff; font-size: 13px; text-decoration: none; }
+.card:has(.forgotLink) { padding-bottom: 70px; }
+.forgotLink { position: absolute; left: 16px; bottom: 16px; color: #fff; font-size: 13px; text-decoration: none; }
 .forgotLink:hover, .resetBack:hover { color: #ff6475; }
 .resetBack { display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; color: #fff; font-size: 13px; text-decoration: none; }
 .form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { border-color: var(--cloudy-action-hover-border); box-shadow: var(--cloudy-action-hover-shadow); }

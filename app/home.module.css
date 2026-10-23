@@ -70,6 +70,13 @@
 .tipForm button:disabled { cursor: not-allowed; }
 .tipJar .tipError { color: #ff6475; font-size: 12px; }
 
+@media (max-width: 620px) {
+  .home :global(.cloudy-classic-hero) { min-height: 340px; padding: 38px 16px 28px; }
+  .home :global(.cloudy-classic-intro) { margin-top: -16px; }
+  .home :global(.cloudy-classic-wrap) { padding-bottom: 36px; }
+  .statement { margin-top: 32px; }
+}
+
 /* Visible cloud artwork, moving only behind the homepage hero. */
 .home :global(.cloudy-classic-smoke) { display: none; }
 .home :global(.cloudy-classic-hero) {

@@ -871,6 +871,12 @@ body {
   background: #030303;
   color: #fff;
 }
+@media (max-width: 620px) {
+  body { background: #030303 !important; }
+  .cloudy-classic-home::before { display: none; }
+  .cloudy-footer { margin-top: 0; background: #030303 !important; }
+  .cloudy-footer-inner { padding-top: 28px; }
+}
 .cloudy-classic-home::before {
   content: "";
   position: absolute;
