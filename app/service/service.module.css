@@ -1739,7 +1739,7 @@
 
 /* Each section contributes half the same gap, including the hero transition. */
 .page { --studio-section-half-gap: var(--cloudy-section-half-gap); }
-.page > .hero { padding-bottom: var(--studio-section-half-gap); }
+.page > .hero { padding-top: var(--cloudy-page-pad); padding-bottom: var(--studio-section-half-gap); }
 .page > .section {
   padding-top: var(--studio-section-half-gap);
   padding-bottom: var(--studio-section-half-gap);
