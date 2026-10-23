@@ -25,5 +25,8 @@
 .nameForm input:focus { border-color: #e51b2e; box-shadow: 0 0 0 3px #e51b2e24; }
 .nameForm input[aria-invalid='true'] { border-color: #ff6475; }
 .nameForm button { width: 100%; min-height: 51px; padding: 12px 20px; color: #fff; background: #c7192b; border: 1px solid #f12c42; border-radius: 10px; font-weight: 850; cursor: pointer; }
+@media (min-width: 701px) {
+  .nameForm button { width: max-content; justify-self: center; padding-inline: 26px; }
+}
 .nameForm button:disabled { opacity: .6; cursor: default; }
 .saved { margin: 0; color: #88e3ae; font-size: 13px; }
