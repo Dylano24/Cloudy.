@@ -54,7 +54,7 @@
 
 .statement { color: #fff; text-shadow: 0 0 14px rgba(255,255,255,.22); }
 @media (max-width: 600px) {
-  .statement { white-space: nowrap; font-size: clamp(11px, 3.4vw, 18px); letter-spacing: -.02em; }
+  .statement { white-space: nowrap; font-size: clamp(12px, 3.9vw, 19px); letter-spacing: -.045em; }
 }
 .tipJar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 28px; margin-top: 28px; padding: clamp(30px, 5vw, 60px); border: 1px solid #292326; border-radius: 20px; background: #050505; }
 .tipJar h2 { margin: 0 0 10px; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; }
