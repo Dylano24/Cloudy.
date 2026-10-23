@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
+import Link from 'next/link';
 import styles from './account-auth.module.css';
 
 export function EmailAccountForm({ mode }: { mode: 'create' | 'login' }) {
@@ -51,6 +52,7 @@ export function EmailAccountForm({ mode }: { mode: 'create' | 'login' }) {
     <label htmlFor={`cloudy-password-${mode}`}>Password</label>
     <input id={`cloudy-password-${mode}`} name="password" type="password" autoComplete={mode === 'create' ? 'new-password' : 'current-password'} value={password} onChange={event => { setPassword(event.target.value); setFieldErrors(previous => ({ ...previous, password: undefined })); }} required minLength={mode === 'create' ? 10 : undefined} aria-invalid={!!fieldErrors.password} disabled={busy} />
     {fieldErrors.password && <p className={styles.error} role="alert">{fieldErrors.password}</p>}
+    {mode === 'login' && <Link className={styles.forgotLink} href="/account/forgot-password">Forgot password?</Link>}
     {mode === 'create' && <>
       <label htmlFor="cloudy-confirm-password">Confirm password</label>
       <input id="cloudy-confirm-password" name="confirmPassword" type="password" autoComplete="new-password" value={confirmPassword} onChange={event => { setConfirmPassword(event.target.value); setFieldErrors(previous => ({ ...previous, confirmPassword: undefined })); }} required aria-invalid={!!fieldErrors.confirmPassword} disabled={busy} />
