@@ -2,7 +2,7 @@
   min-height: calc(100vh - 78px);
   display: grid;
   place-items: center;
-  padding: 64px 18px 90px;
+  padding: var(--cloudy-page-pad) 18px;
   background:
     radial-gradient(circle at 50% 12%, rgba(53, 189, 246, .13), transparent 28rem),
     linear-gradient(180deg, #05080d 0%, #070b11 54%, #04070b 100%);
@@ -184,7 +184,7 @@
 }
 
 @media (max-width: 650px) {
-  .page { padding: 42px 12px 64px; }
+  .page { padding: var(--cloudy-page-pad) 12px; }
   .top { padding: 30px 18px 24px; }
   .content { padding: 24px 17px 28px; }
   .actions { flex-direction: column; }

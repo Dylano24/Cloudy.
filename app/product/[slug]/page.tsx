@@ -467,7 +467,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
   if (isLoading) {
     return (
-      <div className="min-h-screen py-12">
+      <div className="min-h-screen cloudy-page-shell">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="h-96 rounded-xl bg-card border border-border animate-pulse" />
@@ -479,7 +479,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
   if (!product) {
     return (
-      <div className="min-h-screen py-12">
+      <div className="min-h-screen cloudy-page-shell">
         <div className="container mx-auto px-4">
           <div className="text-center py-20">
             <X className="w-16 h-16 text-muted mx-auto mb-4" />
@@ -499,7 +499,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   // Don't render if product is inactive (redirect is happening)
   if (product.status === false) {
     return (
-      <div className="min-h-screen py-12">
+      <div className="min-h-screen cloudy-page-shell">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="h-96 rounded-xl bg-card border border-border animate-pulse" />
@@ -510,7 +510,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   }
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen cloudy-page-shell">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Back Button */}

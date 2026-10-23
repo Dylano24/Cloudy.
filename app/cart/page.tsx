@@ -127,7 +127,7 @@ export default function CartPage() {
 
   if (cart.items.length === 0) {
     return (
-      <div className="min-h-screen py-12">
+      <div className="min-h-screen cloudy-page-shell">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center py-20">
             <BasketIcon className="w-24 h-24 text-muted mx-auto mb-6" />
@@ -148,7 +148,7 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen py-12">
+    <div className="min-h-screen cloudy-page-shell">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
