@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useAccount } from '@/hooks/use-account';
 import { EmailAccountForm } from './email-account-form';
 import { AccountNameForm } from './account-name-form';
+import { AccountFavorites } from './account-favorites';
 import styles from './account-auth.module.css';
 
 export const accountSections = [
@@ -40,7 +41,7 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
               ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div>
               : <div><dt className="text-muted">{user.provider === 'google' ? 'Google ID' : 'Discord ID'}</dt><dd>{user.id}</dd></div>}
           </dl>}
-        </> : <>
+        </> : section === 'favorites' ? <AccountFavorites /> : <>
           <p className="text-sm leading-7 text-muted">{section === 'orders' ? 'Your order history is not available here yet. Contact Cloudy support for help with a purchase.' : section === 'fidelity' ? 'Fidelity details are not available yet.' : 'Your saved favorites are not available here yet.'}</p>
           <Link href="/support" className="cloudy-classic-button mt-6" style={{ borderColor: '#e51b2e' }}>Contact support</Link>
         </>}
