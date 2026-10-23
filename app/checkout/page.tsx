@@ -8,6 +8,8 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import type { CheckoutUser, ProductDetailed } from '@/lib/schemas';
 import { openTip4ServCheckout, type Tip4ServProductSimple } from '@/lib/tip4serv';
 import { convertCustomFieldsForApi } from '@/lib/cart-utils';
+import { useAccount } from '@/hooks/use-account';
+import Link from 'next/link';
 
 const IDENTIFIER_LABELS: Record<string, string> = {
   email: 'Email Address',  username: 'Username',  minecraft_username: 'Minecraft Username',
@@ -30,6 +32,7 @@ const IDENTIFIER_FIELD_MAPPING: Record<string, string> = {
 
 function CheckoutContent() {
   const cart = useCart();
+  const { user, pending: accountPending } = useAccount();
   const { data: store } = useStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -168,6 +171,7 @@ function CheckoutContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) { setCheckoutError('Sign in before checkout.'); return; }
     setCheckoutError(null);
 
     if (!flagsLoaded) {
@@ -359,6 +363,9 @@ function CheckoutContent() {
       }
     }
   };
+
+  if (accountPending) return <div className="min-h-screen flex items-center justify-center">Loading account…</div>;
+  if (!user) return <div className="min-h-screen flex items-center justify-center px-4"><div className="max-w-xl rounded-2xl border border-border bg-card p-8 text-center"><h1 className="text-2xl font-bold">Sign in to continue</h1><p className="mt-3 text-muted">You need a Cloudy account before making a purchase.</p><Link href="/account" className="cloudy-classic-button mt-6">Sign in</Link></div></div>;
 
   if (isRedirecting) {
     return (

@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { config } from '@/lib/config';
 import { CheckoutRequestSchema, CheckoutResponseSchema } from '@/lib/schemas';
+import { accountSigningSecret, decodeSession, SESSION_COOKIE } from '@/lib/account-session';
 
 export async function POST(request: NextRequest) {
+  if (!decodeSession(request.cookies.get(SESSION_COOKIE)?.value, accountSigningSecret())) return NextResponse.json({ error: 'Sign in before checkout.' }, { status: 401 });
   try {
     const searchParams = request.nextUrl.searchParams;
     const store = searchParams.get('store');

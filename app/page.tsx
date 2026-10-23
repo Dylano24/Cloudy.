@@ -124,6 +124,10 @@ export default function HomePage() {
             and commitment to quality into everything we create.
           </p>
         </section>
+        <section className="cloudy-classic-feature" aria-label="Tip jar">
+          <div><h2>Tip <span className={styles.titleGlow}>jar</span></h2><p>Want to support Cloudy? Visit our store to see the available ways to contribute.</p></div>
+          <Link href="/shop" className="cloudy-classic-button">View the store <ArrowRight size={15} aria-hidden="true" /></Link>
+        </section>
         <p className={styles.statement}>Quality. Precision. Experience.</p>
       </div>
     </div>
