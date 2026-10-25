@@ -5,6 +5,5 @@
 }
 
 .kitButton {
-  composes: button;
   min-width: 92px;
 }
