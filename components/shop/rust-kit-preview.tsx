@@ -74,7 +74,7 @@ export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: strin
         </details>
         <div className={styles.priceRow}>
           <div><span>Preview price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
-          <button type="button" className={buyButton.kitButton} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy</button>
+          <button type="button" className={`${buyButton.button} ${buyButton.kitButton}`} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy</button>
         </div>
         {purchaseNotice && <p className={styles.purchaseNotice} role="status">Preview only</p>}
         <div className={styles.cardServer}><span>{server}</span></div>
