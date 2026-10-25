@@ -38,7 +38,7 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
             {section === 'account' && <p className={styles.connected}><CircleCheck size={18} aria-hidden="true" />Successfully connected!</p>}
           </div>
           {section === 'account' && <AccountNameForm currentName={user.name} provider={user.provider} />}
-          {section === 'account' && (user.provider === 'email' ? <AccountPasswordForm /> : <p className="mt-6 text-sm">Your password is managed by {user.provider === 'google' ? 'Google' : 'Discord'}. Change it in your provider’s account settings.</p>)}
+          {section === 'account' && user.provider === 'email' && <AccountPasswordForm />}
           {section === 'information' && <dl className={styles.accountInformation}>
             {user.provider === 'email'
               ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div>
