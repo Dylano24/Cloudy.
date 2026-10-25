@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import styles from './account-auth.module.css';
+import { PasswordInput } from './password-input';
 
 export function EmailAccountForm({ mode }: { mode: 'create' | 'login' }) {
   const router = useRouter();
@@ -49,11 +50,11 @@ export function EmailAccountForm({ mode }: { mode: 'create' | 'login' }) {
     <input id={`cloudy-email-${mode}`} name="email" type="email" autoComplete="email" value={email} onChange={event => { setEmail(event.target.value); setFieldErrors(previous => ({ ...previous, email: undefined })); }} required aria-invalid={!!fieldErrors.email} maxLength={254} disabled={busy} />
     {fieldErrors.email && <p className={styles.error} role="alert">{fieldErrors.email}</p>}
     <label htmlFor={`cloudy-password-${mode}`}>Password</label>
-    <input id={`cloudy-password-${mode}`} name="password" type="password" autoComplete={mode === 'create' ? 'new-password' : 'current-password'} value={password} onChange={event => { setPassword(event.target.value); setFieldErrors(previous => ({ ...previous, password: undefined })); }} required minLength={mode === 'create' ? 10 : undefined} aria-invalid={!!fieldErrors.password} disabled={busy} />
+    <PasswordInput id={`cloudy-password-${mode}`} name="password" autoComplete={mode === 'create' ? 'new-password' : 'current-password'} value={password} onChange={event => { setPassword(event.target.value); setFieldErrors(previous => ({ ...previous, password: undefined })); }} required minLength={mode === 'create' ? 10 : undefined} aria-invalid={!!fieldErrors.password} disabled={busy} />
     {fieldErrors.password && <p className={styles.error} role="alert">{fieldErrors.password}</p>}
     {mode === 'create' && <>
       <label htmlFor="cloudy-confirm-password">Confirm password</label>
-      <input id="cloudy-confirm-password" name="confirmPassword" type="password" autoComplete="new-password" value={confirmPassword} onChange={event => { setConfirmPassword(event.target.value); setFieldErrors(previous => ({ ...previous, confirmPassword: undefined })); }} required aria-invalid={!!fieldErrors.confirmPassword} disabled={busy} />
+      <PasswordInput id="cloudy-confirm-password" name="confirmPassword" autoComplete="new-password" value={confirmPassword} onChange={event => { setConfirmPassword(event.target.value); setFieldErrors(previous => ({ ...previous, confirmPassword: undefined })); }} required aria-invalid={!!fieldErrors.confirmPassword} disabled={busy} />
       {fieldErrors.confirmPassword && <p className={styles.error} role="alert">{fieldErrors.confirmPassword}</p>}
     </>}
     {error && <p className={styles.error} role="alert">{error}</p>}
