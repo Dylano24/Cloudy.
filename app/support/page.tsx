@@ -1,6 +1,7 @@
 const DISCORD_URL = 'https://discord.gg/EGDVMmmSzF';
 import Link from 'next/link';
 import styles from './support.module.css';
+import buyButton from '@/components/ui/cloudy-buy-button.module.css';
 
 export default function SupportPage() {
   return (
@@ -17,12 +18,12 @@ export default function SupportPage() {
           <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
             Join the official Cloudy Discord to contact the community and support team. Explain what happened and include your order reference if your question concerns a purchase. Never post passwords or full payment details.
           </p>
-          <a href={DISCORD_URL} target="_blank" rel="noreferrer" className="cloudy-cta-primary mt-7">Discord · Join us</a>
+          <a href={DISCORD_URL} target="_blank" rel="noreferrer" className={`${buyButton.button} mt-7`}>Discord · Join us</a>
         </section>
         <section className={`cloud-panel cloudy-traced-panel rounded-2xl border p-7 sm:p-10 ${styles.card}`}>
           <h2 className="text-xl font-bold text-white">Appeal</h2>
           <p className="mt-3 text-sm leading-7 text-muted">Use the appeal form to submit an appeal for a Discord or Rust moderation action.</p>
-          <Link href="/appeal" className="cloudy-cta-primary mt-7">Appeal</Link>
+          <Link href="/appeal" className={`${buyButton.button} mt-7`}>Appeal</Link>
         </section>
         </div>
       </div>
