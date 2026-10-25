@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, ChevronDown, Search, Server } from 'lucide-react';
 import { previewKits, rustItems, type PreviewKit, type InventoryArea } from '@/lib/rust-kit-preview';
 import styles from './rust-kit-preview.module.css';
+import buyButton from '@/components/ui/cloudy-buy-button.module.css';
 
 const categories = ['All kits', 'Subscriptions', 'Claim once', 'Lifetime'] as const;
 const inventoryAreas: readonly { key: InventoryArea; name: string; slots: number }[] = [
@@ -73,7 +74,7 @@ export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: strin
         </details>
         <div className={styles.priceRow}>
           <div><span>Preview price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
-          <button type="button" className={styles.buy} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy</button>
+          <button type="button" className={buyButton.kitButton} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy</button>
         </div>
         {purchaseNotice && <p className={styles.purchaseNotice} role="status">Preview only</p>}
         <div className={styles.cardServer}><span>{server}</span></div>

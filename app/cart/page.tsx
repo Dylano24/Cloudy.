@@ -6,6 +6,7 @@ import { ShoppingCart, Trash2, Plus, Minus, ArrowRight, Loader2 } from 'lucide-r
 import { BasketIcon } from '@/components/ui/basket-icon';
 import Image from 'next/image';
 import Link from 'next/link';
+import buyButton from '@/components/ui/cloudy-buy-button.module.css';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useStore } from '@/hooks/use-api';
@@ -135,11 +136,9 @@ export default function CartPage() {
             <p className="text-muted mb-8">
               Looks like you haven't added any products to your basket yet.
             </p>
-            <Link href="/shop">
-              <button className="px-8 py-4 rounded-xl bg-primary hover:bg-primary/90 text-background font-semibold text-lg transition-all glow-primary hover:scale-105 inline-flex items-center gap-2 cursor-pointer">
+            <Link href="/shop" className={buyButton.button}>
                 Browse products
                 <ArrowRight className="w-5 h-5" />
-              </button>
             </Link>
           </div>
         </div>

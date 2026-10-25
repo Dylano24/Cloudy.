@@ -1,0 +1,10 @@
+.button {
+  composes: buyButton from '../../app/service/service.module.css';
+  width: auto;
+  gap: 8px;
+}
+
+.kitButton {
+  composes: button;
+  min-width: 92px;
+}
