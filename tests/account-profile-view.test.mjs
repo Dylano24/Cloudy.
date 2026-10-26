@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { loadTypeScript } from './helpers/load-typescript.mjs';
 import { componentHarness, elements, textContent } from './helpers/component-harness.mjs';
 
@@ -49,3 +50,12 @@ for (const provider of ['discord', 'google', 'email', undefined]) {
     assert.equal(elements(tree, node => node.type === 'button')[0].props.disabled, true);
   });
 }
+
+
+test('account connection confirmation stays below the username on mobile and desktop', () => {
+  const css = readFileSync(new URL('../components/account/account-auth.module.css', import.meta.url), 'utf8');
+  assert.match(css, /\.accountIdentity\s*\{[^}]*flex-direction:\s*column;[^}]*align-items:\s*flex-start;/);
+  assert.match(css, /\.accountIdentity \.connected\s*\{[^}]*align-self:\s*flex-start;/);
+  assert.doesNotMatch(css, /\.accountIdentity \.connected\s*\{[^}]*order:\s*-1;/);
+  assert.doesNotMatch(css, /\.accountIdentity \.connected\s*\{[^}]*align-self:\s*flex-end;/);
+});
