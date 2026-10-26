@@ -1,11 +1,11 @@
 'use client';
 import { useState, type FormEvent } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { PasswordInput } from './password-input';
 import styles from './account-auth.module.css';
 import buyButton from '@/components/ui/cloudy-buy-button.module.css';
 
-export function AccountPasswordForm() {
-  const [open, setOpen] = useState(false);
+export function AccountPasswordForm({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
@@ -26,12 +26,12 @@ export function AccountPasswordForm() {
       });
       const result = await response.json() as { error?: string; message?: string };
       if (!response.ok) throw new Error(result.error || 'Please try again.');
-      form.reset(); setOpen(false); setMessage('Your password has been updated.');
+      form.reset(); onOpenChange(false); setMessage('Your password has been updated.');
     } catch (issue) { setError(issue instanceof Error ? issue.message : 'Please try again.'); }
     finally { setBusy(false); }
   }
   return <div className={styles.passwordControl}>
-    <button type="button" className={`${buyButton.button} ${styles.passwordTrigger}`} aria-expanded={open} aria-controls="cloudy-change-password" onClick={() => { setOpen(value => !value); setError(''); }} disabled={busy}>Change password</button>
+    <button type="button" className={`${buyButton.button} ${styles.passwordTrigger}`} aria-expanded={open} aria-controls="cloudy-change-password" onClick={() => { onOpenChange(!open); setError(''); }} disabled={busy}>{open && <ArrowLeft size={16} aria-hidden="true" />}Change password</button>
     {open && <form id="cloudy-change-password" className={styles.form} onSubmit={submit}>
       <label htmlFor="cloudy-current-password">Current password</label>
       <PasswordInput id="cloudy-current-password" name="currentPassword" autoComplete="current-password" required maxLength={256} disabled={busy} />
