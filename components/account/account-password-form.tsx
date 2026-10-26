@@ -30,8 +30,8 @@ export function AccountPasswordForm() {
     } catch (issue) { setError(issue instanceof Error ? issue.message : 'Please try again.'); }
     finally { setBusy(false); }
   }
-  return <div className="mt-6">
-    <button type="button" className={buyButton.button} aria-expanded={open} aria-controls="cloudy-change-password" onClick={() => { setOpen(value => !value); setError(''); }} disabled={busy}>Change password</button>
+  return <div className={styles.passwordControl}>
+    <button type="button" className={`${buyButton.button} ${styles.passwordTrigger}`} aria-expanded={open} aria-controls="cloudy-change-password" onClick={() => { setOpen(value => !value); setError(''); }} disabled={busy}>Change password</button>
     {open && <form id="cloudy-change-password" className={styles.form} onSubmit={submit}>
       <label htmlFor="cloudy-current-password">Current password</label>
       <PasswordInput id="cloudy-current-password" name="currentPassword" autoComplete="current-password" required maxLength={256} disabled={busy} />
