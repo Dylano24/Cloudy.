@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import { useState } from 'react';
 import { CircleCheck } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useAccount } from '@/hooks/use-account';
@@ -16,6 +17,7 @@ export const accountSections = [
 
 export function AccountPanel({ section = 'account' }: { section?: string }) {
   const { user, pending, error } = useAccount();
+  const [passwordOpen, setPasswordOpen] = useState(false);
   const params = useSearchParams();
   const current = accountSections.find(([, href]) => href === (section === 'account' ? '/account' : `/account/${section}`)) || accountSections[0];
   return <div className="cloudy-black-page min-h-[70vh] px-4 py-16 sm:py-24"><div className="mx-auto max-w-4xl">
@@ -35,9 +37,9 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
         {(section === 'account' || section === 'information' || section === 'create') ? <>
           <div className={styles.accountIdentity}>
             <h2 className="text-xl font-bold">{user.name}</h2>
-            {section === 'account' && <div className={styles.connectionRow}><p className={styles.connected}><CircleCheck size={18} aria-hidden="true" />Successfully connected!</p>{user.provider === 'email' && <AccountPasswordForm />}</div>}
+            {section === 'account' && <div className={styles.connectionRow}><p className={styles.connected}><CircleCheck size={18} aria-hidden="true" />Successfully connected!</p>{user.provider === 'email' && <AccountPasswordForm open={passwordOpen} onOpenChange={setPasswordOpen} />}</div>}
           </div>
-          {section === 'account' && <AccountNameForm currentName={user.name} provider={user.provider} />}
+          {section === 'account' && !passwordOpen && <AccountNameForm currentName={user.name} provider={user.provider} />}
           {section === 'information' && <dl className={styles.accountInformation}>
             {user.provider === 'email'
               ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div>
