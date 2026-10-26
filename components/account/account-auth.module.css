@@ -27,7 +27,7 @@
 .nameForm button { min-height: 50px; padding: 12px 20px; color: var(--cloudy-action-text); background: var(--cloudy-action-bg); border: 1px solid var(--cloudy-action-border); border-radius: 10px; font-weight: 850; cursor: pointer; }
 .nameForm button:disabled { opacity: 1; border-color: rgba(229,40,69,.3); box-shadow: none; cursor: default; }
 .saved { margin: 0; color: #88e3ae; font-size: 13px; }
-.accountIdentity { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+.accountIdentity { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 10px; }
 .accountIdentity h2 { min-width: 0; overflow-wrap: anywhere; }
 .connected { display: inline-flex; align-items: center; gap: 7px; margin: 0; color: #acd68a; font-size: 13px; line-height: 1.6; }
 .connected svg { flex-shrink: 0; }
@@ -48,9 +48,5 @@
 .resetBack { display: inline-flex; align-items: center; gap: 8px; margin-top: 26px; color: #fff; font-size: 13px; text-decoration: none; }
 .form button:hover:not(:disabled), .nameForm button:hover:not(:disabled) { border-color: var(--cloudy-action-hover-border); box-shadow: var(--cloudy-action-hover-shadow); }
 
-/* Give the mobile status its own top-right row, above the account name. */
-@media (max-width: 700px) {
-  .accountIdentity { flex-direction: column; align-items: stretch; gap: 12px; }
-  .accountIdentity .connected { order: -1; align-self: flex-end; max-width: 100%; flex-wrap: nowrap; white-space: nowrap; align-items: center; gap: 6px; font-size: 11px; line-height: 1.5; }
-  .connected svg { width: 16px; height: 16px; margin: 0; }
-}
+/* Keep the connection confirmation beneath the name on every viewport. */
+.accountIdentity .connected { align-self: flex-start; }
