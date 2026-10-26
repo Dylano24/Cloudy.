@@ -50,3 +50,9 @@
 
 /* Keep the connection confirmation beneath the name on every viewport. */
 .accountIdentity .connected { align-self: flex-start; }
+
+.connectionRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; flex-wrap: wrap; }
+.passwordControl { margin: 0; }
+.passwordTrigger { min-height: 0 !important; padding: 7px 10px !important; font-size: 12px !important; white-space: nowrap; }
+.passwordControl .form { position: relative; }
+@media (max-width: 420px) { .connectionRow { gap: 8px; } .connected { font-size: 12px; } .passwordTrigger { font-size: 11px !important; padding: 6px 8px !important; } }
