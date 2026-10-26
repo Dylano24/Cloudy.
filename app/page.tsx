@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AstraBackground } from '@/components/home/astra-background';
 import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-react';
 import styles from './home.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
@@ -14,6 +15,7 @@ export default function HomePage() {
     <>
     <div className={`cloudy-classic-home ${styles.home}`}>
       <MobilePanelSync />
+      <AstraBackground />
       <div className="cloudy-classic-smoke" aria-hidden="true" />
 
       <section className="cloudy-classic-hero">
