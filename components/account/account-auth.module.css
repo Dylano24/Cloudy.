@@ -56,3 +56,11 @@
 .passwordTrigger { min-height: 0 !important; padding: 7px 10px !important; font-size: 12px !important; white-space: nowrap; }
 .passwordControl .form { position: relative; }
 @media (max-width: 420px) { .connectionRow { gap: 8px; } .connected { font-size: 12px; } .passwordTrigger { font-size: 11px !important; padding: 6px 8px !important; } }
+
+/* Align the account status and password action on one visual centerline. */
+.connectionRow { flex-wrap: nowrap; align-items: center; }
+.connectionRow .connected { align-self: center; flex: 0 1 auto; min-width: 0; }
+.connectionRow .passwordControl { flex: 0 0 auto; display: flex; align-items: center; }
+.connectionRow .passwordTrigger { display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1.3; margin: 0; }
+.accountIdentity + .nameForm { margin-top: 14px; }
+@media (max-width: 420px) { .connectionRow { gap: 6px; } .connectionRow .connected { font-size: 11px; gap: 5px; } .connectionRow .connected svg { width: 16px; height: 16px; } .connectionRow .passwordTrigger { font-size: 10px !important; padding: 6px !important; } }
