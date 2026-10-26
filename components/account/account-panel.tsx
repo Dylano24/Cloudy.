@@ -35,10 +35,9 @@ export function AccountPanel({ section = 'account' }: { section?: string }) {
         {(section === 'account' || section === 'information' || section === 'create') ? <>
           <div className={styles.accountIdentity}>
             <h2 className="text-xl font-bold">{user.name}</h2>
-            {section === 'account' && <p className={styles.connected}><CircleCheck size={18} aria-hidden="true" />Successfully connected!</p>}
+            {section === 'account' && <div className={styles.connectionRow}><p className={styles.connected}><CircleCheck size={18} aria-hidden="true" />Successfully connected!</p>{user.provider === 'email' && <AccountPasswordForm />}</div>}
           </div>
           {section === 'account' && <AccountNameForm currentName={user.name} provider={user.provider} />}
-          {section === 'account' && user.provider === 'email' && <AccountPasswordForm />}
           {section === 'information' && <dl className={styles.accountInformation}>
             {user.provider === 'email'
               ? <div><dt className="text-muted">Email</dt><dd>{user.email}</dd></div>
