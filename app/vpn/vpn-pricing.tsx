@@ -13,19 +13,19 @@ const periods:{key:Period;label:string;months:number}[]=[
 ];
 const tiers=[
   {
-    name:"Basic",subtitle:"Connection essentials, clearly delivered.",
+    name:"Basic",badge:"GET STARTED",subtitle:"Connection essentials, clearly delivered.",
     prices:{twoYears:3.49,year:4.99,month:14.99},
     features:["Encrypted VPN connection","Location switching","DNS leak protection","Automatic kill switch","Multi device access"],
     details:"The core VPN package: an encrypted connection, location selection, DNS protection and a kill switch. Device and location availability depends on your service configuration.",
   },
   {
-    name:"Complete",subtitle:"A wider set of privacy controls.",featured:true,
+    name:"Complete",badge:"MORE PRIVACY",subtitle:"A wider set of privacy controls.",featured:true,
     prices:{twoYears:3.99,year:5.99,month:19.99},
     features:["All Basic features","Ad and tracker blocking","Threat and phishing protection","Split tunneling"],
     details:"Everything in Basic, with additional controls for ads, trackers and suspicious domains. Split tunneling lets you choose which apps use the VPN.",
   },
   {
-    name:"Ultra",subtitle:"Advanced tools for greater flexibility.",
+    name:"Ultra",badge:"ADVANCED",subtitle:"Advanced tools for greater flexibility.",
     prices:{twoYears:5.99,year:8.09,month:22.89},
     features:["All Complete features","Multi hop VPN","Priority support"],
     details:"Everything in Complete, with advanced routing and priority support. Multi hop routes traffic through more than one VPN server and may affect connection speed.",
@@ -68,9 +68,8 @@ export function VpnPricing(){
        const total=Math.round(rate*term.months*100)/100;
        const popoverId="cloudy-vpn-order-"+tier.name.toLowerCase();
        return <article key={tier.name} className={[styles.planCard,"cloudy-traced-panel","cloudy-studio-sheen-panel",("featured" in tier&&tier.featured)?styles.planFeatured:""].join(" ")}>
-        <div className={styles.planTop}><span className={styles.planType}>CLOUDY VPN</span>
-        {"featured" in tier&&tier.featured&&<span className={styles.featuredTag}>More privacy controls</span>}</div>
-        <h3>{tier.name}</h3><p>{tier.subtitle}</p>
+        <span className={styles.planBadge}>{tier.badge}</span>
+        <h3 className={styles.planTitle}>{tier.name}</h3><p>{tier.subtitle}</p>
         <div className={styles.planRate} aria-live="polite" aria-atomic="true" aria-label={euro(rate)+" per month"}><span className={styles.planCurrency}>€</span>
          <strong>{rate.toFixed(2).replace(".",",")}</strong><span className={styles.planPer}>/ month</span>
         </div>
