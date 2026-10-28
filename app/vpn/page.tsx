@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  ArrowRight, Check, ChevronRight, Fingerprint, Globe2,
-  LockKeyhole, Shield, ShieldCheck, Sparkles, Wifi, Zap,
+  ArrowRight, Check, ChevronRight, Globe2,
+  LockKeyhole, Shield, ShieldCheck, Zap,
 } from "lucide-react";
 import styles from "./vpn.module.css";
 import { StudioMobilePanelSync } from "@/components/service/studio-mobile-panel-sync";
@@ -72,15 +72,7 @@ function SecurityArtwork() {
             <Shield size={170} strokeWidth={0.95}/>
             <LockKeyhole size={42} strokeWidth={1.45} className={styles.centralLock}/>
           </div>
-          <div className={styles.visualCaption}>
-            <span className={styles.visualCaptionLine}/>
-            <span>PRIVACY, REIMAGINED.</span>
-          </div>
         </div>
-      </div>
-      <div className={styles.floatingNote}>
-        <span className={styles.floatingNoteIcon}><Fingerprint size={21}/></span>
-        <span><strong>More control</strong><small>Less complexity</small></span>
       </div>
     </div>
   );
