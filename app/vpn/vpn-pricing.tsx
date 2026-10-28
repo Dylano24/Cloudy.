@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Check, ChevronDown, LockKeyhole, ShieldCheck } from "lucide-react";
+import { Check, ChevronDown, ShieldCheck } from "lucide-react";
+import Link from "next/link";
+import studioStyles from "@/app/service/service.module.css";
 import styles from "./vpn.module.css";
 
 type Period="twoYears"|"year"|"month";
@@ -30,13 +32,13 @@ const tiers=[
   },
 ] as const;
 const matrix=[
- ["Encrypted VPN tunnel","Planned","Planned","Planned"],
+ ["Encrypted VPN tunnel","Targeted","Planned","Planned"],
  ["DNS leak protection","Planned","Planned","Planned"],
  ["Automatic kill switch","Planned","Planned","Planned"],
  ["Ad and tracker blocking","—","Planned","Planned"],
  ["Split tunneling","—","Planned","Planned"],
  ["Threat and phishing protection","—","Planned","Planned"],
- ["Multi hop VPN","—","—","Under review"],
+ ["Multi hop VPN","—","—","TBC"],
  ["Priority support","—","—","Under review"],
 ];
 const euro=(value:number)=>new Intl.NumberFormat("en-IE",{style:"currency",currency:"EUR",minimumFractionDigits:2}).format(value);
@@ -49,10 +51,10 @@ export function VpnPricing(){
     <div className={styles.sectionHeading}>
      <div className={styles.eyebrow}>CLOUDY VPN PLANS</div>
      <h2 id="vpn-plans-title">One service.<br/><span>Your way.</span></h2>
-     <p>Explore flexible subscription concepts and proposed privacy features, built around your needs.</p>
+     <p>Choose your plan and find the features that fit your digital life.</p>
     </div>
     <div className={styles.billingBar}>
-     <div className={styles.billingIntro}><strong>Choose your term</strong><span>Illustrative Cloudy pricing</span></div>
+     <div className={styles.billingIntro}><strong>Choose your term</strong><span>Choose how you subscribe</span></div>
      <div className={styles.billingSwitch} role="group" aria-label="Subscription duration">
       {periods.map(item=><button key={item.key} type="button"
         aria-pressed={period===item.key}
@@ -64,6 +66,7 @@ export function VpnPricing(){
      {tiers.map((tier,i)=>{
        const rate=tier.prices[period];
        const total=Math.round(rate*term.months*100)/100;
+       const popoverId="cloudy-vpn-order-"+tier.name.toLowerCase();
        return <article key={tier.name} className={[styles.planCard,"cloudy-traced-panel","cloudy-studio-sheen-panel",("featured" in tier&&tier.featured)?styles.planFeatured:""].join(" ")}>
         <div className={styles.planTop}><span className={styles.planType}>{String(i+1).padStart(2,"0")} / {tier.accent}</span>
         {"featured" in tier&&tier.featured&&<span className={styles.soonTag}>Most popular</span>}</div>
@@ -73,20 +76,40 @@ export function VpnPricing(){
         </div>
         <p className={styles.planBilled}>{period==="month"?"Billed monthly":euro(total)+" billed for "+term.months+" months"}</p>
         <div className={styles.planDivider}/>
-        <div className={styles.planFeatureTitle}>PROPOSED FEATURES</div>
+        <div className={styles.planFeatureTitle}>FEATURES</div>
         <ul>{tier.features.map(item=><li key={item}><Check size={16} aria-hidden="true"/>{item}</li>)}</ul>
         <details className={styles.planDetails}><summary>View package details <ChevronDown size={15} aria-hidden="true"/></summary><p>{tier.details}</p></details>
-        <div className={styles.disabledButton}>Subscriptions not open <LockKeyhole size={15}/></div>
+        <div className={styles.cardBottom}>
+         <button type="button" className={studioStyles.buyButton} popoverTarget={popoverId} popoverTargetAction="show">Buy</button>
+         <div className={studioStyles.orderPopover} id={popoverId} popover="auto" data-cloudy-vpn-order>
+          <button type="button" className={studioStyles.close} popoverTarget={popoverId} popoverTargetAction="hide" aria-label="Close">×</button>
+          <h2>Cloudy VPN {tier.name}</h2>
+          <p>{term.label} · {euro(rate)} / month</p>
+          <div className={studioStyles.reviewText}>
+           <p><strong>Subscription:</strong> {tier.name}</p>
+           <p><strong>Duration:</strong> {term.label}</p>
+           <p><strong>Billing:</strong> {period==="month"?"Monthly":euro(total)+" for "+term.months+" months"}</p>
+           <p><strong>Includes:</strong> {tier.features.join(", ")}</p>
+          </div>
+          <div className={studioStyles.previewNotice}>
+           Ordering is not enabled while Cloudy VPN infrastructure and account activation are being finalized. No payment will be collected.
+          </div>
+          <div className={studioStyles.modalActions}>
+           <button type="button" className={studioStyles.secondaryButton} popoverTarget={popoverId} popoverTargetAction="hide">Close</button>
+           <Link href="/support" className={studioStyles.primaryButton}>Contact Cloudy</Link>
+          </div>
+         </div>
+        </div>
        </article>;
      })}
     </div>
-    <p className={styles.plansNote}><ShieldCheck size={16}/> Draft Cloudy prices inspired by publicly advertised VPN rates. No checkout is active. VAT, renewal prices and included services require confirmation before sale.</p>
+    <p className={styles.plansNote}><ShieldCheck size={16}/> Pricing and features shown for the upcoming service. Final taxes, renewal terms and technical availability will be confirmed when ordering opens.</p>
     <details className={[styles.comparePanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
-     <summary>Compare proposed plan features <ChevronDown size={18}/></summary>
+     <summary>Compare plan features <ChevronDown size={18}/></summary>
      <div className={styles.comparisonScroll}><table><thead><tr><th>Feature</th>{tiers.map(t=><th key={t.name}>{t.name}</th>)}</tr></thead>
       <tbody>{matrix.map(row=><tr key={row[0]}>{row.map((value,i)=><td key={i}>{value}</td>)}</tr>)}</tbody>
      </table></div>
-     <p className={styles.comparisonFoot}>All listed features are proposed. Final availability depends on technical verification of Cloudy VPN.</p>
+     <p className={styles.comparisonFoot}>Feature availability is subject to technical verification before subscriptions can be activated.</p>
     </details>
    </div>
   </section>
