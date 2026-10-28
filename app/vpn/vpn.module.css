@@ -708,3 +708,74 @@
   .securityMonolith{animation:none!important;will-change:auto}
   .page :global(.cloudy-traced-panel)::after{animation:none!important}
 }
+
+
+/* Final Cloudy VPN network globe — user-approved composition.
+   All illuminated routes are SVG clipped to the planet's circular boundary. */
+.earthVisual{
+  position:relative;
+  isolation:isolate;
+  display:flex;align-items:center;justify-content:center;
+  height:650px;width:100%;min-width:0;
+  overflow:visible;
+  pointer-events:none;
+}
+.earthAura{
+  position:absolute;z-index:-1;
+  width:min(105%,630px);aspect-ratio:1;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(191,18,52,.14) 0%,rgba(177,17,43,.085) 41%,rgba(169,12,39,.028) 64%,transparent 76%);
+  filter:blur(28px);
+}
+.earthSvg{
+  display:block;position:relative;overflow:visible;
+  width:min(124%,715px);height:auto;max-height:none;
+  flex:none;
+  filter:drop-shadow(0 0 38px rgba(213,25,57,.12));
+}
+.earthSignal{
+  stroke-dasharray:7 330;
+  animation:cloudyEarthSignal 5.3s linear infinite;
+  will-change:stroke-dashoffset;
+}
+@keyframes cloudyEarthSignal{from{stroke-dashoffset:338}to{stroke-dashoffset:-338}}
+/* The original complex shield hero is no longer rendered.
+   Keep one premium focal point and the established card design. */
+.hero{
+  background:
+    radial-gradient(ellipse 50% 65% at 81% 55%,rgba(166,13,41,.095),transparent 77%),
+    linear-gradient(180deg,#070507,#040405 85%,#040405);
+}
+.heroGrid{grid-template-columns:1fr 1fr;gap:clamp(0px,2.7vw,35px)}
+.heroCopy{z-index:2}
+.heroCopy h1{font-size:clamp(66px,7vw,107px)}
+.heroLead{max-width:490px}
+@media(max-width:1000px){
+ .heroCopy h1{font-size:clamp(60px,7.25vw,95px)}
+ .earthVisual{height:560px}
+ .earthSvg{width:min(130%,700px)}
+}
+@media(max-width:800px){
+ .heroGrid{grid-template-columns:1fr;gap:0}
+ .earthVisual{height:480px;width:100%;margin:4px auto 0}
+ .earthSvg{width:min(113%,650px)}
+ .earthAura{width:min(115%,560px)}
+ .hero{padding-bottom:14px}
+ .heroCopy h1{font-size:clamp(58px,10.5vw,88px)}
+}
+@media(max-width:540px){
+ .heroCopy h1{font-size:clamp(49px,11.25vw,67px)}
+ .heroLead{line-height:1.84}
+ .earthVisual{height:354px;margin-top:17px}
+ .earthSvg{width:112%;max-width:510px}
+ .earthAura{width:112%}
+ .hero{padding-bottom:15px}
+}
+@media(max-width:390px){
+ .earthVisual{height:322px}
+ .earthSvg{width:116%}
+}
+@media(prefers-reduced-motion:reduce){
+ .earthSignal{animation:none!important;will-change:auto}
+}
