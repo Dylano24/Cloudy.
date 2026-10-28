@@ -779,3 +779,51 @@
 @media(prefers-reduced-motion:reduce){
  .earthSignal{animation:none!important;will-change:auto}
 }
+
+
+/* Live rotating SVG-replacement: single 2D Canvas, no WebGL.
+   Rendering is bounded to the exact spherical silhouette; the static gradient
+   is an instant first paint before JavaScript draws the first frame. */
+.earthCanvas {
+  display:block;
+  position:relative;
+  z-index:1;
+  width:min(124%,715px);
+  height:auto;
+  aspect-ratio:1;
+  flex:none;
+  opacity:1;
+  filter:drop-shadow(0 0 25px rgba(225,31,70,.11));
+}
+.earthSphereFallback {
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:min(104%,605px);
+  aspect-ratio:1;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1px solid rgba(253,80,114,.23);
+  background:radial-gradient(circle at 31% 26%,#42111e,#1b0710 36%,#070408 76%,#020203);
+  box-shadow:0 0 60px rgba(226,28,62,.075);
+  z-index:0;
+  pointer-events:none;
+}
+@media(max-width:1000px){
+ .earthCanvas{width:min(130%,700px);}
+ .earthSphereFallback{width:min(105%,560px);}
+}
+@media(max-width:800px){
+ .earthCanvas{width:min(113%,650px);}
+ .earthSphereFallback{width:min(107%,540px);}
+}
+@media(max-width:540px){
+ .earthCanvas{width:112%;max-width:510px;}
+ .earthSphereFallback{width:102%;}
+}
+@media(max-width:390px){
+ .earthCanvas{width:116%;}
+}
+@media(prefers-reduced-motion:reduce){
+ .earthCanvas{will-change:auto;}
+}
