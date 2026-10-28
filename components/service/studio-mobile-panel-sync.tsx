@@ -3,9 +3,9 @@
 import { useEffect } from 'react';
 import { createMobileSheenClock } from '@/lib/mobile-sheen-clock';
 
-export function StudioMobilePanelSync() {
+export function StudioMobilePanelSync({ rootSelector = '.cloudy-studio-page' }: { rootSelector?: string } = {}) {
   useEffect(() => {
-    const root = document.querySelector<HTMLElement>('.cloudy-studio-page');
+    const root = document.querySelector<HTMLElement>(rootSelector);
     if (!root) return;
 
     const media = window.matchMedia('(max-width: 820px)');
@@ -142,7 +142,7 @@ export function StudioMobilePanelSync() {
         lights.get(panel)?.remove();
       }
     };
-  }, []);
+  }, [rootSelector]);
 
   return null;
 }
