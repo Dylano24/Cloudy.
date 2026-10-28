@@ -583,3 +583,167 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
  .storyPhoneRing{margin-top:8px}
 }
 @media(prefers-reduced-motion:reduce){.planCard,.feature{transition:none!important;animation:none!important}}
+
+
+/* Cloudy VPN / exact Web solutions panel language: charcoal, animated red outline and soft sheen. */
+@property --vpn-border-angle {
+  syntax:"<angle>";
+  inherits:false;
+  initial-value:0deg;
+}
+@keyframes vpnBorderSpin { to { --vpn-border-angle:360deg; } }
+@keyframes vpnStudioShimmer {
+  from { background-position:0% 50%,0 0; }
+  to { background-position:100% 50%,0 0; }
+}
+.feature,.planCard,.statementPanel,.bottomPanel,.storyWindow,.comparePanel{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.11);
+  border-radius:15px;
+  background-color:#070708;
+  background-image:
+   linear-gradient(110deg,transparent 42%,rgba(160,160,170,.02) 46%,rgba(215,215,225,.09) 50%,rgba(160,160,170,.02) 54%,transparent 58%),
+   radial-gradient(circle at 88% 10%,rgba(229,27,46,.07),transparent 13rem);
+  background-size:400% 100%,100% 100%;
+  background-repeat:no-repeat;
+  animation:vpnStudioShimmer 6.5s linear infinite;
+  box-shadow:0 20px 58px rgba(0,0,0,.35);
+  transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;
+}
+.feature::before {display:none}
+.feature::after,.planCard::after,.statementPanel::after,.bottomPanel::after,.storyWindow::after,.comparePanel::after{
+  content:"";
+  position:absolute;
+  z-index:12;
+  inset:0;
+  border-radius:inherit;
+  padding:1px;
+  pointer-events:none;
+  background:conic-gradient(
+    from var(--vpn-border-angle),
+    transparent 0deg,
+    transparent 238deg,
+    rgba(229,27,46,.12) 260deg,
+    #e51b2e 282deg,
+    #e51b2e 298deg,
+    #e51b2e 306deg,
+    rgba(229,27,46,.2) 316deg,
+    transparent 334deg,
+    transparent 360deg
+  );
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+  mask-composite:exclude;
+  animation:vpnBorderSpin 7.5s linear infinite;
+  opacity:.94;
+}
+.feature:hover,.planCard:hover {
+  transform:translateY(-3px);
+  border-color:rgba(229,27,46,.42);
+  box-shadow:0 24px 62px rgba(0,0,0,.42),0 0 29px rgba(229,27,46,.08);
+}
+.feature{min-height:242px;padding:28px 24px}
+.featureIcon{border-color:rgba(229,27,46,.34);background:#17090e}
+.feature h3{font-size:15px}
+.feature p{color:#fff;opacity:.78;font-size:12px}
+.statementPanel{background-color:#070708;min-height:290px}
+.statementCopy p{color:#f1edf0}
+.storyWindow{border-radius:16px}
+.bottomPanel{background-color:#070708}
+.planGrid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;
+  max-width:1170px;
+  align-items:stretch;
+}
+.planCard{
+  min-height:525px;
+  padding:29px;
+  display:flex;
+  flex-direction:column;
+  border-color:rgba(255,255,255,.12);
+}
+.planFeatured{border-color:rgba(229,27,46,.66)}
+.planTop{margin-bottom:26px}
+.planRate{display:flex;align-items:baseline;gap:2px;margin-top:24px;color:#fff}
+.planCurrency{font-size:21px;font-weight:850;align-self:flex-start;margin:6px 2px 0 0}
+.planRate strong{font-size:clamp(34px,3.4vw,46px);font-weight:850;letter-spacing:-.06em;line-height:1.1}
+.planPer{margin-left:6px;color:#b6a6ad;font-size:12px;font-weight:650}
+.planBilled{color:#b9aab0!important;font-size:11px!important;margin:7px 0 21px!important;min-height:18px}
+.planFeatureTitle{font-size:9px;color:#ff879a;letter-spacing:.16em;font-weight:900;margin:22px 0 3px}
+.planCard ul{margin:18px 0;gap:13px}
+.planCard li{font-size:11.5px;color:#f0e6ea;align-items:flex-start;line-height:1.6}
+.planCard li svg{width:15px;height:15px;flex:none;margin-top:1px;color:#ff4059}
+.planDetails{
+  border-top:1px solid rgba(255,255,255,.09);
+  margin:1px 0 16px;
+  padding-top:14px;
+}
+.planDetails summary{list-style:none;cursor:pointer;font-size:11px;font-weight:850;color:#fb8699;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.planDetails summary::-webkit-details-marker{display:none}
+.planDetails summary svg{transition:transform .2s ease}
+.planDetails[open] summary svg{transform:rotate(180deg)}
+.planDetails p{color:#d1c2c9;font-size:11px;line-height:1.7;margin:12px 0 4px}
+.disabledButton{margin-top:auto;min-height:47px;color:#c5a7b0;background:#171013;border:1px solid rgba(239,52,80,.24);cursor:not-allowed}
+.billingBar{
+  max-width:1170px;
+  margin:0 auto 25px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:22px;
+  padding:19px 23px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:14px;
+  background:#09090b;
+}
+.billingIntro strong{display:block;font-size:13px;color:#fff}
+.billingIntro span{display:block;margin-top:5px;font-size:10.5px;color:#aa9aa1}
+.billingSwitch{padding:5px;border:1px solid rgba(255,255,255,.10);border-radius:10px;background:#101013;display:flex;align-items:center;gap:5px}
+.billingOption,.billingActive{
+  appearance:none;border:1px solid transparent;padding:11px 14px;border-radius:7px;
+  background:transparent;color:#c6b7bd;font:inherit;font-size:11px;font-weight:850;
+  cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s;
+}
+.billingOption:hover{background:#1c1116;color:#fff}
+.billingActive{color:#fff;background:#270e16;border-color:#e51b2e;box-shadow:0 0 20px rgba(229,27,46,.13)}
+.billingOption:focus-visible,.billingActive:focus-visible,.planDetails summary:focus-visible,.comparePanel summary:focus-visible{outline:2px solid #ff6c89;outline-offset:3px}
+.comparePanel{
+  max-width:1170px;margin:27px auto 0;padding:0 27px;
+  border-radius:14px;
+}
+.comparePanel>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px;font-size:13px;font-weight:850}
+.comparePanel>summary::-webkit-details-marker{display:none}
+.comparePanel>summary svg{color:#ff536e;transition:transform .2s ease}
+.comparePanel[open]>summary svg{transform:rotate(180deg)}
+.comparisonScroll{overflow-x:auto;border-top:1px solid rgba(255,255,255,.1);padding-top:8px}
+.comparisonScroll table{width:100%;min-width:550px;border-collapse:collapse}
+.comparisonScroll th,.comparisonScroll td{text-align:left;padding:16px 14px;font-size:11.5px;border-bottom:1px solid rgba(255,255,255,.07)}
+.comparisonScroll th{font-size:11px;color:#ff7b90}
+.comparisonScroll td{color:#e4d9de}
+.comparisonScroll td:not(:first-child){text-align:center}
+.comparisonScroll tr:last-child td{border-bottom:0}
+.comparisonFoot{font-size:10px;color:#9d8d95;line-height:1.8;margin:4px 0 21px}
+.plansNote{max-width:925px;margin:21px auto 0;font-size:10.5px;line-height:1.85;color:#a99aa1}
+@media(max-width:980px){
+  .planGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .planCard:last-child{grid-column:1 / -1}
+}
+@media(max-width:650px){
+  .planGrid{grid-template-columns:1fr;gap:16px;max-width:490px}
+  .planCard:last-child{grid-column:auto}
+  .planCard{min-height:0;padding:25px}
+  .billingBar{flex-direction:column;align-items:stretch;padding:15px;gap:15px}
+  .billingSwitch{justify-content:space-between}
+  .billingSwitch button{flex:1;padding:11px 7px;font-size:10px}
+  .feature{min-height:215px;padding:20px}
+  .comparePanel{padding:0 16px}
+  .planRate strong{font-size:43px}
+}
+@media(prefers-reduced-motion:reduce){
+  .feature,.planCard,.statementPanel,.bottomPanel,.storyWindow,.comparePanel{animation:none!important;transition:none!important}
+  .feature::after,.planCard::after,.statementPanel::after,.bottomPanel::after,.storyWindow::after,.comparePanel::after{animation:none!important}
+}
