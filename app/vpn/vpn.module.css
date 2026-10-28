@@ -827,3 +827,16 @@
 @media(prefers-reduced-motion:reduce){
  .earthCanvas{will-change:auto;}
 }
+
+
+/* Keep the longer, product-focused hero headline balanced at every viewport. */
+.heroCopy h1 { font-size:clamp(56px,6vw,89px); text-wrap:balance; }
+@media(max-width:1000px) {
+  .heroCopy h1 { font-size:clamp(51px,6vw,78px); }
+}
+@media(max-width:800px) {
+  .heroCopy h1 { font-size:clamp(49px,9.5vw,75px); }
+}
+@media(max-width:540px) {
+  .heroCopy h1 { font-size:clamp(43px,10.3vw,58px); line-height:1.04; }
+}
