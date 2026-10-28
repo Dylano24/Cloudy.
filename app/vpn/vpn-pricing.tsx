@@ -106,10 +106,9 @@ export function VpnPricing(){
 
     <details className={[styles.comparePanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
      <summary>Compare security and privacy tools <ChevronDown size={18}/></summary>
-     <div className={styles.comparisonScroll} tabIndex={0} role="region" aria-label="Plan comparison, scroll horizontally on smaller screens"><table><caption className={styles.srOnly}>Cloudy VPN features by subscription</caption><thead><tr><th scope="col">Feature</th>{tiers.map(t=><th scope="col" key={t.name}>{t.name}</th>)}</tr></thead>
-      <tbody>{matrix.map(row=><tr key={row[0]}>{row.map((value,i)=>i===0?<th scope="row" key={i}>{value}</th>:<td key={i}>{value==="—"?<span aria-label="Not included">—</span>:value}</td>)}</tr>)}</tbody>
+     <div className={styles.comparisonTable}><table><caption className={styles.srOnly}>Cloudy VPN features by subscription</caption><thead><tr><th scope="col">Feature</th>{tiers.map(t=><th scope="col" key={t.name}>{t.name}</th>)}</tr></thead>
+      <tbody>{matrix.map(row=><tr key={row[0]}>{row.map((value,i)=>i===0?<th scope="row" key={i}>{value}</th>:<td key={i}>{value==="—"?<span aria-label="Not included">—</span>:<><Check size={17} aria-hidden="true"/><span className={styles.srOnly}>Included</span></>}</td>)}</tr>)}</tbody>
      </table></div>
-     <p className={styles.comparisonFoot}>A VPN helps protect your connection. It does not replace antivirus software or guarantee anonymity. Advanced routing and filtering can affect speed and website compatibility.</p>
     </details>
    </div>
   </section>
