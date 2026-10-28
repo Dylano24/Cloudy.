@@ -134,8 +134,8 @@ export default function VpnPage() {
       <section className={styles.faq}>
         <div className={styles.container}>
           <div className={styles.faqGrid}>
-            <div className={[styles.faqIntro,studioStyles.faqHeading].join(" ")}>
-              <div className={studioStyles.faqDotRow} aria-hidden="true"><span /><span /><span /></div>
+            <div className={[styles.faqIntro,studioStyles.faqHeading,studioStyles.faqHeadingInline].join(" ")}>
+              <span className={studioStyles.faqSingleDot} aria-hidden="true" />
               <h2 className={studioStyles.faqHeadingTitle}>Frequently asked questions.</h2>
             </div>
             <div className={[studioStyles.faqList,styles.faqItems].join(" ")}>
