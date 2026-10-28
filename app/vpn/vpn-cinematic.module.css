@@ -12,3 +12,22 @@
 .vignette{background:radial-gradient(ellipse 87% 61% at 51% 70%,transparent 46%,rgba(2,2,3,.35) 100%)}
 }
 @media(prefers-reduced-motion:reduce){.fallback,.fallbackHidden,.gpuHidden,.gpuVisible,.routesVisible,.routesHidden{transition:none}}
+
+
+/* Zero-JavaScript, GPU-friendly first paint while the detailed globe texture loads. */
+.placeholder{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 74% 50%,rgba(161,11,38,.085),transparent 40%);pointer-events:none}
+.placeholderOrb{
+ position:absolute;left:74.2%;top:51.5%;
+ width:min(70vw,700px);aspect-ratio:1;
+ transform:translate(-50%,-50%);
+ border:1px solid rgba(245,60,95,.36);border-radius:50%;
+ background:
+   repeating-linear-gradient(0deg,transparent 0 22px,rgba(250,65,104,.055) 23px,transparent 24px),
+   repeating-linear-gradient(90deg,transparent 0 22px,rgba(250,65,104,.055) 23px,transparent 24px),
+   radial-gradient(circle at 26% 24%,#3a0816 0,#16040b 35%,#070308 68%,#010102 90%);
+ box-shadow:0 0 45px rgba(216,20,60,.13),inset -25px -20px 80px #010103,inset 13px 10px 40px rgba(238,51,82,.09);
+ opacity:.73;
+}
+@media(max-width:800px){
+ .placeholderOrb{left:51%;top:68.5%;width:min(98vw,680px);opacity:.75}
+}
