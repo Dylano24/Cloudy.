@@ -555,11 +555,6 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
  transform:translateY(-4px);
  box-shadow:0 20px 48px rgba(0,0,0,.38),0 0 24px rgba(229,27,46,.1);
 }
-.feature::after,.planCard::after{
- content:"";position:absolute;inset:0;border-radius:inherit;
- background:radial-gradient(ellipse at 86% 12%,rgba(245,50,88,.045),transparent 64%);
- pointer-events:none;
-}
 .planCard{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
 .planCard:hover{transform:translateY(-3px)}
 .faqItem summary{min-height:65px;transition:color .2s ease}
@@ -607,32 +602,10 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
   transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease;
 }
 .feature::before {display:none}
-.feature::after,.planCard::after,.statementPanel::after,.bottomPanel::after,.storyWindow::after,.comparePanel::after{
-  content:"";
-  position:absolute;
-  z-index:12;
-  inset:0;
-  border-radius:inherit;
-  padding:1px;
-  pointer-events:none;
-  background:conic-gradient(
-    from var(--cloudy-trace-angle),
-    transparent 0deg,
-    transparent 238deg,
-    rgba(229,27,46,.12) 260deg,
-    #e51b2e 282deg,
-    #e51b2e 298deg,
-    #e51b2e 306deg,
-    rgba(229,27,46,.2) 316deg,
-    transparent 334deg,
-    transparent 360deg
-  );
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;
-  mask-composite:exclude;
-  animation:cloudy-trace-spin 7.5s linear infinite;
-  opacity:.94;
-}
+/* The moving borders use the exact shared .cloudy-traced-panel::after rule
+   from globals.css. Do not override it in a CSS module: animation identifiers
+   are locally scoped, which made the former border animation appear frozen. */
+
 .feature:hover,.planCard:hover {
   transform:translateY(-3px);
   border-color:rgba(229,27,46,.42);
@@ -739,7 +712,6 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
 }
 @media(prefers-reduced-motion:reduce){
   .feature,.planCard,.statementPanel,.bottomPanel,.storyWindow,.comparePanel{animation:none!important;transition:none!important}
-  .feature::after,.planCard::after,.statementPanel::after,.bottomPanel::after,.storyWindow::after,.comparePanel::after{animation:none!important}
 }
 
 
@@ -821,4 +793,89 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
  .page .storyWindow,
  .page .comparePanel,
  .page .bottomPanel { filter:none; }
+}
+
+
+/* Editorial finishing, influenced by premium VPN conversion layouts while
+   preserving Cloudy's black/red identity and shared moving borders. */
+.page { --vpn-section-ink:#050505; --vpn-dim:#b6afb3; }
+.page .eyebrow { letter-spacing:.19em; font-size:11px; font-weight:850; color:#f57187; }
+.page .sectionHeading { max-width:760px; margin-bottom:45px; }
+.page .sectionHeading h2 { font-size:clamp(42px,5.6vw,71px);line-height:1.02;letter-spacing:-.016em; }
+.page .sectionHeading p {max-width:620px;font-size:14px;line-height:1.85;color:#c5bdc2;}
+.page .heroCopy h1 {letter-spacing:-.018em;}
+.page .heroCopy .heroLead {color:#d4cdd1;}
+.page .plans { background:
+ linear-gradient(180deg,transparent,#12070b 15%,#0b0609 55%,transparent),
+ radial-gradient(ellipse 65% 32% at 50% 28%,rgba(216,22,51,.07),transparent 85%);
+}
+.page .featureGrid {gap:18px;}
+.page .feature { padding:29px 25px 32px; min-height:242px; }
+.page .featureTop { margin-bottom:34px; }
+.page .featureIcon {width:48px;height:48px;color:#ff667f;}
+.page .feature h3 {font-size:16px;font-weight:850;letter-spacing:-.018em;margin-bottom:10px;}
+.page .feature p {font-size:12px;line-height:1.83;opacity:.85;}
+.page .planGrid{gap:18px;}
+.page .planCard { min-height:560px; border-radius:16px; background-color:#050505; padding:30px 27px 27px; }
+.page .planCard h3 {font-size:35px;line-height:1.1;font-weight:700;letter-spacing:-.035em;}
+.page .planCard .planRate {margin-top:28px;}
+.page .planCard .planRate strong{font-size:clamp(42px,4.4vw,56px);letter-spacing:-.06em;}
+.page .planCard .planRate .planPer{font-size:12px;letter-spacing:-.01em;}
+.page .planCard .planBilled{font-size:11px!important;color:#c0b6bc!important;min-height:18px;}
+.page .planCard .planTop{margin-bottom:30px;}
+.page .planCard .soonTag{background:rgba(225,35,63,.10);border-color:rgba(255,90,119,.4);padding:7px 12px;}
+.page .planCard .planFeatureTitle{font-size:10px;letter-spacing:.17em;color:#ff7e94;margin-top:25px;}
+.page .planCard li{font-size:12px;line-height:1.7;color:#ede7eb;}
+.page .planCard .cardBottom > button{
+ color:#fff;min-height:48px;
+ font-size:12px;font-weight:850;
+ background:transparent;
+ border:1px solid var(--cloudy-action-border);
+ box-shadow:var(--cloudy-action-shadow);
+ cursor:pointer;touch-action:manipulation;
+}
+.page .planCard .cardBottom > button:focus-visible{outline:2px solid #ff8ca5;outline-offset:4px}
+.page .billingBar {background:#080709;padding:22px 26px;border-radius:15px;}
+.page .billingSwitch {background:#0d0b0c;}
+.page .comparePanel{padding-inline:28px;}
+.page .faqItem summary {font-size:14px;line-height:1.55;padding:23px 0;}
+.page .faqItem[open] summary {color:#ff8094;}
+.page .statementPanel,.page .bottomPanel {border-radius:17px;}
+
+/* Actual border fix: inherit ONE source of truth, with no CSS module
+   keyframes on the pseudo element, including at the left/right sides. */
+.page :global(.cloudy-traced-panel)::after {
+  opacity:1;
+  padding:2px;
+  z-index:12;
+  pointer-events:none;
+  filter:drop-shadow(0 0 3px rgba(229,27,46,.29));
+  animation-duration:7.5s;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+  animation-play-state:running;
+}
+.page .feature::before{display:none;}
+@media(max-width:980px){
+ .page .planCard{min-height:515px;}
+ .page .planCard h3{font-size:32px}
+}
+@media(max-width:700px){
+ .page .sectionHeading h2{font-size:clamp(39px,9.6vw,59px);}
+ .page .sectionHeading p{font-size:12.5px;}
+ .page .featureGrid{gap:14px;}
+ .page .feature{padding:22px 19px;min-height:212px;}
+ .page .feature h3{font-size:14px;}
+ .page .planGrid{gap:16px;}
+ .page .planCard{padding:26px 23px;min-height:0;}
+ .page .planCard .planRate strong{font-size:46px;}
+ .page .billingBar{padding:17px;}
+ .page .faqItem summary{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+ .page :global(.cloudy-traced-panel)::after{
+   animation:none!important;
+   opacity:.38;
+   filter:none;
+ }
 }
