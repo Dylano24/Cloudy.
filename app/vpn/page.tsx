@@ -55,7 +55,7 @@ export default function VpnPage() {
               <div className={styles.globeDataLabel}>
                 <span className={styles.globeDataPulse} />
                 <div><strong>Geographic routes</strong><small>City to city routes</small></div>
-                <span className={styles.globeDataIndex}>01 / 03</span>
+                <span className={styles.globeDataIndex}>CONCEPT</span>
               </div>
               <div className={styles.globeCoords}>AMSTERDAM <span>·</span> NEW YORK</div>
               <a className={styles.globeSource} href="https://science.nasa.gov/earth/earth-observatory/the-blue-marble-true-color-global-imagery-at-1km-resolution/" target="_blank" rel="noreferrer">Earth imagery: NASA · Illustrative connections</a>
