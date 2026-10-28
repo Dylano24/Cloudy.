@@ -64,7 +64,7 @@ export default function VpnPage() {
         <div className={styles.container}>
           <div className={styles.heroGrid}>
             <div className={styles.heroCopy}>
-              <div className={styles.eyebrow}><span className={styles.redDot}/> CLOUDY VPN <span className={styles.eyebrowRule}/></div>
+              <div className={styles.eyebrow}>Cloudy VPN</div>
               <h1>Your world.<br/><span>On your terms.</span></h1>
               <p className={styles.heroLead}>
                 Take control of your connection. Explore encrypted browsing, location choice and privacy tools in three straightforward Cloudy VPN plans.
