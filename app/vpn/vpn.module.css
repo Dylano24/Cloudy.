@@ -590,8 +590,6 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
   from { background-position:0% 50%; }
   to { background-position:100% 50%; }
 }
-  to { background-position:100% 50%,0 0; }
-}
 .feature,.planCard,.statementPanel,.bottomPanel,.storyWindow,.comparePanel{
   position:relative;
   isolation:isolate;
