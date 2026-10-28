@@ -1,165 +1,276 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { LAND_POINTS, LAND_COASTS } from "./globe-land";
 import styles from "./vpn.module.css";
 
 /**
- * Original Cloudy digital Earth. Natural Earth public-domain coastlines.
- * Network paths are illustrative arcs between real geographic coordinates,
- * rendered on the visible hemisphere and CLIPPED to the sphere boundary.
- * No WebGL, requestAnimationFrame, external images, or active VPN claims.
+ * Cloudy VPN visual network. Natural Earth public-domain geography.
+ * Real spherical rotation in a bounded 2D canvas (no WebGL / external assets).
+ * Illustrated traffic is a design visual, NOT a live server-status feed.
  */
-const R=305, CX=350, CY=350, DEG=Math.PI/180;
-const originLon=-28*DEG, originLat=14*DEG;
-const sinO=Math.sin(originLat),cosO=Math.cos(originLat);
+const TAU = Math.PI * 2;
+const DEG = Math.PI / 180;
+const CENTER = 350;
+const RADIUS = 302;
+const INCLINATION = 0.19;
+const SIN_I = Math.sin(INCLINATION);
+const COS_I = Math.cos(INCLINATION);
 
-function project(lon:number,lat:number){
-  const phi=lat*DEG,lam=lon*DEG-originLon;
-  const sp=Math.sin(phi),cp=Math.cos(phi),sl=Math.sin(lam),cl=Math.cos(lam);
-  const depth=sinO*sp+cosO*cp*cl;
-  return {x:CX+R*cp*sl,y:CY-R*(cosO*sp-sinO*cp*cl),depth};
+type Vec = readonly [number, number, number];
+type Pt = { x: number; y: number; z: number };
+
+function vector(lon: number, lat: number): Vec {
+  const a = lat * DEG, b = lon * DEG;
+  const c = Math.cos(a);
+  return [c * Math.sin(b), Math.sin(a), c * Math.cos(b)];
 }
-function round(v:number){return Math.round(v*10)/10;}
-function gridLine(points:[number,number][]) {
-  let path="",drawing=false,previous:{x:number;y:number}|null=null;
-  for(const [lon,lat] of points){
-    const p=project(lon,lat);
-    if(p.depth>0.015&&(!previous||Math.hypot(p.x-previous.x,p.y-previous.y)<39)){
-      path+=(drawing?"L":"M")+round(p.x)+" "+round(p.y)+" ";
-      drawing=true;
-    }else drawing=false;
-    previous=p.depth>.015?p:null;
-  }
-  return path;
+function project(v: Vec, rotation: number): Pt {
+  const c = Math.cos(rotation), s = Math.sin(rotation);
+  const x = v[0] * c + v[2] * s;
+  const z = v[2] * c - v[0] * s;
+  const y = v[1] * COS_I + z * SIN_I;
+  return { x: CENTER + RADIUS * x, y: CENTER - RADIUS * y, z: z * COS_I - v[1] * SIN_I };
 }
-function vec(lon:number,lat:number){
-  const a=lon*DEG,b=lat*DEG;
-  return [Math.cos(b)*Math.cos(a),Math.cos(b)*Math.sin(a),Math.sin(b)];
+
+const dots: Vec[] = [];
+for (let i = 0; i + 1 < LAND_POINTS.length; i += 4) {
+  dots.push(vector(LAND_POINTS[i], LAND_POINTS[i + 1]));
 }
-function route(a:[number,number],b:[number,number]){
-  const av=vec(a[0],a[1]),bv=vec(b[0],b[1]);
-  const dot=Math.min(1,Math.max(-1,av[0]*bv[0]+av[1]*bv[1]+av[2]*bv[2]));
-  const angle=Math.acos(dot),denom=Math.sin(angle);
-  const coords:[number,number][]=[];
-  for(let i=0;i<=85;i++){
-    const t=i/85,aa=denom<.00001?1-t:Math.sin((1-t)*angle)/denom,bb=denom<.00001?t:Math.sin(t*angle)/denom;
-    const x=av[0]*aa+bv[0]*bb,y=av[1]*aa+bv[1]*bb,z=av[2]*aa+bv[2]*bb;
-    coords.push([Math.atan2(y,x)/DEG,Math.atan2(z,Math.hypot(x,y))/DEG]);
-  }
-  return gridLine(coords);
+const coastlines: Vec[][] = LAND_COASTS.map(coast => {
+  const result: Vec[] = [];
+  for (let i = 0; i + 1 < coast.length; i += 2) result.push(vector(coast[i], coast[i + 1]));
+  return result;
+});
+const grid: Vec[][] = [];
+for (let lat = -60; lat <= 60; lat += 30) {
+  grid.push(Array.from({length: 145}, (_, i) => vector(-180 + i * 2.5, lat)));
+}
+for (let lon = -180; lon < 180; lon += 30) {
+  grid.push(Array.from({length: 73}, (_, i) => vector(lon, -90 + i * 2.5)));
 }
 const cities = [
-  {name:"New York",loc:[-74.006,40.713] as [number,number]},
-  {name:"Amsterdam",loc:[4.904,52.368] as [number,number]},
-  {name:"London",loc:[-.128,51.507] as [number,number]},
-  {name:"São Paulo",loc:[-46.633,-23.55] as [number,number]},
-  {name:"Lagos",loc:[3.379,6.524] as [number,number]},
-  {name:"Cape Town",loc:[18.424,-33.925] as [number,number]},
-  {name:"Mexico City",loc:[-99.133,19.433] as [number,number]},
-  {name:"Lisbon",loc:[-9.139,38.723] as [number,number]},
-  {name:"Buenos Aires",loc:[-58.382,-34.604] as [number,number]},
-  {name:"Miami",loc:[-80.192,25.762] as [number,number]},
+  { name:"Amsterdam", lon:4.904, lat:52.368 },
+  { name:"New York", lon:-74.006, lat:40.713 },
+  { name:"London", lon:-.127, lat:51.508 },
+  { name:"São Paulo", lon:-46.633, lat:-23.55 },
+  { name:"Lagos", lon:3.379, lat:6.524 },
+  { name:"Cape Town", lon:18.424, lat:-33.925 },
+  { name:"Mexico City", lon:-99.133, lat:19.433 },
+  { name:"Lisbon", lon:-9.139, lat:38.723 },
+  { name:"Buenos Aires", lon:-58.382, lat:-34.604 },
+  { name:"Miami", lon:-80.192, lat:25.762 },
+  { name:"Tokyo", lon:139.65, lat:35.68 },
+  { name:"Singapore", lon:103.819, lat:1.35 },
+  { name:"Sydney", lon:151.21, lat:-33.87 },
+  { name:"Dubai", lon:55.271, lat:25.205 },
+  { name:"Los Angeles", lon:-118.244, lat:34.052 },
 ];
-const edges:[number,number][]=[[0,1],[0,2],[0,4],[3,1],[3,4],[5,2],[0,6],[6,7],[8,3],[9,5],[7,4],[3,5]];
-const edgePaths=edges.map(([a,b])=>route(cities[a].loc,cities[b].loc)).filter(Boolean);
-const globeDots:string[]=[];
-for(let i=0;i<LAND_POINTS.length;i+=4){
-  const p=project(LAND_POINTS[i],LAND_POINTS[i+1]);
-  if(p.depth>.01)globeDots.push("M"+round(p.x)+" "+round(p.y)+"h"+(p.depth>.65?1.15:.75));
-}
-const rimDots:string[]=[];
-for(let i=2;i<LAND_POINTS.length;i+=8){
- const p=project(LAND_POINTS[i],LAND_POINTS[i+1]);
- if(p.depth>.3)rimDots.push("M"+round(p.x)+" "+round(p.y)+"h.55");
-}
-const geographicLines = LAND_COASTS.map(coast=>{
- let d="",open=false,last:{x:number;y:number}|null=null;
- for(let i=0;i<coast.length;i+=2){
-  const p=project(coast[i],coast[i+1]);
-  if(p.depth>.025&&(!last||Math.hypot(p.x-last.x,p.y-last.y)<26)){
-   d+=(open?"L":"M")+round(p.x)+" "+round(p.y)+" ";open=true;
-  }else open=false;
-  last=p.depth>.025?p:null;
- }
- return d;
-}).filter(Boolean);
-const graticule=[
- ...[-60,-30,0,30,60].map(lat=>gridLine(Array.from({length:181},(_,i)=>[-180+i*2,lat] as [number,number]))),
- ...[-150,-120,-90,-60,-30,0,30,60,90,120,150].map(lon=>gridLine(Array.from({length:91},(_,i)=>[lon,-90+i*2] as [number,number]))),
+const nodeVectors = cities.map(c => vector(c.lon,c.lat));
+const pairs: [number,number][] = [
+  [0,1],[0,2],[0,3],[0,4],[0,5],[1,6],[1,9],[1,14],[3,8],
+  [4,5],[2,7],[7,9],[0,13],[13,11],[11,10],[10,12],[11,12],[10,14],
 ];
+function slerp(a:Vec,b:Vec,t:number): Vec {
+  const dot = Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
+  const angle = Math.acos(dot), d = Math.sin(angle);
+  if(d < 1e-5) return a;
+  const x = Math.sin((1-t)*angle)/d, y = Math.sin(t*angle)/d;
+  return [a[0]*x+b[0]*y,a[1]*x+b[1]*y,a[2]*x+b[2]*y];
+}
+const routes = pairs.map(([a,b],index)=>({
+  a,b,index,
+  points: Array.from({length:49},(_,i)=>slerp(nodeVectors[a],nodeVectors[b],i/48))
+}));
 
-export function EarthNetwork(){
- return (
-  <div className={styles.earthVisual}>
-   <div className={styles.earthAura} aria-hidden="true"/>
-   <svg className={styles.earthSvg} viewBox="0 0 700 700" role="img"
-    aria-label="Digital red and black globe with illustrated connections between real geographic locations. Paths remain inside the Earth.">
-    <defs>
-      <radialGradient id="cvpn-bg" cx="30%" cy="25%" r="83%">
-        <stop offset="0" stopColor="#3F101E"/>
-        <stop offset=".35" stopColor="#17050D"/>
-        <stop offset=".7" stopColor="#0A0308"/>
-        <stop offset="1" stopColor="#020204"/>
-      </radialGradient>
-      <radialGradient id="cvpn-land" cx="42%" cy="31%" r="68%">
-        <stop offset="0" stopColor="#FA6D8A" stopOpacity=".17"/>
-        <stop offset=".4" stopColor="#C91E43" stopOpacity=".065"/>
-        <stop offset="1" stopColor="#000" stopOpacity=".0"/>
-      </radialGradient>
-      <radialGradient id="cvpn-shade" cx="32%" cy="27%" r="80%">
-        <stop offset="0" stopColor="#000" stopOpacity="0"/>
-        <stop offset=".55" stopColor="#000" stopOpacity=".1"/>
-        <stop offset=".8" stopColor="#000" stopOpacity=".27"/>
-        <stop offset="1" stopColor="#010103" stopOpacity=".78"/>
-      </radialGradient>
-      <radialGradient id="cvpn-atmo" cx="50%" cy="50%" r="50%">
-        <stop offset=".83" stopColor="#D21F47" stopOpacity="0"/>
-        <stop offset=".945" stopColor="#E53659" stopOpacity=".08"/>
-        <stop offset=".975" stopColor="#F85675" stopOpacity=".24"/>
-        <stop offset="1" stopColor="#FF5476" stopOpacity=".04"/>
-      </radialGradient>
-      <linearGradient id="cvpn-edge" x1="9%" y1="0%" x2="87%" y2="96%">
-        <stop offset="0" stopColor="#EF4D70" stopOpacity=".2"/>
-        <stop offset=".23" stopColor="#FF94A5" stopOpacity=".68"/>
-        <stop offset=".5" stopColor="#CC153A" stopOpacity=".29"/>
-        <stop offset=".79" stopColor="#E93D60" stopOpacity=".46"/>
-        <stop offset="1" stopColor="#8B1A36" stopOpacity=".09"/>
-      </linearGradient>
-      <linearGradient id="cvpn-route" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stopColor="#AE183A"/><stop offset=".45" stopColor="#F75A7D"/><stop offset="1" stopColor="#FC8499"/>
-      </linearGradient>
-      <clipPath id="cvpn-clip"><circle cx={CX} cy={CY} r={R-1}/></clipPath>
-      <filter id="cvpn-smallglow" x="-130%" y="-130%" width="360%" height="360%">
-        <feGaussianBlur stdDeviation="3.7"/>
-      </filter>
-    </defs>
-    <circle cx={CX} cy={CY} r={R+13} fill="#6D0C28" opacity=".06"/>
-    <circle cx={CX} cy={CY} r={R+5} fill="none" stroke="#DB2451" strokeWidth="1.2" opacity=".28"/>
-    <circle cx={CX} cy={CY} r={R} fill="url(#cvpn-bg)"/>
-    <g clipPath="url(#cvpn-clip)">
-      <circle cx={CX} cy={CY} r={R} fill="url(#cvpn-land)"/>
-      {graticule.map((d,i)=><path key={"grid"+i} d={d} fill="none" stroke="#D52951" strokeOpacity=".115" strokeWidth=".65"/>)}
-      <path d={globeDots.join(" ")} stroke="#FD5E7E" strokeOpacity=".58" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-      <path d={rimDots.join(" ")} stroke="#FFB0BD" strokeOpacity=".26" strokeWidth=".65" strokeLinecap="round" fill="none"/>
-      <g fill="none" strokeLinejoin="round" strokeLinecap="round">
-        {geographicLines.map((d,i)=><path key={"coast"+i} d={d} stroke="#EF4569" strokeOpacity=".55" strokeWidth={i%4===0?1.25:.9}/>)}
-      </g>
-      {edgePaths.map((d,i)=><path key={"soft"+i} d={d} fill="none" stroke="#EA3158" strokeOpacity=".23" strokeWidth="2.2"/>)}
-      {edgePaths.map((d,i)=><path key={"thin"+i} d={d} fill="none" stroke="#FF829A" strokeOpacity=".54" strokeWidth=".9"/>)}
-      {edgePaths.slice(0,7).map((d,i)=><path key={"signal"+i} d={d} fill="none" stroke="#FFC4D0" strokeWidth={2} strokeLinecap="round" strokeDasharray="7 330" className={styles.earthSignal} style={{animationDelay:-(i*1.35)+"s"}}/>)}
-      <circle cx={CX} cy={CY} r={R} fill="url(#cvpn-shade)"/>
-      {cities.map((city,i)=>{
-        const p=project(city.loc[0],city.loc[1]);
-        if(p.depth<.07)return null;
-        return <g key={city.name} aria-hidden="true">
-          <circle cx={p.x} cy={p.y} r={i%3===0?12:8} fill="#FA456A" opacity=".23" filter="url(#cvpn-smallglow)"/>
-          <circle cx={p.x} cy={p.y} r={i%3===0?5.2:4} fill="#21060D" stroke="#FF728C" strokeWidth="1.25"/>
-          <circle cx={p.x} cy={p.y} r={i%3===0?2.15:1.6} fill="#FFB4C1"/>
-        </g>;
-      })}
-      <circle cx={CX} cy={CY} r={R} fill="url(#cvpn-atmo)"/>
-    </g>
-    <circle cx={CX} cy={CY} r={R} fill="none" stroke="url(#cvpn-edge)" strokeWidth="2.4"/>
-    <circle cx={CX} cy={CY} r={R-4} fill="none" stroke="#FF6383" strokeOpacity=".09" strokeWidth="1.5"/>
-   </svg>
-  </div>
- );
+function line(ctx: CanvasRenderingContext2D, points: readonly Vec[], angle: number, threshold = 0.012) {
+  let active = false;
+  for(const v of points) {
+    const p = project(v,angle);
+    if(p.z > threshold) {
+      if(!active){ctx.moveTo(p.x,p.y);active=true;}
+      else ctx.lineTo(p.x,p.y);
+    } else active=false;
+  }
+}
+function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: boolean, lowPower: boolean) {
+  ctx.clearRect(0,0,700,700);
+  const globe = ctx.createRadialGradient(268,225,40,350,350,315);
+  globe.addColorStop(0,"#37101e");
+  globe.addColorStop(.35,"#190711");
+  globe.addColorStop(.7,"#0b040b");
+  globe.addColorStop(1,"#020203");
+  ctx.beginPath(); ctx.arc(CENTER,CENTER,RADIUS,0,TAU);
+  ctx.fillStyle=globe;ctx.fill();
+
+  ctx.save();
+  ctx.beginPath();ctx.arc(CENTER,CENTER,RADIUS-1.5,0,TAU);ctx.clip();
+
+  // Light geometrics, located on the surface. No free-floating orbits.
+  ctx.strokeStyle="rgba(234,48,87,.11)"; ctx.lineWidth=.65;
+  ctx.beginPath();
+  for(const row of grid) line(ctx,row,rotation);
+  ctx.stroke();
+
+  // Continental micro-particles are grouped to avoid a stroke/fill per dot.
+  const near:Pt[] = [], middle:Pt[] = [], far:Pt[] = [];
+  for(const v of dots){
+    const p=project(v,rotation);
+    if(p.z>.62)near.push(p);
+    else if(p.z>.32)middle.push(p);
+    else if(p.z>.018)far.push(p);
+  }
+  for(const [bucket,color,sz] of [
+    [far,"rgba(255,67,99,.27)",.72],
+    [middle,"rgba(255,66,105,.47)",.88],
+    [near,"rgba(255,122,150,.68)",1.16],
+  ] as const){
+    ctx.fillStyle=color; ctx.beginPath();
+    for(const p of bucket) ctx.rect(p.x,p.y,sz,sz);
+    ctx.fill();
+  }
+
+  ctx.strokeStyle="rgba(246,72,106,.46)";
+  ctx.lineWidth=.88;ctx.lineJoin="round";
+  ctx.beginPath();
+  for(const coast of coastlines) line(ctx,coast,rotation,.014);
+  ctx.stroke();
+
+  // Connections are strictly front-facing geodesics on the globe.
+  const nodes=nodeVectors.map(v=>project(v,rotation));
+  const visible=routes.filter(r=>nodes[r.a].z>.085&&nodes[r.b].z>.085);
+  const chosen=visible.slice(0,lowPower?5:9);
+  for(const r of chosen){
+    const path=r.points.map(v=>project(v,rotation));
+    ctx.beginPath();let drawing=false;
+    for(const p of path){
+      if(p.z>.012) { if(!drawing){ctx.moveTo(p.x,p.y);drawing=true;}else ctx.lineTo(p.x,p.y); }
+      else drawing=false;
+    }
+    ctx.strokeStyle="rgba(251,56,95,.14)";
+    ctx.lineWidth=lowPower?3:4.5;
+    ctx.stroke();
+    ctx.strokeStyle="rgba(255,115,148,.57)";
+    ctx.lineWidth=.95;
+    ctx.stroke();
+    if(move) {
+      for(let direction=0;direction<2;direction++){
+        const progress=((t*(direction===0?.105:-.105)+r.index*.137+direction*.47)%1+1)%1;
+        const point=path[Math.round(progress*48)];
+        if(point.z<.025)continue;
+        const previous=path[Math.max(0,Math.min(48,Math.round(progress*48)+(direction===0?-2:2)))];
+        ctx.strokeStyle="rgba(255,181,199,.88)";
+        ctx.lineWidth=2.2;
+        ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(point.x,point.y);ctx.stroke();
+        const glow=ctx.createRadialGradient(point.x,point.y,0,point.x,point.y,8);
+        glow.addColorStop(0,"rgba(255,250,250,.94)");
+        glow.addColorStop(.2,"rgba(255,130,160,.77)");
+        glow.addColorStop(1,"rgba(250,43,88,0)");
+        ctx.fillStyle=glow;ctx.beginPath();ctx.arc(point.x,point.y,8,0,TAU);ctx.fill();
+      }
+    }
+  }
+
+  for (const p of nodes) {
+    if(p.z<.1)continue;
+    ctx.fillStyle="rgba(255,67,100,.13)";
+    ctx.beginPath();ctx.arc(p.x,p.y,9,0,TAU);ctx.fill();
+    ctx.strokeStyle="rgba(255,119,151,.77)";
+    ctx.lineWidth=1;ctx.beginPath();ctx.arc(p.x,p.y,4.1,0,TAU);ctx.stroke();
+    ctx.fillStyle="#ffb1c0";ctx.beginPath();ctx.arc(p.x,p.y,1.9,0,TAU);ctx.fill();
+  }
+
+  const shade=ctx.createRadialGradient(260,216,45,350,350,350);
+  shade.addColorStop(0,"rgba(0,0,0,0)");
+  shade.addColorStop(.55,"rgba(0,0,0,0)");
+  shade.addColorStop(.77,"rgba(0,0,0,.12)");
+  shade.addColorStop(1,"rgba(0,0,0,.55)");
+  ctx.fillStyle=shade;ctx.fillRect(0,0,700,700);
+  ctx.restore();
+
+  const rim=ctx.createLinearGradient(110,70,625,660);
+  rim.addColorStop(0,"rgba(241,49,85,.11)");
+  rim.addColorStop(.29,"rgba(255,178,190,.79)");
+  rim.addColorStop(.5,"rgba(211,25,59,.25)");
+  rim.addColorStop(.83,"rgba(255,74,109,.58)");
+  rim.addColorStop(1,"rgba(164,18,51,.07)");
+  ctx.beginPath();ctx.arc(CENTER,CENTER,RADIUS,0,TAU);
+  ctx.strokeStyle=rim;ctx.lineWidth=2.2;ctx.stroke();
+  ctx.strokeStyle="rgba(246,70,105,.075)";ctx.lineWidth=6;ctx.stroke();
+}
+
+export function EarthNetwork() {
+  const canvasRef=useRef<HTMLCanvasElement>(null);
+  const containerRef=useRef<HTMLDivElement>(null);
+  useEffect(()=>{
+    const canvas=canvasRef.current, holder=containerRef.current;
+    if(!canvas||!holder)return;
+    const ctx=canvas.getContext("2d",{alpha:true});
+    if(!ctx)return;
+
+    let raf=0,alive=true,visible=true,last=0,time=0;
+    let angle=-.53; // North Atlantic on initial view.
+    const motion=window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reduced=motion.matches;
+    let quality=700;
+    const resize=()=>{
+      const width=canvas.getBoundingClientRect().width;
+      quality=Math.max(340,Math.min(850,Math.round(width*Math.min(window.devicePixelRatio||1,1.45))));
+      if(canvas.width!==quality){canvas.width=quality;canvas.height=quality;}
+      ctx.setTransform(quality/700,0,0,quality/700,0,0);
+      draw(ctx,angle,time,!reduced,width<470);
+    };
+    const onMotion=()=>{
+      reduced=motion.matches;
+      if(reduced){cancelAnimationFrame(raf);raf=0;draw(ctx,angle,time,false,quality<530);}
+      else if(visible&&document.visibilityState==="visible"&&!raf)raf=requestAnimationFrame(frame);
+    };
+    const frame=(now:number)=>{
+      raf=0;
+      if(!alive||reduced||!visible||document.visibilityState!=="visible")return;
+      if(!last)last=now;
+      const elapsed=Math.min(.08,(now-last)/1000);last=now;
+      const fps=quality<530?20:25;
+      if(now-time*1000>=1000/fps){ /* time is accumulated separately below */ }
+      angle+=elapsed*(TAU/82);
+      time+=elapsed;
+      draw(ctx,angle,time,true,quality<530);
+      raf=requestAnimationFrame(frame);
+    };
+    const onVisible=()=>{
+      if(visible&&!reduced&&document.visibilityState==="visible"&&!raf){last=0;raf=requestAnimationFrame(frame);}
+      else if(document.visibilityState!=="visible"){cancelAnimationFrame(raf);raf=0;}
+    };
+    const intersection=new IntersectionObserver(entries=>{
+      visible=entries[0]?.isIntersecting??true;
+      if(!visible){cancelAnimationFrame(raf);raf=0;}
+      else onVisible();
+    },{rootMargin:"80px"});
+    const observer=new ResizeObserver(resize);observer.observe(canvas);
+    intersection.observe(holder);
+    motion.addEventListener("change",onMotion);
+    document.addEventListener("visibilitychange",onVisible);
+    resize();
+    onVisible();
+    return()=>{
+      alive=false;cancelAnimationFrame(raf);
+      observer.disconnect();intersection.disconnect();
+      motion.removeEventListener("change",onMotion);
+      document.removeEventListener("visibilitychange",onVisible);
+    };
+  },[]);
+  return (
+    <div className={styles.earthVisual} ref={containerRef}>
+      <div className={styles.earthAura} aria-hidden="true"/>
+      <div className={styles.earthSphereFallback} aria-hidden="true"/>
+      <canvas
+        ref={canvasRef}
+        className={styles.earthCanvas}
+        width={700}
+        height={700}
+        role="img"
+        aria-label="Rotating digital Earth with illustrated connection routes between cities, contained on the globe."
+      />
+    </div>
+  );
 }
