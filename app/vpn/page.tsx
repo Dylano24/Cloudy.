@@ -134,7 +134,7 @@ export default function VpnPage() {
             <div className={styles.faqIntro}>
               <span className={styles.eyebrow}>FREQUENT QUESTIONS</span>
               <h2>Know what<br/><span>you’re choosing.</span></h2>
-              <p>Clear information about features, availability and how the service will work.</p>
+              <p>Clear answers about plans, connection protection and privacy controls.</p>
               <Link href="/support" className={styles.inlineLink}>Contact Cloudy <ArrowRight size={17}/></Link>
             </div>
             <div className={styles.faqItems}>
