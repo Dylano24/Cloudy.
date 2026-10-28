@@ -32,7 +32,7 @@ const questions = [
 
 export default function VpnPage() {
   return (
-    <div className={styles.page}>
+    <div className={`${styles.page} cloudy-vpn-page`}>
       <div className={styles.previewStrip}><span className={styles.previewDot}/> EARLY CONCEPT PREVIEW <span className={styles.previewSep}/> Not yet available for purchase</div>
       <section className={styles.hero}>
         <div className={styles.heroAura} aria-hidden="true" />
