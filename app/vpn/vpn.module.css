@@ -809,3 +809,16 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
    animation:none!important;background-image:none!important
  }
 }
+
+
+/* Performance: retain the Cloudy red stars without repainting a full-page animated background. */
+.page::before { animation:none!important; opacity:.19; filter:none; }
+@media (max-width:820px) {
+ .page::before { opacity:.13; }
+ .page .feature,
+ .page .planCard,
+ .page .statementPanel,
+ .page .storyWindow,
+ .page .comparePanel,
+ .page .bottomPanel { filter:none; }
+}
