@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { createMobileSheenClock } from '@/lib/mobile-sheen-clock';
 
-export function StudioMobilePanelSync({ rootSelector = '.cloudy-studio-page' }: { rootSelector?: string } = {}) {
+export function StudioMobilePanelSync({ rootSelector = '.cloudy-studio-page', suspendWhenIdle = false }: { rootSelector?: string; suspendWhenIdle?: boolean } = {}) {
   useEffect(() => {
     const root = document.querySelector<HTMLElement>(rootSelector);
     if (!root) return;
@@ -31,7 +31,7 @@ export function StudioMobilePanelSync({ rootSelector = '.cloudy-studio-page' }: 
     const updatePlayback = () => {
       cancelAnimationFrame(animationFrame);
       clock.pause();
-      if (media.matches && !reduced.matches && !document.hidden) {
+      if (media.matches && !reduced.matches && !document.hidden && (!suspendWhenIdle || visibleTextures.size > 0)) {
         animationFrame = requestAnimationFrame(animate);
       }
     };
@@ -49,7 +49,8 @@ export function StudioMobilePanelSync({ rootSelector = '.cloudy-studio-page' }: 
           visibleTextures.delete(texture);
         }
       }
-    }, { rootMargin: '160px' });
+      if (suspendWhenIdle) updatePlayback();
+    }, { rootMargin: suspendWhenIdle ? '0px' : '160px' });
 
     let frame = 0;
     const measure = () => {
@@ -142,7 +143,7 @@ export function StudioMobilePanelSync({ rootSelector = '.cloudy-studio-page' }: 
         lights.get(panel)?.remove();
       }
     };
-  }, [rootSelector]);
+  }, [rootSelector, suspendWhenIdle]);
 
   return null;
 }
