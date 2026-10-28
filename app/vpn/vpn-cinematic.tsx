@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { VpnGlobeBackground } from "./vpn-globe";
 import styles from "./vpn-cinematic.module.css";
 
 /** Original Cloudy globe. Scientific satellite imagery; network connections are illustrative, not operational. */
@@ -208,7 +207,7 @@ export function VpnCinematicEarth(){
   };
  },[]);
  return <div ref={holder} className={styles.layer} aria-hidden="true">
-  {!ready&&<div className={styles.fallback}><VpnGlobeBackground/></div>}
+  {!ready&&<div className={styles.placeholder} aria-hidden="true"><div className={styles.placeholderOrb}/></div>}
   <canvas ref={gpu} className={ready?styles.gpuVisible:styles.gpuHidden}/>
   <canvas ref={lines} className={ready?styles.routesVisible:styles.routesHidden}/>
   <div className={styles.fade}/><div className={styles.vignette}/>
