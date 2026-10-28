@@ -5,7 +5,7 @@ import styles from "./vpn-cinematic.module.css";
 
 /** Original Cloudy globe. Scientific satellite imagery; network connections are illustrative, not operational. */
 const vertex = "attribute vec2 aPosition; varying vec2 vUv; void main(){vUv=(aPosition+1.0)*0.5;gl_Position=vec4(aPosition,0.,1.);}";
-const fragment = "precision highp float;\nvarying vec2 vUv;\nuniform vec2 uResolution, uCenter;\nuniform float uRadius, uRotation, uNightAvailable;\nuniform sampler2D uDay, uNight;\nconst float PI=3.141592653589793;\nvoid main(){\n  vec2 p = (vUv*uResolution-uCenter)/uRadius;\n  float radius=length(p);\n  vec3 black=vec3(.0023,.0011,.0023);\n  float halo=exp(-pow((radius-1.035)*10.8,2.0));\n  float haze=exp(-pow((radius-1.17)*4.5,2.0));\n  vec3 background=black+vec3(.26,.006,.028)*halo*.55+vec3(.10,.0015,.010)*haze*.24;\n  if(radius>=1.0){gl_FragColor=vec4(background,1.);return;}\n  vec3 normal=vec3(p,sqrt(max(0.0,1.0-dot(p,p))));\n  float cs=cos(uRotation), sn=sin(uRotation);\n  vec3 earth=vec3(cs*normal.x-sn*normal.z,normal.y,sn*normal.x+cs*normal.z);\n  vec2 uv=vec2(fract(atan(earth.x,earth.z)/(PI*2.0)+.5),asin(clamp(earth.y,-1.0,1.0))/PI+.5);\n  vec3 color=texture2D(uDay,uv).rgb;\n  vec3 night=texture2D(uNight,uv).rgb;\n  float ocean=smoothstep(.014,.20,(color.b-color.r)*.8+(color.b-color.g)*.9);\n  float land=1.0-ocean;\n  float terrain=clamp(dot(color,vec3(.31,.59,.10))*1.7,.06,1.);\n  float roughness=clamp(length(color-vec3(dot(color,vec3(.333))))*2.5,0.,1.);\n  float sun=dot(normal,normalize(vec3(-.4,.47,.81)));\n  float light=.25+.75*smoothstep(-.25,.78,sun);\n  vec3 oceanColor=vec3(.006,.001,.003)+vec3(.017,.0005,.004)*light;\n  vec3 landColor=vec3(.063,.0032,.011)+terrain*vec3(.37,.012,.046);\n  landColor+=roughness*vec3(.061,.002,.007);\n  landColor*=light;\n  // Real coastlines and continent detail remain visible within a strict black/red palette.\n  float coast=(1.0-abs(ocean-.5)*2.0);\n  landColor+=vec3(.085,.002,.015)*coast*light;\n  vec3 surface=mix(landColor,oceanColor,ocean);\n  float city=max(max(night.r,night.g),night.b);\n  float lights=pow(clamp(city*2.3,0.,1.),1.45);\n  float shadow=1.-smoothstep(-.28,.22,sun);\n  surface+=vec3(.88,.033,.087)*lights*shadow*(.35+.65*uNightAvailable);\n  float limb=pow(1.-normal.z,3.4);\n  surface+=vec3(.25,.006,.030)*limb*.50;\n  surface+=vec3(.48,.015,.07)*pow(1.-normal.z,13.)*.38;\n  surface=pow(surface/(surface+vec3(.65)),vec3(.96));\n  gl_FragColor=vec4(clamp(surface,0.,1.),1.);\n}";
+const fragment = "precision highp float;\nvarying vec2 vUv;\nuniform vec2 uResolution,uCenter;\nuniform float uRadius,uRotation,uNightAvailable;\nuniform sampler2D uDay,uNight;\nconst float PI=3.141592653589793;\nvoid main(){\n vec2 p=(vUv*uResolution-uCenter)/uRadius;\n float r=length(p);\n vec3 bg=vec3(.0027,.0007,.0020);\n if(r>1.33){gl_FragColor=vec4(bg,1.0);return;}\n float glow=exp(-pow((r-1.026)*11.,2.));\n bg+=vec3(.26,.006,.031)*glow*.56;\n if(r>=1.){gl_FragColor=vec4(bg,1.);return;}\n vec3 n=vec3(p,sqrt(max(0.,1.-dot(p,p))));\n float cs=cos(uRotation),sn=sin(uRotation);\n vec3 earth=vec3(cs*n.x-sn*n.z,n.y,sn*n.x+cs*n.z);\n vec2 uv=vec2(fract(atan(earth.x,earth.z)/(PI*2.)+.5),asin(clamp(earth.y,-1.,1.))/PI+.5);\n vec3 rgb=texture2D(uDay,uv).rgb;\n float ocean=smoothstep(.01,.20,(rgb.b-rgb.r)*.8+(rgb.b-rgb.g)*.9);\n float land=1.-ocean;\n float terrain=clamp(dot(rgb,vec3(.31,.59,.10))*1.9,.075,1.);\n float sunlight=.24+.76*smoothstep(-.4,.72,dot(n,normalize(vec3(-.42,.46,.84))));\n vec3 sea=vec3(.006,.0008,.0022)+vec3(.008,.0006,.002)*sunlight;\n vec3 ground=vec3(.075,.002,.009)+terrain*vec3(.36,.011,.036);\n vec3 surface=mix(ground*sunlight,sea,ocean);\n // Digital longitude and latitude mesh, projected onto the real globe.\n float gx=smoothstep(.46,.498,abs(fract(uv.x*36.)-.5));\n float gy=smoothstep(.46,.498,abs(fract(uv.y*18.)-.5));\n float grid=max(gx,gy);\n surface+=vec3(.125,.002,.015)*grid*(.4+.6*land)*(.44+.56*sunlight);\n // Illuminated data points on continental tiles, not floating arbitrary orbits.\n vec2 cell=fract(uv*vec2(160.,80.))-.5;\n float dot=1.-smoothstep(.04,.13,length(cell));\n float detail=land*dot*(.30+.70*terrain);\n surface+=vec3(.31,.009,.036)*detail*sunlight;\n // Edge silhouette and scanlines retain a black/red, holographic identity.\n float rim=pow(1.-n.z,4.);\n surface+=vec3(.34,.003,.036)*rim*.6;\n float scan=pow(max(0.,sin(p.y*190.+uRotation*18.)),22.);\n surface+=vec3(.018,.0006,.003)*scan;\n surface=pow(surface/(surface+vec3(.65)),vec3(.96));\n gl_FragColor=vec4(surface,1.);\n}";
 const BASES = [
   "https://threejs.org/examples/textures/planets/",
   "https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/",
@@ -141,7 +141,7 @@ export function VpnCinematicEarth(){
   const onMotion=()=>{reduced=media.matches;last=0;};
   const size=()=>{
    const rect=node.getBoundingClientRect();w=Math.max(rect.width,1);h=Math.max(rect.height,1);
-   dpr=Math.min(window.devicePixelRatio||1,w<800?1.35:1.7);
+   dpr=Math.min(window.devicePixelRatio||1,w<800?1:1.3);
    canvas.width=Math.max(1,Math.round(w*dpr));canvas.height=Math.max(1,Math.round(h*dpr));
    overlay.width=canvas.width;overlay.height=canvas.height;
    canvas.style.width=w+"px";canvas.style.height=h+"px";
@@ -153,7 +153,7 @@ export function VpnCinematicEarth(){
   intersect.observe(node);
   const tick=(now:number)=>{
    if(!active)return;
-   if(visible&&document.visibilityState==="visible"&&dayTex&&now-last>=(w<800?40:27)){
+   if(visible&&document.visibilityState==="visible"&&dayTex&&now-last>=(w<800?54:41)){
     last=now;const seconds=reduced?0:(now-started)/1000,angle=.61+(reduced?0:seconds*.027);
     const {x,y,r}=sphere(w,h);
     gl.useProgram(gpuState.program);
@@ -166,16 +166,25 @@ export function VpnCinematicEarth(){
     gl.uniform1f(gpuState.u.nightAvailable,nightTex?1:0);
     gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,dayTex);
     gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,nightTex||dayTex);
+    // Restrict expensive shader rendering to the sphere and its red halo.
+    gl.disable(gl.SCISSOR_TEST);
+    gl.clearColor(.0027,.0007,.002,1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    const cx=x*dpr,cy=(h-y)*dpr,extent=r*dpr*1.33;
+    const sx=Math.max(0,Math.floor(cx-extent)),sy=Math.max(0,Math.floor(cy-extent));
+    gl.enable(gl.SCISSOR_TEST);
+    gl.scissor(sx,sy,Math.max(1,Math.min(canvas.width-sx,Math.ceil(extent*2))),Math.max(1,Math.min(canvas.height-sy,Math.ceil(extent*2))));
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+    gl.disable(gl.SCISSOR_TEST);
     signals(ctx,w,h,angle,seconds);
    }
    raf=requestAnimationFrame(tick);
   };
   const load=async()=>{
-   const [day,night]=await Promise.all([photo("earth_day_4096.jpg"),photo("earth_night_4096.jpg")]);
+   const day=await photo("earth_day_4096.jpg");
    if(!active||!day)return;
    dayTex=texture(gl,day,0);
-   if(night)nightTex=texture(gl,night,1);
+   // Use a single GPU texture: city connections are driven by geographic coordinates.
    if(active){setReady(true);started=performance.now();}
   };
   media.addEventListener("change",onMotion);
@@ -188,7 +197,7 @@ export function VpnCinematicEarth(){
   };
  },[]);
  return <div ref={holder} className={styles.layer} aria-hidden="true">
-  <div className={ready?styles.fallbackHidden:styles.fallback}><VpnGlobeBackground/></div>
+  {!ready&&<div className={styles.fallback}><VpnGlobeBackground/></div>}
   <canvas ref={gpu} className={ready?styles.gpuVisible:styles.gpuHidden}/>
   <canvas ref={lines} className={ready?styles.routesVisible:styles.routesHidden}/>
   <div className={styles.fade}/><div className={styles.vignette}/>
