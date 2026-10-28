@@ -356,3 +356,355 @@
   .page *, .page *::before, .page *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important;}
   .page :global(.cloudy-mobile-sheen){display:none;}
 }
+
+
+/* CLOUDY VPN — EXECUTIVE EDITION
+   Bespoke editorial treatment. No globe, C logo, borrowed product logo,
+   external images or heavy GPU canvas. */
+.page{
+  --v-black:#040405;
+  --v-surface:#0B0A0D;
+  --v-surface-soft:#120D12;
+  --v-white:#FCF9FA;
+  --v-gray:#C4BAC0;
+  --v-red:#DB2343;
+  --v-bright:#FF536F;
+  background:#040405;
+}
+.container{width:min(1220px,calc(100% - 72px))}
+.hero{
+  min-height:810px;
+  padding:70px 0 95px;
+  background:
+    radial-gradient(ellipse 50% 62% at 79% 52%,rgba(190,22,53,.12),transparent 78%),
+    radial-gradient(ellipse 57% 57% at 15% 91%,rgba(119,12,33,.045),transparent 82%),
+    linear-gradient(180deg,#070609,#050405 73%,#040405 100%);
+}
+.hero::before{
+  opacity:.10;
+  background-size:36px 36px;
+}
+.heroGrid{
+  grid-template-columns:1.02fr .98fr;
+  gap:clamp(18px,4vw,65px);
+  min-height:638px;
+}
+.heroCopy h1{
+  font-size:clamp(72px,7.35vw,113px);
+  line-height:1;
+  margin:27px 0 30px;
+  letter-spacing:-.025em;
+}
+.heroCopy h1 span{
+  color:#FF5B71;
+  text-shadow:0 0 50px rgba(239,36,72,.13);
+}
+.heroLead{
+  font-size:clamp(14px,1.22vw,16px);
+  line-height:1.95;
+  max-width:480px;
+  color:#CDC4C9;
+}
+.eyebrow{font-size:10px;letter-spacing:.24em;color:#FF8EA1}
+.heroActions{margin-top:37px;gap:14px}
+.primaryButton,.secondaryButton{min-height:52px;padding-inline:25px;font-size:12px;border-radius:10px}
+.primaryButton{
+  border:1px solid #FC5B74;
+  background:linear-gradient(135deg,#EB3955,#BD1937);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 12px 39px rgba(178,17,47,.19);
+}
+.primaryButton:hover{background:linear-gradient(135deg,#FF4C69,#D72545);box-shadow:inset 0 1px rgba(255,255,255,.14),0 16px 38px rgba(224,22,57,.27)}
+.secondaryButton{border:1px solid rgba(255,255,255,.16);background:rgba(14,12,15,.62);backdrop-filter:blur(6px)}
+.heroAssurances{margin-top:43px;gap:27px;font-size:10px}
+
+/* The actual hero visual is a high fidelity original vector
+   with metallic facets and dramatic directed lighting. */
+.securityVisual{
+  height:660px;
+  width:100%;
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  place-items:center;
+  overflow:visible;
+}
+.visualAtmosphere{
+  position:absolute;inset:-10% -16%;pointer-events:none;z-index:-2;
+  background:
+    radial-gradient(ellipse 54% 51% at 51% 49%,rgba(237,32,72,.19),rgba(110,8,30,.08) 51%,transparent 81%),
+    radial-gradient(ellipse 49% 10% at 46% 89%,rgba(255,42,82,.22),transparent 85%);
+  filter:blur(20px);
+}
+.visualField{
+  position:absolute;inset:6% -5%;z-index:-2;
+  background-image:
+    linear-gradient(90deg,rgba(229,40,71,.105) 1px,transparent 1px),
+    linear-gradient(0deg,rgba(229,40,71,.105) 1px,transparent 1px);
+  background-size:35px 35px;
+  opacity:.18;
+  transform:perspective(650px) rotateX(22deg) rotateZ(-9deg);
+  mask-image:radial-gradient(ellipse at 49% 46%,#000 8%,transparent 73%);
+}
+.visualOrbitA,.visualOrbitB{
+  position:absolute;z-index:-1;
+  width:94%;height:83%;border-radius:50%;
+  border:1px solid rgba(250,61,101,.115);
+  transform:rotate(-27deg);
+  box-shadow:0 0 0 34px rgba(232,31,65,.01),0 0 0 88px rgba(232,31,65,.004);
+}
+.visualOrbitB{
+  width:63%;height:94%;
+  transform:rotate(32deg);
+  border-color:rgba(249,78,106,.08);
+  box-shadow:none;
+}
+.visualPlinth{
+  position:absolute;bottom:4%;left:13%;width:74%;height:11%;z-index:-1;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(245,45,82,.27),rgba(181,18,53,.07) 53%,transparent 77%);
+  filter:blur(14px);
+}
+.securityMonolith{
+  position:relative;
+  display:block;
+  width:min(95%,465px);
+  aspect-ratio:420/500;
+  transform:perspective(1150px) rotateY(-12deg) rotateX(3deg) rotateZ(-5deg);
+  filter:drop-shadow(21px 30px 30px rgba(0,0,0,.65)) drop-shadow(0 0 26px rgba(247,52,92,.15));
+  animation:vpnMonolithFloat 9s ease-in-out infinite;
+  backface-visibility:hidden;
+  will-change:transform;
+}
+.securityMonolith::after{
+  content:"";position:absolute;inset:2% 9%;
+  border-radius:43%;z-index:-1;
+  background:radial-gradient(ellipse,rgba(252,53,87,.15),transparent 67%);
+  filter:blur(23px);
+}
+.securityMonolith svg{width:100%;height:100%;display:block}
+.visualLowerLine{
+  width:50%;height:1px;position:absolute;bottom:5%;left:25%;opacity:.58;
+  background:linear-gradient(90deg,transparent,#94243c 27%,#FF7089 50%,#94243c 73%,transparent);
+  box-shadow:0 0 18px rgba(255,69,105,.32);
+}
+@keyframes vpnMonolithFloat{
+  0%,100%{transform:perspective(1150px) rotateY(-12deg) rotateX(3deg) rotateZ(-5deg) translateY(0)}
+  50%{transform:perspective(1150px) rotateY(-10deg) rotateX(3deg) rotateZ(-5deg) translateY(-9px)}
+}
+/* Wider typography and bolder section editorial rhythm. */
+.features,.featureSpotlight,.plans,.faq,.bottomCta{
+  padding:clamp(58px,6vw,94px) 0;
+}
+.sectionHeading{margin-bottom:52px;max-width:780px}
+.sectionHeading h2{
+  font-size:clamp(48px,5.75vw,76px);
+  line-height:1;
+  margin-block:20px 22px;
+  letter-spacing:-.023em;
+}
+.sectionHeading p{font-size:14px;line-height:1.94;color:#c9bec5}
+.featureGrid{gap:20px}
+.featureCard{
+  min-height:310px;
+  padding:37px 33px;
+  border-radius:18px;
+  border-color:rgba(255,255,255,.095);
+  background-color:#0B0A0D;
+}
+.featureIcon{
+  height:57px;width:57px;margin-bottom:58px;border-radius:15px;
+  background:linear-gradient(150deg,rgba(172,29,57,.19),rgba(44,9,19,.42));
+  border-color:rgba(255,95,128,.22);
+}
+.featureCard h3{font-size:18px;font-weight:850;letter-spacing:-.025em}
+.featureCard p{font-size:12.5px;max-width:320px;line-height:1.9;color:#C6BAC2}
+.featureCard:hover{
+  transform:translateY(-4px);
+  border-color:rgba(245,72,103,.35);
+  box-shadow:0 24px 74px rgba(0,0,0,.39),0 0 34px rgba(237,34,70,.06);
+}
+.spotlightPanel{
+  min-height:430px;
+  padding:70px 76px;
+  border-radius:22px;
+  grid-template-columns:1.12fr .88fr;
+  background-color:#10080D;
+  background-image:
+    radial-gradient(ellipse at 87% 44%,rgba(173,28,55,.08),transparent 60%),
+    linear-gradient(110deg,transparent 42%,rgba(160,160,170,.03) 46%,rgba(210,210,220,.12) 50%,rgba(160,160,170,.03) 54%,transparent 58%);
+}
+.spotlightCopy h2{font-size:clamp(48px,5.6vw,73px);line-height:1.03;letter-spacing:-.023em}
+.spotlightCopy p{line-height:2;max-width:525px;font-size:14px}
+.inlineLink{margin-top:29px;font-size:13px;color:#FF8BA2}
+.spotlightVisual{
+  position:relative;
+  height:290px;
+  border-radius:19px;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 57% 49%,rgba(219,32,66,.13),transparent 65%),
+    linear-gradient(136deg,#190B11,#0A080C 70%);
+  border:1px solid rgba(231,76,105,.18);
+  box-shadow:inset 0 1px rgba(255,255,255,.045),0 26px 55px rgba(0,0,0,.26);
+}
+.spotlightGrid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(240,72,105,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(240,72,105,.11) 1px,transparent 1px);
+  background-size:33px 33px;
+  mask-image:radial-gradient(ellipse at 55% 52%,#000,transparent 74%);
+  opacity:.26;
+}
+.spotlightPathA,.spotlightPathB,.spotlightPathC{
+  position:absolute;height:2px;
+  background:linear-gradient(90deg,transparent,#EC496B 35%,#FF9AAC 52%,#B92A4A 73%,transparent);
+  box-shadow:0 0 14px rgba(242,54,95,.26);
+  transform-origin:left center;
+}
+.spotlightPathA{width:66%;left:14%;top:38%;transform:rotate(23deg)}
+.spotlightPathB{width:49%;left:32%;top:72%;transform:rotate(-38deg);opacity:.66}
+.spotlightPathC{width:53%;left:24%;top:47%;transform:rotate(-24deg);opacity:.40}
+.spotlightPointA,.spotlightPointB,.spotlightPointC,.spotlightPointD{
+  position:absolute;height:9px;width:9px;border:2px solid #FF8AA1;border-radius:50%;background:#F44569;
+  box-shadow:0 0 0 6px rgba(225,43,76,.085),0 0 17px rgba(244,48,81,.53);
+}
+.spotlightPointA{left:14%;top:37%}
+.spotlightPointB{left:75%;top:61%}
+.spotlightPointC{left:32%;top:71%}
+.spotlightPointD{left:75%;top:40%}
+.spotlightHalo{
+  position:absolute;left:49%;top:48%;height:94px;width:94px;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(251,74,108,.21),rgba(225,31,68,.05) 56%,transparent 74%);
+  border:1px solid rgba(240,68,105,.19);border-radius:50%;
+}
+
+/* Pricing gains hierarchy and rhythm, not visual clutter. */
+.plans{
+  padding-block:clamp(76px,8.5vw,118px);
+  background:
+    radial-gradient(ellipse 62% 44% at 50% 51%,rgba(167,16,42,.07),transparent 81%),
+    linear-gradient(180deg,#060507 0%,#10090D 23%,#0E080B 77%,#060507 100%);
+}
+.billingBar{
+  border-radius:16px;
+  padding:23px 28px;
+  border-color:rgba(255,255,255,.09);
+  background:rgba(255,255,255,.019);
+}
+.billingIntro strong{font-size:14px;letter-spacing:-.012em}
+.billingIntro span{font-size:11px;color:#ABA1A8}
+.billingSwitch{background:#0A090B;border-color:rgba(255,255,255,.11);padding:5px}
+.billingOption,.billingActive{min-width:81px;padding:12px 16px;font-size:11.5px}
+.billingActive{background:#3A121F;border-color:#E64768;box-shadow:0 4px 16px rgba(200,24,60,.12)}
+.planGrid{gap:21px}
+.planCard{
+  min-height:597px;
+  border-radius:19px;
+  padding:34px 32px 29px;
+  background-color:#0A090B;
+  border:1px solid rgba(255,255,255,.105);
+  box-shadow:0 22px 67px rgba(0,0,0,.27);
+}
+.planFeatured{
+  background-color:#110B0F;
+  border-color:rgba(255,92,122,.49);
+  box-shadow:0 23px 73px rgba(0,0,0,.39),0 0 45px rgba(226,29,68,.075);
+}
+.planCard h3{font-size:40px;letter-spacing:-.045em;line-height:1}
+.planCard>p{font-size:12px;color:#BBAEB7;line-height:1.85}
+.planTop{margin-bottom:34px;}
+.planType{font-size:9.5px;letter-spacing:.19em;color:#CD8897}
+.soonTag{
+  background:linear-gradient(135deg,rgba(201,38,74,.23),rgba(147,20,53,.17));
+  border-color:rgba(250,106,135,.41);
+  color:#FFACC0;
+  padding:8px 12px;
+}
+.planRate{margin-top:31px;gap:3px}
+.planRate strong{font-size:clamp(47px,4.7vw,60px);letter-spacing:-.072em}
+.planCurrency{font-size:24px}
+.planPer{font-size:12px}
+.planBilled{margin:13px 0 23px!important;font-size:11px!important;color:#C4B7BD!important}
+.planFeatureTitle{margin-top:28px;color:#FF8DA3}
+.planCard ul{gap:14px;margin:22px 0 26px}
+.planCard li{font-size:12px;color:#E8DFE4}
+.planDetails{margin-bottom:21px;padding-top:17px}
+.cardBottom>button{min-height:51px;font-size:13px;border-radius:10px}
+.comparePanel{border-radius:17px;padding-inline:31px}
+.comparePanel>summary{min-height:78px;font-size:14px}
+.faqGrid{gap:clamp(45px,7vw,110px)}
+.faqIntro h2{font-size:clamp(48px,5.55vw,73px);line-height:1}
+.faqItem summary{min-height:78px;font-size:13px;font-weight:800}
+.ctaPanel{
+  padding:86px 28px;
+  min-height:410px;
+  border-radius:22px;
+  background-color:#11090E;
+}
+.ctaPanel h2{font-size:clamp(52px,6.3vw,84px);line-height:1}
+.ctaPanel p{font-size:14px;line-height:1.9}
+
+/* Only low-cost motion: the slow hero float and shared Cloudy panel trace.
+   Long sections are skipped by layout/paint until needed where supported. */
+.features,.featureSpotlight,.faq,.bottomCta{content-visibility:auto;contain-intrinsic-size:auto 550px}
+@media(max-width:1050px){
+  .heroGrid{gap:9px}
+  .heroCopy h1{font-size:clamp(62px,7.3vw,94px)}
+  .securityVisual{height:580px}
+  .securityMonolith{width:min(90%,410px)}
+  .spotlightPanel{padding:58px 55px}
+  .featureCard{padding:30px 27px;min-height:294px}
+  .planCard{padding:31px 28px}
+}
+@media(max-width:800px){
+  .hero{padding:76px 0 29px;min-height:0}
+  .heroGrid{display:grid;grid-template-columns:1fr;gap:0;min-height:0}
+  .heroCopy h1{font-size:clamp(64px,10.3vw,91px);margin:25px 0}
+  .heroLead{margin:0 auto;font-size:14px}
+  .heroAssurances{justify-content:center;margin-top:28px}
+  .securityVisual{height:530px;width:min(100%,560px);margin:12px auto 0}
+  .securityMonolith{width:min(74%,405px)}
+  .visualOrbitA{width:82%;height:78%}
+  .visualOrbitB{height:85%;width:59%}
+  .featureCard{min-height:0;padding:30px}
+  .featureIcon{margin-bottom:26px}
+  .spotlightPanel{padding:52px 44px;gap:24px}
+  .spotlightVisual{position:relative;opacity:1;transform:none;right:auto;bottom:auto;height:220px}
+  .spotlightCopy h2{font-size:clamp(49px,7vw,66px)}
+  .planCard{min-height:0}
+}
+@media(max-width:540px){
+  .container{width:calc(100% - 34px)}
+  .hero{padding-top:63px}
+  .heroCopy h1{font-size:clamp(51px,11.8vw,70px);margin:22px 0 23px;letter-spacing:-.03em}
+  .heroLead{font-size:13px;max-width:370px;line-height:1.85}
+  .heroActions{margin-top:28px;gap:11px}
+  .primaryButton,.secondaryButton{min-height:48px;padding-inline:17px}
+  .heroAssurances{font-size:9px;gap:14px}
+  .securityVisual{height:375px;margin-top:12px}
+  .securityMonolith{width:min(78%,300px)}
+  .visualAtmosphere{inset:-5%}
+  .visualLowerLine{bottom:2%}
+  .featureCard{padding:28px;min-height:0}
+  .featureIcon{width:50px;height:50px;margin-bottom:24px}
+  .featureCard h3{font-size:16px}
+  .featureCard p{font-size:12px}
+  .spotlightPanel{padding:39px 26px;gap:24px}
+  .spotlightCopy h2{font-size:clamp(43px,10.4vw,56px)}
+  .spotlightCopy p{font-size:12px;line-height:1.85}
+  .spotlightVisual{height:175px;border-radius:13px}
+  .spotlightHalo{height:65px;width:65px}
+  .features,.featureSpotlight,.faq,.bottomCta{padding-block:52px}
+  .plans{padding-block:78px}
+  .planCard{padding:30px 27px;border-radius:16px}
+  .planCard h3{font-size:35px}
+  .planRate strong{font-size:53px}
+  .planCard ul{gap:13px}
+  .billingBar{padding:16px;gap:14px}
+  .billingOption,.billingActive{min-width:0;font-size:10px;padding:11px 7px}
+  .ctaPanel{padding:63px 20px;min-height:0}
+  .ctaPanel h2{font-size:clamp(43px,9.3vw,61px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .securityMonolith{animation:none!important;will-change:auto}
+  .page :global(.cloudy-traced-panel)::after{animation:none!important}
+}
