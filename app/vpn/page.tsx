@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "Cloudy VPN | Preview",
   description: "Explore the Cloudy VPN concept, planned features and upcoming subscription options.",
   robots: { index: false, follow: false },
+  openGraph: { title: "Cloudy VPN | Preview", description: "Discover the next Cloudy digital experience." },
+  twitter: { card: "summary", title: "Cloudy VPN | Preview", description: "A new Cloudy experience is taking shape." },
 };
 
 const features = [
@@ -116,7 +118,7 @@ export default function VpnPage() {
               <h3>Yearly</h3><p>For those planning to stay connected.</p>
               <div className={styles.price}>Price to be announced</div><div className={styles.planDivider}/>
               <ul><li><Check size={15}/> Annual subscription concept</li><li><Check size={15}/> One simple membership</li><li><Check size={15}/> Feature details to follow</li></ul>
-              <div className={styles.disabledButton}>Not available yet <LockKeyhole size={15}/></div>
+              <div className={styles.disabledButton}>Coming soon <LockKeyhole size={15}/></div>
             </article>
           </div>
           <p className={styles.plansNote}><CircleHelp size={15}/> These are design concepts, not offers for sale. No VPN subscriptions are active on this page.</p>
