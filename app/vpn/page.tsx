@@ -14,10 +14,10 @@ export const metadata: Metadata = {
 };
 
 const features = [
-  { icon: ShieldCheck, title: "Privacy minded", description: "A connection experience designed around clarity, control and transparency." },
-  { icon: Zap, title: "Effortless experience", description: "A simple interface intended to make connecting feel natural and quick." },
-  { icon: Globe2, title: "Worldwide ambitions", description: "We are exploring network coverage and locations for the future service." },
-  { icon: MonitorSmartphone, title: "Made for your devices", description: "Supported platforms and device limits will be confirmed before release." },
+  { icon: ShieldCheck, title: "Encrypted connections", description: "A secure VPN tunnel is the core of the Cloudy service. Supported protocols and security details will be verified before release." },
+  { icon: Zap, title: "Kill switch and DNS", description: "Planned safeguards against accidental data exposure when your connection changes or unexpectedly drops." },
+  { icon: Globe2, title: "Location switching", description: "A clean, straightforward experience for selecting a preferred connection location from supported regions." },
+  { icon: MonitorSmartphone, title: "Extra privacy controls", description: "Proposed options such as split tunneling and tracker protection, subject to final technical verification." },
 ];
 
 const steps = [
