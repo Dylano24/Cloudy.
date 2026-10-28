@@ -208,8 +208,8 @@ export function EarthNetwork() {
     const ctx=canvas.getContext("2d",{alpha:true});
     if(!ctx)return;
 
-    let raf=0,alive=true,visible=true,last=0,time=0;
-    let angle=-.53; // North Atlantic on initial view.
+    let raf=0,alive=true,visible=true,last=0,lastDraw=0,time=0;
+    let angle=.49; // North Atlantic on initial view.
     const motion=window.matchMedia("(prefers-reduced-motion: reduce)");
     let reduced=motion.matches;
     let quality=700;
@@ -231,14 +231,16 @@ export function EarthNetwork() {
       if(!last)last=now;
       const elapsed=Math.min(.08,(now-last)/1000);last=now;
       const fps=quality<530?20:25;
-      if(now-time*1000>=1000/fps){ /* time is accumulated separately below */ }
       angle+=elapsed*(TAU/82);
       time+=elapsed;
-      draw(ctx,angle,time,true,quality<530);
+      if(now-lastDraw>=1000/fps){
+        lastDraw=now;
+        draw(ctx,angle,time,true,quality<530);
+      }
       raf=requestAnimationFrame(frame);
     };
     const onVisible=()=>{
-      if(visible&&!reduced&&document.visibilityState==="visible"&&!raf){last=0;raf=requestAnimationFrame(frame);}
+      if(visible&&!reduced&&document.visibilityState==="visible"&&!raf){last=0;lastDraw=0;raf=requestAnimationFrame(frame);}
       else if(document.visibilityState!=="visible"){cancelAnimationFrame(raf);raf=0;}
     };
     const intersection=new IntersectionObserver(entries=>{
