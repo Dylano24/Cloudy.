@@ -363,3 +363,21 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
 .page::before,.feature,.planCard,.floatPrivacy,.floatVision,.mapFocus span{animation:none!important}
 .consoleOuter,.mapFocus{transition:none!important}
 }
+
+
+/* Keep the four-item Cloudy navigation balanced on smaller phones, only while viewing VPN. */
+@media (max-width: 420px) {
+  :global(body:has(.cloudy-vpn-page) .cloudy-header-inner) {
+    width:calc(100% - 15px);
+    gap:3px;
+    min-height:60px;
+    padding-block:6px;
+  }
+  :global(body:has(.cloudy-vpn-page) .cloudy-header-brand) { min-width:0; }
+  :global(body:has(.cloudy-vpn-page) .cloudy-logo-orbit) { width:37px;height:37px; }
+  :global(body:has(.cloudy-vpn-page) .cloudy-logo-orbit img) { width:36px;height:36px; }
+  :global(body:has(.cloudy-vpn-page) .cloudy-header-nav) { gap:0;min-width:0; }
+  :global(body:has(.cloudy-vpn-page) .cloudy-header-nav a) {font-size:9px;padding:8px 3px;letter-spacing:0;}
+  :global(body:has(.cloudy-vpn-page) .cloudy-header-actions) {gap:2px!important;}
+  :global(body:has(.cloudy-vpn-page) .cloudy-header-actions .cloudy-shared-basket) {width:29px;height:35px;flex-basis:29px;padding:4px;}
+}
