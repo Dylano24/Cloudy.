@@ -58,6 +58,7 @@ export default function VpnPage() {
                 <span className={styles.globeDataIndex}>01 / 03</span>
               </div>
               <div className={styles.globeCoords}>AMSTERDAM <span>·</span> NEW YORK</div>
+              <a className={styles.globeSource} href="https://science.nasa.gov/earth/earth-observatory/the-blue-marble-true-color-global-imagery-at-1km-resolution/" target="_blank" rel="noreferrer">Earth imagery: NASA · Illustrative connections</a>
             </div>
           </div>
         </div>
@@ -100,11 +101,23 @@ export default function VpnPage() {
               <div className={styles.storyWindow}>
                 <div className={styles.storyWindowBar}><span className={styles.storyWindowLogo}>C</span><span>Cloudy VPN <small>· Design concept</small></span><div><i/><i/><i/></div></div>
                 <div className={styles.storyWindowBody}>
-                  <div className={styles.storyWindowMenu}><div/><div/><div/><div/></div>
-                  <div className={styles.storyWindowMain}><div className={styles.storyFakeHeading}/><div className={styles.storyFakeHeadingSmall}/><div className={styles.storyMiniMap}><span className={styles.storyMiniRing}/><Globe2 size={66} strokeWidth={.65}/></div><div className={styles.storyFakeBar}/></div>
+                  <div className={styles.storyWindowMenu}><span>⌂</span><span>◎</span><span>⚙</span></div>
+                  <div className={styles.storyWindowMain}>
+                    <div className={styles.storyDashboardTitle}>Connection overview <small>Interface preview</small></div>
+                    <div className={styles.storyMiniMap}><span className={styles.storyMiniRing}/><Globe2 size={69} strokeWidth={.7}/></div>
+                    <div className={styles.storyDashboardStatus}><span className={styles.storyStatusDot}/><strong>Not connected</strong><small>Design concept</small></div>
+                    <div className={styles.storyDashboardLocation}><span>Example location</span><strong>Amsterdam, NL</strong></div>
+                  </div>
                 </div>
               </div>
-              <div className={styles.storyPhone}><div className={styles.storyPhoneTop}/><span className={styles.storyPhoneMark}>C</span><div className={styles.storyPhoneRing}><LockKeyhole size={23}/></div><div className={styles.storyPhoneLine}/><div className={styles.storyPhonePill}>PREVIEW</div></div>
+              <div className={styles.storyPhone}>
+                <div className={styles.storyPhoneTop}/>
+                <span className={styles.storyPhoneMark}>C</span>
+                <span className={styles.storyPhoneName}>Cloudy VPN</span>
+                <div className={styles.storyPhoneRing}><LockKeyhole size={23}/></div>
+                <span className={styles.storyPhoneStatus}>Not connected</span>
+                <div className={styles.storyPhonePill}>DESIGN PREVIEW</div>
+              </div>
               <span className={styles.storyArtCaption}>INTERFACE CONCEPT / NOT A LIVE SERVICE</span>
             </div>
           </div>
