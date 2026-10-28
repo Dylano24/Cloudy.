@@ -1749,3 +1749,10 @@
 @media (hover: hover) and (pointer: fine) {
   .packageCard .buyButton:hover { background: rgba(255,255,255,.025); }
 }
+
+/* Shared FAQ heading for Web solutions and VPN: lightweight text with three red glow dots. */
+.faqHeading{width:100%;max-width:900px}
+.faqDotRow{display:flex;align-items:center;justify-content:space-between;width:100%;margin:0 0 12px;padding:0 8px}
+.faqDotRow span{width:6px;height:6px;border-radius:50%;background:#e63445;box-shadow:0 0 7px #ff1738a6,0 0 17px #ff173866}
+.faqHeading h2.faqHeadingTitle{font-family:var(--font-sans),Manrope,Arial,sans-serif;font-size:clamp(28px,3.2vw,44px);font-weight:400;line-height:1.15;letter-spacing:-.055em;color:#fafafa;text-wrap:balance;margin:0}
+@media(max-width:600px){.faqDotRow{margin-bottom:12px}.faqHeading h2.faqHeadingTitle{font-size:clamp(24px,6.5vw,31px)}}
