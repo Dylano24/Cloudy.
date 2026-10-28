@@ -127,3 +127,9 @@
 .sectionHeading h2 span,.spotlightCopy h2 span,.faqIntro h2 span{color:#fafafa}
 /* Keep VPN FAQ typography and interaction aligned with Web solutions. */
 .faqItems summary,.faqItems details[open] summary,.faqItems summary:hover,.faqItems summary:active,.faqItems summary:focus-visible{color:inherit;font-weight:500}
+
+/* VPN follows the Web solutions FAQ and primary CTA styles. */
+.faqItems details[open] > summary,.faqItems details[open] > summary:hover,.faqItems details[open] > summary:focus-visible{color:#ff1738;font-weight:500}
+.faqItems details:not([open]) > summary{color:#fff}
+.studioButton{font-family:var(--font-sans),Manrope,Arial,sans-serif}
+.faqIntro h2{font-family:var(--font-display),Anton,Impact,sans-serif;font-weight:400}
