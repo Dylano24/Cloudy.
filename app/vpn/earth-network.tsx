@@ -7,7 +7,7 @@ import styles from "./vpn.module.css";
 /**
  * Cloudy VPN visual network. Natural Earth public-domain geography.
  * Real spherical rotation in a bounded 2D canvas (no WebGL / external assets).
- * Illustrated traffic is a design visual, NOT a live server-status feed.
+ * Geography only: no server markers, routes or traffic signals.
  */
 const TAU = Math.PI * 2;
 const DEG = Math.PI / 180;
@@ -50,40 +50,6 @@ for (let lat = -60; lat <= 60; lat += 30) {
 for (let lon = -180; lon < 180; lon += 30) {
   grid.push(Array.from({length: 73}, (_, i) => vector(lon, -90 + i * 2.5)));
 }
-const cities = [
-  { name:"Amsterdam", lon:4.904, lat:52.368 },
-  { name:"New York", lon:-74.006, lat:40.713 },
-  { name:"London", lon:-.127, lat:51.508 },
-  { name:"São Paulo", lon:-46.633, lat:-23.55 },
-  { name:"Lagos", lon:3.379, lat:6.524 },
-  { name:"Cape Town", lon:18.424, lat:-33.925 },
-  { name:"Mexico City", lon:-99.133, lat:19.433 },
-  { name:"Lisbon", lon:-9.139, lat:38.723 },
-  { name:"Buenos Aires", lon:-58.382, lat:-34.604 },
-  { name:"Miami", lon:-80.192, lat:25.762 },
-  { name:"Tokyo", lon:139.65, lat:35.68 },
-  { name:"Singapore", lon:103.819, lat:1.35 },
-  { name:"Sydney", lon:151.21, lat:-33.87 },
-  { name:"Dubai", lon:55.271, lat:25.205 },
-  { name:"Los Angeles", lon:-118.244, lat:34.052 },
-];
-const nodeVectors = cities.map(c => vector(c.lon,c.lat));
-const pairs: [number,number][] = [
-  [0,1],[0,2],[0,3],[0,4],[0,5],[1,6],[1,9],[1,14],[3,8],
-  [4,5],[2,7],[7,9],[0,13],[13,11],[11,10],[10,12],[11,12],[10,14],
-];
-function slerp(a:Vec,b:Vec,t:number): Vec {
-  const dot = Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2]));
-  const angle = Math.acos(dot), d = Math.sin(angle);
-  if(d < 1e-5) return a;
-  const x = Math.sin((1-t)*angle)/d, y = Math.sin(t*angle)/d;
-  return [a[0]*x+b[0]*y,a[1]*x+b[1]*y,a[2]*x+b[2]*y];
-}
-const routes = pairs.map(([a,b],index)=>({
-  a,b,index,
-  points: Array.from({length:49},(_,i)=>slerp(nodeVectors[a],nodeVectors[b],i/48))
-}));
-
 function line(ctx: CanvasRenderingContext2D, points: readonly Vec[], angle: number, threshold = 0.012) {
   let active = false;
   for(const v of points) {
@@ -94,7 +60,7 @@ function line(ctx: CanvasRenderingContext2D, points: readonly Vec[], angle: numb
     } else active=false;
   }
 }
-function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: boolean, lowPower: boolean) {
+function draw(ctx: CanvasRenderingContext2D, rotation: number) {
   ctx.clearRect(0,0,700,700);
   const globe = ctx.createRadialGradient(268,225,40,350,350,315);
   globe.addColorStop(0,"#290609");
@@ -137,51 +103,6 @@ function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: 
   for(const coast of coastlines) line(ctx,coast,rotation,.014);
   ctx.stroke();
 
-  // Connections are strictly front-facing geodesics on the globe.
-  const nodes=nodeVectors.map(v=>project(v,rotation));
-  const visible=routes.filter(r=>nodes[r.a].z>.085&&nodes[r.b].z>.085);
-  const chosen=visible.slice(0,lowPower?5:9);
-  for(const r of chosen){
-    const path=r.points.map(v=>project(v,rotation));
-    ctx.beginPath();let drawing=false;
-    for(const p of path){
-      if(p.z>.012) { if(!drawing){ctx.moveTo(p.x,p.y);drawing=true;}else ctx.lineTo(p.x,p.y); }
-      else drawing=false;
-    }
-    ctx.strokeStyle="rgba(229,27,46,.14)";
-    ctx.lineWidth=lowPower?3:4.5;
-    ctx.stroke();
-    ctx.strokeStyle="rgba(229,27,46,.57)";
-    ctx.lineWidth=.95;
-    ctx.stroke();
-    if(move) {
-      for(let direction=0;direction<2;direction++){
-        const progress=((t*(direction===0?.105:-.105)+r.index*.137+direction*.47)%1+1)%1;
-        const point=project(slerp(nodeVectors[r.a],nodeVectors[r.b],progress),rotation);
-        if(point.z<.025)continue;
-        const tailProgress=Math.max(0,Math.min(1,progress+(direction===0?-.025:.025)));
-        const previous=project(slerp(nodeVectors[r.a],nodeVectors[r.b],tailProgress),rotation);
-        ctx.strokeStyle="rgba(229,27,46,.88)";
-        ctx.lineWidth=2.2;
-        ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(point.x,point.y);ctx.stroke();
-        const glow=ctx.createRadialGradient(point.x,point.y,0,point.x,point.y,8);
-        glow.addColorStop(0,"rgba(229,27,46,.94)");
-        glow.addColorStop(.2,"rgba(229,27,46,.77)");
-        glow.addColorStop(1,"rgba(229,27,46,0)");
-        ctx.fillStyle=glow;ctx.beginPath();ctx.arc(point.x,point.y,8,0,TAU);ctx.fill();
-      }
-    }
-  }
-
-  for (const p of nodes) {
-    if(p.z<.1)continue;
-    ctx.fillStyle="rgba(229,27,46,.13)";
-    ctx.beginPath();ctx.arc(p.x,p.y,9,0,TAU);ctx.fill();
-    ctx.strokeStyle="rgba(229,27,46,.77)";
-    ctx.lineWidth=1;ctx.beginPath();ctx.arc(p.x,p.y,4.1,0,TAU);ctx.stroke();
-    ctx.fillStyle="#e51b2e";ctx.beginPath();ctx.arc(p.x,p.y,1.9,0,TAU);ctx.fill();
-  }
-
   const shade=ctx.createRadialGradient(260,216,45,350,350,350);
   shade.addColorStop(0,"rgba(229,27,46,0)");
   shade.addColorStop(.55,"rgba(229,27,46,0)");
@@ -203,7 +124,7 @@ function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: 
 
 export function EarthNetwork() {
   const [paused,setPaused]=useState(false);
-  const position=useRef({angle:.49,time:0});
+  const position=useRef({angle:.49});
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const containerRef=useRef<HTMLDivElement>(null);
   useEffect(()=>{
@@ -213,22 +134,20 @@ export function EarthNetwork() {
     if(!ctx)return;
 
     let raf=0,alive=true,visible=false,last=0,lastDraw=0;
-    let {angle,time}=position.current; // Preserve rotation across pause/resume.
+    let {angle}=position.current; // Preserve rotation across pause/resume.
     const motion=window.matchMedia("(prefers-reduced-motion: reduce)");
     let reduced=motion.matches;
     let quality=700;
-    let lowPower=false;
     const resize=()=>{
       const width=canvas.getBoundingClientRect().width;
-      lowPower=width<600;
       quality=Math.max(340,Math.min(850,Math.round(width*Math.min(window.devicePixelRatio||1,1.45))));
       if(canvas.width!==quality){canvas.width=quality;canvas.height=quality;}
       ctx.setTransform(quality/700,0,0,quality/700,0,0);
-      draw(ctx,angle,time,!reduced&&!paused,lowPower);
+      draw(ctx,angle);
     };
     const onMotion=()=>{
       reduced=motion.matches;
-      if(reduced||paused){cancelAnimationFrame(raf);raf=0;draw(ctx,angle,time,false,lowPower);}
+      if(reduced||paused){cancelAnimationFrame(raf);raf=0;draw(ctx,angle);}
       else if(visible&&document.visibilityState==="visible"&&!raf)raf=requestAnimationFrame(frame);
     };
     const frame=(now:number)=>{
@@ -238,11 +157,10 @@ export function EarthNetwork() {
       const elapsed=Math.min(.08,(now-last)/1000);last=now;
       const fps=30;
       angle+=elapsed*(TAU/82);
-      time+=elapsed;
       if(now-lastDraw>=1000/fps){
         lastDraw=now;
-        draw(ctx,angle,time,true,lowPower);
-        position.current={angle,time};
+        draw(ctx,angle);
+        position.current={angle};
       }
       raf=requestAnimationFrame(frame);
     };
@@ -278,7 +196,7 @@ export function EarthNetwork() {
         width={700}
         height={700}
         role="img"
-        aria-label="Rotating digital Earth with illustrated connection routes between cities, contained on the globe."
+        aria-label="Rotating red and black Earth with detailed continents and coastlines."
       />
       <button type="button" className={styles.motionButton} onClick={()=>setPaused(value=>!value)} aria-pressed={paused} aria-label="Pause globe animation">
         <span aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span>{paused ? "Resume globe" : "Pause globe"}

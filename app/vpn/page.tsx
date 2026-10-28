@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   ArrowRight, Check, ChevronRight, Globe2,
-  ShieldCheck, Zap,
+  ShieldCheck, Zap, Laptop, Smartphone,
 } from "lucide-react";
 import styles from "./vpn.module.css";
 import { VpnPanelMotion } from "./vpn-motion";
@@ -112,15 +111,13 @@ export default function VpnPage() {
               <p>Your traffic travels through an encrypted tunnel to a VPN server before reaching the internet. The tunnel protects this part of the journey; the websites you use and accounts you sign into still matter.</p>
               <a href="#plans" className={styles.inlineLink}>Explore the plans <ArrowRight size={17}/></a>
             </div>
-            <div className={styles.connectionDiagram} aria-label="Connection path: your device, encrypted VPN tunnel, VPN server, then the internet">
+            <div className={styles.connectionDiagram} aria-label="Connection path: your device, encrypted VPN tunnel, VPN server">
               <div className={styles.diagramHeading}><ShieldCheck size={18}/><span>Inside the VPN tunnel</span></div>
               <div className={styles.tunnelPath}>
-                <div><span className={styles.diagramNode}><ShieldCheck size={25}/></span><strong>Your device</strong><small>Traffic enters the tunnel</small></div>
+                <div><span className={[styles.diagramNode,styles.deviceNode].join(" ")} aria-hidden="true"><Laptop size={29}/><Smartphone size={18}/></span><strong>Your device</strong><small>Traffic enters the tunnel</small></div>
                 <span className={styles.tunnelLine} aria-hidden="true"/>
                 <div><span className={styles.diagramNode}><Globe2 size={25}/></span><strong>VPN server</strong><small>Your public IP changes</small></div>
               </div>
-              <div className={styles.diagramDestination}><ArrowRight size={18}/><span>Then onward to the internet</span></div>
-              <p>Use HTTPS for an encrypted connection to the websites you visit.</p>
             </div>
           </div>
         </div>
@@ -135,7 +132,6 @@ export default function VpnPage() {
               <span className={styles.eyebrow}>FREQUENT QUESTIONS</span>
               <h2>Know what<br/><span>you’re choosing.</span></h2>
               <p>Clear answers about plans, connection protection and privacy controls.</p>
-              <Link href="/support" className={styles.inlineLink}>Contact Cloudy <ArrowRight size={17}/></Link>
             </div>
             <div className={styles.faqItems}>
               {questions.map(({question,answer})=>(
