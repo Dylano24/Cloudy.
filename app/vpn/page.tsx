@@ -71,8 +71,8 @@ export default function VpnPage() {
                 Take control of your connection. Explore encrypted browsing, location choice and privacy tools in three straightforward Cloudy VPN plans.
               </p>
               <div className={styles.heroActions}>
-                <a href="#plans" className={styles.primaryButton}>Compare plans <ArrowRight size={18}/></a>
-                <a href="#features" className={styles.secondaryButton}>Explore protection <ChevronRight size={17}/></a>
+                <a href="#plans" className={styles.secondaryButton}>Compare plans <ArrowRight size={18}/></a>
+                <a href="#features" className={styles.primaryButton}>Explore protection <ChevronRight size={17}/></a>
               </div>
               <div className={styles.heroAssurances}>
                 <span><Check size={15}/> Connection protection</span>
