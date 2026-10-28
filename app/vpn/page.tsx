@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import {
-  ArrowRight, Check, ChevronRight, Globe2,
+  ArrowRight, ChevronRight, Globe2,
   ShieldCheck, Zap,
 } from "lucide-react";
 import styles from "./vpn.module.css";
 import studioStyles from "@/app/service/service.module.css";
 import { VpnPanelMotion } from "./vpn-motion";
 import { VpnPricing } from "./vpn-pricing";
-import { EarthNetwork } from "./earth-network";
 
 export const metadata: Metadata = {
   title: "Cloudy VPN | Your connection. Your control.",
@@ -74,12 +73,7 @@ export default function VpnPage() {
                 <a href="#plans" className={styles.secondaryButton}>Compare plans <ArrowRight size={18}/></a>
                 <a href="#features" className={[studioStyles.primaryButton,styles.studioButton].join(" ")}>Explore protection <ChevronRight size={17}/></a>
               </div>
-              <div className={styles.heroAssurances}>
-                <span><Check size={15}/> Connection protection</span>
-                <span><Check size={15}/> Three levels of privacy</span>
-              </div>
             </div>
-            <EarthNetwork/>
           </div>
         </div>
       </section>
