@@ -141,13 +141,8 @@
   filter:blur(8px);
 }
 .centralLock {position:absolute;color:#ffadc0;filter:drop-shadow(0 0 18px rgba(244,58,95,.33));}
-.visualCaption{
-  position:absolute;bottom:-54px;left:50%;transform:translateX(-50%);
-  display:flex;align-items:center;gap:10px;
-  white-space:nowrap;
-  font-size:9px;color:#9e7986;font-weight:850;letter-spacing:.20em;
-}
-.visualCaptionLine{width:28px;height:1px;background:linear-gradient(90deg,#fa5877,transparent);}
+
+
 .floatingNote {
   position:absolute;right:-1%;bottom:25px;
   display:flex;align-items:center;gap:11px;
@@ -158,8 +153,6 @@
   backdrop-filter:blur(10px);
 }
 .floatingNoteIcon {width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:#ff8197;background:#2c0e1c;border:1px solid #6b3040;}
-.floatingNote strong{font-size:11px;display:block;}
-.floatingNote small{font-size:9px;color:#b4a0aa;display:block;margin-top:4px;}
 
 /* Cleaner, less repetitive sections */
 .features,.featureSpotlight,.plans,.faq,.bottomCta{position:relative;padding:var(--cloudy-section-half-gap,64px) 0;}
@@ -291,7 +284,7 @@
   .heroAssurances{margin-top:24px;}
   .securityVisual{width:min(100%,530px);height:470px;margin:10px auto 0;}
   .visualFrame{width:min(79%,425px);border-radius:40px;transform:perspective(1100px) rotateY(-10deg) rotateX(6deg) rotateZ(-3deg);}
-  .floatingNote{right:3%;bottom:23px;}
+  
   .featureGrid{grid-template-columns:1fr;max-width:620px;margin:auto;gap:15px;}
   .featureCard{min-height:0;padding:26px 26px 29px;}
   .featureIcon{margin-bottom:18px;}
@@ -320,12 +313,7 @@
   .shieldSurface>svg:first-of-type{width:120px;height:120px;}
   .centralLock{width:31px;height:31px;}
   .shieldShine{width:100px;height:105px;top:24px;left:28px;}
-  .visualContour{width:80%;}
-  .visualCaption{bottom:-32px;font-size:7px;letter-spacing:.15em;}
-  .floatingNote{bottom:12px;right:1%;padding:8px 10px;gap:7px;}
-  .floatingNoteIcon{height:30px;width:30px;border-radius:8px;}
-  .floatingNoteIcon svg{width:16px;}
-  .floatingNote strong{font-size:9px;}.floatingNote small{font-size:8px;}
+  .visualContour{width:80%;}.floatingNote small{font-size:8px;}
   .features,.featureSpotlight,.plans,.faq,.bottomCta{padding:var(--cloudy-section-half-gap,39px) 0;}
   .sectionHeading{margin-bottom:27px;}
   .sectionHeading h2,.spotlightCopy h2,.faqIntro h2,.ctaPanel h2{font-size:clamp(38px,9.7vw,55px);}
