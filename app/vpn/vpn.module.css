@@ -95,3 +95,6 @@
 .page [data-motion-paused="true"],.page [data-motion-paused="true"]::after{animation-play-state:paused!important}
 .page [data-cloudy-vpn-order]{background:#111;border-color:#444}
 .page [data-cloudy-vpn-order] [class*="reviewText"]{background:#090909}
+
+.page [data-cloudy-vpn-order] [class*="previewNotice"]{background:#e51b2e0c;border-color:#e51b2e44;color:#ddd}
+.page [data-cloudy-vpn-order] [class*="secondaryButton"]{background:#191919}

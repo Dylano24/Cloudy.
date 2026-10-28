@@ -21,13 +21,13 @@ const tiers=[
   {
     name:"Complete",subtitle:"A wider set of privacy controls.",featured:true,
     prices:{twoYears:3.99,year:5.99,month:19.99},
-    features:["All Basic features","Ad and tracker blocking","Threat and phishing protection","Split tunneling","Additional privacy settings"],
+    features:["All Basic features","Ad and tracker blocking","Threat and phishing protection","Split tunneling"],
     details:"Everything in Basic, with additional controls for ads, trackers and suspicious domains. Split tunneling lets you choose which apps use the VPN.",
   },
   {
     name:"Ultra",subtitle:"Advanced tools for greater flexibility.",
     prices:{twoYears:5.99,year:8.09,month:22.89},
-    features:["All Complete features","Advanced connection options","Multi hop VPN","Priority support","Additional privacy tools"],
+    features:["All Complete features","Multi hop VPN","Priority support"],
     details:"Everything in Complete, with advanced routing and priority support. Multi hop routes traffic through more than one VPN server and may affect connection speed.",
   },
 ] as const;
@@ -82,7 +82,7 @@ export function VpnPricing(){
         <div className={styles.cardBottom}>
          <button type="button" className={studioStyles.buyButton} popoverTarget={popoverId} popoverTargetAction="show" aria-label={"Buy Cloudy VPN " + tier.name}>Buy</button>
          <div className={studioStyles.orderPopover} id={popoverId} popover="auto" role="dialog" aria-labelledby={popoverId+"-title"} data-cloudy-vpn-order>
-          <button type="button" className={studioStyles.close} popoverTarget={popoverId} popoverTargetAction="hide" aria-label="Close">×</button>
+          <button type="button" className={studioStyles.close} autoFocus popoverTarget={popoverId} popoverTargetAction="hide" aria-label="Close">×</button>
           <h2 id={popoverId+"-title"}>Cloudy VPN {tier.name}</h2>
           <p>{term.label} · {euro(rate)} / month</p>
           <div className={studioStyles.reviewText}>
