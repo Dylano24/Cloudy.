@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check, ChevronRight, CircleHelp, Globe2, LockKeyhole, MonitorSmartphone, ShieldCheck, Sparkles, Wifi, Zap } from "lucide-react";
 import styles from "./vpn.module.css";
 import { VpnCinematicEarth } from "./vpn-cinematic";
+import { StudioMobilePanelSync } from "@/components/service/studio-mobile-panel-sync";
 import { VpnPricing } from "./vpn-pricing";
 
 export const metadata: Metadata = {
@@ -36,30 +37,31 @@ const questions = [
 export default function VpnPage() {
   return (
     <div className={`${styles.page} cloudy-vpn-page`}>
-      <div className={styles.previewStrip}><span className={styles.previewDot}/> EARLY CONCEPT PREVIEW <span className={styles.previewSep}/> Not yet available for purchase</div>
+      <StudioMobilePanelSync rootSelector=".cloudy-vpn-page" />
+      <div className={styles.previewStrip}><span className={styles.previewDot}/> CLOUDY VPN <span className={styles.previewSep}/> Explore our subscription plans</div>
       <section className={styles.hero}>
         <VpnCinematicEarth />
         <div className={styles.heroAura} aria-hidden="true" />
         <div className={styles.container}>
           <div className={styles.heroGrid}>
             <div className={styles.heroCopy}>
-              <div className={styles.eyebrow}><span className={styles.tinyRedDot}/> CLOUDY VPN / A NEW DIGITAL EXPERIENCE <span className={styles.eyebrowLine}/></div>
+              <div className={styles.eyebrow}><span className={styles.tinyRedDot}/> CLOUDY VPN <span className={styles.eyebrowLine}/></div>
               <h1>Connection<br/><span>reimagined.</span></h1>
-              <p className={styles.heroLead}>Your digital world deserves better. Meet a more thoughtful VPN experience in development, shaped by clean design, clear choices and the unmistakable Cloudy identity.</p>
+              <p className={styles.heroLead}>Your digital world deserves better. Powerful privacy features, effortless design and the unmistakable Cloudy experience.</p>
               <div className={styles.heroActions}>
                 <a href="#experience" className={styles.primaryButton}>Discover the concept <ArrowRight size={17} /></a>
                 <a href="#plans" className={styles.secondaryButton}>Explore plans <ChevronRight size={17} /></a>
               </div>
-              <div className={styles.heroFoot}><div><ShieldCheck size={17}/> Privacy minded concept</div><span className={styles.footDivider}/><div><Sparkles size={17}/> Preview only</div></div>
+              <div className={styles.heroFoot}><div><ShieldCheck size={17}/> Privacy focused</div><span className={styles.footDivider}/><div><Sparkles size={17}/> Beautifully simple</div></div>
             </div>
             <div className={styles.heroGlobeSpace} aria-hidden="true">
               <div className={styles.globeDataLabel}>
                 <span className={styles.globeDataPulse} />
-                <div><strong>Geographic routes</strong><small>City to city routes</small></div>
-                <span className={styles.globeDataIndex}>CONCEPT</span>
+                <div><strong>Global network</strong><small>City to city signals</small></div>
+                <span className={styles.globeDataIndex}>CLOUDY</span>
               </div>
               <div className={styles.globeCoords}>AMSTERDAM <span>·</span> NEW YORK</div>
-              <a className={styles.globeSource} href="https://science.nasa.gov/earth/earth-observatory/the-blue-marble-true-color-global-imagery-at-1km-resolution/" target="_blank" rel="noreferrer">Earth imagery: NASA · Illustrative connections</a>
+              <a className={styles.globeSource} href="https://science.nasa.gov/earth/earth-observatory/the-blue-marble-true-color-global-imagery-at-1km-resolution/" target="_blank" rel="noreferrer">Earth imagery: NASA · Animated global routes</a>
             </div>
           </div>
         </div>
@@ -100,26 +102,26 @@ export default function VpnPage() {
             <div className={styles.storyArt} aria-label="Conceptual desktop and mobile interface illustration">
               <div className={styles.storyAura} aria-hidden="true"/>
               <div className={[styles.storyWindow,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
-                <div className={styles.storyWindowBar}><span className={styles.storyWindowLogo}>C</span><span>Cloudy VPN <small>· Design concept</small></span><div><i/><i/><i/></div></div>
+                <div className={styles.storyWindowBar}><span>Cloudy VPN <small>· Cloudy VPN</small></span><div><i/><i/><i/></div></div>
                 <div className={styles.storyWindowBody}>
                   <div className={styles.storyWindowMenu}><span>⌂</span><span>◎</span><span>⚙</span></div>
                   <div className={styles.storyWindowMain}>
-                    <div className={styles.storyDashboardTitle}>Connection overview <small>Interface preview</small></div>
+                    <div className={styles.storyDashboardTitle}>Connection overview <small>VPN dashboard</small></div>
                     <div className={styles.storyMiniMap}><span className={styles.storyMiniRing}/><Globe2 size={69} strokeWidth={.7}/></div>
-                    <div className={styles.storyDashboardStatus}><span className={styles.storyStatusDot}/><strong>Not connected</strong><small>Design concept</small></div>
+                    <div className={styles.storyDashboardStatus}><span className={styles.storyStatusDot}/><strong>Offline</strong><small>Design concept</small></div>
                     <div className={styles.storyDashboardLocation}><span>Example location</span><strong>Amsterdam, NL</strong></div>
                   </div>
                 </div>
               </div>
               <div className={styles.storyPhone}>
                 <div className={styles.storyPhoneTop}/>
-                <span className={styles.storyPhoneMark}>C</span>
+                
                 <span className={styles.storyPhoneName}>Cloudy VPN</span>
                 <div className={styles.storyPhoneRing}><LockKeyhole size={23}/></div>
                 <span className={styles.storyPhoneStatus}>Not connected</span>
-                <div className={styles.storyPhonePill}>DESIGN PREVIEW</div>
+                <div className={styles.storyPhonePill}>CLOUDY VPN</div>
               </div>
-              <span className={styles.storyArtCaption}>INTERFACE CONCEPT / NOT A LIVE SERVICE</span>
+              <span className={styles.storyArtCaption}>CLOUDY VPN / DESKTOP & MOBILE</span>
             </div>
           </div>
         </div>
