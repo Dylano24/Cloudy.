@@ -236,8 +236,9 @@ export default function ServicePage() {
 
       <section className={`${styles.section} ${styles.faqSection}`}>
         <div className={styles.wrap}>
-          <header className={styles.sectionHead}>
-            <h2>Frequently asked questions.</h2>
+          <header className={[styles.sectionHead,styles.faqHeading].join(" ")}>
+            <div className={styles.faqDotRow} aria-hidden="true"><span /><span /><span /></div>
+            <h2 className={styles.faqHeadingTitle}>Frequently asked questions.</h2>
           </header>
 
           <div className={styles.faqList}>
