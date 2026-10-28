@@ -63,12 +63,12 @@ export function VpnPricing(){
      </div>
     </div>
     <div className={styles.planGrid}>
-     {tiers.map((tier,i)=>{
+     {tiers.map((tier)=>{
        const rate=tier.prices[period];
        const total=Math.round(rate*term.months*100)/100;
        const popoverId="cloudy-vpn-order-"+tier.name.toLowerCase();
        return <article key={tier.name} className={[styles.planCard,"cloudy-traced-panel","cloudy-studio-sheen-panel",("featured" in tier&&tier.featured)?styles.planFeatured:""].join(" ")}>
-        <div className={styles.planTop}><span className={styles.planType}>{String(i+1).padStart(2,"0")} / {tier.accent}</span>
+        <div className={styles.planTop}><span className={styles.planType}>CLOUDY VPN</span>
         {"featured" in tier&&tier.featured&&<span className={styles.soonTag}>Most popular</span>}</div>
         <h3>{tier.name}</h3><p>{tier.subtitle}</p>
         <div className={styles.planRate} aria-label={euro(rate)+" per month"}><span className={styles.planCurrency}>€</span>
