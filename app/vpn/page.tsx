@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import {
   ArrowRight, Check, ChevronRight, Globe2,
-  ShieldCheck, Zap, Laptop, Smartphone,
+  ShieldCheck, Zap,
 } from "lucide-react";
 import styles from "./vpn.module.css";
+import studioStyles from "@/app/service/service.module.css";
 import { VpnPanelMotion } from "./vpn-motion";
 import { VpnPricing } from "./vpn-pricing";
 import { EarthNetwork } from "./earth-network";
@@ -114,7 +115,12 @@ export default function VpnPage() {
             <div className={styles.connectionDiagram} aria-label="Connection path: your device, encrypted VPN tunnel, VPN server">
               <div className={styles.diagramHeading}><ShieldCheck size={18}/><span>Inside the VPN tunnel</span></div>
               <div className={styles.tunnelPath}>
-                <div><span className={[styles.diagramNode,styles.deviceNode].join(" ")} aria-hidden="true"><Laptop size={29}/><Smartphone size={18}/></span><strong>Your device</strong><small>Traffic enters the tunnel</small></div>
+                <div><span className={styles.diagramNode} aria-hidden="true"><svg viewBox="0 0 48 34" width="46" height="33" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" focusable="false">
+                  <rect x="3" y="5" width="27" height="19" rx="2"/>
+                  <path d="M3 24 1 28a1 1 0 0 0 1 1h29M12 27h8"/>
+                  <rect x="34" y="11" width="12" height="21" rx="2.2"/>
+                  <path d="M38 14h4M39 29h2"/>
+                </svg></span><strong>Your device</strong><small>Traffic enters the tunnel</small></div>
                 <span className={styles.tunnelLine} aria-hidden="true"/>
                 <div><span className={styles.diagramNode}><Globe2 size={25}/></span><strong>VPN server</strong><small>Your public IP changes</small></div>
               </div>
@@ -133,10 +139,10 @@ export default function VpnPage() {
               <h2>Know what<br/><span>you’re choosing.</span></h2>
               <p>Clear answers about plans, connection protection and privacy controls.</p>
             </div>
-            <div className={styles.faqItems}>
+            <div className={[studioStyles.faqList,styles.faqItems].join(" ")}>
               {questions.map(({question,answer})=>(
-                <details key={question} className={styles.faqItem}>
-                  <summary>{question}<span className={styles.faqPlus}>+</span></summary>
+                <details key={question} className={studioStyles.faqItem}>
+                  <summary>{question}</summary>
                   <p>{answer}</p>
                 </details>
               ))}
