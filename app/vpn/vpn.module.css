@@ -166,6 +166,10 @@
 
 /* Match Web solutions' compact process cards without changing that page. */
 .featureGrid{
+  /* Anchor the moving red outline to the cards, never the section heading. */
+  position:relative;
+  isolation:isolate;
+  margin-top:16px;
   grid-template-columns:repeat(3,minmax(0,1fr));
   gap:0;
   overflow:hidden;
