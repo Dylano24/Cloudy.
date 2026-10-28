@@ -122,3 +122,8 @@
 .page :is(p,li,small){font-weight:400}
 .tunnelPath strong,.billingIntro strong,.comparisonTable th{font-weight:500}
 .planRate strong{font-weight:500}
+
+/* Match Web solutions: white section headings, red hero accent only. */
+.sectionHeading h2 span,.spotlightCopy h2 span,.faqIntro h2 span{color:#fafafa}
+/* Keep VPN FAQ typography and interaction aligned with Web solutions. */
+.faqItems summary,.faqItems details[open] summary,.faqItems summary:hover,.faqItems summary:active,.faqItems summary:focus-visible{color:inherit;font-weight:500}
