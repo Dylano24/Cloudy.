@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, ChevronRight, CircleHelp, Globe2, LockKeyhole, MonitorSmartphone, ShieldCheck, Sparkles, Wifi, Zap } from "lucide-react";
 import styles from "./vpn.module.css";
-import { VpnGlobeBackground } from "./vpn-globe";
+import { VpnCinematicEarth } from "./vpn-cinematic";
 
 export const metadata: Metadata = {
   title: "Cloudy VPN | Preview",
@@ -37,14 +37,14 @@ export default function VpnPage() {
     <div className={`${styles.page} cloudy-vpn-page`}>
       <div className={styles.previewStrip}><span className={styles.previewDot}/> EARLY CONCEPT PREVIEW <span className={styles.previewSep}/> Not yet available for purchase</div>
       <section className={styles.hero}>
-        <VpnGlobeBackground />
+        <VpnCinematicEarth />
         <div className={styles.heroAura} aria-hidden="true" />
         <div className={styles.container}>
           <div className={styles.heroGrid}>
             <div className={styles.heroCopy}>
               <div className={styles.eyebrow}><span className={styles.tinyRedDot}/> CLOUDY VPN / A NEW DIGITAL EXPERIENCE <span className={styles.eyebrowLine}/></div>
-              <h1>Your world.<br/><span>Connected.</span></h1>
-              <p className={styles.heroLead}>A new level of simplicity is on the horizon. Cloudy VPN is being designed to put clarity, control and a seamless experience at the heart of your connection.</p>
+              <h1>Connection<br/><span>reimagined.</span></h1>
+              <p className={styles.heroLead}>Your digital world deserves better. Meet a more thoughtful VPN experience in development, shaped by clean design, clear choices and the unmistakable Cloudy identity.</p>
               <div className={styles.heroActions}>
                 <a href="#experience" className={styles.primaryButton}>Discover the concept <ArrowRight size={17} /></a>
                 <a href="#plans" className={styles.secondaryButton}>Explore plans <ChevronRight size={17} /></a>
@@ -54,10 +54,10 @@ export default function VpnPage() {
             <div className={styles.heroGlobeSpace} aria-hidden="true">
               <div className={styles.globeDataLabel}>
                 <span className={styles.globeDataPulse} />
-                <div><strong>Global connections</strong><small>Animated network concept</small></div>
+                <div><strong>Geographic routes</strong><small>City to city routes</small></div>
                 <span className={styles.globeDataIndex}>01 / 03</span>
               </div>
-              <div className={styles.globeCoords}>51°30&apos;N <span>·</span> 0°07&apos;W</div>
+              <div className={styles.globeCoords}>AMSTERDAM <span>·</span> NEW YORK</div>
             </div>
           </div>
         </div>
