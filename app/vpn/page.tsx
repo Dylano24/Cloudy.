@@ -91,11 +91,13 @@ export default function VpnPage() {
             <h2>Understand your<br/><span>protection.</span></h2>
             <p>Know what happens between your device and the internet. Start with the three foundations of a VPN connection.</p>
           </div>
-          <div className={styles.featureGrid}>
+          <div className={[styles.featureGrid,"cloudy-traced-panel"].join(" ")}>
             {features.map(({icon:Icon,title,description})=>(
-              <article key={title} className={[styles.featureCard,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
-                <div className={styles.featureIcon}><Icon size={25} strokeWidth={1.65}/></div>
-                <h3>{title}</h3>
+              <article key={title} className={styles.featureCard}>
+                <h3 className={styles.featureTitle}>
+                  <Icon size={26} strokeWidth={1.8} aria-hidden="true"/>
+                  <span>{title}</span>
+                </h3>
                 <p>{description}</p>
               </article>
             ))}
