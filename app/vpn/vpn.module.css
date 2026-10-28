@@ -363,3 +363,134 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
 .page::before,.feature,.planCard,.floatPrivacy,.floatVision,.mapFocus span{animation:none!important}
 .consoleOuter,.mapFocus{transition:none!important}
 }
+
+
+/* 2026 cinematic globe hero redesign. Keeps previous product sections and Cloudy Studio style. */
+.hero{
+  min-height:780px;
+  padding:0;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  isolation:isolate;
+  background:#020203;
+}
+.hero:before,.hero:after{display:none}
+.heroAura{
+  z-index:1;
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse at 20% 52%,rgba(2,2,3,.3),transparent 45%),
+    linear-gradient(180deg,rgba(2,2,3,.32) 0%,transparent 16%,transparent 73%,#040305 100%);
+}
+.hero>.container{position:relative;z-index:2}
+.heroGrid{
+  grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);
+  gap:10px;
+  min-height:780px;
+}
+.heroCopy{
+  z-index:3;
+  position:relative;
+  max-width:610px;
+  padding:35px 0;
+}
+.heroCopy h1{
+  font-size:clamp(72px,6.5vw,104px);
+  line-height:1.015;
+  font-weight:400;
+  margin:25px 0 26px;
+  letter-spacing:-.013em;
+  text-wrap:balance;
+}
+.heroCopy h1 span{
+  color:#ff4058;
+  text-shadow:0 0 40px rgba(219,34,67,.2),0 0 90px rgba(174,22,48,.07);
+}
+.heroLead{
+  font-size:15px;
+  line-height:1.9;
+  letter-spacing:.005em;
+  max-width:500px;
+  color:#d1c4c9;
+}
+.heroActions{margin-top:33px}
+.heroFoot{margin-top:43px;gap:22px}
+.heroGlobeSpace{align-self:stretch;min-width:0;position:relative;z-index:2;pointer-events:none}
+.globeDataLabel{
+  position:absolute;
+  bottom:110px;
+  right:0;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  min-width:280px;
+  padding:14px 17px;
+  background:linear-gradient(110deg,rgba(10,9,11,.78),rgba(20,10,14,.64));
+  border:1px solid rgba(249,80,108,.23);
+  border-radius:12px;
+  box-shadow:0 22px 72px rgba(0,0,0,.36),inset 0 1px rgba(255,255,255,.05);
+  backdrop-filter:blur(12px);
+}
+.globeDataPulse{
+  display:block;width:9px;height:9px;flex:none;border-radius:50%;
+  background:#fc617a;box-shadow:0 0 0 5px rgba(248,68,103,.09),0 0 15px rgba(255,82,107,.6);
+  animation:vpnDotPulse 2.9s ease-in-out infinite;
+}
+@keyframes vpnDotPulse{50%{box-shadow:0 0 0 8px rgba(248,68,103,.035),0 0 22px rgba(255,82,107,.4)}}
+.globeDataLabel strong{display:block;color:#f6edf0;font-weight:800;font-size:11px;letter-spacing:.02em}
+.globeDataLabel small{display:block;margin-top:5px;color:#b8a5ad;font-size:9px}
+.globeDataIndex{margin-left:auto;flex:none;font-size:9px;letter-spacing:.12em;color:#a56b79}
+.globeCoords{
+  position:absolute;top:120px;right:7px;
+  font:700 9px/1.5 var(--font-sans),sans-serif;
+  color:rgba(244,141,158,.6);letter-spacing:.18em;
+}
+.globeCoords span{color:#ef435c;padding:0 6px}
+.intro{background:linear-gradient(180deg,#040305,transparent)}
+.featureGrid{position:relative}
+.feature{border-radius:16px}
+.feature h3{font-size:14px}
+.statementPanel{min-height:310px;border-color:rgba(230,54,84,.36)}
+.step h3{font-size:15px}
+.bottomPanel{box-shadow:inset 0 1px rgba(255,255,255,.035),0 0 45px rgba(211,36,64,.06)}
+@media(max-width:1150px){
+  .heroGrid{grid-template-columns:1fr 1fr}
+  .heroCopy h1{font-size:clamp(61px,7vw,88px)}
+  .globeDataLabel{right:-5px;bottom:105px}
+}
+@media(max-width:800px){
+  .hero{min-height:880px;align-items:flex-start}
+  .heroGrid{grid-template-columns:1fr;min-height:880px;display:block;position:relative}
+  .heroCopy{max-width:620px;margin:0 auto;padding-top:74px;padding-bottom:0;text-align:center}
+  .heroCopy .eyebrow{justify-content:center}
+  .heroCopy h1{font-size:clamp(60px,11vw,88px);margin-top:21px;margin-bottom:19px}
+  .heroLead{margin:auto;max-width:520px;font-size:13px}
+  .heroActions,.heroFoot{justify-content:center}
+  .heroFoot{margin-top:24px}
+  .heroGlobeSpace{position:absolute;inset:0;z-index:1}
+  .globeDataLabel{bottom:80px;right:50%;transform:translateX(50%);min-width:270px;max-width:90%}
+  .globeCoords{top:auto;right:15px;bottom:170px}
+}
+@media(max-width:600px){
+  .hero{min-height:815px}
+  .heroGrid{min-height:815px}
+  .heroCopy{padding-top:58px}
+  .heroCopy h1{font-size:clamp(54px,12vw,75px);margin:20px auto}
+  .heroLead{max-width:400px;font-size:12.5px}
+  .heroActions{margin-top:25px}
+  .heroFoot{margin-top:20px;gap:10px;font-size:9px}
+  .globeDataLabel{bottom:50px;left:50%;right:auto;transform:translateX(-50%);width:270px}
+  .globeCoords{bottom:122px;right:17px}
+}
+@media(max-width:390px){
+  .hero{min-height:810px}
+  .heroGrid{min-height:810px}
+  .heroCopy h1{font-size:clamp(50px,12vw,60px)}
+  .heroLead{font-size:12px}
+  .heroFoot{gap:8px}
+  .globeCoords{font-size:8px}
+}
+@media(prefers-reduced-motion:reduce){.globeDataPulse{animation:none}}
