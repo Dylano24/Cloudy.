@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { LAND_POINTS, LAND_COASTS } from "./globe-land";
 import styles from "./vpn.module.css";
 
@@ -123,8 +123,6 @@ function draw(ctx: CanvasRenderingContext2D, rotation: number) {
 }
 
 export function EarthNetwork() {
-  const [paused,setPaused]=useState(false);
-  const position=useRef({angle:.49});
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const containerRef=useRef<HTMLDivElement>(null);
   useEffect(()=>{
@@ -134,7 +132,7 @@ export function EarthNetwork() {
     if(!ctx)return;
 
     let raf=0,alive=true,visible=false,last=0,lastDraw=0;
-    let {angle}=position.current; // Preserve rotation across pause/resume.
+    let angle=.49;
     const motion=window.matchMedia("(prefers-reduced-motion: reduce)");
     let reduced=motion.matches;
     let quality=700;
@@ -147,12 +145,12 @@ export function EarthNetwork() {
     };
     const onMotion=()=>{
       reduced=motion.matches;
-      if(reduced||paused){cancelAnimationFrame(raf);raf=0;draw(ctx,angle);}
+      if(reduced){cancelAnimationFrame(raf);raf=0;draw(ctx,angle);}
       else if(visible&&document.visibilityState==="visible"&&!raf)raf=requestAnimationFrame(frame);
     };
     const frame=(now:number)=>{
       raf=0;
-      if(!alive||reduced||paused||!visible||document.visibilityState!=="visible")return;
+      if(!alive||reduced||!visible||document.visibilityState!=="visible")return;
       if(!last)last=now;
       const elapsed=Math.min(.08,(now-last)/1000);last=now;
       const fps=30;
@@ -160,12 +158,11 @@ export function EarthNetwork() {
       if(now-lastDraw>=1000/fps){
         lastDraw=now;
         draw(ctx,angle);
-        position.current={angle};
       }
       raf=requestAnimationFrame(frame);
     };
     const onVisible=()=>{
-      if(visible&&!reduced&&!paused&&document.visibilityState==="visible"&&!raf){last=0;lastDraw=0;raf=requestAnimationFrame(frame);}
+      if(visible&&!reduced&&document.visibilityState==="visible"&&!raf){last=0;lastDraw=0;raf=requestAnimationFrame(frame);}
       else if(document.visibilityState!=="visible"){cancelAnimationFrame(raf);raf=0;}
     };
     const intersection=new IntersectionObserver(entries=>{
@@ -185,7 +182,7 @@ export function EarthNetwork() {
       motion.removeEventListener("change",onMotion);
       document.removeEventListener("visibilitychange",onVisible);
     };
-  },[paused]);
+  },[]);
   return (
     <div className={styles.earthVisual} ref={containerRef}>
       <div className={styles.earthAura} aria-hidden="true"/>
@@ -198,9 +195,6 @@ export function EarthNetwork() {
         role="img"
         aria-label="Rotating red and black Earth with detailed continents and coastlines."
       />
-      <button type="button" className={styles.motionButton} onClick={()=>setPaused(value=>!value)} aria-pressed={paused} aria-label="Pause globe animation">
-        <span aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span>{paused ? "Resume globe" : "Pause globe"}
-      </button>
     </div>
   );
 }
