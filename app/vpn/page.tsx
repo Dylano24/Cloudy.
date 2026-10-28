@@ -16,9 +16,9 @@ export const metadata: Metadata = {
 
 const features = [
   { icon: ShieldCheck, title: "Encrypted connections", description: "A secure VPN tunnel is the core of the Cloudy service. Supported protocols and security details will be verified before release." },
-  { icon: Zap, title: "Kill switch and DNS", description: "Planned safeguards against accidental data exposure when your connection changes or unexpectedly drops." },
+  { icon: Zap, title: "Kill switch and DNS", description: "Kill switch and DNS protection designed to help guard against unexpected connection changes." },
   { icon: Globe2, title: "Location switching", description: "A clean, straightforward experience for selecting a preferred connection location from supported regions." },
-  { icon: MonitorSmartphone, title: "Extra privacy controls", description: "Proposed options such as split tunneling and tracker protection, subject to final technical verification." },
+  { icon: MonitorSmartphone, title: "Extra privacy controls", description: "Advanced controls such as split tunneling and tracker protection for more flexible privacy settings." },
 ];
 
 const steps = [
@@ -49,7 +49,7 @@ export default function VpnPage() {
               <h1>Connection<br/><span>reimagined.</span></h1>
               <p className={styles.heroLead}>Your digital world deserves better. Powerful privacy features, effortless design and the unmistakable Cloudy experience.</p>
               <div className={styles.heroActions}>
-                <a href="#experience" className={styles.primaryButton}>Discover the concept <ArrowRight size={17} /></a>
+                <a href="#experience" className={styles.primaryButton}>Explore features <ArrowRight size={17} /></a>
                 <a href="#plans" className={styles.secondaryButton}>Explore plans <ChevronRight size={17} /></a>
               </div>
               <div className={styles.heroFoot}><div><ShieldCheck size={17}/> Privacy focused</div><span className={styles.footDivider}/><div><Sparkles size={17}/> Beautifully simple</div></div>
@@ -92,14 +92,14 @@ export default function VpnPage() {
             <div className={styles.storyContent}>
               <span className={styles.eyebrow}>YOUR DIGITAL SPACE</span>
               <h2 id="vpn-control-title">More control.<br/><span>Less complexity.</span></h2>
-              <p>A good VPN should be easy to understand, not another complicated dashboard. We are exploring a clean control center for choosing locations and managing your experience.</p>
+              <p>A good VPN should be simple. Our streamlined interface puts connection controls, locations and privacy settings where they belong: within easy reach.</p>
               <div className={styles.storyBullets}>
                 <div><span><Check size={15}/></span><p><strong>Clear connection controls</strong><small>One place to see and manage your connection.</small></p></div>
                 <div><span><Check size={15}/></span><p><strong>Transparent information</strong><small>No unexplained numbers or hidden promises.</small></p></div>
                 <div><span><Check size={15}/></span><p><strong>Considered on every screen</strong><small>A responsive experience, designed for desktop and mobile.</small></p></div>
               </div>
             </div>
-            <div className={styles.storyArt} aria-label="Conceptual desktop and mobile interface illustration">
+            <div className={styles.storyArt} aria-label="Cloudy VPN desktop and mobile interface">
               <div className={styles.storyAura} aria-hidden="true"/>
               <div className={[styles.storyWindow,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
                 <div className={styles.storyWindowBar}><span>Cloudy VPN <small>· Cloudy VPN</small></span><div><i/><i/><i/></div></div>
@@ -108,7 +108,7 @@ export default function VpnPage() {
                   <div className={styles.storyWindowMain}>
                     <div className={styles.storyDashboardTitle}>Connection overview <small>VPN dashboard</small></div>
                     <div className={styles.storyMiniMap}><span className={styles.storyMiniRing}/><Globe2 size={69} strokeWidth={.7}/></div>
-                    <div className={styles.storyDashboardStatus}><span className={styles.storyStatusDot}/><strong>Offline</strong><small>Design concept</small></div>
+                    <div className={styles.storyDashboardStatus}><span className={styles.storyStatusDot}/><strong>Offline</strong><small>Connection status</small></div>
                     <div className={styles.storyDashboardLocation}><span>Example location</span><strong>Amsterdam, NL</strong></div>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ export default function VpnPage() {
       <VpnPricing />
       <section className={styles.steps}>
         <div className={styles.container}>
-          <div className={styles.sectionHeading}><div className={styles.eyebrow}>SIMPLE FROM THE START</div><h2>Your connection.<br/><span>Made simple.</span></h2><p>An early look at the customer journey we want to create.</p></div>
+          <div className={styles.sectionHeading}><div className={styles.eyebrow}>SIMPLE FROM THE START</div><h2>Your connection.<br/><span>Made simple.</span></h2><p>A straightforward experience, from choosing a plan to managing your connection.</p></div>
           <div className={styles.stepGrid}>{steps.map(step => <article className={styles.step} key={step.number}><span>{step.number}</span><div className={styles.stepLine}/><h3>{step.title}</h3><p>{step.description}</p></article>)}</div>
         </div>
       </section>
@@ -143,7 +143,7 @@ export default function VpnPage() {
         <div className={styles.container}><div className={[styles.bottomPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
           <div className={styles.bottomGlow} aria-hidden="true"/><span className={styles.eyebrow}>THE NEXT CHAPTER</span>
           <h2>A new chapter <span>is coming.</span></h2>
-          <p>Cloudy VPN is being prepared. Follow Cloudy for updates on its upcoming release.</p>
+          <p>A better online experience starts with simplicity. Explore the plans or contact our team for more information.</p>
           <Link href="/support" className={styles.primaryButton}>Contact Cloudy <ArrowRight size={17}/></Link>
         </div></div>
       </section>
