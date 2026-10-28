@@ -1,152 +1,123 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check, ChevronRight, CircleHelp, Globe2, LockKeyhole, MonitorSmartphone, ShieldCheck, Sparkles, Wifi, Zap } from "lucide-react";
+import { ArrowRight, Check, ChevronRight, CircleHelp, Fingerprint, Globe2, Laptop, LockKeyhole, MonitorSmartphone, Shield, ShieldCheck, Smartphone, Sparkles, Wifi, Zap } from "lucide-react";
 import styles from "./vpn.module.css";
-import { VpnCinematicEarth } from "./vpn-cinematic";
 import { StudioMobilePanelSync } from "@/components/service/studio-mobile-panel-sync";
 import { VpnPricing } from "./vpn-pricing";
 
 export const metadata: Metadata = {
-  title: "Cloudy VPN | Preview",
-  description: "Cloudy VPN is taking shape. Discover a premium new digital experience with a globe of connected possibilities.",
+  title: "Cloudy VPN | Private by design",
+  description: "Explore Cloudy VPN: a refined privacy experience, flexible plans and clear connection controls.",
   robots: { index: false, follow: false },
-  openGraph: { title: "Cloudy VPN | Preview", description: "Discover the next Cloudy digital experience." },
-  twitter: { card: "summary", title: "Cloudy VPN | Preview", description: "A new Cloudy experience is taking shape." },
+  openGraph: { title: "Cloudy VPN | Private by design", description: "Discover a simpler approach to online privacy." },
 };
 
 const features = [
-  { icon: ShieldCheck, title: "Encrypted connections", description: "A secure VPN tunnel is the core of the Cloudy service. Supported protocols and security details will be verified before release." },
-  { icon: Zap, title: "Kill switch and DNS", description: "Kill switch and DNS protection designed to help guard against unexpected connection changes." },
-  { icon: Globe2, title: "Location switching", description: "A clean, straightforward experience for selecting a preferred connection location from supported regions." },
-  { icon: MonitorSmartphone, title: "Extra privacy controls", description: "Advanced controls such as split tunneling and tracker protection for more flexible privacy settings." },
+  { icon: ShieldCheck, title: "Privacy, without complexity", text: "A clear approach to VPN protection, with essential controls right where you need them." },
+  { icon: Zap, title: "Built for everyday speed", text: "A focused interface designed to make your connection feel effortless." },
+  { icon: Globe2, title: "The freedom to choose", text: "Switch between supported locations using a straightforward connection dashboard." },
+];
+const advantages = [
+  { icon: LockKeyhole, title: "Encrypted connection", description: "An encrypted tunnel designed to help protect network traffic." },
+  { icon: Wifi, title: "Connection protection", description: "Proposed network controls including a kill switch and DNS protection." },
+  { icon: Fingerprint, title: "Privacy controls", description: "Simple settings, with additional filtering features planned for selected packages." },
+  { icon: MonitorSmartphone, title: "Your devices, your way", description: "A clean experience intended for supported desktop and mobile devices." },
+];
+const faq = [
+  { q: "How do I get Cloudy VPN?", a: "Cloudy VPN is being prepared for release. You can preview plan details, but payments and VPN account activation are not yet enabled." },
+  { q: "Which plan should I choose?", a: "Basic covers the proposed essentials. Complete introduces additional privacy tools, while Ultra outlines advanced options. Final availability will be confirmed before sales." },
+  { q: "Which devices and locations are supported?", a: "Supported operating systems, regional servers and simultaneous device limits will be announced once the infrastructure has passed technical checks." },
+  { q: "Does Cloudy VPN keep activity logs?", a: "Logging, retention and privacy commitments depend on the final VPN infrastructure. A verified privacy policy will be published before the service becomes available." },
 ];
 
-const steps = [
-  { number: "01", title: "Choose a plan", description: "Select an option that suits you when subscriptions become available." },
-  { number: "02", title: "Set up your connection", description: "Follow the instructions for your supported device." },
-  { number: "03", title: "Stay in control", description: "Manage your preferences and connection from one place." },
-];
-
-const questions = [
-  { question: "Can I purchase Cloudy VPN today?", answer: "Not yet. This is a design preview. Subscriptions and checkout remain disabled until the service and its terms are ready." },
-  { question: "How much will it cost?", answer: "Monthly and yearly subscriptions are being considered. Prices have not been announced and no payments can be taken from this page." },
-  { question: "What countries and devices will be supported?", answer: "Server locations, compatible platforms and the number of simultaneous devices will be published after technical verification." },
-  { question: "Does Cloudy VPN keep connection logs?", answer: "We will only make specific privacy, logging and security commitments after the underlying VPN infrastructure and policies have been verified." },
-];
+function AppShowcase() {
+  return <div className={styles.productVisual} aria-label="Illustration of the Cloudy VPN application interface">
+    <div className={styles.visualAura} aria-hidden="true"/>
+    <div className={styles.visualGrid} aria-hidden="true"/>
+    <div className={[styles.desktopFrame,"cloudy-traced-panel"].join(" ")}>
+      <div className={styles.desktopBar}>
+        <div className={styles.desktopBrand}><span className={styles.brandMark}><Shield size={16}/></span><strong>Cloudy VPN</strong></div>
+        <span className={styles.desktopTag}>Desktop interface</span>
+        <span className={styles.windowDots} aria-hidden="true"><i/><i/><i/></span>
+      </div>
+      <div className={styles.desktopBody}>
+        <div className={styles.desktopSidebar} aria-hidden="true">
+          <span className={styles.sidebarSelected}><Shield size={17}/></span>
+          <span><Globe2 size={17}/></span><span><Wifi size={17}/></span><span><CircleHelp size={17}/></span>
+        </div>
+        <div className={styles.desktopContent}>
+          <div className={styles.screenEyebrow}>CONNECTION OVERVIEW</div>
+          <h3>Take control of your connection.</h3>
+          <p>Privacy, made simple.</p>
+          <div className={styles.connectionWidget}>
+            <span className={styles.connectionShield}><ShieldCheck size={33} strokeWidth={1.5}/></span>
+            <div><small>Connection status</small><strong>Not connected</strong><span>Example interface</span></div>
+            <span className={styles.powerButton}><LockKeyhole size={17}/></span>
+          </div>
+          <div className={styles.locationWidget}>
+            <div className={styles.locationSymbol}><Globe2 size={20}/></div>
+            <div><small>Selected location</small><strong>Amsterdam, Netherlands</strong></div>
+            <ChevronRight size={15} className={styles.locationArrow}/>
+          </div>
+          <div className={styles.dashboardFooter}><span><i/> PROTECTION DASHBOARD</span><span>DESIGN PREVIEW</span></div>
+        </div>
+      </div>
+    </div>
+    <div className={styles.phoneFrame} aria-hidden="true">
+      <div className={styles.phoneNotch}/>
+      <div className={styles.phoneBrand}><Shield size={16}/> Cloudy VPN</div>
+      <div className={styles.phoneProtection}><ShieldCheck size={30} strokeWidth={1.5}/></div>
+      <strong>Not connected</strong><small>Connection preview</small>
+      <div className={styles.phoneLocation}><Globe2 size={15}/><span>Amsterdam</span><ChevronRight size={13}/></div>
+      <div className={styles.phoneHomeBar}/>
+    </div>
+    <div className={styles.floatBadge}><span><Sparkles size={17}/></span><div><strong>Thoughtfully designed</strong><small>Simple from the first tap</small></div></div>
+  </div>;
+}
 
 export default function VpnPage() {
-  return (
-    <div className={`${styles.page} cloudy-vpn-page`}>
-      <StudioMobilePanelSync rootSelector=".cloudy-vpn-page" />
-      <div className={styles.previewStrip}><span className={styles.previewDot}/> CLOUDY VPN <span className={styles.previewSep}/> Explore our subscription plans</div>
-      <section className={styles.hero}>
-        <VpnCinematicEarth />
-        <div className={styles.heroAura} aria-hidden="true" />
-        <div className={styles.container}>
-          <div className={styles.heroGrid}>
-            <div className={styles.heroCopy}>
-              <div className={styles.eyebrow}><span className={styles.tinyRedDot}/> CLOUDY VPN <span className={styles.eyebrowLine}/></div>
-              <h1>Connection<br/><span>reimagined.</span></h1>
-              <p className={styles.heroLead}>Your digital world deserves better. Powerful privacy features, effortless design and the unmistakable Cloudy experience.</p>
-              <div className={styles.heroActions}>
-                <a href="#experience" className={styles.primaryButton}>Explore features <ArrowRight size={17} /></a>
-                <a href="#plans" className={styles.secondaryButton}>Explore plans <ChevronRight size={17} /></a>
-              </div>
-              <div className={styles.heroFoot}><div><ShieldCheck size={17}/> Privacy focused</div><span className={styles.footDivider}/><div><Sparkles size={17}/> Beautifully simple</div></div>
-            </div>
-            <div className={styles.heroGlobeSpace} aria-hidden="true">
-              <div className={styles.globeDataLabel}>
-                <span className={styles.globeDataPulse} />
-                <div><strong>Global network</strong><small>City to city signals</small></div>
-                <span className={styles.globeDataIndex}>CLOUDY</span>
-              </div>
-              <div className={styles.globeCoords}>AMSTERDAM <span>·</span> NEW YORK</div>
-              <a className={styles.globeSource} href="https://science.nasa.gov/earth/earth-observatory/the-blue-marble-true-color-global-imagery-at-1km-resolution/" target="_blank" rel="noreferrer">Earth imagery: NASA · Animated global routes</a>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className={styles.intro} id="experience">
-        <div className={styles.container}>
-          <div className={styles.sectionHeading}><div className={styles.eyebrow}>THE CLOUDY EXPERIENCE</div><h2>Made to feel<br/><span>effortless.</span></h2><p>From the first tap to your everyday routine, we are designing an experience that makes privacy tools feel effortless.</p></div>
-          <div className={styles.featureGrid}>
-            {features.map((feature, index) => (
-              <article className={[styles.feature,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")} key={feature.title}>
-                <div className={styles.featureTop}><span className={styles.featureIcon}><feature.icon size={24} strokeWidth={1.75}/></span><span className={styles.featureIndex}>0{index + 1}</span></div>
-                <h3>{feature.title}</h3><p>{feature.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className={styles.statement}>
-        <div className={styles.container}><div className={[styles.statementPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
-          <div className={styles.statementGlow} aria-hidden="true"/><div className={styles.statementIcon}><Wifi size={30} strokeWidth={1.6}/></div>
-          <div className={styles.statementCopy}><span className={styles.eyebrow}>CONNECTED BY DESIGN</span><h2>Your connection. <span>Your choice.</span></h2><p>Thoughtful design is just the beginning. Cloudy VPN is being developed with a focus on straightforward controls, clear information and a polished everyday experience.</p></div>
-          <div className={styles.statementNumber} aria-hidden="true">VPN</div>
-        </div></div>
-      </section>
-      <section className={styles.productStory} aria-labelledby="vpn-control-title">
-        <div className={styles.container}>
-          <div className={styles.storyGrid}>
-            <div className={styles.storyContent}>
-              <span className={styles.eyebrow}>YOUR DIGITAL SPACE</span>
-              <h2 id="vpn-control-title">More control.<br/><span>Less complexity.</span></h2>
-              <p>A good VPN should be simple. Our streamlined interface puts connection controls, locations and privacy settings where they belong: within easy reach.</p>
-              <div className={styles.storyBullets}>
-                <div><span><Check size={15}/></span><p><strong>Clear connection controls</strong><small>One place to see and manage your connection.</small></p></div>
-                <div><span><Check size={15}/></span><p><strong>Transparent information</strong><small>No unexplained numbers or hidden promises.</small></p></div>
-                <div><span><Check size={15}/></span><p><strong>Considered on every screen</strong><small>A responsive experience, designed for desktop and mobile.</small></p></div>
-              </div>
-            </div>
-            <div className={styles.storyArt} aria-label="Cloudy VPN desktop and mobile interface">
-              <div className={styles.storyAura} aria-hidden="true"/>
-              <div className={[styles.storyWindow,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
-                <div className={styles.storyWindowBar}><span>Cloudy VPN <small>· Cloudy VPN</small></span><div><i/><i/><i/></div></div>
-                <div className={styles.storyWindowBody}>
-                  <div className={styles.storyWindowMenu}><span>⌂</span><span>◎</span><span>⚙</span></div>
-                  <div className={styles.storyWindowMain}>
-                    <div className={styles.storyDashboardTitle}>Connection overview <small>VPN dashboard</small></div>
-                    <div className={styles.storyMiniMap}><span className={styles.storyMiniRing}/><Globe2 size={69} strokeWidth={.7}/></div>
-                    <div className={styles.storyDashboardStatus}><span className={styles.storyStatusDot}/><strong>Offline</strong><small>Connection status</small></div>
-                    <div className={styles.storyDashboardLocation}><span>Example location</span><strong>Amsterdam, NL</strong></div>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.storyPhone}>
-                <div className={styles.storyPhoneTop}/>
-                
-                <span className={styles.storyPhoneName}>Cloudy VPN</span>
-                <div className={styles.storyPhoneRing}><LockKeyhole size={23}/></div>
-                <span className={styles.storyPhoneStatus}>Not connected</span>
-                <div className={styles.storyPhonePill}>CLOUDY VPN</div>
-              </div>
-              <span className={styles.storyArtCaption}>CLOUDY VPN / DESKTOP & MOBILE</span>
-            </div>
-          </div>
-        </div>
-      </section>
-      <VpnPricing />
-      <section className={styles.steps}>
-        <div className={styles.container}>
-          <div className={styles.sectionHeading}><div className={styles.eyebrow}>SIMPLE FROM THE START</div><h2>Your connection.<br/><span>Made simple.</span></h2><p>A straightforward experience, from choosing a plan to managing your connection.</p></div>
-          <div className={styles.stepGrid}>{steps.map(step => <article className={styles.step} key={step.number}><span>{step.number}</span><div className={styles.stepLine}/><h3>{step.title}</h3><p>{step.description}</p></article>)}</div>
-        </div>
-      </section>
-      <section className={styles.faq}>
-        <div className={styles.container}><div className={styles.faqGrid}>
-          <div className={styles.faqHeading}><span className={styles.eyebrow}>GOOD TO KNOW</span><h2>Questions?<br/><span>We've got answers.</span></h2><p>Cloudy VPN is still in development. Here's what you need to know before launch.</p><Link href="/support" className={styles.faqLink}>Visit support <ArrowRight size={16}/></Link></div>
-          <div className={styles.faqList}>{questions.map(({question, answer}) => <details key={question} className={styles.faqItem}><summary>{question}<span className={styles.plus}>+</span></summary><p>{answer}</p></details>)}</div>
-        </div></div>
-      </section>
-      <section className={styles.bottomCta}>
-        <div className={styles.container}><div className={[styles.bottomPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
-          <div className={styles.bottomGlow} aria-hidden="true"/><span className={styles.eyebrow}>THE NEXT CHAPTER</span>
-          <h2>A new chapter <span>is coming.</span></h2>
-          <p>A better online experience starts with simplicity. Explore the plans or contact our team for more information.</p>
-          <Link href="/support" className={styles.primaryButton}>Contact Cloudy <ArrowRight size={17}/></Link>
-        </div></div>
-      </section>
-    </div>
-  );
+  return <div className={[styles.page,"cloudy-vpn-page"].join(" ")}>
+    <StudioMobilePanelSync rootSelector=".cloudy-vpn-page"/>
+    <section className={styles.hero}><div className={styles.container}><div className={styles.heroGrid}>
+      <div className={styles.heroCopy}>
+        <div className={styles.eyebrow}><span className={styles.redDot}/> CLOUDY VPN <span className={styles.eyebrowRule}/></div>
+        <h1>Online privacy.<br/><span>Beautifully simple.</span></h1>
+        <p className={styles.heroLead}>Everything you need, nothing you don’t. Discover a more refined way to manage your digital privacy, with the look and feel of Cloudy.</p>
+        <div className={styles.heroActions}><a href="#plans" className={styles.primaryButton}>Explore plans <ArrowRight size={17}/></a><a href="#features" className={styles.secondaryButton}>Discover features <ChevronRight size={16}/></a></div>
+        <div className={styles.heroTrust}><span><Check size={15}/> Clear subscription choices</span><span><Check size={15}/> Privacy focused design</span></div>
+      </div>
+      <AppShowcase/>
+    </div></div></section>
+
+    <section className={styles.intro} id="features"><div className={styles.container}>
+      <div className={styles.sectionHeading}><span className={styles.eyebrow}>WHY CLOUDY VPN</span><h2>More freedom.<br/><span>Less complexity.</span></h2><p>Powerful privacy tools should feel approachable. Cloudy VPN brings a familiar, considered experience to a more connected world.</p></div>
+      <div className={styles.featureGrid}>{features.map(({icon:Icon,title,text},index)=><article key={title} className={[styles.feature,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}><div className={styles.featureTop}><span className={styles.featureIcon}><Icon size={23} strokeWidth={1.65}/></span><span className={styles.featureIndex}>0{index+1}</span></div><h3>{title}</h3><p>{text}</p></article>)}</div>
+    </div></section>
+
+    <section className={styles.statement}><div className={styles.container}><div className={[styles.statementPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
+      <div className={styles.statementCopy}><span className={styles.eyebrow}>DESIGNED AROUND YOU</span><h2>Security should feel <span>effortless.</span></h2><p>One refined place for your connection, preferences and privacy settings. Designed to stay out of your way while keeping the details you care about within reach.</p><a href="#plans" className={styles.textLink}>Compare plans <ArrowRight size={17}/></a></div>
+      <div className={styles.statementArtwork} aria-hidden="true"><span className={styles.statementRingOne}/><span className={styles.statementRingTwo}/><ShieldCheck size={85} strokeWidth={.85}/></div>
+    </div></div></section>
+
+    <section className={styles.benefits}><div className={styles.container}><div className={styles.benefitLayout}>
+      <div className={styles.benefitHeading}><span className={styles.eyebrow}>EVERYDAY ESSENTIALS</span><h2>Your digital space.<br/><span>Your rules.</span></h2><p>Security and privacy capabilities proposed for Cloudy VPN. Final technical specifications will be published before subscriptions open.</p><a href="#plans" className={styles.textLink}>Find your plan <ArrowRight size={16}/></a></div>
+      <div className={styles.benefitGrid}>{advantages.map(({icon:Icon,title,description})=><article key={title} className={[styles.benefit,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}><span className={styles.benefitIcon}><Icon size={22} strokeWidth={1.7}/></span><h3>{title}</h3><p>{description}</p></article>)}</div>
+    </div></div></section>
+
+    <VpnPricing/>
+
+    <section className={styles.platforms}><div className={styles.container}><div className={[styles.platformPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
+      <div className={styles.platformCopy}><span className={styles.eyebrow}>ONE BEAUTIFUL EXPERIENCE</span><h2>At home on<br/><span>every screen.</span></h2><p>From the desk to the everyday commute, we are designing Cloudy VPN to feel consistent and easy to use wherever you connect.</p><small>Supported systems and app availability will be confirmed before launch.</small></div>
+      <div className={styles.deviceArt} aria-hidden="true"><div className={styles.laptopArt}><Laptop size={130} strokeWidth={.85}/><Shield size={35}/></div><div className={styles.mobileArt}><Smartphone size={96} strokeWidth={.8}/><ShieldCheck size={25}/></div></div>
+    </div></div></section>
+
+    <section className={styles.faq}><div className={styles.container}><div className={styles.faqGrid}>
+      <div className={styles.faqHeading}><span className={styles.eyebrow}>QUESTIONS & ANSWERS</span><h2>Everything<br/><span>made clear.</span></h2><p>Simple answers about plans, privacy and availability.</p><Link className={styles.textLink} href="/support">Contact support <ArrowRight size={16}/></Link></div>
+      <div className={styles.faqList}>{faq.map(({q,a})=><details key={q} className={styles.faqItem}><summary>{q}<span className={styles.plus}>+</span></summary><p>{a}</p></details>)}</div>
+    </div></div></section>
+
+    <section className={styles.bottomCta}><div className={styles.container}><div className={[styles.bottomPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
+      <span className={styles.eyebrow}>DISCOVER CLOUDY VPN</span><h2>Take the next step<br/><span>toward simplicity.</span></h2><p>Compare the options and find the Cloudy VPN experience that fits you.</p><a href="#plans" className={styles.primaryButton}>View VPN plans <ArrowRight size={17}/></a>
+    </div></div></section>
+  </div>;
 }
