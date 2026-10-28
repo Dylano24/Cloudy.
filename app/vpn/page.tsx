@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check, ChevronRight, CircleHelp, Globe2, LockKeyhole, MonitorSmartphone, ShieldCheck, Sparkles, Wifi, Zap } from "lucide-react";
 import styles from "./vpn.module.css";
-import { VpnConsole } from "./vpn-console";
+import { VpnGlobeBackground } from "./vpn-globe";
 
 export const metadata: Metadata = {
   title: "Cloudy VPN | Preview",
-  description: "Explore the Cloudy VPN concept, planned features and upcoming subscription options.",
+  description: "Cloudy VPN is taking shape. Discover a premium new digital experience with a globe of connected possibilities.",
   robots: { index: false, follow: false },
   openGraph: { title: "Cloudy VPN | Preview", description: "Discover the next Cloudy digital experience." },
   twitter: { card: "summary", title: "Cloudy VPN | Preview", description: "A new Cloudy experience is taking shape." },
@@ -37,20 +37,28 @@ export default function VpnPage() {
     <div className={`${styles.page} cloudy-vpn-page`}>
       <div className={styles.previewStrip}><span className={styles.previewDot}/> EARLY CONCEPT PREVIEW <span className={styles.previewSep}/> Not yet available for purchase</div>
       <section className={styles.hero}>
+        <VpnGlobeBackground />
         <div className={styles.heroAura} aria-hidden="true" />
         <div className={styles.container}>
           <div className={styles.heroGrid}>
             <div className={styles.heroCopy}>
-              <div className={styles.eyebrow}><span className={styles.tinyRedDot}/> INTRODUCING CLOUDY VPN <span className={styles.eyebrowLine}/></div>
-              <h1>A world of<br/><span>possibilities.</span></h1>
-              <p className={styles.heroLead}>Meet a new kind of Cloudy experience. A beautifully simple VPN concept designed to put your online choices in your hands, wherever life takes you.</p>
+              <div className={styles.eyebrow}><span className={styles.tinyRedDot}/> CLOUDY VPN / A NEW DIGITAL EXPERIENCE <span className={styles.eyebrowLine}/></div>
+              <h1>Your world.<br/><span>Connected.</span></h1>
+              <p className={styles.heroLead}>A new level of simplicity is on the horizon. Cloudy VPN is being designed to put clarity, control and a seamless experience at the heart of your connection.</p>
               <div className={styles.heroActions}>
-                <a href="#experience" className={styles.primaryButton}>Explore the experience <ArrowRight size={17} /></a>
+                <a href="#experience" className={styles.primaryButton}>Discover the concept <ArrowRight size={17} /></a>
                 <a href="#plans" className={styles.secondaryButton}>Explore plans <ChevronRight size={17} /></a>
               </div>
-              <div className={styles.heroFoot}><div><ShieldCheck size={17}/> Privacy minded by design</div><span className={styles.footDivider}/><div><Sparkles size={17}/> In development</div></div>
+              <div className={styles.heroFoot}><div><ShieldCheck size={17}/> Privacy minded concept</div><span className={styles.footDivider}/><div><Sparkles size={17}/> Preview only</div></div>
             </div>
-            <VpnConsole />
+            <div className={styles.heroGlobeSpace} aria-hidden="true">
+              <div className={styles.globeDataLabel}>
+                <span className={styles.globeDataPulse} />
+                <div><strong>Global connections</strong><small>Animated network concept</small></div>
+                <span className={styles.globeDataIndex}>01 / 03</span>
+              </div>
+              <div className={styles.globeCoords}>51°30&apos;N <span>·</span> 0°07&apos;W</div>
+            </div>
           </div>
         </div>
       </section>
