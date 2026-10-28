@@ -758,7 +758,7 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
   animation:cloudyVpnStudioHomeGlowSweep 5s linear infinite;
 }
 .page .planCard .cardBottom {margin-top:auto;padding-top:17px}
-.page .planCard .cardBottom button {
+.page .planCard .cardBottom > button {
   width:100%; min-height:46px;
   background:transparent;
   border:1px solid var(--cloudy-action-border);
@@ -768,7 +768,7 @@ background:radial-gradient(ellipse 750px 490px at 78% 42%,rgba(229,27,46,.16),tr
   border-radius:9px;
 }
 @media(hover:hover) and (pointer:fine){
-  .page .planCard .cardBottom button:hover {
+  .page .planCard .cardBottom > button:hover {
     background:rgba(255,255,255,.025);
     transform:translateY(-2px);
     border-color:var(--cloudy-action-hover-border);
