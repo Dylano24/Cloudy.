@@ -126,6 +126,7 @@ export function Header() {
     ['Home', '/'],
     ['Store', '/shop'],
     ['Web solutions', '/service'],
+    ['VPN', '/vpn'],
   ] as const;
 
   return (
