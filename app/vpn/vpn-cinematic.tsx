@@ -42,7 +42,7 @@ function signals(ctx:CanvasRenderingContext2D,w:number,h:number,angle:number,tim
  for(const {a,b,index} of routes){
   endpointIds.add(a);endpointIds.add(b);
   const curve=[] as ReturnType<typeof project>[];
-  for(let i=0;i<=92;i++){const t=i/92;curve.push(project(between(VECTORS[a],VECTORS[b],t),1.007+.036*Math.sin(Math.PI*t)));}
+  for(let i=0;i<=64;i++){const t=i/64;curve.push(project(between(VECTORS[a],VECTORS[b],t),1.007+.036*Math.sin(Math.PI*t)));}
   ctx.beginPath();curve.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
   ctx.strokeStyle="rgba(255,60,106,.085)";ctx.lineWidth=mobile?4:6;ctx.stroke();
   ctx.strokeStyle="rgba(255,113,147,.48)";ctx.lineWidth=mobile?.9:1.05;ctx.stroke();
@@ -149,11 +149,16 @@ export function VpnCinematicEarth(){
    gl.viewport(0,0,canvas.width,canvas.height);ctx.setTransform(dpr,0,0,dpr,0,0);
   };
   size();const resize=new ResizeObserver(size);resize.observe(node);
-  const intersect=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??true;},{rootMargin:"160px"});
+  const intersect=new IntersectionObserver(entries=>{
+   visible=entries[0]?.isIntersecting??true;
+   if(!visible){cancelAnimationFrame(raf);raf=0;}
+   else if(active&&document.visibilityState==="visible"&&raf===0){raf=requestAnimationFrame(tick);}
+  },{rootMargin:"160px"});
   intersect.observe(node);
   const tick=(now:number)=>{
    if(!active)return;
-   if(visible&&document.visibilityState==="visible"&&dayTex&&now-last>=(w<800?54:41)){
+   if(!visible||document.visibilityState==="hidden"){raf=0;return;}
+   if(dayTex&&now-last>=(w<800?54:41)){
     last=now;const seconds=reduced?0:(now-started)/1000,angle=.61+(reduced?0:seconds*.027);
     const {x,y,r}=sphere(w,h);
     gl.useProgram(gpuState.program);
@@ -187,11 +192,17 @@ export function VpnCinematicEarth(){
    // Use a single GPU texture: city connections are driven by geographic coordinates.
    if(active){setReady(true);started=performance.now();}
   };
+  const onVisible=()=>{
+    if(active&&visible&&document.visibilityState==="visible"&&raf===0)raf=requestAnimationFrame(tick);
+    if(document.visibilityState==="hidden"){cancelAnimationFrame(raf);raf=0;}
+  };
   media.addEventListener("change",onMotion);
+  document.addEventListener("visibilitychange",onVisible);
   void load();raf=requestAnimationFrame(tick);
   return ()=>{
    active=false;cancelAnimationFrame(raf);
    resize.disconnect();intersect.disconnect();media.removeEventListener("change",onMotion);
+   document.removeEventListener("visibilitychange",onVisible);
    if(dayTex)gl.deleteTexture(dayTex);if(nightTex)gl.deleteTexture(nightTex);
    gl.deleteBuffer(gpuState.buffer);gl.deleteProgram(gpuState.program);
   };
