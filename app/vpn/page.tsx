@@ -72,7 +72,7 @@ export default function VpnPage() {
               </p>
               <div className={styles.heroActions}>
                 <a href="#plans" className={styles.secondaryButton}>Compare plans <ArrowRight size={18}/></a>
-                <a href="#features" className={styles.primaryButton}>Explore protection <ChevronRight size={17}/></a>
+                <a href="#features" className={[studioStyles.primaryButton,styles.studioButton].join(" ")}>Explore protection <ChevronRight size={17}/></a>
               </div>
               <div className={styles.heroAssurances}>
                 <span><Check size={15}/> Connection protection</span>
@@ -135,9 +135,7 @@ export default function VpnPage() {
         <div className={styles.container}>
           <div className={styles.faqGrid}>
             <div className={styles.faqIntro}>
-              <span className={styles.eyebrow}>FREQUENT QUESTIONS</span>
-              <h2>Know what<br/><span>you’re choosing.</span></h2>
-              <p>Clear answers about plans, connection protection and privacy controls.</p>
+              <h2>Frequently asked questions.</h2>
             </div>
             <div className={[studioStyles.faqList,styles.faqItems].join(" ")}>
               {questions.map(({question,answer})=>(
