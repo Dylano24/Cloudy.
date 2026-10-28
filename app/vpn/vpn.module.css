@@ -139,3 +139,92 @@
 .faqIntro{width:100%;max-width:900px;margin-bottom:32px}
 .faqItems{max-width:900px}
 @media(max-width:600px){.faqIntro{margin-bottom:25px}}
+
+/* Match Web solutions' compact process cards without changing that page. */
+.featureGrid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;
+  background:#030303;
+  box-shadow:0 16px 48px rgba(0,0,0,.25);
+}
+.featureGrid .featureCard{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  padding:28px 23px 30px;
+  border:0;
+  border-radius:0;
+  background:#030303;
+  background-image:none;
+  box-shadow:none;
+  animation:none;
+}
+.featureGrid .featureCard + .featureCard{
+  border-left:1px solid rgba(255,255,255,.08);
+}
+.featureGrid .featureTitle{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  margin:0 0 16px;
+  font-family:var(--font-display),Anton,Impact,sans-serif;
+  font-size:clamp(21px,2.05vw,25px);
+  font-weight:400;
+  line-height:1.28;
+  letter-spacing:0;
+}
+.featureGrid .featureTitle svg{
+  flex:0 0 auto;
+  color:#e51b2e;
+}
+.featureGrid .featureCard p{
+  max-width:none;
+  margin:0;
+  font-size:13px;
+  line-height:1.75;
+  color:#fff;
+}
+/* Keep every VPN panel truly black rather than gray-tinted. */
+.page .featureGrid,
+.page .featureCard,
+.page .spotlightPanel,
+.page .planCard,
+.page .comparePanel,
+.page .billingBar,
+.page .connectionDiagram{
+  background-color:#030303;
+  background-image:none;
+  animation:none;
+}
+.page .planFeatured{
+  background-color:#030303;
+}
+.page .billingSwitch,
+.page .diagramNode,
+.page .faqItems details{
+  background:#030303;
+}
+.page [data-cloudy-vpn-order],
+.page [data-cloudy-vpn-order] [class*="reviewText"],
+.page [data-cloudy-vpn-order] [class*="secondaryButton"]{
+  background:#030303;
+}
+.page :global(.cloudy-mobile-sheen-texture){display:none}
+@media(max-width:950px){
+  .featureGrid{grid-template-columns:1fr}
+  .featureGrid .featureCard{
+    padding:24px 22px 26px;
+  }
+  .featureGrid .featureCard + .featureCard{
+    border-left:0;
+    border-top:1px solid rgba(255,255,255,.08);
+  }
+  .featureGrid .featureTitle{
+    font-size:clamp(21px,5.8vw,25px);
+    gap:12px;
+    margin-bottom:14px;
+  }
+}
