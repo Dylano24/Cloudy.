@@ -134,8 +134,9 @@ export default function VpnPage() {
       <section className={styles.faq}>
         <div className={styles.container}>
           <div className={styles.faqGrid}>
-            <div className={styles.faqIntro}>
-              <h2>Frequently asked questions.</h2>
+            <div className={[styles.faqIntro,studioStyles.faqHeading].join(" ")}>
+              <div className={studioStyles.faqDotRow} aria-hidden="true"><span /><span /><span /></div>
+              <h2 className={studioStyles.faqHeadingTitle}>Frequently asked questions.</h2>
             </div>
             <div className={[studioStyles.faqList,styles.faqItems].join(" ")}>
               {questions.map(({question,answer})=>(
