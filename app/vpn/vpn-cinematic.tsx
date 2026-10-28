@@ -116,7 +116,12 @@ function texture(gl:WebGLRenderingContext,img:HTMLImageElement,unit:number) {
  return t;
 }
 async function photo(name:string){
- for(const base of BASES){try{const im=new Image();im.crossOrigin="anonymous";im.decoding="async";im.src=base+name;await im.decode();return im;}catch{/* Try an alternate host */}}
+ const route=name.includes("_day_")?"/api/vpn/earth/day":"/api/vpn/earth/night";
+ const sources=[route,...BASES.map(base=>base+name)];
+ for(const url of sources){
+  try{const im=new Image();im.crossOrigin="anonymous";im.decoding="async";im.src=url;await im.decode();return im;}
+  catch{/* Fall back to the next source */}
+ }
  return null;
 }
 export function VpnCinematicEarth(){
