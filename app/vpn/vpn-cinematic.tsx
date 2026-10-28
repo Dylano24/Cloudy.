@@ -30,7 +30,7 @@ function between(a:Vec,b:Vec,t:number):Vec{
 }
 function sphere(w:number,h:number){
  const m=w<=800;
- return {x:w*(m?.51:.742),y:h*(m?.685:.515),r:m?Math.min(w*.79,h*.322,370):Math.min(w*.35,h*.67,600)};
+ return {x:w*(m?.51:.742),y:h*(m?.685:.515),r:m?Math.min(w*.49,h*.325,330):Math.min(w*.35,h*.67,600)};
 }
 function signals(ctx:CanvasRenderingContext2D,w:number,h:number,angle:number,time:number){
  ctx.clearRect(0,0,w,h);
