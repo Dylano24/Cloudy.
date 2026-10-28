@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LAND_POINTS, LAND_COASTS } from "./globe-land";
 import styles from "./vpn.module.css";
 
@@ -25,8 +25,9 @@ function vector(lon: number, lat: number): Vec {
   const c = Math.cos(a);
   return [c * Math.sin(b), Math.sin(a), c * Math.cos(b)];
 }
+let cachedAngle = NaN, c = 1, s = 0;
 function project(v: Vec, rotation: number): Pt {
-  const c = Math.cos(rotation), s = Math.sin(rotation);
+  if (rotation !== cachedAngle) { cachedAngle = rotation; c = Math.cos(rotation); s = Math.sin(rotation); }
   const x = v[0] * c + v[2] * s;
   const z = v[2] * c - v[0] * s;
   const y = v[1] * COS_I + z * SIN_I;
@@ -34,7 +35,7 @@ function project(v: Vec, rotation: number): Pt {
 }
 
 const dots: Vec[] = [];
-for (let i = 0; i + 1 < LAND_POINTS.length; i += 4) {
+for (let i = 0; i + 1 < LAND_POINTS.length; i += 2) {
   dots.push(vector(LAND_POINTS[i], LAND_POINTS[i + 1]));
 }
 const coastlines: Vec[][] = LAND_COASTS.map(coast => {
@@ -96,10 +97,10 @@ function line(ctx: CanvasRenderingContext2D, points: readonly Vec[], angle: numb
 function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: boolean, lowPower: boolean) {
   ctx.clearRect(0,0,700,700);
   const globe = ctx.createRadialGradient(268,225,40,350,350,315);
-  globe.addColorStop(0,"#37101e");
-  globe.addColorStop(.35,"#190711");
-  globe.addColorStop(.7,"#0b040b");
-  globe.addColorStop(1,"#020203");
+  globe.addColorStop(0,"#290609");
+  globe.addColorStop(.35,"#140507");
+  globe.addColorStop(.7,"#090909");
+  globe.addColorStop(1,"#020202");
   ctx.beginPath(); ctx.arc(CENTER,CENTER,RADIUS,0,TAU);
   ctx.fillStyle=globe;ctx.fill();
 
@@ -107,7 +108,7 @@ function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: 
   ctx.beginPath();ctx.arc(CENTER,CENTER,RADIUS-1.5,0,TAU);ctx.clip();
 
   // Light geometrics, located on the surface. No free-floating orbits.
-  ctx.strokeStyle="rgba(234,48,87,.11)"; ctx.lineWidth=.65;
+  ctx.strokeStyle="rgba(229,27,46,.11)"; ctx.lineWidth=.65;
   ctx.beginPath();
   for(const row of grid) line(ctx,row,rotation);
   ctx.stroke();
@@ -121,16 +122,16 @@ function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: 
     else if(p.z>.018)far.push(p);
   }
   for(const [bucket,color,sz] of [
-    [far,"rgba(255,67,99,.27)",.72],
-    [middle,"rgba(255,66,105,.47)",.88],
-    [near,"rgba(255,122,150,.68)",1.16],
+    [far,"rgba(229,27,46,.27)",.72],
+    [middle,"rgba(229,27,46,.47)",.88],
+    [near,"rgba(229,27,46,.68)",1.16],
   ] as const){
     ctx.fillStyle=color; ctx.beginPath();
     for(const p of bucket) ctx.rect(p.x,p.y,sz,sz);
     ctx.fill();
   }
 
-  ctx.strokeStyle="rgba(246,72,106,.46)";
+  ctx.strokeStyle="rgba(229,27,46,.46)";
   ctx.lineWidth=.88;ctx.lineJoin="round";
   ctx.beginPath();
   for(const coast of coastlines) line(ctx,coast,rotation,.014);
@@ -147,25 +148,26 @@ function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: 
       if(p.z>.012) { if(!drawing){ctx.moveTo(p.x,p.y);drawing=true;}else ctx.lineTo(p.x,p.y); }
       else drawing=false;
     }
-    ctx.strokeStyle="rgba(251,56,95,.14)";
+    ctx.strokeStyle="rgba(229,27,46,.14)";
     ctx.lineWidth=lowPower?3:4.5;
     ctx.stroke();
-    ctx.strokeStyle="rgba(255,115,148,.57)";
+    ctx.strokeStyle="rgba(229,27,46,.57)";
     ctx.lineWidth=.95;
     ctx.stroke();
     if(move) {
       for(let direction=0;direction<2;direction++){
         const progress=((t*(direction===0?.105:-.105)+r.index*.137+direction*.47)%1+1)%1;
-        const point=path[Math.round(progress*48)];
+        const point=project(slerp(nodeVectors[r.a],nodeVectors[r.b],progress),rotation);
         if(point.z<.025)continue;
-        const previous=path[Math.max(0,Math.min(48,Math.round(progress*48)+(direction===0?-2:2)))];
-        ctx.strokeStyle="rgba(255,181,199,.88)";
+        const tailProgress=Math.max(0,Math.min(1,progress+(direction===0?-.025:.025)));
+        const previous=project(slerp(nodeVectors[r.a],nodeVectors[r.b],tailProgress),rotation);
+        ctx.strokeStyle="rgba(229,27,46,.88)";
         ctx.lineWidth=2.2;
         ctx.beginPath();ctx.moveTo(previous.x,previous.y);ctx.lineTo(point.x,point.y);ctx.stroke();
         const glow=ctx.createRadialGradient(point.x,point.y,0,point.x,point.y,8);
-        glow.addColorStop(0,"rgba(255,250,250,.94)");
-        glow.addColorStop(.2,"rgba(255,130,160,.77)");
-        glow.addColorStop(1,"rgba(250,43,88,0)");
+        glow.addColorStop(0,"rgba(229,27,46,.94)");
+        glow.addColorStop(.2,"rgba(229,27,46,.77)");
+        glow.addColorStop(1,"rgba(229,27,46,0)");
         ctx.fillStyle=glow;ctx.beginPath();ctx.arc(point.x,point.y,8,0,TAU);ctx.fill();
       }
     }
@@ -173,33 +175,35 @@ function draw(ctx: CanvasRenderingContext2D, rotation: number, t: number, move: 
 
   for (const p of nodes) {
     if(p.z<.1)continue;
-    ctx.fillStyle="rgba(255,67,100,.13)";
+    ctx.fillStyle="rgba(229,27,46,.13)";
     ctx.beginPath();ctx.arc(p.x,p.y,9,0,TAU);ctx.fill();
-    ctx.strokeStyle="rgba(255,119,151,.77)";
+    ctx.strokeStyle="rgba(229,27,46,.77)";
     ctx.lineWidth=1;ctx.beginPath();ctx.arc(p.x,p.y,4.1,0,TAU);ctx.stroke();
-    ctx.fillStyle="#ffb1c0";ctx.beginPath();ctx.arc(p.x,p.y,1.9,0,TAU);ctx.fill();
+    ctx.fillStyle="#e51b2e";ctx.beginPath();ctx.arc(p.x,p.y,1.9,0,TAU);ctx.fill();
   }
 
   const shade=ctx.createRadialGradient(260,216,45,350,350,350);
-  shade.addColorStop(0,"rgba(0,0,0,0)");
-  shade.addColorStop(.55,"rgba(0,0,0,0)");
-  shade.addColorStop(.77,"rgba(0,0,0,.12)");
-  shade.addColorStop(1,"rgba(0,0,0,.55)");
+  shade.addColorStop(0,"rgba(229,27,46,0)");
+  shade.addColorStop(.55,"rgba(229,27,46,0)");
+  shade.addColorStop(.77,"rgba(229,27,46,.12)");
+  shade.addColorStop(1,"rgba(229,27,46,.55)");
   ctx.fillStyle=shade;ctx.fillRect(0,0,700,700);
   ctx.restore();
 
   const rim=ctx.createLinearGradient(110,70,625,660);
-  rim.addColorStop(0,"rgba(241,49,85,.11)");
-  rim.addColorStop(.29,"rgba(255,178,190,.79)");
-  rim.addColorStop(.5,"rgba(211,25,59,.25)");
-  rim.addColorStop(.83,"rgba(255,74,109,.58)");
-  rim.addColorStop(1,"rgba(164,18,51,.07)");
+  rim.addColorStop(0,"rgba(229,27,46,.11)");
+  rim.addColorStop(.29,"rgba(229,27,46,.79)");
+  rim.addColorStop(.5,"rgba(229,27,46,.25)");
+  rim.addColorStop(.83,"rgba(229,27,46,.58)");
+  rim.addColorStop(1,"rgba(229,27,46,.07)");
   ctx.beginPath();ctx.arc(CENTER,CENTER,RADIUS,0,TAU);
   ctx.strokeStyle=rim;ctx.lineWidth=2.2;ctx.stroke();
-  ctx.strokeStyle="rgba(246,70,105,.075)";ctx.lineWidth=6;ctx.stroke();
+  ctx.strokeStyle="rgba(229,27,46,.075)";ctx.lineWidth=6;ctx.stroke();
 }
 
 export function EarthNetwork() {
+  const [paused,setPaused]=useState(false);
+  const position=useRef({angle:.49,time:0});
   const canvasRef=useRef<HTMLCanvasElement>(null);
   const containerRef=useRef<HTMLDivElement>(null);
   useEffect(()=>{
@@ -208,46 +212,49 @@ export function EarthNetwork() {
     const ctx=canvas.getContext("2d",{alpha:true});
     if(!ctx)return;
 
-    let raf=0,alive=true,visible=true,last=0,lastDraw=0,time=0;
-    let angle=.49; // North Atlantic on initial view.
+    let raf=0,alive=true,visible=false,last=0,lastDraw=0;
+    let {angle,time}=position.current; // Preserve rotation across pause/resume.
     const motion=window.matchMedia("(prefers-reduced-motion: reduce)");
     let reduced=motion.matches;
     let quality=700;
+    let lowPower=false;
     const resize=()=>{
       const width=canvas.getBoundingClientRect().width;
+      lowPower=width<600;
       quality=Math.max(340,Math.min(850,Math.round(width*Math.min(window.devicePixelRatio||1,1.45))));
       if(canvas.width!==quality){canvas.width=quality;canvas.height=quality;}
       ctx.setTransform(quality/700,0,0,quality/700,0,0);
-      draw(ctx,angle,time,!reduced,width<470);
+      draw(ctx,angle,time,!reduced&&!paused,lowPower);
     };
     const onMotion=()=>{
       reduced=motion.matches;
-      if(reduced){cancelAnimationFrame(raf);raf=0;draw(ctx,angle,time,false,quality<530);}
+      if(reduced||paused){cancelAnimationFrame(raf);raf=0;draw(ctx,angle,time,false,lowPower);}
       else if(visible&&document.visibilityState==="visible"&&!raf)raf=requestAnimationFrame(frame);
     };
     const frame=(now:number)=>{
       raf=0;
-      if(!alive||reduced||!visible||document.visibilityState!=="visible")return;
+      if(!alive||reduced||paused||!visible||document.visibilityState!=="visible")return;
       if(!last)last=now;
       const elapsed=Math.min(.08,(now-last)/1000);last=now;
-      const fps=quality<530?20:25;
+      const fps=30;
       angle+=elapsed*(TAU/82);
       time+=elapsed;
       if(now-lastDraw>=1000/fps){
         lastDraw=now;
-        draw(ctx,angle,time,true,quality<530);
+        draw(ctx,angle,time,true,lowPower);
+        position.current={angle,time};
       }
       raf=requestAnimationFrame(frame);
     };
     const onVisible=()=>{
-      if(visible&&!reduced&&document.visibilityState==="visible"&&!raf){last=0;lastDraw=0;raf=requestAnimationFrame(frame);}
+      if(visible&&!reduced&&!paused&&document.visibilityState==="visible"&&!raf){last=0;lastDraw=0;raf=requestAnimationFrame(frame);}
       else if(document.visibilityState!=="visible"){cancelAnimationFrame(raf);raf=0;}
     };
     const intersection=new IntersectionObserver(entries=>{
       visible=entries[0]?.isIntersecting??true;
       if(!visible){cancelAnimationFrame(raf);raf=0;}
       else onVisible();
-    },{rootMargin:"80px"});
+    },{rootMargin:"0px"});
     const observer=new ResizeObserver(resize);observer.observe(canvas);
     intersection.observe(holder);
     motion.addEventListener("change",onMotion);
@@ -260,7 +267,7 @@ export function EarthNetwork() {
       motion.removeEventListener("change",onMotion);
       document.removeEventListener("visibilitychange",onVisible);
     };
-  },[]);
+  },[paused]);
   return (
     <div className={styles.earthVisual} ref={containerRef}>
       <div className={styles.earthAura} aria-hidden="true"/>
@@ -273,6 +280,9 @@ export function EarthNetwork() {
         role="img"
         aria-label="Rotating digital Earth with illustrated connection routes between cities, contained on the globe."
       />
+      <button type="button" className={styles.motionButton} onClick={()=>setPaused(value=>!value)} aria-pressed={paused} aria-label="Pause globe animation">
+        <span aria-hidden="true">{paused ? "▷" : "Ⅱ"}</span>{paused ? "Resume globe" : "Pause globe"}
+      </button>
     </div>
   );
 }
