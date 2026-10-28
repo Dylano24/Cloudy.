@@ -10,30 +10,30 @@ import { VpnPricing } from "./vpn-pricing";
 import { EarthNetwork } from "./earth-network";
 
 export const metadata: Metadata = {
-  title: "Cloudy VPN | Privacy, made simple",
-  description: "Explore Cloudy VPN, refined privacy features and straightforward subscription options.",
+  title: "Cloudy VPN | A more considered connection",
+  description: "Discover Cloudy VPN: encryption, location controls and essential connection safeguards in a considered experience.",
   robots: { index: false, follow: false },
   openGraph: {
-    title: "Cloudy VPN | Privacy, made simple",
-    description: "A refined approach to online privacy.",
+    title: "Cloudy VPN | A more considered connection",
+    description: "A clearer approach to private connections.",
   },
 };
 
 const features = [
   {
     icon: ShieldCheck,
-    title: "Secure connection",
-    description: "Encrypted network protection designed around privacy and control.",
+    title: "Encrypted connections",
+    description: "A VPN tunnel is the foundation. Encryption standards and supported protocols will be verified before launch.",
   },
   {
     icon: Zap,
-    title: "Seamless experience",
-    description: "A clean interface that keeps everyday connection controls uncomplicated.",
+    title: "Connection safeguards",
+    description: "Planned kill switch and DNS protection designed to limit exposure when a connection changes.",
   },
   {
     icon: Globe2,
-    title: "Choice and freedom",
-    description: "A straightforward way to select from supported connection locations.",
+    title: "Location control",
+    description: "Choose a region, view your connection status and manage your session from one clear interface.",
   },
 ];
 
@@ -66,17 +66,17 @@ export default function VpnPage() {
           <div className={styles.heroGrid}>
             <div className={styles.heroCopy}>
               <div className={styles.eyebrow}><span className={styles.redDot}/> CLOUDY VPN <span className={styles.eyebrowRule}/></div>
-              <h1>Your world.<br/><span>Connected.</span></h1>
+              <h1>Your world.<br/><span>On your terms.</span></h1>
               <p className={styles.heroLead}>
-                Discover a new standard of digital privacy. Refined control, considered security and a seamless experience built around the way you connect.
+                A VPN should protect your connection, give you control over where you connect, and stay out of your way. That is the standard behind Cloudy VPN.
               </p>
               <div className={styles.heroActions}>
-                <a href="#plans" className={styles.primaryButton}>Explore plans <ArrowRight size={18}/></a>
-                <a href="#features" className={styles.secondaryButton}>Discover more <ChevronRight size={17}/></a>
+                <a href="#plans" className={styles.primaryButton}>Compare plans <ArrowRight size={18}/></a>
+                <a href="#features" className={styles.secondaryButton}>Explore protection <ChevronRight size={17}/></a>
               </div>
               <div className={styles.heroAssurances}>
-                <span><Check size={15}/> Clear plan choices</span>
-                <span><Check size={15}/> Designed around you</span>
+                <span><Check size={15}/> Clear connection controls</span>
+                <span><Check size={15}/> Straightforward plans</span>
               </div>
             </div>
             <EarthNetwork/>
@@ -87,9 +87,9 @@ export default function VpnPage() {
       <section className={styles.features} id="features">
         <div className={styles.container}>
           <div className={styles.sectionHeading}>
-            <span className={styles.eyebrow}>THE CLOUDY EXPERIENCE</span>
-            <h2>Everything you need.<br/><span>Nothing you don’t.</span></h2>
-            <p>Designed to give you more control over your connection, without getting in your way.</p>
+            <span className={styles.eyebrow}>THE ESSENTIALS</span>
+            <h2>Protection without<br/><span>the complexity.</span></h2>
+            <p>Encryption, connection safeguards and location controls. The essentials, presented clearly.</p>
           </div>
           <div className={styles.featureGrid}>
             {features.map(({icon:Icon,title,description})=>(
@@ -107,10 +107,10 @@ export default function VpnPage() {
         <div className={styles.container}>
           <div className={[styles.spotlightPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
             <div className={styles.spotlightCopy}>
-              <span className={styles.eyebrow}>A DIFFERENT APPROACH</span>
-              <h2>Your connection.<br/><span>Reimagined.</span></h2>
-              <p>Technology should work beautifully, without asking for your attention. Every element of the Cloudy VPN experience is designed to make the complex feel simple.</p>
-              <a href="#plans" className={styles.inlineLink}>Compare plans <ArrowRight size={17}/></a>
+              <span className={styles.eyebrow}>BUILT FOR CLARITY</span>
+              <h2>Every control.<br/><span>With purpose.</span></h2>
+              <p>Connection status, server choice and protection settings belong in one place. No unnecessary steps, no crowded dashboard.</p>
+              <a href="#plans" className={styles.inlineLink}>Explore the plans <ArrowRight size={17}/></a>
             </div>
             <div className={styles.spotlightVisual} aria-hidden="true">
               <div className={styles.spotlightGrid}/>
@@ -133,9 +133,9 @@ export default function VpnPage() {
         <div className={styles.container}>
           <div className={styles.faqGrid}>
             <div className={styles.faqIntro}>
-              <span className={styles.eyebrow}>GOOD TO KNOW</span>
-              <h2>Questions?<br/><span>Answers.</span></h2>
-              <p>Everything you need to know before choosing a Cloudy VPN plan.</p>
+              <span className={styles.eyebrow}>FREQUENT QUESTIONS</span>
+              <h2>Know what<br/><span>you’re choosing.</span></h2>
+              <p>Clear information about features, availability and how the service will work.</p>
               <Link href="/support" className={styles.inlineLink}>Contact Cloudy <ArrowRight size={17}/></Link>
             </div>
             <div className={styles.faqItems}>
@@ -154,9 +154,9 @@ export default function VpnPage() {
         <div className={styles.container}>
           <div className={[styles.ctaPanel,"cloudy-traced-panel","cloudy-studio-sheen-panel"].join(" ")}>
             <div className={styles.ctaAura} aria-hidden="true"/>
-            <span className={styles.eyebrow}>DISCOVER CLOUDY VPN</span>
-            <h2>Your connection.<br/><span>Your choice.</span></h2>
-            <p>Find the plan that fits your digital life.</p>
+            <span className={styles.eyebrow}>CLOUDY VPN</span>
+            <h2>Control begins<br/><span>with clarity.</span></h2>
+            <p>Review the protection options and choose the level that makes sense for you.</p>
             <a href="#plans" className={styles.primaryButton}>View VPN plans <ArrowRight size={17}/></a>
           </div>
         </div>
