@@ -1,0 +1,16 @@
+.page { padding-top: clamp(90px, 12vw, 160px); padding-bottom: var(--cloudy-section-gap); color: #f5f5f5; }
+.eyebrow { color: #e03b43; letter-spacing: .22em; font-size: .75rem; font-weight: 750; margin-bottom: 22px; }
+.heading { font-size: clamp(2.7rem, 6vw, 5.5rem); line-height: 1.04; letter-spacing: -.055em; font-weight: 750; max-width: 900px; }
+.heading span { color: #e43a43; }
+.intro { color: #a9a9b0; max-width: 640px; line-height: 1.7; margin-top: 25px; }
+.status { display: inline-flex; border: 1px solid #4a272b; background: #210f12; color: #f1b1b6; padding: 11px 16px; border-radius: 10px; margin-top: 26px; font-size: .83rem; }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--cloudy-card-gap); margin-top: var(--cloudy-section-gap); }
+.card { min-height: 185px; border: 1px solid #29292d; border-radius: 16px; padding: 25px; background: #0c0c0e; transition: border-color .2s ease, transform .2s ease; }
+.card:hover { border-color: #863039; transform: translateY(-2px); }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #d83a43; margin-bottom: 20px; }
+.card h2 { font-size: 1.12rem; font-weight: 650; margin: 0 0 10px; }
+.card p { color: #aaaab1; font-size: .87rem; line-height: 1.55; }
+.soon { display: block; margin-top: 20px; font-size: .74rem; color: #8b8b94; }
+.back { display: inline-block; margin-top: var(--cloudy-section-gap); color: #f5f5f5; text-decoration: underline; text-underline-offset: 5px; }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .card { min-height: 150px; } }
