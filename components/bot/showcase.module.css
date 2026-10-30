@@ -61,7 +61,8 @@
 .demoFootnote { margin: 14px 0 0; color: #b4b4ba; font-size: 12px; }
 .discordMessage { display: flex; align-items: flex-start; gap: 12px; }
 .messageAvatar, .messageAvatarRed { display: grid; place-items: center; font-family: var(--font-display), Anton, Impact, sans-serif; font-size: 18px; width: 35px; height: 35px; flex: 0 0 35px; border-radius: 50%; color: white; background: #2a2b32; }
-.messageAvatarRed { background: #c71937; }
+.messageAvatarRed { background: #0b0b0d; overflow: hidden; border: 1px solid rgba(255,255,255,.14); }
+.messageAvatarRed img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .messageBody { flex: 1; min-width: 0; }
 .messageName { display: inline-flex; align-items: center; gap: 7px; font-weight: 800; font-size: 12px; margin-bottom: 10px; }
 .messageName small { display: inline-block; border-radius: 3px; padding: 2px 4px; color: #fff; background: #5865f2; font-size: 8px; }
@@ -87,7 +88,7 @@
 .winner svg { color: #f43b5c; }
 .dashboardSection { background: radial-gradient(ellipse at 50% 55%, rgba(172,24,47,.048), transparent 65%); padding-bottom: var(--cloudy-section-half-gap); }
 .dashboard { display: grid; grid-template-columns: 235px minmax(0, 1fr); border: 1px solid #292a2d; background: #09090b; border-radius: 18px; overflow: hidden; min-height: 565px; box-shadow: 0 35px 120px rgba(0,0,0,.42); }
-.sidebar { display: flex; flex-direction: column; background: #0b0b0d; border-right: 1px solid #28292c; padding: 22px 13px 15px; }
+.sidebar { display: flex; flex-direction: column; background: #0b0b0d; border-right: 1px solid #28292c; padding: 25px 13px 15px; }
 .sidebarBrand { display: flex; gap: 10px; align-items: center; padding: 0 12px 23px; }
 .sidebarBrandMark { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid #e51b2e; border-radius: 50%; font-family: var(--font-display), Anton, Impact, sans-serif; font-size: 23px; }
 .sidebarBrand > div:nth-child(2) { display: grid; gap: 3px; }
@@ -99,7 +100,7 @@
 .sidebarServer strong { font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .sidebarServer div span { font-size: 9px; color: #9f9fa9; }
 .sidebarServer svg { color: #9e9ea8; }
-.sidebarLabel { padding: 0 13px 13px; color: #767982; letter-spacing: .12em; font-size: 9px; font-weight: 800; }
+.sidebarLabel { padding: 0 13px 17px; color: #92929c; letter-spacing: .13em; font-size: 10px; font-weight: 800; }
 .sidebarLink, .sidebarActive { display: flex; align-items: center; gap: 12px; padding: 11px 13px; width: 100%; text-align: left; color: #b4b5bb; border: 1px solid transparent; border-radius: 8px; cursor: pointer; background: transparent; font-size: 12px; font-weight: 700; transition: background .18s ease; }
 .sidebarLink:hover { background: #1e1e23; color: #fff; }
 .sidebarActive { color: #fff; background: rgba(225,26,53,.12); border-color: rgba(225,26,53,.18); }

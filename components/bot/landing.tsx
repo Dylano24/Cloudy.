@@ -50,7 +50,7 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
             <span className={styles.eyebrow}>Cloudy Bot</span>
             <h1 className={styles.display + ' ' + styles.heroTitle}>Your server.<br /><span>Fully in control.</span></h1>
             <p className={styles.lead + ' ' + styles.heroLead}>
-              Your moderation, tickets, leveling, giveaways and more — all in one powerful Discord bot and one connected dashboard.
+              Moderation, tickets, giveaways and more.<br />All in one powerful Discord bot and one connected dashboard.
             </p>
             <div className={styles.heroActions}>
               <a className={styles.button} href="#cloudy-demos">Explore Cloudy <ArrowRight size={17} aria-hidden="true" /></a>
