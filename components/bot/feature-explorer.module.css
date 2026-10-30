@@ -84,3 +84,54 @@
 @media(max-width: 1060px) { .cards { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media(max-width: 700px) { .container { width: calc(100% - 32px); } .hero { padding-top: 70px; } .hero h1 { font-size: clamp(50px, 11vw, 78px); } .metrics { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; } .metrics strong { font-size: 31px; } .metrics span { font-size: 10px; } .cards { grid-template-columns: 1fr; } .card { min-height: 0; } .browser { padding: 13px; } .count { flex-basis: 100%; } .heroActions { flex-direction: column; align-items: stretch; } .primary, .secondary { width: 100%; } }
 @media(prefers-reduced-motion: reduce) { .root *, .root *::before, .root *::after { transition: none !important; animation: none !important; } }
+
+/* Source-backed Cloudy documentation; shared visual language with features. */
+.guideHero { padding: clamp(75px, 9vw, 130px) 0 clamp(48px, 6vw, 90px); border-bottom: 1px solid var(--line); background: radial-gradient(ellipse at 45% 30%, rgba(178,17,45,.11), transparent 65%), #050505; }
+.guideHero h1 { font-family: var(--font-display), Anton, Impact, sans-serif; font-size: clamp(55px, 7vw, 105px); font-weight: 400; line-height: 1.1; letter-spacing: -.012em; margin: 23px 0; }
+.guideHero h1 span { color: var(--r); }
+.guideHero p { max-width: 670px; font-size: 15px; line-height: 1.85; color: #bdbbc2; margin: 0; }
+.guideIntro { max-width: 700px; margin: clamp(60px, 7vw, 90px) 0 35px; }
+.guideIntro h2 { font-family: var(--font-display), Anton, Impact, sans-serif; font-size: clamp(37px, 4vw, 57px); font-weight: 400; margin: 0 0 12px; }
+.guideIntro p { color: #bdbac2; font-size: 13px; line-height: 1.8; margin: 0; }
+.guideCount { font-size: 11px; font-weight: 700; letter-spacing: .11em; text-transform: uppercase; color: #afabb4; margin: 24px 0 14px; }
+.guideList { display: grid; gap: 11px; padding-bottom: 20px; }
+.guideItem { scroll-margin-top: 100px; overflow: hidden; border: 1px solid #29282c; border-radius: 12px; background: #09090b; }
+.guideItem[open] { border-color: rgba(239,50,78,.39); }
+.guideItem > summary { list-style: none; display: flex; align-items: center; gap: 14px; cursor: pointer; min-height: 88px; padding: 17px 19px; }
+.guideItem > summary::-webkit-details-marker { display: none; }
+.guideItem > summary:hover { background: rgba(255,255,255,.026); }
+.guideSummary { flex: 1; min-width: 0; }
+.guideSummary strong { display: block; font-size: 14px; line-height: 1.4; }
+.guideSummary small { display: block; margin-top: 6px; font-size: 11px; line-height: 1.6; color: #aaa7af; }
+.guideStatus { white-space: nowrap; padding: 7px 10px; font-size: 10px; font-weight: 700; border: 1px solid #37343b; border-radius: 999px; color: #d6d2d9; }
+.guideChevron { flex: none; color: #b5b1bd; transition: transform .18s ease; }
+.guideItem[open] .guideChevron { transform: rotate(180deg); }
+.guideBody { display: grid; gap: 20px; border-top: 1px solid #2d2a30; padding: 22px; }
+.guideAccess, .guideNote, .guideInsight, .guideFooter { display: flex; align-items: flex-start; gap: 11px; font-size: 11px; line-height: 1.7; color: #b8b5bd; }
+.guideAccess svg, .guideNote svg, .guideInsight svg, .guideFooter svg { color: #ee3653; flex: none; margin-top: 2px; }
+.guideNote { border: 1px solid rgba(255,255,255,.09); border-radius: 8px; padding: 12px; margin: 0; }
+.guideInsight { border: 1px solid rgba(232,44,74,.24); border-radius: 9px; padding: 17px; background: rgba(232,44,74,.035); }
+.guideInsight strong { font-size: 13px; color: #fff; }
+.guideInsight p { margin: 6px 0 0; font-size: 11px; }
+.guideSection { display: grid; gap: 10px; }
+.guideSection h3 { font-size: 15px; margin: 0; }
+.guideSection > p { color: #afaab5; margin: 0; font-size: 11px; line-height: 1.7; }
+.guideFields { border: 1px solid #29262c; border-radius: 9px; overflow: hidden; }
+.guideField { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; padding: 13px 16px; }
+.guideField + .guideField { border-top: 1px solid #29262c; }
+.guideField > div { flex: 1; min-width: 0; }
+.guideField strong { font-size: 12px; display: block; line-height: 1.5; }
+.guideField span { display: block; font-size: 11px; color: #aaa5af; line-height: 1.7; margin-top: 4px; }
+.guideField code { font: 700 10px var(--font-mono), monospace; padding: 5px 8px; white-space: nowrap; color: #ded9df; border: 1px solid #373139; border-radius: 5px; background: #151216; }
+.guideFooter { border-top: 1px solid #29262c; padding-top: 17px; align-items: center; }
+.guideFooter span { flex: 1; }
+.guideFooter a { flex: none; color: #f54a65; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+.root:has(.guideHero) .note { margin-bottom: 80px; }
+@media(max-width: 680px) {
+  .guideItem > summary { padding: 14px; gap: 10px; }
+  .guideStatus { display: none; }
+  .guideBody { padding: 14px; }
+  .guideFooter { flex-wrap: wrap; }
+  .guideFooter a { width: 100%; }
+  .guideField { flex-wrap: wrap; }
+}
