@@ -135,3 +135,6 @@
   .guideFooter a { width: 100%; }
   .guideField { flex-wrap: wrap; }
 }
+
+.inlineGuide { color: #fa4563 !important; font-weight: 800; margin-left: 3px; text-decoration: underline !important; text-underline-offset: 3px; }
+.inlineGuide:hover { color: #fff !important; }
