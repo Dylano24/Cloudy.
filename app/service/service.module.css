@@ -11,35 +11,11 @@
   isolation: isolate;
   min-height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 70% 10%, rgba(229,27,46,.08), transparent 23rem),
-    linear-gradient(180deg, #020203 0%, #050304 48%, #020203 100%);
+  background: #020203;
   color: var(--text);
 }
 
-.page::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    radial-gradient(circle, rgba(255,51,79,.96) 0 1.5px, rgba(255,51,79,.24) 2.7px, transparent 5.4px),
-    radial-gradient(circle, rgba(229,27,46,.82) 0 1.35px, rgba(229,27,46,.18) 2.5px, transparent 5px),
-    radial-gradient(circle, rgba(255,51,79,.72) 0 1.2px, rgba(255,51,79,.15) 2.3px, transparent 4.7px);
-  background-size:
-    168px 168px,
-    223px 223px,
-    291px 291px;
-  background-position:
-    18px 24px,
-    91px 112px,
-    44px 186px;
-  background-repeat: repeat;
-  opacity: .44;
-  filter: drop-shadow(0 0 6px rgba(229,27,46,.24));
-  animation: studioParticlesFlow 24s linear infinite;
-}
+.page::before { display: none; }
 
 .page::after { display: none; }
 
