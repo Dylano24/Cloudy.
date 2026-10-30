@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ChevronsUpDown, Gem, LogOut, Menu, TerminalSquare, UsersRound, X } from 'lucide-react';
+import { ChevronDown, ChevronsUpDown, Gem, LogOut, Menu, TerminalSquare, UsersRound, X } from 'lucide-react';
 import styles from './bot.module.css';
 import { DashboardProvider, type DashboardData } from './dashboard-context';
 import { GuildIcon } from './guild-icon';
@@ -29,9 +29,33 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [switcherOpen, setSwitcherOpen] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  const [collapsedGroups, setCollapsedGroups] = useState<Record<string, boolean>>({});
   const sidebarRef = useRef<HTMLElement>(null);
   const switcherRef = useRef<HTMLDivElement>(null);
   const base = `/bot/${data.guild.id}`;
+
+  // Restore per-server navigation preferences without changing server configuration.
+  useEffect(() => {
+    try {
+      const stored = window.localStorage.getItem('cloudy:bot:nav:' + data.guild.id);
+      if (stored) {
+        const value: unknown = JSON.parse(stored);
+        if (value && typeof value === 'object' && !Array.isArray(value)) {
+          const clean: Record<string, boolean> = {};
+          for (const group of groups) if ((value as Record<string, unknown>)[group.id] === true) clean[group.id] = true;
+          setCollapsedGroups(clean);
+        }
+      }
+    } catch { /* Browser storage may be disabled. The navigation still works. */ }
+  }, [data.guild.id, groups]);
+
+  function toggleNavGroup(groupId: string) {
+    setCollapsedGroups(previous => {
+      const next = { ...previous, [groupId]: !previous[groupId] };
+      try { window.localStorage.setItem('cloudy:bot:nav:' + data.guild.id, JSON.stringify(next)); } catch { /* Non-persistent fallback. */ }
+      return next;
+    });
+  }
 
   // Close the phone drawer and the server menu after navigation.
   useEffect(() => { setDrawerOpen(false); setSwitcherOpen(false); }, [pathname]);
@@ -128,15 +152,20 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
               if (!items.length) return null;
               return (
                 <div key={group.id} className={styles.navGroup}>
-                  <div className={styles.navLabel}>{group.label}</div>
-                  {items.map(module => {
-                    const href = `${base}/${module.id}`;
-                    return (
-                      <Link key={module.id} href={href as Route} prefetch={false} className={styles.navItem} aria-current={pathname === href ? 'page' : undefined}>
-                        <ModuleIcon name={module.icon} size={17} /> {module.title}
-                      </Link>
-                    );
-                  })}
+                  <button type="button" className={styles.navGroupToggle} aria-expanded={!collapsedGroups[group.id]} aria-controls={`cloudy-nav-${group.id}`} onClick={() => toggleNavGroup(group.id)}>
+                    <span className={styles.navLabel}>{group.label}</span>
+                    <ChevronDown size={15} className={collapsedGroups[group.id] ? styles.navGroupCollapsed : styles.navGroupExpanded} aria-hidden="true" />
+                  </button>
+                  <div id={`cloudy-nav-${group.id}`} hidden={!!collapsedGroups[group.id]}>
+                    {items.map(module => {
+                      const href = `${base}/${module.id}`;
+                      return (
+                        <Link key={module.id} href={href as Route} prefetch={false} className={styles.navItem} aria-current={pathname === href ? 'page' : undefined}>
+                          <ModuleIcon name={module.icon} size={17} /> {module.title}
+                        </Link>
+                      );
+                    })}
+                  </div>
                 </div>
               );
             })}
