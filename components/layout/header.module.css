@@ -22,6 +22,14 @@
 }
 
 @media (max-width: 900px) {
+  /* A nearly opaque phone header does not need to blur the scrolling page
+     beneath it on every frame, which is expensive on older mobile GPUs. */
+  .header {
+    background: rgba(6, 6, 7, .98) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .header :global(.cloudy-header-brand) {
     min-width: 0;
   }
