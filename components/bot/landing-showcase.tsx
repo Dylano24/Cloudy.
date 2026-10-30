@@ -136,7 +136,6 @@ const dashboardTabs = [
   { name: 'Overview', icon: Activity, desc: 'Your server at a glance', a: 'Modules', av: 'Connected', b: 'Access', bv: 'Managed', c: 'Changes', cv: 'Logged' },
   { name: 'Moderation', icon: ShieldCheck, desc: 'Keep control of the community', a: 'AutoMod', av: 'Configured', b: 'Cases', bv: 'Organized', c: 'Rules', cv: 'Editable' },
   { name: 'Tickets', icon: Ticket, desc: 'Support workflows in one place', a: 'Panels', av: 'Customizable', b: 'Staff', bv: 'Assigned', c: 'Updates', cv: 'Instant' },
-  { name: 'Leveling', icon: Trophy, desc: 'Build community engagement', a: 'XP', av: 'Configurable', b: 'Rewards', bv: 'Managed', c: 'Roles', cv: 'Synced' },
   { name: 'Giveaways', icon: Gift, desc: 'Manage community events', a: 'Entries', av: 'Tracked', b: 'Winners', bv: 'Selected', c: 'Events', cv: 'Organized' },
 ];
 
