@@ -138,3 +138,34 @@
 
 .inlineGuide { color: #fa4563 !important; font-weight: 800; margin-left: 3px; text-decoration: underline !important; text-underline-offset: 3px; }
 .inlineGuide:hover { color: #fff !important; }
+
+/* Unified Bot-only typography, preserving the exact card grid, text and page structure. */
+.root { font-family: var(--font-sans), sans-serif; }
+.root .hero h1, .root .introduction h2, .root .bottomCta h2, .root .guideHero h1,
+.root .guideIntro h2, .root .sectionHeading h2 {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 650;
+  letter-spacing: -.047em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.root .card h3, .root .guideSummary strong, .root .guideSection h3, .root .guideField strong {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 730;
+  letter-spacing: -.024em;
+  line-height: 1.43;
+  text-wrap: pretty;
+}
+.root .card > p, .root .guideSummary small, .root .guideField span, .root .guideNote,
+.root .introduction p, .root .hero p, .root .guideHero p {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 430;
+  line-height: 1.77;
+  letter-spacing: 0;
+}
+.root .status, .root .kicker, .root .filter, .root .filterActive, .root .group,
+.root .groupActive, .root .cardBottom, .root .sectionCount {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 660;
+}
+.root .primary, .root .secondary { font-family: var(--font-sans), sans-serif; font-weight: 700; }
