@@ -17,6 +17,8 @@ Branch: `preview/cloudy-bot-dashboard-20261030`, gebaseerd op `11cf505` (nieuwst
 | Bewerken, live Discord-preview, opslagbalk, Ctrl/⌘+S, reset, bevestigingsdialoog | Werkt in de demo (`/bot/demo`) |
 | Validatie, CSRF, rate limiting, audit-logregels | Werkt (getest) |
 
+Op preview-deployments toont `/bot` onderaan een setup-blok met de exacte Discord-callback-URL en welke instellingen aanwezig zijn (alleen ja/nee). In productie wordt dit blok niet getoond.
+
 ## Wat nog een backendkoppeling nodig heeft
 
 | Onderdeel | Nodig |
