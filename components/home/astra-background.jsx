@@ -318,6 +318,6 @@ export function AstraBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="cloudy-astra-background" tabIndex={0}
-    aria-label="Red star field. Use arrow keys, or drag with a mouse, to rotate." />;
+  return <canvas ref={canvasRef} className="cloudy-astra-background"
+    style={{ pointerEvents: 'none', cursor: 'default' }} aria-hidden="true" />;
 }
