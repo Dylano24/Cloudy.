@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
+import type { Route } from 'next';
 import { ArrowRight, Check, ChevronDown, CircleHelp, Search, SlidersHorizontal, X } from 'lucide-react';
 import { ModuleIcon } from './module-icon';
 import type { PublicFeature } from '@/lib/bot-dashboard/public-feature-catalog';
@@ -114,7 +115,7 @@ export function FeatureExplorer({ items, groups }: { items: PublicFeature[]; gro
                         <Link href="/bot">Open dashboard <ArrowRight size={15} /></Link>}
                     </div>
                     {active ? <div id={'detail-' + feature.id} className={styles.details}>
-                      <CircleHelp size={15} aria-hidden="true" /><span>{feature.explanation}{feature.status !== 'integration' ? <> <Link href={'/bot/guides#' + feature.id} className={styles.inlineGuide}>View setting guide</Link></> : null}</span>
+                      <CircleHelp size={15} aria-hidden="true" /><span>{feature.explanation}{feature.status !== 'integration' ? <> <Link href={('/bot/guides#' + feature.id) as Route} className={styles.inlineGuide}>View setting guide</Link></> : null}</span>
                     </div> : null}
                   </article>;
                 })}
