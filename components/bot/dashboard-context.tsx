@@ -3,13 +3,11 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import type { BotChannel, BotRole } from '@/lib/bot-dashboard/bot-api';
 
-export type DashboardMode = 'demo' | 'live' | 'unlinked';
 export type DashboardData = {
-  mode: DashboardMode;
   guild: { id: string; name: string; iconUrl: string | null; memberCount: number | null };
   channels: BotChannel[];
   roles: BotRole[];
-  csrf: string | null;
+  csrf: string;
 };
 
 const DashboardContext = createContext<DashboardData | null>(null);

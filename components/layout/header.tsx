@@ -145,7 +145,7 @@ export function Header() {
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
           {nav.map(([label, href]) => (
-            <Link key={href} href={href} {...(href.startsWith('https://') ? { target: '_blank', rel: 'noreferrer' } : {})} className={pathname === href || (href === '/bot' && pathname.startsWith('/bot/')) ? 'active' : ''}>
+            <Link key={href} href={href} {...(href.startsWith('https://') ? { target: '_blank', rel: 'noreferrer' } : {})} className={[pathname === href || (href === '/bot' && pathname.startsWith('/bot/')) ? 'active' : '', href === '/bot' ? styles.navBot : ''].filter(Boolean).join(' ')}>
               {label}
             </Link>
           ))}
@@ -166,6 +166,7 @@ export function Header() {
                   <Link key={href} href={href} onClick={() => setAccountOpen(false)}>{label}</Link>
                 ))}
                 {user ? <button type="button" className={`${styles.authAction} ${styles.logOff}`} disabled={loggingOut} onClick={() => { void logout().then(() => setAccountOpen(false)).catch(() => window.alert('Unable to sign out. Please try again.')); }}>Log off</button> : !pending && <><Link href="/account" className={styles.authAction} onClick={() => setAccountOpen(false)}>Login</Link><Link href="/account/create" onClick={() => setAccountOpen(false)}>Create account</Link></>}
+                <Link href="/bot" className={styles.menuBot} onClick={() => setAccountOpen(false)}>Bot dashboard</Link>
               </nav>
             )}
           </div>

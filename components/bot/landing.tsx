@@ -1,5 +1,3 @@
-import Link from 'next/link';
-import type { Route } from 'next';
 import { Suspense } from 'react';
 import { AlertTriangle, KeyRound, ShieldCheck, Zap } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
@@ -51,7 +49,6 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
               <a href={loginError === 'consent' ? consentHref : loginHref} className={styles.button}>
                 <SiDiscord size={18} aria-hidden="true" /> {loginError === 'consent' ? 'Allow server access' : 'Log in with Discord'}
               </a>
-              <Link href={'/bot/demo' as Route} className={styles.buttonGhost}>Explore the demo</Link>
             </div>
             <div className={styles.heroStatus}>
               <Suspense fallback={<StatusPlaceholder />}><BotStatusPill /></Suspense>
@@ -118,7 +115,7 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
           <div className={styles.steps}>
             <article className={styles.step}><h3>Log in with Discord</h3><p>One click. Cloudy only asks for your profile and your server list.</p></article>
             <article className={styles.step}><h3>Choose a server</h3><p>Pick a server you manage, or invite Cloudy when it is not there yet.</p></article>
-            <article className={styles.step}><h3>Configure</h3><p>Change settings with a live Discord preview and save when you are ready.</p></article>
+            <article className={styles.step}><h3>Configure</h3><p>Change the settings Cloudy uses and save. Cloudy applies them right away.</p></article>
           </div>
         </div>
       </section>

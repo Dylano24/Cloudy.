@@ -108,7 +108,6 @@ test('module changes are validated strictly', () => {
   const leveling = modules.getModule('leveling');
   const tickets = modules.getModule('tickets');
   const logging = modules.getModule('logging');
-  const feeds = modules.getModule('feeds');
 
   assert.deepEqual(validation.validateModuleChanges(welcome, { enabled: true, channelId: '123456789012345678' }), { ok: true, changes: { enabled: true, channelId: '123456789012345678' } });
   assert.equal(validation.validateModuleChanges(welcome, { __proto__: { enabled: true } }).ok, false, 'nothing to save');
@@ -118,10 +117,11 @@ test('module changes are validated strictly', () => {
   assert.equal(validation.validateModuleChanges(welcome, { 'leaveEmbed.image': 'javascript:alert(1)' }).ok, false);
   assert.equal(validation.validateModuleChanges(welcome, { 'leaveEmbed.image': 'http://insecure.example/a.png' }).ok, false);
   assert.equal(validation.validateModuleChanges(welcome, { 'leaveEmbed.image': 'https://cdn.example/a.png' }).ok, true);
-  assert.equal(validation.validateModuleChanges(welcome, { 'leaveEmbed.title': 'Line\nbreak' }).ok, false, 'single-line text');
+  assert.equal(validation.validateModuleChanges(modules.getModule('general'), { prefix: 'a\nb' }).ok, false, 'single-line text');
+  assert.equal(validation.validateModuleChanges(modules.getModule('general'), { prefix: '' }).ok, false, 'prefix needs a character');
   assert.equal(validation.validateModuleChanges(welcome, { leaveMessage: 'x'.repeat(2001) }).ok, false);
   assert.equal(validation.validateModuleChanges(welcome, { leaveMessage: 'bad\u0007bell' }).ok, false);
-  assert.equal(validation.validateModuleChanges(welcome, { 'leaveEmbed.color': 'red' }).ok, false);
+  assert.equal(validation.validateModuleChanges(welcome, { 'leaveEmbed.color': '#FF0000' }).ok, false, 'not editable on the website');
 
   assert.equal(validation.validateModuleChanges(leveling, { 'xpRange.min': 30, 'xpRange.max': 10 }).ok, false);
   assert.equal(validation.validateModuleChanges(leveling, { 'xpRange.min': 0 }).ok, false);
@@ -134,11 +134,7 @@ test('module changes are validated strictly', () => {
   assert.equal(validation.validateModuleChanges(logging, { 'logging.enabledEvents': { 'message.delete': true } }).ok, true);
   assert.equal(validation.validateModuleChanges(logging, { 'logging.enabledEvents': { 'evil.event': true } }).ok, false);
 
-  const feed = { name: 'Clips', source: 'https://example.com', channelId: '123456789012345678', minutes: 60, mediaType: 'video', adult: false, active: true };
-  assert.equal(validation.validateModuleChanges(feeds, { feeds: [feed] }).ok, true);
-  assert.equal(validation.validateModuleChanges(feeds, { feeds: [{ ...feed, extra: 1 }] }).ok, false, 'unknown item key');
-  assert.equal(validation.validateModuleChanges(feeds, { feeds: Array(6).fill(feed) }).ok, false, 'max 5 feeds');
-  assert.equal(validation.validateModuleChanges(feeds, { feeds: [{ ...feed, minutes: 10081 }] }).ok, false);
+  assert.equal(validation.validateModuleChanges(modules.getModule('feeds'), { feeds: [] }).ok, false, 'overview modules accept no changes');
 });
 
 test('Join to Create bitrate is validated in the stored unit (bps)', () => {
@@ -184,4 +180,15 @@ test('the OAuth origin comes from configuration or Vercel, never from the reques
   assert.equal(origin.dashboardOrigin('https://other.example'), 'https://cloudy.example');
   env.CLOUDY_BOT_DASHBOARD_ORIGIN = 'http://insecure.example';
   assert.equal(origin.dashboardOrigin('https://request.example'), 'https://cloudy-store-git-preview-cloudystore.vercel.app');
+});
+
+test('every module is either editable or a live overview, and role pickers only offer Staff, Moderator, Owner and Member', () => {
+  for (const mod of modules.MODULES) {
+    assert.ok(mod.kind === 'insight' ? mod.sections.length === 0 : mod.sections.length > 0, mod.id);
+  }
+  const fields = loadTypeScript('components/bot/fields.tsx');
+  const names = ['Staff', 'Moderator', 'Owner', 'Member', '👑 Owner', 'VIP', 'Level 10', 'Administrator', 'Cloudy'];
+  const allowed = names.filter(name => fields.isAllowedRole({ name, managed: false }));
+  assert.deepEqual(allowed, ['Staff', 'Moderator', 'Owner', 'Member', '👑 Owner']);
+  assert.equal(fields.isAllowedRole({ name: 'Member', managed: true }), false, 'bot roles are never offered');
 });

@@ -10,10 +10,10 @@ import { DashboardProvider, type DashboardData } from './dashboard-context';
 import { GuildIcon } from './guild-icon';
 import { ModuleIcon } from './module-icon';
 
-export type NavModule = { id: string; title: string; group: string; icon: string; soon: boolean };
+export type NavModule = { id: string; title: string; group: string; icon: string };
 export type NavGroup = { id: string; label: string };
 type SwitchServer = { id: string; name: string; iconUrl: string | null };
-type ShellUser = { name: string; username: string; avatarUrl: string } | null;
+type ShellUser = { name: string; username: string; avatarUrl: string };
 
 export function DashboardShell({ data, user, servers, groups, modules, children }: {
   data: DashboardData;
@@ -57,7 +57,7 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
   }, [switcherOpen]);
 
   async function logout() {
-    if (!data.csrf || leaving) return;
+    if (leaving) return;
     setLeaving(true);
     try {
       await fetch('/api/bot/auth/logout', { method: 'POST', headers: { 'x-cloudy-csrf': data.csrf } });
@@ -67,7 +67,6 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
     }
   }
 
-  const modeLabel = data.mode === 'demo' ? 'Demo server' : data.mode === 'live' ? 'Connected to Cloudy' : 'Cloudy connection pending';
 
   return (
     <DashboardProvider value={data}>
@@ -88,7 +87,7 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
               <GuildIcon name={data.guild.name} url={data.guild.iconUrl} />
               <span className={styles.switcherText}>
                 <strong>{data.guild.name}</strong>
-                <span>{modeLabel}</span>
+                <span>{data.guild.memberCount !== null ? `${data.guild.memberCount.toLocaleString('en')} members` : 'Cloudy'}</span>
               </span>
               <ChevronsUpDown size={16} aria-hidden="true" />
             </button>
@@ -125,7 +124,6 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
                     return (
                       <Link key={module.id} href={href as Route} prefetch={false} className={styles.navItem} aria-current={pathname === href ? 'page' : undefined}>
                         <ModuleIcon name={module.icon} size={17} /> {module.title}
-                        {module.soon ? <span className={styles.navSoon}>Soon</span> : null}
                       </Link>
                     );
                   })}
@@ -135,20 +133,11 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
           </nav>
 
           <div className={styles.sidebarFoot}>
-            {user ? (
-              <>
-                <img className={`${styles.avatar} ${styles.avatarSmall}`} src={user.avatarUrl} alt="" width={34} height={34} decoding="async" />
-                <span className={styles.who}><strong>{user.name}</strong><span>@{user.username}</span></span>
-                <button type="button" className={styles.iconButton} onClick={logout} disabled={leaving} aria-label="Log out of the dashboard" title="Log out">
-                  <LogOut size={16} aria-hidden="true" />
-                </button>
-              </>
-            ) : (
-              <>
-                <span className={styles.who}><strong>Demo mode</strong><span>Nothing is sent to Discord</span></span>
-                <Link href="/bot" className={`${styles.buttonGhost} ${styles.buttonSmall}`}>Exit demo</Link>
-              </>
-            )}
+            <img className={`${styles.avatar} ${styles.avatarSmall}`} src={user.avatarUrl} alt="" width={34} height={34} decoding="async" />
+            <span className={styles.who}><strong>{user.name}</strong><span>@{user.username}</span></span>
+            <button type="button" className={styles.iconButton} onClick={logout} disabled={leaving} aria-label="Log out of the dashboard" title="Log out">
+              <LogOut size={16} aria-hidden="true" />
+            </button>
             <button type="button" className={`${styles.iconButton} ${styles.closeDrawer}`} onClick={() => setDrawerOpen(false)} aria-label="Close dashboard menu">
               <X size={16} aria-hidden="true" />
             </button>

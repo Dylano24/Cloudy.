@@ -30,8 +30,12 @@ function channelLabel(channel: BotChannel) {
   return channel.type === 'category' ? channel.name : channel.type === 'voice' ? `🔊 ${channel.name}` : `# ${channel.name}`;
 }
 
+// Owner's choice: role pickers only offer the Staff, Moderator, Owner and Member roles.
+const ALLOWED_ROLE_KEYS = new Set(['staff', 'moderator', 'moderators', 'mod', 'mods', 'owner', 'member', 'members']);
+export const isAllowedRole = (role: Pick<BotRole, 'name' | 'managed'>) => !role.managed && ALLOWED_ROLE_KEYS.has(role.name.toLowerCase().replace(/[^a-z]/g, ''));
+
 function usableRoles(roles: BotRole[]) {
-  return roles.filter(role => !role.managed).sort((a, b) => b.position - a.position);
+  return roles.filter(isAllowedRole).sort((a, b) => b.position - a.position);
 }
 
 function ChannelOptions({ kinds, exclude = [] }: { kinds: ChannelKind[]; exclude?: string[] }) {
@@ -47,9 +51,17 @@ function ChannelOptions({ kinds, exclude = [] }: { kinds: ChannelKind[]; exclude
   );
 }
 
-function RoleOptions({ exclude = [] }: { exclude?: string[] }) {
+function RoleOptions({ exclude = [], current }: { exclude?: string[]; current?: string }) {
   const { roles } = useDashboard();
-  return <>{usableRoles(roles).filter(role => !exclude.includes(role.id)).map(role => <option key={role.id} value={role.id}>@{role.name}</option>)}</>;
+  const offered = usableRoles(roles);
+  // Keep an already saved role visible so it can be changed.
+  const saved = current && !offered.some(role => role.id === current) ? roles.find(role => role.id === current) : null;
+  return (
+    <>
+      {saved ? <option value={saved.id}>@{saved.name}</option> : null}
+      {offered.filter(role => !exclude.includes(role.id)).map(role => <option key={role.id} value={role.id}>@{role.name}</option>)}
+    </>
+  );
 }
 
 function ChipList({ ids, kind, onRemove, disabled }: { ids: string[]; kind: 'channel' | 'role'; onRemove: (id: string) => void; disabled: boolean }) {
@@ -155,7 +167,7 @@ export function FieldControl({ field, value, onChange, disabled, id }: ControlPr
       return (
         <select id={id} className={styles.select} value={asString(value)} disabled={disabled} onChange={event => onChange(event.target.value || null)}>
           <option value="">Not set</option>
-          <RoleOptions />
+          <RoleOptions current={asString(value)} />
         </select>
       );
 
@@ -215,9 +227,6 @@ export function FieldControl({ field, value, onChange, disabled, id }: ControlPr
         </div>
       );
     }
-
-    case 'collection':
-      return <CollectionControl field={field} value={value} onChange={onChange} disabled={disabled} />;
   }
 }
 
@@ -275,7 +284,7 @@ function LevelRolesControl({ field, value, onChange, disabled }: ControlProps & 
           <select className={styles.select} value={row.role} disabled={disabled} aria-label="Reward role"
             onChange={event => write(rows.map((entry, position) => (position === index ? { ...entry, role: event.target.value } : entry)))}>
             <option value="">Choose a role</option>
-            <RoleOptions />
+            <RoleOptions current={row.role} />
           </select>
           <button type="button" className={styles.iconButton} disabled={disabled} aria-label={`Remove level ${row.level} reward`} onClick={() => write(rows.filter((_, position) => position !== index))}>
             <Trash2 size={15} aria-hidden="true" />
@@ -296,43 +305,10 @@ function AddRewardButton({ disabled, onAdd }: { disabled: boolean; onAdd: (role:
   );
 }
 
-function CollectionControl({ field, value, onChange, disabled }: ControlProps & { field: Extract<Field, { type: 'collection' }> }) {
-  const items = asArray(value).map(asRecord);
-  const blank = () => Object.fromEntries(field.fields.map(child => [child.path,
-    child.type === 'toggle' ? child.path === 'active' : child.type === 'number' ? Math.max(child.min, 30) * (child.scale ?? 1)
-      : child.type === 'select' ? child.options[0]?.value : child.type === 'channel' ? null : '']));
-  return (
-    <div className={styles.stack} style={{ gap: 10 }}>
-      {items.length === 0 ? <span className={styles.fieldHelp}>Nothing added yet.</span> : null}
-      {items.map((item, index) => (
-        <div key={typeof item.id === 'string' ? item.id : `new-${index}`} className={styles.collectionItem}>
-          <header>
-            <span>{asString(item.name) || `${field.itemLabel} ${index + 1}`}</span>
-            <button type="button" className={`${styles.buttonGhost} ${styles.buttonSmall}`} disabled={disabled} onClick={() => onChange(items.filter((_, position) => position !== index))}>
-              <Trash2 size={14} aria-hidden="true" /> Remove
-            </button>
-          </header>
-          {field.fields.map(child => (
-            <FieldShell key={child.path} field={child} dirty={false} id={`${field.path}-${index}-${child.path}`}>
-              <FieldControl id={`${field.path}-${index}-${child.path}`} field={child} value={item[child.path]} disabled={disabled}
-                onChange={next => onChange(items.map((entry, position) => (position === index ? { ...entry, [child.path]: next } : entry)))} />
-            </FieldShell>
-          ))}
-        </div>
-      ))}
-      {items.length < field.max ? (
-        <button type="button" className={`${styles.buttonGhost} ${styles.buttonSmall}`} disabled={disabled} onClick={() => onChange([...items, blank()])} style={{ justifySelf: 'start' }}>
-          <Plus size={15} aria-hidden="true" /> Add {field.itemLabel.toLowerCase()}
-        </button>
-      ) : <span className={styles.fieldHelp}>Maximum of {field.max} reached.</span>}
-    </div>
-  );
-}
-
 /** Label, help text and the control, laid out per field type. */
 export function FieldShell({ field, dirty, error, id, children }: { field: Field; dirty: boolean; error?: string | null; id: string; children: React.ReactNode }) {
   const inline = field.type === 'toggle';
-  const Label = field.type === 'flags' || field.type === 'levelRoles' || field.type === 'list' || field.type === 'collection' ? 'div' : 'label';
+  const Label = field.type === 'flags' || field.type === 'levelRoles' || field.type === 'list' ? 'div' : 'label';
   return (
     <div className={[styles.field, dirty ? styles.fieldDirty : ''].join(' ')}>
       {inline ? (

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { Route } from 'next';
-import { AlertTriangle, ArrowRight, Info, Plus, RefreshCw, Sparkles } from 'lucide-react';
+import { AlertTriangle, ArrowRight, Info, Plus, RefreshCw } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
 import { DiscordAuthError } from '@/lib/bot-dashboard/discord';
 import { loadServerList, type ServerCard } from '@/lib/bot-dashboard/server-list';
@@ -13,7 +13,7 @@ const ROLE_LABEL = { owner: 'Owner', administrator: 'Administrator', manager: 'M
 function PresencePill({ server }: { server: ServerCard }) {
   if (server.cloudy === 'installed') return <span className={`${styles.pill} ${styles.pillGreen}`}>Cloudy is here</span>;
   if (server.cloudy === 'missing') return <span className={`${styles.pill} ${styles.pillRed}`}>Cloudy not added</span>;
-  return <span className={styles.pill}>Cloudy status pending</span>;
+  return <span className={styles.pill}>Checking Cloudy…</span>;
 }
 
 function InviteLink({ server, ghost }: { server: ServerCard; ghost?: boolean }) {
@@ -51,15 +51,10 @@ export async function ServerList({ session }: { session: BotSession }) {
 
   return (
     <>
-      {list.botApi !== 'connected' ? (
+      {!list.connected && list.servers.length ? (
         <div className={`${styles.notice} ${styles.noticeNeutral}`} role="note" style={{ marginBottom: 'var(--cloudy-card-gap)' }}>
           <Info size={18} aria-hidden="true" />
-          <div>
-            <strong>{list.botApi === 'unavailable' ? 'Cloudy did not answer' : 'Cloudy connection pending'}</strong>
-            {list.botApi === 'unavailable'
-              ? 'Your servers are shown, but Cloudy could not confirm where it is installed right now.'
-              : 'Your servers and permissions come live from Discord. Whether Cloudy is installed, and its settings, appear once Cloudy\'s Dashboard API is switched on.'}
-          </div>
+          <div><strong>Cloudy did not answer</strong>Your servers are shown, but Cloudy could not confirm where it is installed right now. Refresh in a moment.</div>
         </div>
       ) : null}
 
@@ -85,16 +80,6 @@ export async function ServerList({ session }: { session: BotSession }) {
           </article>
         ))}
 
-        <article className={`${styles.serverCard} ${styles.demoCard}`}>
-          <div className={styles.serverTop}>
-            <span className={styles.guildIcon} aria-hidden="true"><Sparkles size={20} /></span>
-            <div className={styles.serverName}><strong>Cloudy Demo Server</strong><span className={styles.roleBadge}>Demo</span></div>
-          </div>
-          <p className={`${styles.small} ${styles.muted}`} style={{ margin: 0 }}>Try every setting with sample data. Nothing is sent to Discord.</p>
-          <div className={styles.serverActions}>
-            <Link href={'/bot/demo' as Route} className={`${styles.buttonGhost} ${styles.buttonSmall}`}>Open demo <ArrowRight size={15} aria-hidden="true" /></Link>
-          </div>
-        </article>
       </div>
 
       {list.servers.length === 0 ? (
