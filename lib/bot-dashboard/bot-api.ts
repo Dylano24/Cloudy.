@@ -89,8 +89,12 @@ export type GuildOverview = {
   missingPermissions: string[];
 };
 export type ModuleSnapshot = { revision: string; values: Record<string, unknown> };
+export type Insight = { stats: { label: string; value: string }[]; tables: { title: string; columns: string[]; rows: string[][]; empty: string }[] };
 
 export const botApi = {
+  meta: (actorId: string) => call<{ applicationId: string | null }>('GET', '/meta', actorId),
+  insight: (actorId: string, guildId: string, moduleId: string) =>
+    call<Insight>('GET', `/guilds/${guildId}/insights/${moduleId}`, actorId),
   presence: (actorId: string, guildIds: string[]) =>
     call<{ present: string[] }>('POST', '/guilds/presence', actorId, { guildIds: guildIds.slice(0, 200) }),
   overview: (actorId: string, guildId: string) =>

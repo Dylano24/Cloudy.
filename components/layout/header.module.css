@@ -186,23 +186,16 @@
   :global(body:has(.cloudy-vpn-page)) .header :global(.cloudy-header-actions .cloudy-shared-basket) { width: 29px; height: 35px; flex-basis: 29px; padding: 4px; }
 }
 
-/* Bot adds a fifth header link. Below 375px it would touch the account button,
-   so narrow phones use the compact link sizing already used on the VPN page.
-   The header height is unchanged. */
-@media (max-width: 374px) {
-  .header :global(.cloudy-header-inner) { width: calc(100% - 15px); gap: 3px; }
-  .header :global(.cloudy-logo-orbit) { width: 37px; height: 37px; }
-  .header :global(.cloudy-logo-orbit img) { width: 36px; height: 36px; }
-  .header :global(.cloudy-header-nav) { gap: 0; min-width: 0; }
-  .header :global(.cloudy-header-nav a) { font-size: 9px; padding: 8px 3px; letter-spacing: 0; }
-  .header :global(.cloudy-header-actions) { gap: 2px !important; }
-  .header :global(.cloudy-header-actions .cloudy-shared-basket) { width: 29px; height: 35px; flex-basis: 29px; padding: 4px; }
-}
-@media (max-width: 340px) {
-  /* Same specificity as the VPN page rule above, so it also applies there. */
-  :global(body:has(.cloudy-header-nav)) .header :global(.cloudy-header-nav a) { padding-inline: 2px; }
-}
-@media (max-width: 420px) {
-  /* Keep the short "Bot" label a comfortable tap target (24px minimum). */
-  :global(body:has(.cloudy-header-nav)) .header :global(.cloudy-header-nav a[href="/bot"]) { min-width: 24px; text-align: center; }
+/* Bot sits next to VPN on wide screens. On phones the top row keeps its four
+   links and Bot is the last item of the account menu. */
+.menuBot { display: none !important; }
+@media (max-width: 900px) {
+  .header :global(.cloudy-header-nav) .navBot { display: none; }
+  .accountMenu .menuBot {
+    display: block !important;
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 0 0 8px 8px;
+  }
 }

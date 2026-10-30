@@ -21,7 +21,7 @@ const httpsUrl = (max: number) => z.union([
 export function schemaForField(field: Field): z.ZodType {
   switch (field.type) {
     case 'toggle': return z.boolean();
-    case 'text': return cleanText(field.max, true);
+    case 'text': return cleanText(field.max, true).refine(value => value.length >= (field.min ?? 0), { message: `Use at least ${field.min ?? 0} characters` });
     case 'textarea': return cleanText(field.max, false);
     case 'url': return httpsUrl(field.max);
     case 'number': {
@@ -46,11 +46,6 @@ export function schemaForField(field: Field): z.ZodType {
     case 'list':
       return z.array(cleanText(field.itemMax, true).refine(value => value.trim().length > 0, { message: 'Empty entry' }))
         .min(field.min ?? 0).max(field.max);
-    case 'collection': {
-      const shape: Record<string, z.ZodType> = { id: z.string().regex(/^[A-Za-z0-9_-]{1,64}$/).optional() };
-      for (const child of field.fields) shape[child.path] = schemaForField(child);
-      return z.array(z.object(shape).strict()).max(field.max);
-    }
   }
 }
 

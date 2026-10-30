@@ -23,9 +23,9 @@ export function dashboardRedirectUri(origin: string) {
 
 const invitePermissions = invitePermissionBits();
 
-/** Discord's own "Add app" page, pre-selecting the server. Null until the bot's client id is configured. */
-export function botInviteUrl(guildId?: string) {
-  const clientId = process.env.CLOUDY_BOT_CLIENT_ID;
+/** Discord's own "Add app" page, pre-selecting the server. */
+export function botInviteUrl(guildId?: string, applicationId?: string | null) {
+  const clientId = process.env.CLOUDY_BOT_CLIENT_ID || applicationId;
   if (!clientId || !/^\d{17,20}$/.test(clientId)) return null;
   const params = new URLSearchParams({ client_id: clientId, scope: 'bot applications.commands', permissions: invitePermissions });
   if (guildId && /^\d{17,20}$/.test(guildId)) {

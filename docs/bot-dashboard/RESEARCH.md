@@ -47,7 +47,7 @@ Legenda: ✅ de bot heeft al een service die dit per server opslaat (alleen een 
 | Welcome & goodbye | `guild:{id}:welcome` | welkom aan/uit, kanaal, ping, tekst-fallback; goodbye aan/uit, kanaal, ping, titel, tekst, kleur, footer, afbeelding | ✅ |
 | Auto roles | `welcome.roleIds` | **alleen de eerste rol wordt toegekend** | ✅ (meerdere rollen = botwijziging) |
 | Verificatie | `config.verification` | aan/uit, kanaal, rol, paneeltekst, knoptekst, auto-verify (regel, accountleeftijd) | ✅ + actie "paneel opnieuw posten" |
-| Leveling | `guild:{id}:leveling:config` | aan/uit, XP min/max (1–500), cooldown (0–3600 s), aankondigingen, kanaal, bericht, rolbeloningen (level 1–500), uitgesloten kanalen/rollen | ✅ |
+| Leveling | `guild:{id}:config → leveling` | aan/uit, XP min/max (1–500), cooldown (0–3600 s), aankondigingen, kanaal, bericht, rolbeloningen (level 1–500), uitgesloten kanalen/rollen | ✅ |
 | Verjaardagen | `config.birthdayChannelId` | kanaal | ✅ |
 | Applications | `guild:{id}:applications:settings` | open/dicht, reviewkanaal, reviewerrollen, 1–5 vragen (≤100 tekens), bewaartermijnen | ✅ |
 | Tickets | `config.ticket*` | gepauzeerd, staffrol, max open tickets (1–10), paneelkanaal/-titel/-tekst/-knop, FAQ-kanaal, categorieën, log- en transcriptkanaal | ✅ + expliciete actie "paneel in Discord bijwerken" |
