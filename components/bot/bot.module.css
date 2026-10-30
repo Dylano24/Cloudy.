@@ -421,3 +421,60 @@
 @media (prefers-reduced-motion: reduce) {
   .root *, .root *::before, .root *::after { animation: none !important; transition: none !important; }
 }
+
+
+/* Cloudy Bot landing showcase refinements — intentionally scoped to /bot. */
+.hero {
+  background:
+    radial-gradient(ellipse at 50% 28%, rgba(181, 12, 40, .15), transparent 57%),
+    linear-gradient(180deg, #080607 0%, #050505 93%);
+}
+.heroInner { max-width: 900px; }
+.heroTitle { font-size: clamp(58px, 7vw, 102px); line-height: 1.035; letter-spacing: -.025em; margin-block: 26px 31px; }
+.heroLead { max-width: 700px; font-size: clamp(15px, 1.65vw, 18px); line-height: 1.8; color: #dddde0; }
+.heroActions { margin-top: 33px; }
+.heroActions > .button, .heroActions > .buttonGhost { min-width: 164px; }
+.heroStatus { margin-top: 32px; }
+.healthCard {
+  display: inline-flex; justify-content: center; align-items: center; gap: 13px;
+  min-width: min(100%, 330px); padding: 13px 17px; border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(130deg, #151315, #09090a);
+  box-shadow: 0 16px 48px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.045);
+  text-align: left;
+}
+.healthIcon { display: grid; place-items: center; width: 34px; height: 34px; flex: none; border-radius: 10px; border: 1px solid rgba(18,196,157,.25); background: rgba(18,196,157,.055); }
+.healthIcon > span { width: 9px; height: 9px; border-radius: 50%; background: #11c8a2; box-shadow: 0 0 0 4px rgba(18,196,157,.085), 0 0 12px rgba(18,196,157,.55); }
+.healthIcon[data-status="unknown"] { border-color: rgba(255,200,97,.25); background: rgba(255,200,97,.05); }
+.healthIcon[data-status="unknown"] > span { background: #ffc861; box-shadow: 0 0 0 4px rgba(255,200,97,.08); }
+.healthIcon[data-status="degraded"] { border-color: rgba(255,200,97,.25); background: rgba(255,200,97,.05); }
+.healthIcon[data-status="degraded"] > span { background: #ffc861; box-shadow: 0 0 0 4px rgba(255,200,97,.08); }
+.healthCopy { display: grid; gap: 5px; min-width: 0; }
+.healthCopy strong { font-size: 12px; color: #fafafa; white-space: nowrap; }
+.healthCopy small { font-size: 10px; color: #a6a6ae; }
+.healthUptime { display: grid; gap: 5px; margin-left: 8px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,.11); text-align: right; }
+.healthUptime small { font-size: 9px; letter-spacing: .1em; font-weight: 800; color: #93939b; }
+.healthUptime strong { font-size: 12px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.priceCardLanding {
+  max-width: 700px;
+  padding: clamp(24px, 4vw, 39px);
+  gap: 25px;
+  border-color: rgba(255,255,255,.14);
+  background: radial-gradient(ellipse at 15% 0%, rgba(225,24,54,.052), transparent 52%), #070708;
+}
+.priceCardLanding .priceHead .price { font-size: clamp(58px, 7vw, 74px); }
+.priceCardLanding .priceHead > p:not(.price) { font-size: 14px; max-width: 590px; color: #c7c7cb; line-height: 1.75; }
+.priceCardLanding .featureList { gap: 17px; font-size: 14px; }
+.priceCardLanding .featureList svg { color: #f32a4a; }
+.priceCardLanding > .button { align-self: stretch; justify-content: center; min-height: 49px; }
+.priceCardLanding > .small { text-align: center; }
+@media (max-width: 700px) {
+  .heroTitle { font-size: clamp(48px, 12vw, 70px); margin-block: 21px 25px; }
+  .heroLead { font-size: 14px; }
+  .heroActions { width: 100%; }
+  .heroActions > .button, .heroActions > .buttonGhost { width: 100%; }
+  .healthCard { max-width: 100%; min-width: 0; }
+  .healthCopy strong { white-space: normal; }
+  .priceCardLanding .priceHead .price { font-size: clamp(50px, 12vw, 66px); }
+  .priceCardLanding .priceHead .price small { display: block; margin: 7px 0 0; }
+}
