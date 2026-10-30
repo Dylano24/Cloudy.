@@ -576,3 +576,12 @@
   .accessModuleGrid, .accessSummaryGrid { grid-template-columns: 1fr; }
   .accessSectionHead { align-items: flex-start; }
 }
+
+.accessOverviewLinks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+.accessOverviewLink { display: flex; align-items: center; gap: 14px; padding: 19px; min-width: 0; border-radius: 14px; border: 1px solid rgba(230,40,69,.28); background: linear-gradient(120deg, rgba(229,27,46,.045), rgba(0,0,0,.7)); transition: border-color .2s ease, background-color .2s ease; }
+.accessOverviewLink > span:nth-child(2) { flex: 1; min-width: 0; }
+.accessOverviewLink strong { display: block; font-size: 14px; font-weight: 700; }
+.accessOverviewLink small { display: block; margin-top: 7px; font-size: 11px; line-height: 1.7; color: var(--b-soft); }
+.accessOverviewLink > svg { color: var(--b-red-2); flex: none; }
+.accessOverviewLink:hover { border-color: rgba(230,40,69,.65); background: rgba(229,27,46,.06); }
+@media(max-width: 700px) { .accessOverviewLinks { grid-template-columns: 1fr; } }
