@@ -10,6 +10,7 @@ import { userAvatarUrl } from '@/lib/bot-dashboard/permissions';
 import { BotLanding } from '@/components/bot/landing';
 import { ServerList, ServerListSkeleton } from '@/components/bot/server-picker';
 import { LogoutButton } from '@/components/bot/logout-button';
+import { PreviewSetup } from '@/components/bot/preview-setup';
 import styles from '@/components/bot/bot.module.css';
 
 export const metadata: Metadata = {
@@ -27,7 +28,7 @@ export default async function BotPage({ searchParams }: Props) {
   if (!session) {
     const loginError = typeof params.login_error === 'string' ? params.login_error.slice(0, 20) : null;
     const next = safeReturnPath(typeof params.next === 'string' ? params.next : null);
-    return <div className={styles.root}><BotLanding loginError={loginError} next={next} /></div>;
+    return <div className={styles.root}><BotLanding loginError={loginError} next={next} /><PreviewSetup /></div>;
   }
 
   if (params.refresh === '1') await getManageableGuilds(session.at, { fresh: true }).catch(() => undefined);
