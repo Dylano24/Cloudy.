@@ -1,7 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { AlertTriangle, CheckCircle2, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import type { Route } from 'next';
+import { AlertTriangle, CheckCircle2, Gem, Loader2 } from 'lucide-react';
+import type { Plan } from '@/lib/bot-dashboard/bot-api';
+import { PRICE_LABEL } from '@/lib/bot-dashboard/plan';
 import type { ModuleDef } from '@/lib/bot-dashboard/modules';
 import { useDashboard } from './dashboard-context';
 import { FieldControl, FieldShell } from './fields';
@@ -13,7 +17,8 @@ type Toast = { kind: 'ok' | 'error'; text: string } | null;
 const same = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
 export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: { values: Values; revision: string } }) {
-  const { guild, csrf } = useDashboard();
+  const { guild, csrf, plan, setPlan } = useDashboard();
+  const locked = !plan.canSave;
   const [saved, setSaved] = useState<Values>(initial.values);
   const [draft, setDraft] = useState<Values>(initial.values);
   const [revision, setRevision] = useState(initial.revision);
@@ -47,7 +52,7 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
   }, []);
 
   const save = useCallback(async () => {
-    if (!dirty || saving) return;
+    if (!dirty || saving || locked) return;
     const changes = Object.fromEntries(dirtyPaths.map(path => [path, draft[path]]));
     setSaving(true);
     try {
@@ -56,12 +61,15 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
         headers: { 'Content-Type': 'application/json', 'x-cloudy-csrf': csrf },
         body: JSON.stringify({ revision, changes }),
       });
-      const data = await response.json().catch(() => ({})) as { values?: Values; revision?: string; error?: string; path?: string };
+      const data = await response.json().catch(() => ({})) as { values?: Values; revision?: string; error?: string; path?: string; plan?: Plan };
+      if (data.plan) setPlan(data.plan);
       if (response.ok && data.values && data.revision) {
         setSaved(data.values);
         setDraft(data.values);
         setRevision(data.revision);
-        setToast({ kind: 'ok', text: 'Saved. Cloudy uses the new settings right away.' });
+        setToast({ kind: 'ok', text: plan.status === 'new' && data.plan?.status === 'trial' ? 'Saved. Your free trial has started and Cloudy uses the new settings right away.' : 'Saved. Cloudy uses the new settings right away.' });
+      } else if (response.status === 402) {
+        setToast({ kind: 'error', text: data.error || `Saving needs Premium (${PRICE_LABEL}).` });
       } else if (response.status === 409) {
         setToast({ kind: 'error', text: 'These settings were changed in Discord in the meantime. Reload the page to see the latest values.' });
       } else {
@@ -73,7 +81,7 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
     } finally {
       setSaving(false);
     }
-  }, [dirty, saving, dirtyPaths, draft, guild.id, module.id, csrf, revision]);
+  }, [dirty, saving, locked, dirtyPaths, draft, guild.id, module.id, csrf, revision, plan.status, setPlan]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -88,7 +96,8 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
     setActing(true);
     try {
       const response = await fetch(`/api/bot/guilds/${guild.id}/modules/${module.id}/actions/${confirm.id}`, { method: 'POST', headers: { 'x-cloudy-csrf': csrf } });
-      const data = await response.json().catch(() => ({})) as { message?: string; error?: string };
+      const data = await response.json().catch(() => ({})) as { message?: string; error?: string; plan?: Plan };
+      if (data.plan) setPlan(data.plan);
       setToast(response.ok ? { kind: 'ok', text: data.message || 'Done.' } : { kind: 'error', text: data.error || 'Cloudy could not complete this action.' });
     } catch {
       setToast({ kind: 'error', text: 'No connection. Please try again.' });
@@ -124,7 +133,7 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
               <strong style={{ fontSize: 14, fontWeight: 600 }}>{action.label}</strong>
               <p>{action.description}</p>
             </div>
-            <button type="button" className={`${styles.buttonGhost} ${styles.buttonSmall}`} disabled={dirty} title={dirty ? 'Save your changes first' : undefined}
+            <button type="button" className={`${styles.buttonGhost} ${styles.buttonSmall}`} disabled={dirty || locked} title={locked ? 'Needs Premium' : dirty ? 'Save your changes first' : undefined}
               onClick={() => setConfirm(action)}>
               {action.label}
             </button>
@@ -134,12 +143,18 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
 
       {dirty ? (
         <div className={styles.saveBar} role="region" aria-label="Unsaved changes">
-          <p>{dirtyPaths.length === 1 ? '1 unsaved change' : `${dirtyPaths.length} unsaved changes`}<small>Ctrl/⌘ + S to save</small></p>
+          <p>{dirtyPaths.length === 1 ? '1 unsaved change' : `${dirtyPaths.length} unsaved changes`}<small>{locked ? 'Saving needs Premium' : 'Ctrl/⌘ + S to save'}</small></p>
           <button type="button" className={`${styles.buttonGhost} ${styles.buttonSmall}`} onClick={() => { setDraft(saved); setErrorPath(null); }} disabled={saving}>Reset</button>
-          <button type="button" className={`${styles.button} ${styles.buttonSmall}`} onClick={() => void save()} disabled={saving}>
-            {saving ? <Loader2 size={15} className={styles.spin} aria-hidden="true" /> : null}
-            {saving ? 'Saving…' : 'Save changes'}
-          </button>
+          {locked ? (
+            <Link href={`/bot/${guild.id}/plan` as Route} className={`${styles.button} ${styles.buttonSmall}`}>
+              <Gem size={15} aria-hidden="true" /> Get Premium to save
+            </Link>
+          ) : (
+            <button type="button" className={`${styles.button} ${styles.buttonSmall}`} onClick={() => void save()} disabled={saving}>
+              {saving ? <Loader2 size={15} className={styles.spin} aria-hidden="true" /> : null}
+              {saving ? 'Saving…' : 'Save changes'}
+            </button>
+          )}
         </div>
       ) : null}
 

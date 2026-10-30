@@ -1,19 +1,25 @@
 'use client';
 
-import { createContext, useContext, type ReactNode } from 'react';
-import type { BotChannel, BotRole } from '@/lib/bot-dashboard/bot-api';
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import type { BotChannel, BotRole, Plan } from '@/lib/bot-dashboard/bot-api';
 
 export type DashboardData = {
   guild: { id: string; name: string; iconUrl: string | null; memberCount: number | null };
   channels: BotChannel[];
   roles: BotRole[];
   csrf: string;
+  plan: Plan;
 };
 
-const DashboardContext = createContext<DashboardData | null>(null);
+type DashboardValue = DashboardData & { setPlan: (plan: Plan) => void };
+
+const DashboardContext = createContext<DashboardValue | null>(null);
 
 export function DashboardProvider({ value, children }: { value: DashboardData; children: ReactNode }) {
-  return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
+  // The plan can change while the page is open (the first save starts the trial).
+  const [plan, setPlan] = useState(value.plan);
+  const context = useMemo(() => ({ ...value, plan, setPlan }), [value, plan]);
+  return <DashboardContext.Provider value={context}>{children}</DashboardContext.Provider>;
 }
 
 export function useDashboard() {

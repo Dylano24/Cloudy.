@@ -92,9 +92,21 @@ export type GuildOverview = {
   channels: BotChannel[];
   roles: BotRole[];
   modules: Record<string, { enabled: boolean | null }>;
+  plan?: Plan;
   missingPermissions: string[];
 };
-export type ModuleSnapshot = { revision: string; values: Record<string, unknown> };
+/**
+ * Cloudy decides and enforces the plan. `new`: free trial starts with the first
+ * save. `expired`: settings stay visible, saving needs Premium.
+ */
+export type Plan = {
+  status: 'owner' | 'premium' | 'trial' | 'new' | 'expired';
+  canSave: boolean;
+  until: string | null;
+  priceEur: number;
+  trialDays: number;
+};
+export type ModuleSnapshot = { revision: string; values: Record<string, unknown>; plan?: Plan };
 export type Insight = { stats: { label: string; value: string }[]; tables: { title: string; columns: string[]; rows: string[][]; empty: string }[] };
 
 export const botApi = {
@@ -111,6 +123,8 @@ export const botApi = {
     call<ModuleSnapshot>('PATCH', `/guilds/${guildId}/modules/${moduleId}`, auth, { revision, changes }),
   action: (auth: BotAuth, guildId: string, moduleId: string, actionId: string) =>
     call<{ ok: true; message: string }>('POST', `/guilds/${guildId}/modules/${moduleId}/actions/${actionId}`, auth, {}),
+  grantPremium: (auth: BotAuth, guildId: string, months: number) =>
+    call<{ guild: { id: string; name: string }; plan: Plan }>('POST', '/plans/grant', auth, { guildId, months }),
 };
 
 // Cloudy's public health endpoint already exists and needs no secret.

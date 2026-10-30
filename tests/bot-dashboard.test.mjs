@@ -192,3 +192,20 @@ test('every module is either editable or a live overview, and role pickers only 
   assert.deepEqual(allowed, ['Staff', 'Moderator', 'Owner', 'Member', '👑 Owner']);
   assert.equal(fields.isAllowedRole({ name: 'Member', managed: true }), false, 'bot roles are never offered');
 });
+
+test('plan: price, trial days and what each plan state tells the user', () => {
+  const plan = loadTypeScript('lib/bot-dashboard/plan.ts');
+  assert.equal(plan.PRICE_LABEL, '€13.00 / month');
+  const now = Date.parse('2026-10-30T12:00:00Z');
+  const base = { priceEur: 13, trialDays: 7, canSave: true, until: null };
+  assert.equal(plan.daysLeft('2026-11-06T12:00:00Z', now), 7);
+  assert.equal(plan.daysLeft(null, now), 0);
+  assert.match(plan.describePlan({ ...base, status: 'new' }, now).text, /first saved change/);
+  assert.equal(plan.describePlan({ ...base, status: 'trial', until: '2026-11-01T12:00:00Z' }, now).label, 'Free trial · 2 days left');
+  const expired = plan.describePlan({ ...base, status: 'expired', canSave: false, until: '2026-10-01T12:00:00Z' }, now);
+  assert.equal(expired.tone, 'warn');
+  assert.match(expired.text, /view and try every setting/);
+  assert.match(expired.text, /€13\.00 \/ month/);
+  assert.equal(plan.describePlan({ ...base, status: 'owner' }, now).label, 'Owner access');
+  assert.match(plan.describePlan({ ...base, status: 'premium', until: '2026-12-30T12:00:00Z' }, now).text, /30 December 2026/);
+});

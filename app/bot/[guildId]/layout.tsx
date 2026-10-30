@@ -54,7 +54,7 @@ export default async function GuildLayout({ children, params }: { children: Reac
       return (
         <div className={styles.root}>
           <DashboardShell
-            data={{ guild: context.guild, channels: context.channels, roles: context.roles, csrf: context.csrf }}
+            data={{ guild: context.guild, channels: context.channels, roles: context.roles, csrf: context.csrf, plan: context.plan }}
             user={context.user} servers={context.servers} groups={GROUPS} modules={NAV_MODULES}>
             {children}
           </DashboardShell>

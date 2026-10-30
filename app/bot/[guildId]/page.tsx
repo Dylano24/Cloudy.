@@ -8,6 +8,7 @@ import { GuildIcon } from '@/components/bot/guild-icon';
 import { ModuleIcon } from '@/components/bot/module-icon';
 import { BotStatusTile, StatusPlaceholder } from '@/components/bot/bot-status';
 import { PageHead } from '@/components/bot/page-head';
+import { PlanBanner } from '@/components/bot/plan-banner';
 import styles from '@/components/bot/bot.module.css';
 
 const ROLE_LABEL = { owner: 'Owner', administrator: 'Administrator', manager: 'Manage Server' } as const;
@@ -22,6 +23,7 @@ export default async function GuildOverview({ params }: { params: Promise<{ guil
   return (
     <div className={styles.stack}>
       <PageHead guildId={guild.id} guildName={guild.name} title="Overview" summary="Everything Cloudy does on this server, at a glance." />
+      <PlanBanner />
 
       <section className={`${styles.panel} ${styles.overviewHero}`} aria-label="Server">
         <GuildIcon name={guild.name} url={guild.iconUrl} large />
