@@ -5,6 +5,7 @@ import { botApi, BotApiError, type Insight, type ModuleSnapshot } from '@/lib/bo
 import { ModuleEditor } from '@/components/bot/module-editor';
 import { InsightView } from '@/components/bot/insight-view';
 import { LoadError, ModuleNote, PageHead } from '@/components/bot/page-head';
+import { PlanBanner } from '@/components/bot/plan-banner';
 import styles from '@/components/bot/bot.module.css';
 
 type Props = { params: Promise<{ guildId: string; module: string }> };
@@ -37,6 +38,7 @@ export default async function ModulePage({ params }: Props) {
   return (
     <div className={styles.stack}>
       <PageHead guildId={context.guild.id} guildName={context.guild.name} crumb={mod.title} title={mod.title} summary={mod.summary} />
+      {mod.kind === 'settings' ? <PlanBanner /> : null}
       {mod.note ? <ModuleNote text={mod.note} /> : null}
       {error ? <LoadError text={error} /> : null}
       {settings ? <ModuleEditor key={`${context.guild.id}-${mod.id}`} module={mod} initial={settings} /> : null}

@@ -25,7 +25,7 @@ export async function POST(request: NextRequest, context: Context) {
       return jsonResponse(result);
     } catch (error) {
       auditDashboard({ actor: guard.session.uid, guild: guild.id, module: mod.id, action: 'action', keys: [action.id], outcome: 'failed' });
-      if (error instanceof BotApiError) return errorResponse(error.status === 503 ? 503 : 502, error.message, error.code);
+      if (error instanceof BotApiError) return errorResponse([402, 409, 422, 429, 503].includes(error.status) ? error.status : 502, error.message, error.code);
       return errorResponse(502, 'Cloudy could not complete this action.', 'bot_error');
     }
   } catch (error) {

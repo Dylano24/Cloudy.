@@ -9,7 +9,7 @@ type Context = { params: Promise<{ guildId: string; module: string }> };
 
 function botErrorResponse(error: unknown) {
   if (error instanceof BotApiError) {
-    const status = [400, 403, 404, 409, 422, 429, 503, 504].includes(error.status) ? error.status : 502;
+    const status = [400, 402, 403, 404, 409, 422, 429, 503, 504].includes(error.status) ? error.status : 502;
     return errorResponse(status, error.message, error.code);
   }
   return errorResponse(502, 'Cloudy could not complete this request.', 'bot_error');

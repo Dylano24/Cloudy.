@@ -1,11 +1,12 @@
 import { cache } from 'react';
 import { readDashboardSession } from './server';
 import { DiscordAuthError, getManageableGuilds } from './discord';
-import { botApi, BotApiError, type BotChannel, type BotRole } from './bot-api';
+import { botApi, BotApiError, type BotChannel, type BotRole, type Plan } from './bot-api';
 import { csrfTokenFor, type BotSession } from './session';
 import { guildIconUrl, isSnowflake, userAvatarUrl, type ManageableGuild } from './permissions';
 import { botInviteUrl } from './origin';
 import { cloudyApplicationId } from './server-list';
+import { PLAN_PRICE_EUR } from './plan';
 
 export type GuildContext =
   | { kind: 'login' }
@@ -24,6 +25,7 @@ export type GuildContext =
     servers: { id: string; name: string; iconUrl: string | null }[];
     channels: BotChannel[];
     roles: BotRole[];
+    plan: Plan;
     missingPermissions: string[];
   };
 
@@ -53,6 +55,7 @@ export const loadGuildContext = cache(async (guildId: string): Promise<GuildCont
       servers: manageable.map(entry => ({ id: entry.id, name: entry.name, iconUrl: guildIconUrl(entry, 64) })),
       channels: overview.channels,
       roles: overview.roles,
+      plan: overview.plan || { status: 'new', canSave: true, until: null, priceEur: PLAN_PRICE_EUR, trialDays: 7 },
       missingPermissions: overview.missingPermissions,
     };
   } catch (error) {

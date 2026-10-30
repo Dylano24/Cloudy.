@@ -4,11 +4,12 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ChevronsUpDown, LogOut, Menu, X } from 'lucide-react';
+import { ChevronsUpDown, Gem, LogOut, Menu, X } from 'lucide-react';
 import styles from './bot.module.css';
 import { DashboardProvider, type DashboardData } from './dashboard-context';
 import { GuildIcon } from './guild-icon';
 import { ModuleIcon } from './module-icon';
+import { PlanNavPill } from './plan-banner';
 
 export type NavModule = { id: string; title: string; group: string; icon: string };
 export type NavGroup = { id: string; label: string };
@@ -111,6 +112,9 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
             <div className={styles.navGroup}>
               <Link href={base as Route} className={styles.navItem} aria-current={pathname === base ? 'page' : undefined}>
                 <ModuleIcon name="overview" size={17} /> Overview
+              </Link>
+              <Link href={`${base}/plan` as Route} className={styles.navItem} aria-current={pathname === `${base}/plan` ? 'page' : undefined}>
+                <Gem size={17} aria-hidden="true" /> Plan<PlanNavPill />
               </Link>
             </div>
             {groups.map(group => {

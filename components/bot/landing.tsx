@@ -1,9 +1,8 @@
 import { Suspense } from 'react';
-import { AlertTriangle, KeyRound, ShieldCheck, Zap } from 'lucide-react';
+import { AlertTriangle, Check, KeyRound, ShieldCheck, Zap } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
 import studioStyles from '@/app/service/service.module.css';
-import { GROUPS, MODULES } from '@/lib/bot-dashboard/modules';
-import { ModuleIcon } from './module-icon';
+import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_PRICE_EUR, PLAN_TRIAL_DAYS } from '@/lib/bot-dashboard/plan';
 import { BotStatusPill, StatusPlaceholder } from './bot-status';
 import styles from './bot.module.css';
 
@@ -22,7 +21,11 @@ const questions = [
   },
   {
     question: 'What does Cloudy see when I log in?',
-    answer: 'Your Discord name, avatar and the list of servers you are in, with your permissions there. Cloudy cannot read your messages or act as you. Your Discord login stays on our server and never reaches your browser\'s JavaScript.',
+    answer: 'Your Discord name, avatar and the list of servers you are in, with your permissions there. Cloudy cannot read your messages or act as you. Your Discord login stays on our server.',
+  },
+  {
+    question: 'What does it cost?',
+    answer: `Every server starts with ${PLAN_TRIAL_DAYS} days free. After that ${PLAN_NAME} is ${euro.format(PLAN_PRICE_EUR)} per month per server. You can keep viewing and trying every setting; saving needs Premium.`,
   },
   {
     question: 'Do changes need a restart?',
@@ -88,34 +91,24 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
         </div>
       </section>
 
-      <section className={styles.section}>
+      <section className={styles.section} aria-labelledby="bot-pricing">
         <div className={styles.container}>
           <div className={styles.sectionHead}>
-            <span className={styles.eyebrow}>Everything Cloudy does</span>
-            <h2 className={`${styles.display} ${styles.sectionTitle}`}>Every module.<br />One place.</h2>
-            <p>From the first welcome to the final ticket transcript. Each module mirrors the settings Cloudy already uses in Discord.</p>
+            <span className={styles.eyebrow}>Pricing</span>
+            <h2 id="bot-pricing" className={`${styles.display} ${styles.sectionTitle}`}>One plan.<br />Everything included.</h2>
           </div>
-          <div className={styles.moduleCloud}>
-            {MODULES.map(module => (
-              <div key={module.id} className={styles.moduleChip}>
-                <ModuleIcon name={module.icon} size={19} />
-                <span>{module.title}<small>{GROUPS.find(group => group.id === module.group)?.label}</small></span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.section}>
-        <div className={styles.container}>
-          <div className={styles.sectionHead}>
-            <span className={styles.eyebrow}>How it works</span>
-            <h2 className={`${styles.display} ${styles.sectionTitle}`}>Three steps.</h2>
-          </div>
-          <div className={styles.steps}>
-            <article className={styles.step}><h3>Log in with Discord</h3><p>One click. Cloudy only asks for your profile and your server list.</p></article>
-            <article className={styles.step}><h3>Choose a server</h3><p>Pick a server you manage, or invite Cloudy when it is not there yet.</p></article>
-            <article className={styles.step}><h3>Configure</h3><p>Change the settings Cloudy uses and save. Cloudy applies them right away.</p></article>
+          <div className={`${styles.panel} ${styles.priceCard} ${styles.priceCardLanding}`}>
+            <div className={styles.priceHead}>
+              <span className={styles.eyebrow}>{PLAN_NAME}</span>
+              <p className={styles.price}>{euro.format(PLAN_PRICE_EUR)}<small>/ month per server</small></p>
+              <p>Start with {PLAN_TRIAL_DAYS} days free. After the trial you can still see and try every setting; saving needs Premium.</p>
+            </div>
+            <ul className={styles.featureList}>
+              {PLAN_FEATURES.map(feature => <li key={feature}><Check size={16} aria-hidden="true" /> {feature}</li>)}
+            </ul>
+            <a href={loginError === 'consent' ? consentHref : loginHref} className={styles.button}>
+              <SiDiscord size={18} aria-hidden="true" /> Start your free trial
+            </a>
           </div>
         </div>
       </section>
