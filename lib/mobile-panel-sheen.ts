@@ -11,14 +11,35 @@ export function mountMobilePanelSheen(
   const clock = createMobileSheenClock();
   const lights = new Map<HTMLElement, HTMLSpanElement>();
   const visibleTextures = new Set<HTMLSpanElement>();
+  const animations = new Map<HTMLSpanElement, Animation>();
+  const compositor = typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function';
+  const duration = 6000;
   const angle = 110 * Math.PI / 180;
   const sin = Math.sin(angle);
   const cos = Math.cos(angle);
   let travel = 1080;
   let phase = 0;
-  let lastPaint = -Infinity;
   let animationFrame = 0;
   let layoutFrame = 0;
+  let elapsed = 0;
+  let startedAt: number | null = null;
+
+  const timelineNow = () => {
+    const now = document.timeline?.currentTime;
+    return typeof now === 'number' ? now : performance.now();
+  };
+  const currentTime = (now = timelineNow()) => elapsed + (startedAt === null ? 0 : Math.max(0, now - startedAt));
+  const keyframes = () => [
+    { transform: 'translate3d(0px, 0, 0)' },
+    { transform: `translate3d(${-travel}px, 0, 0)` },
+  ];
+
+  const createAnimation = (texture: HTMLSpanElement) => {
+    const animation = texture.animate(keyframes(), { duration, iterations: Infinity, easing: 'linear', fill: 'both' });
+    animation.pause();
+    animation.currentTime = currentTime();
+    animations.set(texture, animation);
+  };
 
   const paint = (texture: HTMLSpanElement) => {
     texture.style.transform = `translate3d(${-travel * phase}px, 0, 0)`;
@@ -28,19 +49,33 @@ export function mountMobilePanelSheen(
     animationFrame = 0;
     if (!canPlay()) { clock.pause(); return; }
     phase = clock.step(now);
-    // Card highlights do not need 60/120 style updates per second. Keep the
-    // same six-second sweep while leaving more time for touch and scrolling.
-    if (now - lastPaint >= 1000 / 30 - 1) {
-      for (const texture of visibleTextures) paint(texture);
-      lastPaint = now;
-    }
+    for (const texture of visibleTextures) paint(texture);
     animationFrame = requestAnimationFrame(animate);
   };
   const updatePlayback = () => {
-    if (canPlay()) {
+    const play = canPlay();
+    if (compositor) {
+      const now = timelineNow();
+      const time = currentTime(now);
+      if (play && startedAt === null) startedAt = now;
+      else if (!play && startedAt !== null) { elapsed = time; startedAt = null; }
+      // All lights share one document timeline and one hold time. Offscreen
+      // cards catch the visible cards' phase when they re-enter. The browser
+      // composites these transform-only animations at the display refresh
+      // rate; no JavaScript callback or style write is needed per frame.
+      for (const [texture, animation] of animations) {
+        if (play && visibleTextures.has(texture)) {
+          animation.currentTime = time;
+          animation.play();
+          animation.startTime = now - time;
+        } else {
+          animation.pause();
+          animation.currentTime = time;
+        }
+      }
+    } else if (play) {
       if (!animationFrame) {
         clock.pause();
-        lastPaint = -Infinity;
         animationFrame = requestAnimationFrame(animate);
       }
     } else {
@@ -55,7 +90,7 @@ export function mountMobilePanelSheen(
       const texture = clip.firstElementChild as HTMLSpanElement;
       if (!texture) continue;
       if (entry.isIntersecting) {
-        paint(texture);
+        if (!compositor) paint(texture);
         clip.dataset.visible = 'true';
         visibleTextures.add(texture);
       } else {
@@ -79,7 +114,14 @@ export function mountMobilePanelSheen(
     }) : [];
     if (enabled) {
       const width = (widestPanel ? Math.max(...geometry.map(item => item.width), 0) : geometry[0]?.width) || window.innerWidth;
-      travel = 3 * width;
+      const nextTravel = 3 * width;
+      if (nextTravel !== travel && compositor) {
+        travel = nextTravel;
+        for (const [texture, animation] of animations) {
+          animation.cancel();
+          createAnimation(texture);
+        }
+      } else travel = nextTravel;
       const period = travel * sin;
       root.style.setProperty('--cloudy-mobile-light-travel', -travel + 'px');
       root.style.setProperty('--cloudy-mobile-light-period', period + 'px');
@@ -95,6 +137,7 @@ export function mountMobilePanelSheen(
         clip.append(texture);
         panel.append(clip);
         lights.set(panel, clip);
+        if (compositor) createAnimation(texture);
         visibility.observe(clip);
       }
     } else {
@@ -107,6 +150,8 @@ export function mountMobilePanelSheen(
       }
       lights.clear();
       visibleTextures.clear();
+      for (const animation of animations.values()) animation.cancel();
+      animations.clear();
     }
     updatePlayback();
   };
@@ -126,6 +171,8 @@ export function mountMobilePanelSheen(
   return () => {
     cancelAnimationFrame(animationFrame);
     cancelAnimationFrame(layoutFrame);
+    for (const animation of animations.values()) animation.cancel();
+    animations.clear();
     observer.disconnect();
     visibility.disconnect();
     root.removeEventListener('scroll', schedule, true);
