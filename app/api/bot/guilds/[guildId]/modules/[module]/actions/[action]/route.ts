@@ -20,7 +20,7 @@ export async function POST(request: NextRequest, context: Context) {
     const guild = await findManageableGuild(guard.session, guildId);
     if (!guild) return errorResponse(403, 'You need Manage Server in this server.', 'forbidden');
     try {
-      const result = await botApi.action(guard.session.uid, guild.id, mod.id, action.id);
+      const result = await botApi.action(guard.session, guild.id, mod.id, action.id);
       auditDashboard({ actor: guard.session.uid, guild: guild.id, module: mod.id, action: 'action', keys: [action.id], outcome: 'ok' });
       return jsonResponse(result);
     } catch (error) {

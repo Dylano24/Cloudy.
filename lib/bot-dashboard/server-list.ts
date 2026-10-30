@@ -1,5 +1,5 @@
 import { getManageableGuilds } from './discord';
-import { botApi, isBotApiConfigured } from './bot-api';
+import { botApi, isBotApiConfigured, type BotAuth } from './bot-api';
 import { guildIconUrl, type ManageRole } from './permissions';
 import { botInviteUrl } from './origin';
 import type { BotSession } from './session';
@@ -18,11 +18,11 @@ export type ServerList = { servers: ServerCard[]; hidden: number; connected: boo
 let applicationIdCache: { at: number; value: string | null } | null = null;
 
 /** Cloudy's application id (for the invite link), from settings or Cloudy itself. */
-export async function cloudyApplicationId(actorId: string) {
+export async function cloudyApplicationId(auth: BotAuth) {
   if (process.env.CLOUDY_BOT_CLIENT_ID) return process.env.CLOUDY_BOT_CLIENT_ID;
   if (applicationIdCache && Date.now() - applicationIdCache.at < 3_600_000) return applicationIdCache.value;
   try {
-    const { applicationId } = await botApi.meta(actorId);
+    const { applicationId } = await botApi.meta(auth);
     applicationIdCache = { at: Date.now(), value: applicationId };
     return applicationId;
   } catch {
@@ -36,12 +36,12 @@ export async function loadServerList(session: BotSession): Promise<ServerList> {
   let present: Set<string> | null = null;
   if (isBotApiConfigured() && manageable.length) {
     try {
-      present = new Set((await botApi.presence(session.uid, manageable.map(guild => guild.id))).present);
+      present = new Set((await botApi.presence(session, manageable.map(guild => guild.id))).present);
     } catch {
       present = null;
     }
   }
-  const applicationId = await cloudyApplicationId(session.uid);
+  const applicationId = await cloudyApplicationId(session);
   // Servers with Cloudy first, then the rest; alphabetical inside each group.
   const servers: ServerCard[] = manageable.map(guild => ({
     id: guild.id,

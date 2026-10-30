@@ -43,7 +43,7 @@ export const loadGuildContext = cache(async (guildId: string): Promise<GuildCont
   if (!guild) return { kind: 'forbidden' };
 
   try {
-    const overview = await botApi.overview(session.uid, guild.id);
+    const overview = await botApi.overview(session, guild.id);
     return {
       kind: 'ok',
       session,
@@ -57,7 +57,7 @@ export const loadGuildContext = cache(async (guildId: string): Promise<GuildCont
     };
   } catch (error) {
     if (error instanceof BotApiError && error.code === 'not_in_guild') {
-      return { kind: 'not-installed', guildName: guild.name, inviteUrl: botInviteUrl(guild.id, await cloudyApplicationId(session.uid)) };
+      return { kind: 'not-installed', guildName: guild.name, inviteUrl: botInviteUrl(guild.id, await cloudyApplicationId(session)) };
     }
     return { kind: 'offline', guildName: guild.name };
   }

@@ -34,7 +34,7 @@ export async function GET(request: NextRequest, context: Context) {
   const auth = await authorize(request, context, 'read');
   if ('response' in auth) return auth.response;
   try {
-    return jsonResponse(await botApi.module(auth.session.uid, auth.guild.id, auth.mod.id));
+    return jsonResponse(await botApi.module(auth.session, auth.guild.id, auth.mod.id));
   } catch (error) {
     return botErrorResponse(error);
   }
@@ -62,7 +62,7 @@ export async function PATCH(request: NextRequest, context: Context) {
 
   const keys = Object.keys(result.changes);
   try {
-    const snapshot = await botApi.updateModule(session.uid, guild.id, mod.id, revision, result.changes);
+    const snapshot = await botApi.updateModule(session, guild.id, mod.id, revision, result.changes);
     auditDashboard({ actor: session.uid, guild: guild.id, module: mod.id, action: 'update', keys, outcome: 'ok' });
     return jsonResponse(snapshot);
   } catch (error) {

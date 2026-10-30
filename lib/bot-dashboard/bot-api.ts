@@ -8,12 +8,16 @@ const DEFAULT_BOT_ORIGIN = 'https://cloudy-production-b24f.up.railway.app';
 const API_PREFIX = '/api/dashboard/v1';
 const TIMEOUT_MS = 6_000;
 
-export type BotApiConfig = { origin: string; secret: string };
+export type BotApiConfig = { origin: string; secret: string | null };
+/** Who is asking: the signed-in user's Discord id and their Discord login. */
+export type BotAuth = { uid: string; at: string };
 
+// Cloudy accepts either a shared secret (when configured on both sides) or
+// the user's own Discord login, which Cloudy verifies with Discord.
 export function botApiConfig(): BotApiConfig | null {
-  const origin = process.env.CLOUDY_BOT_API_URL;
-  const secret = process.env.CLOUDY_DASHBOARD_API_SECRET;
-  if (!origin || !secret || secret.length < 32) return null;
+  const origin = process.env.CLOUDY_BOT_API_URL || DEFAULT_BOT_ORIGIN;
+  const rawSecret = process.env.CLOUDY_DASHBOARD_API_SECRET;
+  const secret = rawSecret && rawSecret.length >= 32 ? rawSecret : null;
   try {
     const url = new URL(origin);
     if (url.protocol !== 'https:' && url.hostname !== 'localhost' && url.hostname !== '127.0.0.1') return null;
@@ -49,7 +53,7 @@ export class BotApiError extends Error {
   constructor(message: string, readonly status: number, readonly code: string) { super(message); }
 }
 
-async function call<T>(method: 'GET' | 'POST' | 'PATCH', path: string, actorId: string, payload?: unknown): Promise<T> {
+async function call<T>(method: 'GET' | 'POST' | 'PATCH', path: string, auth: BotAuth, payload?: unknown): Promise<T> {
   const config = botApiConfig();
   if (!config) throw new BotApiError('Cloudy Dashboard API is not connected yet', 503, 'not_configured');
   const fullPath = `${API_PREFIX}${path}`;
@@ -60,7 +64,9 @@ async function call<T>(method: 'GET' | 'POST' | 'PATCH', path: string, actorId: 
       method,
       headers: {
         ...(body ? { 'Content-Type': 'application/json' } : {}),
-        ...signDashboardRequest({ method, path: fullPath, body, actorId }, config.secret),
+        ...(config.secret
+          ? signDashboardRequest({ method, path: fullPath, body, actorId: auth.uid }, config.secret)
+          : { Authorization: `Bearer ${auth.at}` }),
       },
       body: body || undefined,
       cache: 'no-store',
@@ -92,19 +98,19 @@ export type ModuleSnapshot = { revision: string; values: Record<string, unknown>
 export type Insight = { stats: { label: string; value: string }[]; tables: { title: string; columns: string[]; rows: string[][]; empty: string }[] };
 
 export const botApi = {
-  meta: (actorId: string) => call<{ applicationId: string | null }>('GET', '/meta', actorId),
-  insight: (actorId: string, guildId: string, moduleId: string) =>
-    call<Insight>('GET', `/guilds/${guildId}/insights/${moduleId}`, actorId),
-  presence: (actorId: string, guildIds: string[]) =>
-    call<{ present: string[] }>('POST', '/guilds/presence', actorId, { guildIds: guildIds.slice(0, 200) }),
-  overview: (actorId: string, guildId: string) =>
-    call<GuildOverview>('GET', `/guilds/${guildId}/overview`, actorId),
-  module: (actorId: string, guildId: string, moduleId: string) =>
-    call<ModuleSnapshot>('GET', `/guilds/${guildId}/modules/${moduleId}`, actorId),
-  updateModule: (actorId: string, guildId: string, moduleId: string, revision: string, changes: Record<string, unknown>) =>
-    call<ModuleSnapshot>('PATCH', `/guilds/${guildId}/modules/${moduleId}`, actorId, { revision, changes }),
-  action: (actorId: string, guildId: string, moduleId: string, actionId: string) =>
-    call<{ ok: true; message: string }>('POST', `/guilds/${guildId}/modules/${moduleId}/actions/${actionId}`, actorId, {}),
+  meta: (auth: BotAuth) => call<{ applicationId: string | null }>('GET', '/meta', auth),
+  insight: (auth: BotAuth, guildId: string, moduleId: string) =>
+    call<Insight>('GET', `/guilds/${guildId}/insights/${moduleId}`, auth),
+  presence: (auth: BotAuth, guildIds: string[]) =>
+    call<{ present: string[] }>('POST', '/guilds/presence', auth, { guildIds: guildIds.slice(0, 200) }),
+  overview: (auth: BotAuth, guildId: string) =>
+    call<GuildOverview>('GET', `/guilds/${guildId}/overview`, auth),
+  module: (auth: BotAuth, guildId: string, moduleId: string) =>
+    call<ModuleSnapshot>('GET', `/guilds/${guildId}/modules/${moduleId}`, auth),
+  updateModule: (auth: BotAuth, guildId: string, moduleId: string, revision: string, changes: Record<string, unknown>) =>
+    call<ModuleSnapshot>('PATCH', `/guilds/${guildId}/modules/${moduleId}`, auth, { revision, changes }),
+  action: (auth: BotAuth, guildId: string, moduleId: string, actionId: string) =>
+    call<{ ok: true; message: string }>('POST', `/guilds/${guildId}/modules/${moduleId}/actions/${actionId}`, auth, {}),
 };
 
 // Cloudy's public health endpoint already exists and needs no secret.
