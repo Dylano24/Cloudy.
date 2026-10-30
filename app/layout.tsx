@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { Tip4ServScript } from "@/components/providers/tip4serv-script";
 import { CloudyHelp } from "@/components/help/cloudy-help";
+import { DecorativeVisibility } from "@/components/providers/decorative-visibility";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-display" });
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <main className="flex-1">{children}</main>
             <Footer />
             <CloudyHelp />
+            <DecorativeVisibility />
           </div>
         </QueryProvider>
       </body>

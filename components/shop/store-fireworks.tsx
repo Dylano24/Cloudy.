@@ -3,9 +3,19 @@
 import { useEffect, useRef } from 'react';
 import styles from './store-fireworks.module.css';
 
-type Spark = { x: number; y: number; vx: number; vy: number; age: number; life: number; color: number; size: number; trail: [number, number][] };
-type Rocket = { x: number; y: number; targetY: number; speed: number; color: number; trail: [number, number][] };
+type Trail = { points: Float64Array; head: number; length: number };
+type Spark = { x: number; y: number; vx: number; vy: number; age: number; life: number; color: number; size: number; trail: Trail };
+type Rocket = { x: number; y: number; targetY: number; speed: number; color: number; trail: Trail };
 const colors = ['#fff3ce', '#ff344f', '#ffffff'];
+const lanes = [.17, .82, .38, .68];
+const createTrail = (capacity: number): Trail => ({ points: new Float64Array(capacity * 2), head: 0, length: 0 });
+function pushTrail(trail: Trail, x: number, y: number) {
+  const capacity = trail.points.length / 2;
+  trail.head = (trail.head + capacity - 1) % capacity;
+  trail.points[trail.head * 2] = x;
+  trail.points[trail.head * 2 + 1] = y;
+  trail.length = Math.min(trail.length + 1, capacity);
+}
 
 export function StoreFireworks() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,7 +66,7 @@ export function StoreFireworks() {
         const speed = (center ? Math.random() * 20 : 20 + Math.random() * 110) * Math.min(width / 800, 1);
         sparks.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
           age: 0, life: center ? 2.8 : 1.6 + Math.random() * .8, color: i % 5 === 0 ? 2 : color,
-          size: .6 + Math.random() * .6, trail: [] });
+          size: .6 + Math.random() * .6, trail: createTrail(14) });
       }
       if (sparks.length > 650) sparks.splice(0, sparks.length - 650);
     }
@@ -64,26 +74,29 @@ export function StoreFireworks() {
     function animate(time: number) {
       const delta = Math.min((time - previous) / 1000 || .016, .04);
       previous = time;
+      const horizontalDamping = Math.exp(-.55 * delta);
+      const verticalDamping = Math.exp(-.4 * delta);
       context!.clearRect(0, 0, width, height);
       context!.globalCompositeOperation = 'lighter';
       countdown -= delta;
       if (countdown <= 0) {
-        const lane = [ .17, .82, .38, .68 ][launches % 4];
+        const lane = lanes[launches % 4];
         rockets.push({ x: width * (lane + (Math.random() - .5) * .06), y: height,
           targetY: 65 + Math.random() * 90, speed: 310 + Math.random() * 70,
-          color: launches % 2, trail: [] });
+          color: launches % 2, trail: createTrail(18) });
         launches++;
         countdown = 1.2 + Math.random() * .6;
       }
       for (let i = rockets.length - 1; i >= 0; i--) {
         const rocket = rockets[i];
-        rocket.trail.unshift([rocket.x, rocket.y]);
-        rocket.trail.length = Math.min(rocket.trail.length, 18);
+        pushTrail(rocket.trail, rocket.x, rocket.y);
         rocket.y -= rocket.speed * delta;
-        rocket.trail.forEach(([x, y], index) => {
+        for (let index = 0; index < rocket.trail.length; index++) {
+          const offset = (rocket.trail.head + index) % 18 * 2;
+          const x = rocket.trail.points[offset], y = rocket.trail.points[offset + 1];
           context!.globalAlpha = (1 - index / 18) * .6;
           context!.drawImage(glows[rocket.color], x - 5, y - 5, 10, 10);
-        });
+        }
         if (rocket.y <= rocket.targetY) {
           burst(rocket.x, rocket.y, rocket.color);
           rockets.splice(i, 1);
@@ -93,10 +106,9 @@ export function StoreFireworks() {
         const spark = sparks[i];
         spark.age += delta;
         if (spark.age >= spark.life) { sparks.splice(i, 1); continue; }
-        spark.trail.unshift([spark.x, spark.y]);
-        spark.trail.length = Math.min(spark.trail.length, 14);
-        spark.vx *= Math.exp(-.55 * delta);
-        spark.vy = spark.vy * Math.exp(-.4 * delta) + 25 * delta;
+        pushTrail(spark.trail, spark.x, spark.y);
+        spark.vx *= horizontalDamping;
+        spark.vy = spark.vy * verticalDamping + 25 * delta;
         spark.x += spark.vx * delta;
         spark.y += spark.vy * delta;
         const fade = Math.pow(1 - spark.age / spark.life, .7);
@@ -105,7 +117,10 @@ export function StoreFireworks() {
         context!.globalAlpha = fade * .55;
         context!.beginPath();
         context!.moveTo(spark.x, spark.y);
-        spark.trail.forEach(([x, y]) => context!.lineTo(x, y));
+        for (let index = 0; index < spark.trail.length; index++) {
+          const offset = (spark.trail.head + index) % 14 * 2;
+          context!.lineTo(spark.trail.points[offset], spark.trail.points[offset + 1]);
+        }
         context!.stroke();
         context!.globalAlpha = fade * (spark.age > 1.5 ? .5 + Math.sin(spark.age * 28 + i) * .25 : .9);
         const size = spark.size * 6;

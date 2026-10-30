@@ -50,11 +50,27 @@ export function AstraBackground() {
       spriteCtx.fillStyle = glow;
       spriteCtx.fillRect(0, 0, 64, 64);
     }
+    // Rasterize the two unchanged circular dot colors once. A scaled image
+    // stamp replaces three path commands for every star on every frame.
+    const dots = ['#e82b42', '#ffc3c6'].map(color => {
+      const image = document.createElement('canvas');
+      image.width = image.height = 32;
+      const pen = image.getContext('2d');
+      if (!pen) return null;
+      pen.fillStyle = color;
+      pen.beginPath();
+      pen.arc(16, 16, 16, 0, Math.PI * 2);
+      pen.fill();
+      return image;
+    });
+    const ambientCanvas = document.createElement('canvas');
+    const ambientCtx = ambientCanvas.getContext('2d');
 
     let width = 0, height = 0, dpr = 1, anchorX = 0, anchorY = 0;
     let particles = [], core = [], ambient = null, profile = '';
     let frameId = 0, resizeId = 0, visible = true, disposed = false;
     let time = 0, previousFrame = 0, previousPaint = 0;
+    let paintInterval = 1000 / 60, paintCost = 0, slowPaints = 0, fastPaints = 0;
     let yaw = 0, pitch = 0, targetYaw = 0, targetPitch = 0;
     let drag = false, pressed = false, px = 0, py = 0, mx = -9999, my = -9999;
     let projectedX = 0, projectedY = 0, projectedScale = 1;
@@ -71,9 +87,12 @@ export function AstraBackground() {
       particles = Array.from({ length: count }, (_, i) => {
         const path = i < count * 5500 / 6200 ? 0 : 1, t = rnd();
         const spread = .012 + Math.pow(rnd(), 4) * .13;
-        return { path, t, ox: gauss() * spread, oy: gauss() * spread, oz: gauss() * .12,
+        const star = { path, t, ox: gauss() * spread, oy: gauss() * spread, oz: gauss() * .12,
           r: rnd() < .035 ? 1.8 + rnd() * 2.4 : .3 + rnd() * .7,
           phase: rnd() * 6.28, alpha: .2 + rnd() * .65, dx: 0, dy: 0 };
+        star.phaseSin = Math.sin(star.phase);
+        star.phaseCos = Math.cos(star.phase);
+        return star;
       });
       core = Array.from({ length: coreCount }, () => ({
         x: gauss() * .085, y: gauss() * .085, z: gauss() * .12,
@@ -103,6 +122,15 @@ export function AstraBackground() {
       ambient = ctx.createRadialGradient(anchorX, anchorY, 0, anchorX, anchorY, Math.max(width, height) * .65);
       ambient.addColorStop(0, 'rgba(110,5,22,.10)');
       ambient.addColorStop(1, 'rgba(0,0,0,0)');
+      // This glow only changes on resize. Rasterize it once rather than
+      // shading the whole viewport with a radial gradient every frame.
+      if (ambientCtx) {
+        ambientCanvas.width = pixelWidth;
+        ambientCanvas.height = pixelHeight;
+        ambientCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ambientCtx.fillStyle = ambient;
+        ambientCtx.fillRect(0, 0, width, height);
+      }
       makeStars();
       playback(true);
     }
@@ -122,45 +150,65 @@ export function AstraBackground() {
       const rx = pitch + .08 + (reduced.matches ? 0 : Math.sin(time * .17) * .10);
       const cz = Math.cos(-.025), sz = Math.sin(-.025), cy = Math.cos(ry), sy = Math.sin(ry);
       const cx = Math.cos(rx), sx = Math.sin(rx), scale = Math.min(height / 2.8, width / 3.2);
+      // Compose the rotation once, not separately for every star.
+      const xx = cz * cy, xy = -sz * cy, xz = -sy;
+      const yx = sz * cx - cz * sy * sx, yy = cz * cx + sz * sy * sx, yz = -cy * sx;
+      const zx = sz * sx + cz * sy * cx, zy = cz * sx - sz * sy * cx, zz = cy * cx;
+      const offset = (time * .0064) % 1;
+      const twinkleSin = Math.sin(time * .62), twinkleCos = Math.cos(time * .62);
+      const interactive = !mobile.matches;
+      const pointerPresent = mx !== -9999 && my !== -9999;
+      const repelDamping = Math.min(1, dt * 7);
       function project(x, y, z) {
-        let xx = x * cz - y * sz, yy = x * sz + y * cz;
-        let zz = xx * sy + z * cy;
-        xx = xx * cy - z * sy;
-        const y2 = yy * cx - zz * sx;
-        zz = yy * sx + zz * cx;
-        projectedScale = 8 / (8 - zz);
-        projectedX = anchorX + xx * scale * projectedScale;
-        projectedY = anchorY - y2 * scale * projectedScale;
+        projectedScale = 8 / (8 - (x * zx + y * zy + z * zz));
+        projectedX = anchorX + (x * xx + y * xy + z * xz) * scale * projectedScale;
+        projectedY = anchorY - (x * yx + y * yy + z * yz) * scale * projectedScale;
       }
       function dot(r, alpha, bright) {
         if (projectedX < -30 || projectedY < -30 || projectedX > width + 30 || projectedY > height + 30) return;
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = bright ? '#ffc3c6' : '#e82b42';
-        ctx.beginPath();
-        ctx.arc(projectedX, projectedY, Math.max(.25, r * projectedScale), 0, 6.283);
-        ctx.fill();
+        const radius = Math.max(.25, r * projectedScale);
+        const image = dots[bright ? 1 : 0];
+        if (image) ctx.drawImage(image, projectedX - radius, projectedY - radius, radius * 2, radius * 2);
+        else {
+          ctx.fillStyle = bright ? '#ffc3c6' : '#e82b42';
+          ctx.beginPath();
+          ctx.arc(projectedX, projectedY, radius, 0, 6.283);
+          ctx.fill();
+        }
         if (r > 1.3 && spriteCtx) ctx.drawImage(sprite, projectedX - r * 6, projectedY - r * 6, r * 12, r * 12);
       }
       ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = ambient;
-      ctx.fillRect(0, 0, width, height);
+      if (ambientCtx) ctx.drawImage(ambientCanvas, 0, 0, width, height);
+      else {
+        ctx.fillStyle = ambient;
+        ctx.fillRect(0, 0, width, height);
+      }
       ctx.globalCompositeOperation = 'lighter';
       for (const star of particles) {
-        const t = reduced.matches ? star.t : (star.t - time * .0064 + 100) % 1;
+        let t = star.t - (reduced.matches ? 0 : offset);
+        if (t < 0) t += 1;
         const curve = CURVES[star.path], sample = t * SAMPLE_COUNT;
         const i = Math.floor(sample) * 3, fraction = sample % 1;
         const x = curve[i] + (curve[i + 3] - curve[i]) * fraction;
         const y = curve[i + 1] + (curve[i + 4] - curve[i + 1]) * fraction;
         const z = curve[i + 2] + (curve[i + 5] - curve[i + 2]) * fraction;
         project(x + star.ox, y + star.oy, z * 1.4 + star.oz);
-        if (!mobile.matches) {
-          const dx = projectedX - mx, dy = projectedY - my, distance = Math.hypot(dx, dy);
-          const force = distance < 85 ? (1 - distance / 85) * (pressed ? 30 : 14) : 0;
-          star.dx += ((distance > 0 ? dx / distance * force : 0) - star.dx) * Math.min(1, dt * 7);
-          star.dy += ((distance > 0 ? dy / distance * force : 0) - star.dy) * Math.min(1, dt * 7);
+        if (interactive) {
+          let tx = 0, ty = 0;
+          if (pointerPresent) {
+            const dx = projectedX - mx, dy = projectedY - my, squared = dx * dx + dy * dy;
+            if (squared > 0 && squared < 85 * 85) {
+              const distance = Math.sqrt(squared);
+              const force = (1 - distance / 85) * (pressed ? 30 : 14) / distance;
+              tx = dx * force; ty = dy * force;
+            }
+          }
+          star.dx += (tx - star.dx) * repelDamping;
+          star.dy += (ty - star.dy) * repelDamping;
           projectedX += star.dx; projectedY += star.dy;
         }
-        dot(star.r, star.alpha * (.78 + .22 * Math.sin(time * .62 + star.phase)), star.r > 1.3);
+        dot(star.r, star.alpha * (.78 + .22 * (twinkleSin * star.phaseCos + twinkleCos * star.phaseSin)), star.r > 1.3);
       }
       for (const star of core) {
         project(star.x, star.y, star.z);
@@ -173,10 +221,20 @@ export function AstraBackground() {
     function frame(now) {
       frameId = 0;
       if (disposed || document.hidden || !visible || reduced.matches) return;
-      const interval = mobile.matches || lowPower ? 1000 / 30 : 1000 / 60;
-      if (!previousFrame || now - previousFrame >= interval - .5) {
+      if (!previousFrame || now - previousFrame >= paintInterval - .5) {
         previousFrame = now;
+        const started = performance.now();
         draw(now);
+        paintCost += (Math.max(0, performance.now() - started) - paintCost) * .1;
+        // Keep scrolling/input room on a device that cannot submit this
+        // decoration cheaply. Hysteresis avoids oscillating frame rates.
+        if (paintInterval < 20) {
+          slowPaints = paintCost > 6 ? slowPaints + 1 : 0;
+          if (slowPaints >= 30) { paintInterval = 1000 / 30; fastPaints = 0; }
+        } else {
+          fastPaints = paintCost < 3 ? fastPaints + 1 : 0;
+          if (fastPaints >= 180) { paintInterval = 1000 / 60; slowPaints = 0; }
+        }
       }
       frameId = requestAnimationFrame(frame);
     }
