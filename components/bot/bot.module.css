@@ -594,3 +594,26 @@
 .navGroupExpanded { transform: rotate(0deg); }
 .navGroupCollapsed { transform: rotate(-90deg); }
 @media (prefers-reduced-motion: reduce) { .navGroupToggle > svg { transition: none; } }
+
+/* Typography polish for the Cloudy Bot ONLY. No copy, component layout or behavior changes. */
+.root { font-family: var(--font-sans), sans-serif; }
+.root .display { font-family: var(--font-display), sans-serif; font-weight: 650; letter-spacing: -.038em; line-height: 1.08; }
+.root .moduleCard h3, .root .cardHead h2, .root .accessLink strong, .root .accessModule strong, .root .accessRoleHeader strong, .root .accessOverviewLink strong {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  line-height: 1.42;
+  letter-spacing: -.021em;
+  text-wrap: pretty;
+}
+.root .moduleCard p, .root .cardHead p, .root .accessLink span, .root .accessModule small, .root .accessRole p, .root .accessOverviewLink small {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 430;
+  line-height: 1.75;
+  letter-spacing: 0;
+}
+.root .navItem { font-family: var(--font-sans), sans-serif; font-weight: 560; letter-spacing: -.007em; }
+.root .navLabel { font-family: var(--font-sans), sans-serif; letter-spacing: .12em; }
+.root .tile strong, .root .accessMetric strong { font-family: var(--font-display), sans-serif; font-weight: 650; letter-spacing: -.036em; }
+.root .button, .root .buttonGhost, .root .buttonDanger { font-family: var(--font-sans), sans-serif; font-weight: 680; letter-spacing: -.008em; }
+.root .priceHead, .root .featureList, .root .pill { font-family: var(--font-sans), sans-serif; }
+@media (max-width: 700px) { .root .moduleCard h3 { line-height: 1.48; } }
