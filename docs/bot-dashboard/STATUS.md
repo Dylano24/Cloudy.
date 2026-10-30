@@ -12,14 +12,12 @@ Bot: Dashboard API staat live op Railway (`main`, commits `39ab039`, `64f48a9`, 
 - Alleen instellingen die Cloudy echt gebruikt. Rolkeuzes bieden alleen Staff, Moderator, Owner en Member.
 - Op telefoons staat "Bot dashboard" onderaan het accountmenu; de bovenste rij blijft zoals hij was. Op desktop staat "Bot" naast VPN.
 
-## Nog nodig voor de preview (Vercel)
+## Koppeling met de bot
 
-| Variabele (Preview) | Waarde |
-|---|---|
-| `CLOUDY_BOT_API_URL` | `https://cloudy-production-b24f.up.railway.app` |
-| `CLOUDY_DASHBOARD_API_SECRET` | hetzelfde geheim als in Railway (service Cloudy) |
+De website stuurt bij elk verzoek de Discord-login van de ingelogde beheerder mee; Cloudy vraagt Discord wie dat is en controleert daarna zelf de rechten in de server. Er is geen gedeeld geheim in Vercel nodig. (Een gedeeld geheim `CLOUDY_DASHBOARD_API_SECRET` blijft optioneel mogelijk.)
 
-Plus in de Discord Developer Portal (OAuth2 → Redirects): `https://<preview-domein>/api/bot/auth/callback`.
+Eenmalig nodig in de Discord Developer Portal (OAuth2 → Redirects), in dezelfde app als de websitelogin:
+`https://cloudy-store-git-bot-dashboard-cloudystore.vercel.app/api/bot/auth/callback`
 
 ## Tests
 

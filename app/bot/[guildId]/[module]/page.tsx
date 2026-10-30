@@ -26,8 +26,8 @@ export default async function ModulePage({ params }: Props) {
   let insight: Insight | null = null;
   let error: string | null = null;
   try {
-    if (mod.kind === 'settings') settings = await botApi.module(context.session.uid, context.guild.id, mod.id);
-    else insight = await botApi.insight(context.session.uid, context.guild.id, mod.id);
+    if (mod.kind === 'settings') settings = await botApi.module(context.session, context.guild.id, mod.id);
+    else insight = await botApi.insight(context.session, context.guild.id, mod.id);
   } catch (caught) {
     error = caught instanceof BotApiError && caught.status === 403
       ? caught.message
