@@ -44,6 +44,7 @@ export function FeatureExplorer({ items, groups }: { items: PublicFeature[]; gro
           <div className={styles.heroActions}>
             <Link href="/bot" className={styles.primary}>Open dashboard <ArrowRight size={17} /></Link>
             <Link href="/bot#cloudy-demos" className={styles.secondary}>Try interactive previews</Link>
+            <Link href="/bot/guides" className={styles.secondary}>Read documentation</Link>
           </div>
           <div className={styles.metrics}>
             <div><strong>{available}</strong><span>Dashboard modules</span></div>
@@ -113,7 +114,7 @@ export function FeatureExplorer({ items, groups }: { items: PublicFeature[]; gro
                         <Link href="/bot">Open dashboard <ArrowRight size={15} /></Link>}
                     </div>
                     {active ? <div id={'detail-' + feature.id} className={styles.details}>
-                      <CircleHelp size={15} aria-hidden="true" /><span>{feature.explanation}</span>
+                      <CircleHelp size={15} aria-hidden="true" /><span>{feature.explanation}{feature.status !== 'integration' ? <> <Link href={'/bot/guides#' + feature.id} className={styles.inlineGuide}>View setting guide</Link></> : null}</span>
                     </div> : null}
                   </article>;
                 })}
