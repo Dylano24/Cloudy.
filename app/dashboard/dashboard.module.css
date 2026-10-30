@@ -14,3 +14,8 @@
 .back { display: inline-block; margin-top: var(--cloudy-section-gap); color: #f5f5f5; text-decoration: underline; text-underline-offset: 5px; }
 @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } .card { min-height: 150px; } }
+
+.loginActions { margin-top: 20px; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.loginActions p { color: #9999a1; font-size: .8rem; line-height: 1.5; }
+.login { display: inline-flex; background: #d82f3a; color: white; padding: 13px 20px; border-radius: 10px; text-decoration: none; font-weight: 700; transition: background .2s ease; }
+.login:hover { background: #ed414d; }
