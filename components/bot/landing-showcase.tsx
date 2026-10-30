@@ -3,10 +3,13 @@
 import { useState } from 'react';
 import {
   Activity, ArrowRight, Check, ChevronRight, CircleHelp, Gift, LockKeyhole,
-  MessageSquareText, RotateCcw, ShieldCheck, SlidersHorizontal, Ticket,
-  Trophy, Users, Zap,
+  RotateCcw, ShieldCheck, SlidersHorizontal, Ticket,
+  Trophy, Zap,
 } from 'lucide-react';
 import styles from './showcase.module.css';
+
+// Official Cloudy logo asset already used in the site header.
+const CLOUDY_LOGO_URL = 'https://cdn.jsdelivr.net/gh/Dylano24/Cloudy@f2fc2ba3873d420bcdda0e3ea260cf5d312e528a/assets/cloudy-c-logo-auf-auf.gif';
 
 function DemoShell({ channel, children, reset }: { channel: string; children: React.ReactNode; reset?: () => void }) {
   return (
@@ -21,10 +24,10 @@ function DemoShell({ channel, children, reset }: { channel: string; children: Re
   );
 }
 
-function DemoMessage({ children, accent = false }: { children: React.ReactNode; accent?: boolean }) {
+function DemoMessage({ children }: { children: React.ReactNode }) {
   return (
     <div className={styles.discordMessage}>
-      <div className={accent ? styles.messageAvatarRed : styles.messageAvatar}>C</div>
+      <div className={styles.messageAvatarRed}><img src={CLOUDY_LOGO_URL} alt="" width={35} height={35} decoding="async" /></div>
       <div className={styles.messageBody}>
         <span className={styles.messageName}>Cloudy <small>BOT</small></span>
         <div>{children}</div>
@@ -98,28 +101,6 @@ function TicketsPreview() {
   );
 }
 
-function LevelingPreview() {
-  const [messages, setMessages] = useState(0);
-  const level = 10 + Math.floor(messages / 5);
-  const xp = (72 + messages * 6) % 100;
-  return (
-    <DemoShell channel="level-up" reset={() => setMessages(0)}>
-      <div className={styles.demoContent}>
-        <DemoMessage accent>
-          <div className={styles.rankCard}>
-            <div className={styles.rankTop}><div className={styles.rankAvatar}>C</div><div><span className={styles.rankLabel}>COMMUNITY MEMBER</span><strong>Cloudy member</strong></div><div className={styles.rankNumber}>LVL {level}</div></div>
-            <div className={styles.rankMeta}><span>Experience</span><strong>{xp}%</strong></div>
-            <div className={styles.progressTrack}><div className={styles.progressFill} style={{ width: xp + '%' }} /></div>
-            <div className={styles.rankSub}>{messages} preview messages sent</div>
-          </div>
-        </DemoMessage>
-        {messages >= 5 ? <p className={styles.levelUp}><Trophy size={16} /> Level up! Your progress keeps going.</p> : null}
-      </div>
-      <div className={styles.demoBottom}><span>Watch XP rise as members chat.</span><button type="button" className={styles.demoButton} onClick={() => setMessages(n => n + 1)}>Send sample message <ArrowRight size={14} /></button></div>
-    </DemoShell>
-  );
-}
-
 function GiveawaysPreview() {
   const [entered, setEntered] = useState(false);
   const [ended, setEnded] = useState(false);
@@ -128,7 +109,7 @@ function GiveawaysPreview() {
   return (
     <DemoShell channel="giveaways" reset={reset}>
       <div className={styles.demoContent}>
-        <DemoMessage accent>
+        <DemoMessage>
           <div className={styles.embed}>
             <span className={styles.embedEyebrow}><Gift size={14} /> CLOUDY GIVEAWAYS</span>
             <h4>{ended ? 'Giveaway ended' : 'Community giveaway'}</h4>
@@ -146,10 +127,9 @@ function GiveawaysPreview() {
 }
 
 const features = [
-  { eyebrow: '01 / Protection', title: 'Stay ahead of the chaos.', body: 'Keep your community under control with Cloudy moderation, AutoMod and consistent staff actions.', details: ['Automatic filtering and moderation rules', 'Protected channels and permission checks', 'Clear actions your staff can follow'], icon: ShieldCheck, Demo: ModerationPreview },
+  { eyebrow: '01 / Protection', title: 'Stay ahead of what happens.', body: 'Keep your community under control with Cloudy moderation, AutoMod and consistent staff actions.', details: ['Automatic filtering and moderation rules', 'Protected channels and permission checks', 'Clear actions your staff can follow'], icon: ShieldCheck, Demo: ModerationPreview },
   { eyebrow: '02 / Support', title: 'Every ticket. In the right hands.', body: 'Let members reach your team with ticket panels, private conversations and a clear support flow.', details: ['Custom support panels', 'Claim, close and reopen workflows', 'Private conversations and staff control'], icon: Ticket, Demo: TicketsPreview },
-  { eyebrow: '03 / Community', title: 'Make every interaction count.', body: 'Reward participation with leveling tools and server settings managed in one place.', details: ['Progress and experience tracking', 'Levels and role rewards', 'Server-wide configuration'], icon: Trophy, Demo: LevelingPreview },
-  { eyebrow: '04 / Events', title: 'Bring your community together.', body: 'Run giveaways and community events with simple controls and a clear participant experience.', details: ['Member entry and participation', 'Winner selection and rerolls', 'Consistent Discord interactions'], icon: Gift, Demo: GiveawaysPreview },
+  { eyebrow: '03 / Events', title: 'Bring your community together.', body: 'Run giveaways and community events with simple controls and a clear participant experience.', details: ['Member entry and participation', 'Winner selection and rerolls', 'Consistent Discord interactions'], icon: Gift, Demo: GiveawaysPreview },
 ];
 
 const dashboardTabs = [
@@ -167,9 +147,7 @@ function DashboardPreview() {
   return (
     <div className={styles.dashboard}>
       <aside className={styles.sidebar}>
-        <div className={styles.sidebarBrand}><div className={styles.sidebarBrandMark}>C</div><div><strong>Cloudy</strong><span>CONTROL CENTER</span></div></div>
-        <div className={styles.sidebarServer}><span className={styles.serverAvatar}>S</span><div><strong>Sample server</strong><span>Dashboard preview</span></div><ChevronRight size={15} /></div>
-        <div className={styles.sidebarLabel}>YOUR WORKSPACE</div>
+        <div className={styles.sidebarLabel}>EXPLORE MODULES</div>
         {dashboardTabs.map((item, index) => {
           const TabIcon = item.icon;
           return <button key={item.name} className={index === active ? styles.sidebarActive : styles.sidebarLink} type="button" onClick={() => setActive(index)}><TabIcon size={16} /> {item.name}</button>;
