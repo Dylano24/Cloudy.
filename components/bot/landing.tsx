@@ -32,6 +32,7 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
               <a className={styles.button} href="#cloudy-demos">Explore Cloudy <ArrowRight size={17} aria-hidden="true" /></a>
               <a className={styles.buttonGhost} href="#bot-pricing">See pricing</a>
               <a className={styles.buttonGhost} href="/bot/features">All features</a>
+              <a className={styles.buttonGhost} href="/bot/command-reference">Commands</a>
             </div>
             <div className={styles.heroStatus}>
               <Suspense fallback={<StatusPlaceholder />}><BotStatusPill /></Suspense>
