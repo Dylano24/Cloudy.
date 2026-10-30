@@ -42,17 +42,34 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; background: #050505; }
+/* Lock the document to the viewport horizontally, while keeping vertical page
+   scrolling and component-level swipe carousels fully functional. Using clip
+   avoids turning the document into another scrolling container (sticky header). */
+html {
+  scroll-behavior: smooth;
+  background: #050505;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden; /* Fallback for older mobile browsers. */
+  overflow-x: clip;
+  overscroll-behavior-x: none;
+}
 body {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
   margin: 0;
   background:
     radial-gradient(circle at 20% 0%, rgba(48, 168, 255, .08), transparent 25rem),
     linear-gradient(180deg, #05080d 0%, #070b11 45%, #04070b 100%);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Fallback for older mobile browsers. */
+  overflow-x: clip;
+  overscroll-behavior-x: none;
 }
+/* Flex children must shrink instead of widening the entire page. */
+main { min-width: 0; }
 a { text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 ::selection { background: rgba(58, 190, 255, .32); color: white; }
