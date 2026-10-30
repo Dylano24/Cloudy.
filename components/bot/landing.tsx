@@ -70,11 +70,17 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
             <ul className={styles.featureList}>
               {PLAN_FEATURES.map(feature => <li key={feature}><Check size={16} aria-hidden="true" /> {feature}</li>)}
             </ul>
-            <a href={PLAN_ORDER_URL} className={styles.button} target="_blank" rel="noopener noreferrer">
-              Get Premium <ArrowRight size={17} aria-hidden="true" />
+            <a href={loginHref} className={styles.button}>
+              Log in with Discord <ArrowRight size={17} aria-hidden="true" />
             </a>
-            <p className={styles.small + ' ' + styles.muted} style={{ margin: 0 }}>
-              Order via Cloudy&apos;s Discord support server. No automatic payment or subscription is started here.
+            <p className={styles.small + ' ' + styles.muted} style={{ margin: 0, textAlign: 'center' }}>
+              Secure Discord login opens your Cloudy Bot dashboard and server settings, not a Discord channel.
+            </p>
+            <a href={PLAN_ORDER_URL} className={styles.buttonGhost} style={{ alignSelf: 'stretch', justifyContent: 'center' }} target="_blank" rel="noopener noreferrer">
+              Order Premium via Discord support <ArrowRight size={17} aria-hidden="true" />
+            </a>
+            <p className={styles.small + ' ' + styles.muted} style={{ margin: 0, textAlign: 'center' }}>
+              Premium orders use the Cloudy Discord support server. No automatic payment is started here.
             </p>
           </div>
         </div>
