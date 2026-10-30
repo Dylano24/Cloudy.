@@ -12,6 +12,7 @@ export function Footer() {
             <div className="cloudy-footer-title">Social</div>
             <div className="cloudy-footer-links">
               <a href={DISCORD_URL} target="_blank" rel="noreferrer">Discord</a>
+              <Link href="/bot">Cloudy Bot</Link>
               <span>TikTok</span>
               <span>YouTube</span>
               <span>Facebook</span>
