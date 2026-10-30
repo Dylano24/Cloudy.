@@ -536,7 +536,7 @@
 .home :global(.cloudy-classic-smoke) { display: none; }
 .home :global(.cloudy-astra-background) { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: 0; cursor: grab; touch-action: pan-y; }
 .home :global(.cloudy-astra-background):active { cursor: grabbing; }
-.home :global(.cloudy-astra-background):focus-visible { outline: 1px solid #b52a3b; outline-offset: -2px; }
+.home :global(.cloudy-astra-background):focus-visible { outline: none; }
 .home :global(.cloudy-classic-hero) { background: transparent !important; }
 .home :global(.cloudy-classic-hero)::before, .home :global(.cloudy-classic-hero)::after { display: none !important; }
 .home :global(.cloudy-classic-hero), .home :global(.cloudy-classic-wrap) { pointer-events: none; }
