@@ -10,10 +10,10 @@
 .heroCopy h1 span,.sectionHeading h2 span,.spotlightCopy h2 span{color:var(--v-red)}
 .hero{position:relative;padding-block:var(--cloudy-page-pad) var(--cloudy-section-half-gap);background:radial-gradient(ellipse at 82% 45%,#e51b2e0b,transparent 58%)}
 .heroGrid{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:0;min-height:0}
-.heroCopy{position:relative;z-index:2;min-width:0;max-width:760px}
+.heroCopy{position:relative;z-index:2;min-width:0;max-width:760px;margin-inline:auto;text-align:center}
 .heroCopy h1{font-size:clamp(58px,6.15vw,88px);margin-block:26px}
-.heroLead{font-size:17px;line-height:1.9;color:#fff;max-width:650px;margin:0}
-.heroActions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:32px}
+.heroLead{font-size:17px;line-height:1.9;color:#fff;max-width:650px;margin:0 auto}
+.heroActions{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:center;margin-top:32px}
 .primaryButton,.secondaryButton{display:inline-flex;justify-content:center;align-items:center;gap:12px;min-height:52px;padding:0 22px;border-radius:9px;font-size:13px;font-weight:500;transition:background .2s,border-color .2s;border:1px solid #e51b2e;color:#fff}
 .primaryButton{background:#e51b2e;box-shadow:0 8px 28px #e51b2e26,inset 0 1px #ffffff20}
 .primaryButton:hover{background:#c81728;border-color:#ff334f}
@@ -87,7 +87,7 @@
 .billingOption,.billingActive{font:inherit;font-size:12px;font-weight:500;min-height:44px;padding:10px 17px;border-radius:7px;border:1px solid transparent;background:transparent;color:#fff;cursor:pointer;white-space:nowrap}
 .billingOption:hover{color:#fff;background:#ffffff08}.billingActive{border-color:#e51b2e;background:#e51b2e17;color:#fff}
 .planCard{display:flex;flex-direction:column;padding:30px 28px;min-width:0}
-.planFeatured{background-color:#100b0b;border-color:#e51b2e77;box-shadow:0 16px 48px #0003,0 0 44px #e51b2e09}
+.planFeatured{background-color:#100b0b;border-color:transparent;box-shadow:0 16px 48px #0003,0 0 44px #e51b2e09}
 
 
 
