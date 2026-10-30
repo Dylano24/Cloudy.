@@ -1,6 +1,5 @@
 import { Suspense } from 'react';
 import { AlertTriangle, ArrowRight, Check, KeyRound, ShieldCheck, Zap } from 'lucide-react';
-import studioStyles from '@/app/service/service.module.css';
 import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_ORDER_URL, PLAN_PRICE_EUR } from '@/lib/bot-dashboard/plan';
 import { BotStatusPill, StatusPlaceholder } from './bot-status';
 import { BotShowcase } from './landing-showcase';
@@ -13,29 +12,6 @@ const LOGIN_ERRORS: Record<string, string> = {
   unavailable: 'Discord login is not configured on this deployment yet.',
   busy: 'Too many login attempts. Wait a minute and try again.',
 };
-
-const questions = [
-  {
-    question: 'Who can manage a server here?',
-    answer: 'Only the server owner, Administrators and members with Manage Server. Discord tells us your permissions when you log in, and every save is checked again on our server and by Cloudy itself.',
-  },
-  {
-    question: 'What does Cloudy see when I log in?',
-    answer: 'Your Discord name, avatar and the list of servers you are in, with your permissions there. Cloudy cannot read your messages or act as you. Your Discord login stays on our server.',
-  },
-  {
-    question: 'What does Cloudy Bot Premium cost?',
-    answer: PLAN_NAME + ' costs ' + euro.format(PLAN_PRICE_EUR) + ' per month per server. Premium is ordered through the Cloudy Discord support server. There is no free trial advertised on this page.',
-  },
-  {
-    question: 'Can I preview Cloudy before buying?',
-    answer: 'Yes. Try the interactive previews on this page. These are simulated examples and do not change any Discord server. Real settings are available through the authenticated server dashboard.',
-  },
-  {
-    question: 'Do changes need a restart?',
-    answer: 'No. Saved settings go straight to Cloudy, which applies them immediately through the same code its Discord commands use.',
-  },
-];
 
 export function BotLanding({ loginError, next }: { loginError: string | null; next: string }) {
   const loginHref = '/api/bot/auth/login' + (next !== '/bot' ? '?next=' + encodeURIComponent(next) : '');
@@ -125,22 +101,7 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
         </div>
       </section>
 
-      <section className={styles.section} style={{ paddingBottom: 'var(--cloudy-page-pad)' }}>
-        <div className={styles.container}>
-          <div className={[studioStyles.faqHeading, studioStyles.faqHeadingInline].join(' ')} style={{ marginBottom: 28 }}>
-            <span className={studioStyles.faqSingleDot} aria-hidden="true" />
-            <h2 className={studioStyles.faqHeadingTitle}>Frequently asked questions.</h2>
-          </div>
-          <div className={studioStyles.faqList} style={{ maxWidth: 900 }}>
-            {questions.map(({ question, answer }) => (
-              <details key={question} className={studioStyles.faqItem}>
-                <summary>{question}</summary>
-                <p>{answer}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
+
     </>
   );
 }
