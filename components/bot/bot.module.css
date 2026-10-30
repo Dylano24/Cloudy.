@@ -585,3 +585,12 @@
 .accessOverviewLink > svg { color: var(--b-red-2); flex: none; }
 .accessOverviewLink:hover { border-color: rgba(230,40,69,.65); background: rgba(229,27,46,.06); }
 @media(max-width: 700px) { .accessOverviewLinks { grid-template-columns: 1fr; } }
+
+/* Accessible collapsible module navigation. */
+.navGroupToggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; background: transparent; border: none; border-radius: 8px; padding: 0 9px 0 0; text-align: left; color: inherit; }
+.navGroupToggle:hover { background: rgba(255,255,255,.04); }
+.navGroupToggle .navLabel { flex: 1; }
+.navGroupToggle > svg { color: rgba(255,255,255,.55); transition: transform .2s ease; flex: none; }
+.navGroupExpanded { transform: rotate(0deg); }
+.navGroupCollapsed { transform: rotate(-90deg); }
+@media (prefers-reduced-motion: reduce) { .navGroupToggle > svg { transition: none; } }
