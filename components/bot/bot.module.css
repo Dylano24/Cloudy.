@@ -507,3 +507,72 @@
   .healthDetails { width: 100%; margin-left: 45px; padding-left: 0; border-left: 0; text-align: left; }
   .healthDuration { justify-content: flex-start; }
 }
+
+/* Team and command-center pages: read-only, server-authenticated website UI. */
+.accessHero {
+  display: flex; align-items: center; gap: 22px; flex-wrap: wrap;
+  border: 1px solid rgba(239, 52, 80, .25); border-radius: 18px;
+  background: radial-gradient(ellipse at 0% 0%, rgba(229, 27, 46, .11), transparent 65%), #09090b;
+  padding: clamp(20px, 3vw, 29px); min-width: 0;
+}
+.accessHeroIcon, .accessSectionIcon, .accessModuleIcon {
+  flex: none; display: grid; place-items: center; color: var(--b-red-2);
+  border: 1px solid rgba(229, 27, 46, .26); background: rgba(229, 27, 46, .075);
+}
+.accessHeroIcon { width: 60px; height: 60px; border-radius: 16px; }
+.accessHero > div { flex: 1 1 290px; min-width: 0; }
+.accessHero h2 { margin: 8px 0 9px; font-size: clamp(22px, 3vw, 31px); font-weight: 650; letter-spacing: -.035em; }
+.accessHero p { max-width: 700px; margin: 0; font-size: 13px; color: var(--b-soft); line-height: 1.75; }
+.accessEyebrow { display: block; font-size: 10px; font-weight: 800; letter-spacing: .16em; color: #f16a7b; }
+.accessHero > .pill { margin-left: auto; }
+.accessHero > .button { margin-left: auto; }
+.accessSection { padding: 24px; min-width: 0; }
+.accessSectionHead { display: flex; align-items: center; gap: 15px; margin-bottom: 22px; }
+.accessSectionIcon { width: 44px; height: 44px; border-radius: 12px; }
+.accessSectionHead h2 { margin: 0; font-size: 17px; font-weight: 700; letter-spacing: -.02em; }
+.accessSectionHead p { color: var(--b-soft); font-size: 12px; line-height: 1.75; margin: 6px 0 0; }
+.accessRoleGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.accessRole { display: flex; flex-direction: column; gap: 13px; min-height: 158px; padding: 19px; border: 1px solid var(--b-line-2); background: #0e0e10; border-radius: 12px; }
+.accessRoleHeader { display: flex; gap: 10px; align-items: center; font-size: 13px; }
+.accessRoleHeader svg { color: var(--b-green); flex: none; }
+.accessRole p { margin: 0; font-size: 12px; line-height: 1.7; color: var(--b-soft); }
+.accessCurrent { align-self: flex-start; margin-top: auto; font-size: 10px; font-weight: 750; color: #2de0bc; letter-spacing: .07em; text-transform: uppercase; }
+.accessNote, .accessUpcoming, .accessFooter { display: flex; align-items: flex-start; gap: 12px; font-size: 12px; line-height: 1.7; color: var(--b-soft); }
+.accessNote { margin-top: 18px; padding: 17px; border: 1px solid rgba(255,255,255,.09); background: #09090a; border-radius: 12px; }
+.accessNote svg, .accessUpcoming svg, .accessFooter svg { flex: none; color: var(--b-red-2); margin-top: 2px; }
+.accessNote p, .accessUpcoming p { margin: 0; }
+.accessLinks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 11px; }
+.accessLink { min-width: 0; display: flex; align-items: center; gap: 11px; padding: 19px; background: #0d0d0f; border: 1px solid var(--b-line-2); border-radius: 12px; transition: border-color .2s ease, background .2s ease; }
+.accessLink > div { min-width: 0; flex: 1; display: grid; gap: 8px; }
+.accessLink strong { font-size: 13px; }
+.accessLink span { color: var(--b-soft); font-size: 11px; line-height: 1.7; }
+.accessLink > svg { flex: none; color: var(--b-red-2); }
+.accessLink:hover, .accessModule:hover { border-color: rgba(229,27,46,.5); background: rgba(229,27,46,.045); }
+.accessUpcoming { padding: 19px 21px; border: 1px dashed rgba(255,255,255,.19); border-radius: 12px; background: #09090b; }
+.accessUpcoming strong { color: #fff; display: block; font-size: 13px; margin-bottom: 5px; }
+.accessSummaryGrid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 13px; }
+.accessMetric { padding: 21px; }
+.accessMetric span { font-size: 11px; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; color: var(--b-dim); }
+.accessMetric strong { display: block; font-family: var(--font-display), Anton, Impact, sans-serif; font-weight: 400; font-size: 38px; margin: 10px 0 6px; line-height: 1.1; }
+.accessMetric p { color: var(--b-soft); font-size: 12px; line-height: 1.6; margin: 0; }
+.accessModuleGrid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+.accessModule { display: flex; align-items: center; gap: 13px; padding: 13px 15px; min-width: 0; background: #0d0d0f; border-radius: 11px; border: 1px solid var(--b-line); transition: border-color .2s ease, background .2s ease; }
+.accessModuleIcon { width: 38px; height: 38px; border-radius: 9px; }
+.accessModule > span:nth-child(2) { flex: 1; min-width: 0; }
+.accessModule strong { display: block; font-size: 12px; font-weight: 650; line-height: 1.4; }
+.accessModule small { display: block; font-size: 10px; color: var(--b-dim); margin-top: 4px; }
+.accessModule > svg { color: var(--b-dim); flex: none; }
+.accessFooter { color: var(--b-dim); padding: 0 4px; }
+@media (max-width: 980px) {
+  .accessRoleGrid, .accessLinks { grid-template-columns: 1fr; }
+  .accessRole { min-height: 0; }
+}
+@media (max-width: 620px) {
+  .accessHero { gap: 14px; }
+  .accessHeroIcon { width: 48px; height: 48px; border-radius: 13px; }
+  .accessHero > .button { width: 100%; }
+  .accessHero > .pill { margin-left: 0; }
+  .accessSection { padding: 16px; }
+  .accessModuleGrid, .accessSummaryGrid { grid-template-columns: 1fr; }
+  .accessSectionHead { align-items: flex-start; }
+}
