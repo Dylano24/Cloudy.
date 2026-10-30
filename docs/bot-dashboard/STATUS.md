@@ -1,6 +1,6 @@
 # Bot dashboard — status
 
-Website-branch: `preview/cloudy-bot-dashboard-20261030` (alleen preview, niets gemerged).
+Website-branch: `bot-dashboard` (alleen preview, niets gemerged). Vaste preview: https://cloudy-store-git-bot-dashboard-cloudystore.vercel.app/bot
 Bot: Dashboard API staat live op Railway (`main`, commits `39ab039`, `64f48a9`, `5251637`, `14b9039`), Cloudy ONLINE.
 
 ## Wat het dashboard doet
