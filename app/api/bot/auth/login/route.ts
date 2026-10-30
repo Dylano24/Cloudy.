@@ -30,15 +30,19 @@ export async function GET(request: NextRequest) {
 
   const state = createLoginState(returnTo);
   const authorize = new URL('https://discord.com/oauth2/authorize');
-  authorize.search = new URLSearchParams({
+  const params = new URLSearchParams({
     client_id: credentials.clientId,
     response_type: 'code',
     scope: DASHBOARD_SCOPES,
     state,
     redirect_uri: dashboardRedirectUri(origin),
-    // Skip Discord's screen for returning users; ask again only when needed.
-    prompt: request.nextUrl.searchParams.get('consent') === '1' ? 'consent' : 'none',
-  }).toString();
+  });
+  // Discord should show its normal sign-in/consent flow when needed.
+  // Forcing prompt=none prevents first-time visitors from logging in.
+  if (request.nextUrl.searchParams.get('consent') === '1') {
+    params.set('prompt', 'consent');
+  }
+  authorize.search = params.toString();
 
   const response = NextResponse.redirect(authorize);
   response.cookies.set(BOT_STATE_COOKIE, state, {
