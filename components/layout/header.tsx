@@ -127,6 +127,7 @@ export function Header() {
     ['Store', '/shop'],
     ['Web solutions', '/service'],
     ['VPN', '/vpn'],
+    ['Bot', '/bot'],
   ] as const;
 
   return (
@@ -144,7 +145,7 @@ export function Header() {
 
         <nav className="cloudy-header-nav" aria-label="Main navigation">
           {nav.map(([label, href]) => (
-            <Link key={href} href={href} {...(href.startsWith('https://') ? { target: '_blank', rel: 'noreferrer' } : {})} className={pathname === href ? 'active' : ''}>
+            <Link key={href} href={href} {...(href.startsWith('https://') ? { target: '_blank', rel: 'noreferrer' } : {})} className={pathname === href || (href === '/bot' && pathname.startsWith('/bot/')) ? 'active' : ''}>
               {label}
             </Link>
           ))}
