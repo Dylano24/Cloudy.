@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import { AlertTriangle, Check, KeyRound, ShieldCheck, Zap } from 'lucide-react';
-import { SiDiscord } from 'react-icons/si';
+import { AlertTriangle, ArrowRight, Check, KeyRound, ShieldCheck, Zap } from 'lucide-react';
 import studioStyles from '@/app/service/service.module.css';
-import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_PRICE_EUR, PLAN_TRIAL_DAYS } from '@/lib/bot-dashboard/plan';
+import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_ORDER_URL, PLAN_PRICE_EUR } from '@/lib/bot-dashboard/plan';
 import { BotStatusPill, StatusPlaceholder } from './bot-status';
+import { BotShowcase } from './landing-showcase';
 import styles from './bot.module.css';
 
 const LOGIN_ERRORS: Record<string, string> = {
@@ -24,8 +24,12 @@ const questions = [
     answer: 'Your Discord name, avatar and the list of servers you are in, with your permissions there. Cloudy cannot read your messages or act as you. Your Discord login stays on our server.',
   },
   {
-    question: 'What does it cost?',
-    answer: `Every server starts with ${PLAN_TRIAL_DAYS} days free. After that ${PLAN_NAME} is ${euro.format(PLAN_PRICE_EUR)} per month per server. You can keep viewing and trying every setting; saving needs Premium.`,
+    question: 'What does Cloudy Bot Premium cost?',
+    answer: PLAN_NAME + ' costs ' + euro.format(PLAN_PRICE_EUR) + ' per month per server. Premium is ordered through the Cloudy Discord support server. There is no free trial advertised on this page.',
+  },
+  {
+    question: 'Can I preview Cloudy before buying?',
+    answer: 'Yes. Try the interactive previews on this page. These are simulated examples and do not change any Discord server. Real settings are available through the authenticated server dashboard.',
   },
   {
     question: 'Do changes need a restart?',
@@ -34,8 +38,8 @@ const questions = [
 ];
 
 export function BotLanding({ loginError, next }: { loginError: string | null; next: string }) {
-  const loginHref = `/api/bot/auth/login${next !== '/bot' ? `?next=${encodeURIComponent(next)}` : ''}`;
-  const consentHref = `/api/bot/auth/login?consent=1${next !== '/bot' ? `&next=${encodeURIComponent(next)}` : ''}`;
+  const loginHref = '/api/bot/auth/login' + (next !== '/bot' ? '?next=' + encodeURIComponent(next) : '');
+  const consentHref = '/api/bot/auth/login?consent=1' + (next !== '/bot' ? '&next=' + encodeURIComponent(next) : '');
   const error = loginError === 'consent' ? null : loginError ? LOGIN_ERRORS[loginError] || LOGIN_ERRORS.failed : null;
 
   return (
@@ -44,33 +48,63 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
         <div className={styles.container}>
           <div className={styles.heroInner}>
             <span className={styles.eyebrow}>Cloudy Bot</span>
-            <h1 className={`${styles.display} ${styles.heroTitle}`}>Your server.<br /><span>Fully in control.</span></h1>
-            <p className={`${styles.lead} ${styles.heroLead}`}>
-              Manage Cloudy from one calm, fast dashboard. Welcome messages, tickets, leveling, logs and more, with the same rules Cloudy uses in Discord.
+            <h1 className={styles.display + ' ' + styles.heroTitle}>Your server.<br /><span>Fully in control.</span></h1>
+            <p className={styles.lead + ' ' + styles.heroLead}>
+              Your moderation, tickets, leveling, giveaways and more — all in one powerful Discord bot and one connected dashboard.
             </p>
             <div className={styles.heroActions}>
-              <a href={loginError === 'consent' ? consentHref : loginHref} className={styles.button}>
-                <SiDiscord size={18} aria-hidden="true" /> {loginError === 'consent' ? 'Allow server access' : 'Log in with Discord'}
-              </a>
+              <a className={styles.button} href="#cloudy-demos">Explore Cloudy <ArrowRight size={17} aria-hidden="true" /></a>
+              <a className={styles.buttonGhost} href="#bot-pricing">See pricing</a>
             </div>
             <div className={styles.heroStatus}>
               <Suspense fallback={<StatusPlaceholder />}><BotStatusPill /></Suspense>
             </div>
             {loginError === 'consent' ? (
-              <div className={`${styles.notice} ${styles.noticeNeutral} ${styles.loginError}`} role="status">
+              <div className={styles.notice + ' ' + styles.noticeNeutral + ' ' + styles.loginError} role="status">
                 <KeyRound size={18} aria-hidden="true" />
-                <div><strong>One more step</strong>Discord needs your permission once to show which servers you can manage.</div>
+                <div><strong>One more step</strong>Discord needs your permission once to show which servers you can manage.
+                  <p><a href={consentHref} className={styles.buttonGhost}>Allow server access <ArrowRight size={15} /></a></p>
+                </div>
               </div>
             ) : null}
             {error ? (
-              <div className={`${styles.notice} ${styles.loginError}`} role="alert">
+              <div className={styles.notice + ' ' + styles.loginError} role="alert">
                 <AlertTriangle size={18} aria-hidden="true" />
-                <div><strong>Login did not finish</strong>{error}</div>
+                <div><strong>Login did not finish</strong>{error}
+                  <p><a href={loginHref} className={styles.buttonGhost}>Try again <ArrowRight size={15} /></a></p>
+                </div>
               </div>
             ) : null}
           </div>
         </div>
       </section>
+
+      <section className={styles.section} aria-labelledby="bot-pricing">
+        <div className={styles.container}>
+          <div className={styles.sectionHead}>
+            <span className={styles.eyebrow}>Cloudy Bot Premium</span>
+            <h2 id="bot-pricing" className={styles.display + ' ' + styles.sectionTitle}>One plan.<br />Everything included.</h2>
+          </div>
+          <div className={styles.panel + ' ' + styles.priceCard + ' ' + styles.priceCardLanding}>
+            <div className={styles.priceHead}>
+              <span className={styles.eyebrow}>{PLAN_NAME}</span>
+              <p className={styles.price}>{euro.format(PLAN_PRICE_EUR)}<small>/ month per server</small></p>
+              <p>Powerful controls for your Discord server, all in one Cloudy dashboard.</p>
+            </div>
+            <ul className={styles.featureList}>
+              {PLAN_FEATURES.map(feature => <li key={feature}><Check size={16} aria-hidden="true" /> {feature}</li>)}
+            </ul>
+            <a href={PLAN_ORDER_URL} className={styles.button} target="_blank" rel="noopener noreferrer">
+              Get Premium <ArrowRight size={17} aria-hidden="true" />
+            </a>
+            <p className={styles.small + ' ' + styles.muted} style={{ margin: 0 }}>
+              Order via Cloudy&apos;s Discord support server. No automatic payment or subscription is started here.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <BotShowcase />
 
       <section className={styles.section}>
         <div className={styles.container}>
@@ -87,28 +121,6 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
               <h2><KeyRound size={24} strokeWidth={1.8} aria-hidden="true" /> Private by design</h2>
               <p>Your Discord login is encrypted on our server. Cloudy&apos;s credentials never reach the website, and every change is logged.</p>
             </article>
-          </div>
-        </div>
-      </section>
-
-      <section className={styles.section} aria-labelledby="bot-pricing">
-        <div className={styles.container}>
-          <div className={styles.sectionHead}>
-            <span className={styles.eyebrow}>Pricing</span>
-            <h2 id="bot-pricing" className={`${styles.display} ${styles.sectionTitle}`}>One plan.<br />Everything included.</h2>
-          </div>
-          <div className={`${styles.panel} ${styles.priceCard} ${styles.priceCardLanding}`}>
-            <div className={styles.priceHead}>
-              <span className={styles.eyebrow}>{PLAN_NAME}</span>
-              <p className={styles.price}>{euro.format(PLAN_PRICE_EUR)}<small>/ month per server</small></p>
-              <p>Start with {PLAN_TRIAL_DAYS} days free. After the trial you can still see and try every setting; saving needs Premium.</p>
-            </div>
-            <ul className={styles.featureList}>
-              {PLAN_FEATURES.map(feature => <li key={feature}><Check size={16} aria-hidden="true" /> {feature}</li>)}
-            </ul>
-            <a href={loginError === 'consent' ? consentHref : loginHref} className={styles.button}>
-              <SiDiscord size={18} aria-hidden="true" /> Start your free trial
-            </a>
           </div>
         </div>
       </section>
