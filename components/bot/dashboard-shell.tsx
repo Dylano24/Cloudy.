@@ -4,7 +4,7 @@ import Link from 'next/link';
 import type { Route } from 'next';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ChevronsUpDown, Gem, LogOut, Menu, X } from 'lucide-react';
+import { ChevronsUpDown, Gem, LogOut, Menu, TerminalSquare, UsersRound, X } from 'lucide-react';
 import styles from './bot.module.css';
 import { DashboardProvider, type DashboardData } from './dashboard-context';
 import { GuildIcon } from './guild-icon';
@@ -115,6 +115,12 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
               </Link>
               <Link href={`${base}/plan` as Route} className={styles.navItem} aria-current={pathname === `${base}/plan` ? 'page' : undefined}>
                 <Gem size={17} aria-hidden="true" /> Plan<PlanNavPill />
+              </Link>
+              <Link href={`${base}/team` as Route} className={styles.navItem} aria-current={pathname === `${base}/team` ? 'page' : undefined}>
+                <UsersRound size={17} aria-hidden="true" /> Team &amp; access
+              </Link>
+              <Link href={`${base}/command-center` as Route} className={styles.navItem} aria-current={pathname === `${base}/command-center` ? 'page' : undefined}>
+                <TerminalSquare size={17} aria-hidden="true" /> Command center
               </Link>
             </div>
             {groups.map(group => {
