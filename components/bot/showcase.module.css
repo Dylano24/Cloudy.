@@ -174,3 +174,13 @@
   .settingRow { padding: 13px; }
 }
 @media (prefers-reduced-motion: reduce) { .showcase *, .dashboardSection * { animation: none !important; transition: none !important; } }
+/* Cloudy Bot showcase typography. Visual-only changes; demos and copy unchanged. */
+.intro h2, .featureText h3, .dashboardHeading h3, .featureNumber {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 650;
+  letter-spacing: -.043em;
+  line-height: 1.12;
+}
+.featureText > p, .intro p, .featureText li { font-family: var(--font-sans), sans-serif; font-weight: 430; }
+.demoShell, .dashboard, .embed, .sidebar { font-family: var(--font-sans), sans-serif; }
+.embed h4, .dashboardCards strong, .settingRow strong { font-weight: 700; letter-spacing: -.02em; }
