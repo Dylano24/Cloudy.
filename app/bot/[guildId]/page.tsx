@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import type { Route } from 'next';
 import { Suspense } from 'react';
-import { AlertTriangle, ArrowRight } from 'lucide-react';
+import { AlertTriangle, ArrowRight, TerminalSquare, UsersRound } from 'lucide-react';
 import { loadGuildContext } from '@/lib/bot-dashboard/guild-context';
 import { GROUPS, MODULES } from '@/lib/bot-dashboard/modules';
 import { GuildIcon } from '@/components/bot/guild-icon';
@@ -54,6 +54,19 @@ export default async function GuildOverview({ params }: { params: Promise<{ guil
           <p>Every Cloudy feature for this server</p>
         </div>
       </div>
+
+      <section className={styles.accessOverviewLinks} aria-label="Team and commands">
+        <Link href={`/bot/${guild.id}/team` as Route} className={styles.accessOverviewLink} prefetch={false}>
+          <span className={styles.moduleIcon}><UsersRound size={20} aria-hidden="true" /></span>
+          <span><strong>Team &amp; access</strong><small>See dashboard permissions and configure existing staff roles.</small></span>
+          <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+        <Link href={`/bot/${guild.id}/command-center` as Route} className={styles.accessOverviewLink} prefetch={false}>
+          <span className={styles.moduleIcon}><TerminalSquare size={20} aria-hidden="true" /></span>
+          <span><strong>Command center</strong><small>Browse website controls and Discord-first modules.</small></span>
+          <ArrowRight size={18} aria-hidden="true" />
+        </Link>
+      </section>
 
       <section aria-label="Modules" className={styles.moduleGrid}>
         {MODULES.map(module => (
