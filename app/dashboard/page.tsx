@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { accountSigningSecret, decodeSession, SESSION_COOKIE } from "@/lib/account-session";
 import styles from "./dashboard.module.css";
 
 const modules = [
@@ -21,13 +23,17 @@ export const metadata = {
   description: "Manage Cloudy Discord server settings.",
 };
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const cookieStore = await cookies();
+  const identity = decodeSession(cookieStore.get(SESSION_COOKIE)?.value, accountSigningSecret());
+  const discordConnected = identity?.provider === "discord";
   return (
     <main className={`cloudy-page-shell ${styles.page}`}>
       <div className={styles.eyebrow}>CLOUDY / DASHBOARD</div>
       <h1 className={styles.heading}>Your server. <span>One dashboard.</span></h1>
       <p className={styles.intro}>A dedicated control center for Cloudy. Discord authentication and live server controls are being integrated. No bot settings can be changed from this preview.</p>
-      <div className={styles.status} role="status">Preview only · Discord connection not active</div>
+      <div className={styles.status} role="status">{discordConnected ? `Signed in as ${identity.name} · Server controls not connected yet` : "Discord sign-in required · Server controls not connected yet"}</div>
+      {!discordConnected && <div className={styles.loginActions}><Link className={styles.login} href="/api/account/login">Continue with Discord</Link><p>Cloudy uses its existing Discord account login. You may be redirected to the main Cloudy Store domain to sign in.</p></div>}
       <div className={styles.grid}>
         {modules.map((module) => (
           <section className={styles.card} key={module.name}>
