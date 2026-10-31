@@ -90,7 +90,7 @@ export function LabConfigurator({ id, value, onChange, onReset }: {
   onReset:()=>void;
 }) {
   const [sequence, setSequence] = useState(1);
-  const change = <K extends keyof LabConfig>(key:K, next:LabConfig[K]) => onChange({ ...value, [key]:next });
+  const change = <K extends keyof LabConfig,>(key:K, next:LabConfig[K]) => onChange({ ...value, [key]:next });
   const updateField = (uid:string, patch:Partial<EmbedField>) => change('fields',value.fields.map(f => f.id===uid ? {...f,...patch} : f));
   const updateButton = (uid:string, patch:Partial<PreviewButton>) => change('buttons',value.buttons.map(b=>b.id===uid?{...b,...patch}:b));
   const label = (key:string,val:string) => change('labels',{...value.labels,[key]:val});
@@ -120,8 +120,8 @@ export function LabConfigurator({ id, value, onChange, onReset }: {
           {['#ed2344','#18d39c','#5865f2','#f59e0b','#ffffff','#9b5de5'].map(c=><button type="button" key={c} aria-label={'Set color '+c} title={c} className={styles.swatch} style={{background:c}} onClick={()=>change('sideColor',c)}/>)}
         </div>
       </div>
-      <label className={styles.configToggle}><input type="checkbox" checked={value.showLogo} onChange={e=>change('showLogo',e.target.checked)}/> Show Cloudy logo <span>Displayed beside the bot message</span></label>
-      <label className={styles.configInput}>Custom logo URL <small>Optional. Leave blank for the original Cloudy logo.</small><input type="url" value={value.logoUrl} placeholder="https://example.com/logo.png" onChange={e=>change('logoUrl',e.target.value)} /></label>
+      <label className={styles.configToggle}><input type="checkbox" checked={value.showLogo} onChange={e=>change('showLogo',e.target.checked)}/> Show logo inside the embed <span>Cloudy logo appears as the embed thumbnail</span></label>
+      <label className={styles.configInput}>Custom logo URL <small>Optional. Replaces the logo in the embed.</small><input type="url" value={value.logoUrl} placeholder="https://example.com/logo.png" onChange={e=>change('logoUrl',e.target.value)} /></label>
       <label className={styles.configInput}>Thumbnail URL <small>Small image inside the embed</small><input type="url" value={value.thumbnailUrl} placeholder="https://example.com/thumbnail.png" onChange={e=>change('thumbnailUrl',e.target.value)}/></label>
       <label className={styles.configInput}>Banner / GIF URL <small>Media stays inside the embed</small><input type="url" value={value.bannerUrl} placeholder="https://example.com/banner.gif" onChange={e=>change('bannerUrl',e.target.value)}/></label>
       {(value.logoUrl&&!safeImageSrc(value.logoUrl))||(value.thumbnailUrl&&!safeImageSrc(value.thumbnailUrl))||(value.bannerUrl&&!safeImageSrc(value.bannerUrl))?<div className={styles.configNote}>Only valid HTTPS image URLs appear in the preview.</div>:null}

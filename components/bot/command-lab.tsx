@@ -101,8 +101,7 @@ export function CommandLab({ commands }: { commands: CommandEntry[] }) {
   const statusLabel = config.title.trim() || dynamicLabel;
   const appearanceColor = goodHex(config.sideColor);
   const banner = safeImageSrc(config.bannerUrl);
-  const thumbnail = safeImageSrc(config.thumbnailUrl);
-  const previewLogo = safeImageSrc(config.logoUrl) || logo;
+  const thumbnail = safeImageSrc(config.thumbnailUrl) || (config.showLogo ? (safeImageSrc(config.logoUrl) || logo) : '');
 
   return <div className={styles.root}>
     <div className={styles.ambient} aria-hidden="true" />
@@ -154,7 +153,7 @@ export function CommandLab({ commands }: { commands: CommandEntry[] }) {
           <div className={styles.discordBody}>
             <div className={styles.systemLine}><span>COMMAND INVOKED</span><code>{command}</code></div>
             <div className={styles.chat}>
-              {config.showLogo ? <div className={styles.avatar}><img src={previewLogo} width={39} height={39} alt="Cloudy logo" decoding="async"/></div> : null}
+              <div className={styles.avatar}><img src={logo} width={39} height={39} alt="Cloudy bot avatar" decoding="async"/></div>
               <div className={styles.chatMain}>
                 <div className={styles.author}>Cloudy <span>APP</span> <small>Preview #{invocations}</small></div>
                 <div className={styles.embed} style={{borderLeftColor: appearanceColor}}>
