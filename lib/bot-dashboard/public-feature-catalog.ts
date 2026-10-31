@@ -9,6 +9,7 @@ export type PublicFeature = {
   icon: string;
   status: FeatureStatus;
   explanation: string;
+  details?: { title: string; description?: string; fields: { label: string; type: string; help?: string }[] }[];
   categories?: string[];
 };
 
@@ -21,9 +22,14 @@ export const publicFeatures: PublicFeature[] = MODULES.map(module => ({
   icon: module.icon,
   summary: module.summary,
   status: module.kind === 'settings' ? 'settings' as const : 'discord' as const,
-  explanation: module.kind === 'settings'
-    ? 'A website configuration page already exists. Changes are subject to your Discord permissions and the Cloudy API.'
-    : 'Cloudy currently provides a read-only website view for this module. Bot actions and configuration remain in Discord.',
+  explanation: module.note || (module.kind === 'settings'
+    ? 'Configure the following controls after signing in and selecting the server you manage. Changes are applied only after a successful Save.'
+    : 'This module provides a read-only overview of actual Cloudy data. Manage its actions through Discord.'),
+  details: module.sections.map(section => ({
+    title: section.title,
+    description: section.description,
+    fields: section.fields.map(field => ({ label: field.label, type: field.type, help: field.help })),
+  })),
 }));
 
 // Areas identified in the publicly documented ecosystem that do not yet have

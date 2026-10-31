@@ -19,7 +19,7 @@ export async function BotStatusPill() {
     : health.databaseOk === false
       ? 'Cloudy is online with a database issue'
       : 'Cloudy is online and operational';
-  return <span className={styles.healthSingleDot} data-tone={tone} role="status" aria-label={label} title={label} />;
+  return <span className={styles.healthSimple} role="status" aria-label={label} title={label}><span className={styles.healthSingleDot} data-tone={tone} aria-hidden="true" /><span>{!health.online ? 'Cloudy Bot offline' : health.databaseOk === false ? 'Cloudy Bot degraded' : 'Cloudy Bot live'}</span></span>;
 }
 
 export async function BotStatusTile() {
@@ -45,5 +45,5 @@ export function StatusPlaceholder({ tile = false }: { tile?: boolean }) {
       </div>
     );
   }
-  return <span className={styles.healthSingleDot} data-tone="checking" role="status" aria-label="Checking Cloudy status" aria-busy="true" />;
+  return <span className={styles.healthSimple} role="status" aria-label="Checking Cloudy status" aria-busy="true"><span className={styles.healthSingleDot} data-tone="checking" aria-hidden="true" /><span>Checking Cloudy Bot…</span></span>;
 }

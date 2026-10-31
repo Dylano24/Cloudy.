@@ -48,6 +48,7 @@ export function CommandReference({ commands }: { commands: CommandEntry[] }) {
           <div className={styles.heroActions}>
             <Link href="/bot" className={styles.primary}>Open Cloudy dashboard <ArrowRight size={16} /></Link>
             <Link href="/bot/features" className={styles.secondary}>All features</Link>
+            <Link href="/bot/preview" className={styles.secondary}>Interactive preview <ArrowRight size={15}/></Link>
           </div>
         </div>
       </header>
@@ -97,6 +98,7 @@ export function CommandReference({ commands }: { commands: CommandEntry[] }) {
                     </div>)}
                   </div>
                 ) : null}
+                {['ticket','gcreate','verification','poll','blackjack','baccarat','embedbuilder'].includes(cmd.name) ? <Link href="/bot/preview" className={styles.commandDemoLink}><ArrowRight size={14}/> Run interactive demo</Link> : null}
                 <p className={styles.commandSource}>Source snapshot: <code>{cmd.source}</code></p>
               </div>
             </details>
