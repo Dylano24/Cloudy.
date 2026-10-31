@@ -611,3 +611,7 @@
 .root .button, .root .buttonGhost, .root .buttonDanger { font-family: var(--font-sans), sans-serif; font-weight: 550; letter-spacing: 0; }
 .root .priceHead, .root .pill { font-family: var(--font-sans), sans-serif; }
 @media (max-width: 700px) { .root .moduleCard h3 { line-height: 1.48; } }
+
+/* Same minimal status language as the Cloudy storefront, without a card. */
+.healthSimple { display:inline-flex;align-items:center;gap:9px;min-height:24px;color:#e7e5eb;font-family:var(--font-sans),sans-serif;font-size:12px;font-weight:510;line-height:1.5; }
+.healthSimple .healthSingleDot { width:8px;height:8px;border:0;box-shadow:none; }

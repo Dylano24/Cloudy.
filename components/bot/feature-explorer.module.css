@@ -172,3 +172,54 @@
 }
 .root .primary, .root .secondary { font-family: var(--font-sans), sans-serif; font-weight: 550; }
 .root .commandCard h3 { font-size: 21px; }
+
+
+/* Cloudy Bot command reference cards: restores the missing layout and interaction styles. */
+.commandGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; align-items:start; margin:26px 0 34px; }
+.commandCard { border:1px solid #302c33; border-radius:15px; overflow:hidden; min-width:0; background:linear-gradient(155deg,#111014,#09090c); transition:border-color .18s,transform .18s; }
+.commandCard:hover { border-color:rgba(242,61,90,.52); }
+.commandCard[open] { border-color:rgba(240,57,86,.6); }
+.commandCard > summary { display:flex; flex-direction:column; gap:10px; padding:24px; min-height:205px; list-style:none; cursor:pointer; }
+.commandCard > summary::-webkit-details-marker { display:none; }
+.commandCard .commandTop { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
+.commandIcon { color:#ed3455; width:41px; height:41px; border-radius:10px; display:grid;place-items:center; background:rgba(237,42,76,.09); border:1px solid rgba(237,42,76,.28); flex:none; }
+.commandCategory { flex:1; color:#a8a6b0; font-size:10px; font-weight:600; letter-spacing:.1em; text-transform:uppercase; }
+.commandChevron { color:#bab8c0; flex:none; transition:transform .18s; }
+.commandCard[open] .commandChevron { transform:rotate(180deg); }
+.commandCard h3 { font-size:23px; line-height:1.25; font-weight:560; letter-spacing:-.025em; margin:0; color:#fff; }
+.commandCard summary p { font-size:13px; line-height:1.75; font-weight:400; color:#b7b4bf; margin:0; flex:1; }
+.commandExpand { display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:550; color:#f64b68; margin-top:9px; }
+.commandDetails { border-top:1px solid #322e35; padding:22px 24px 24px; display:grid; gap:17px; }
+.commandUsage { display:grid; gap:8px; }
+.commandUsage>span { color:#a8a4ae; letter-spacing:.14em; font-size:10px; font-weight:600; }
+.commandUsage code { display:block; padding:13px; border-radius:9px; border:1px solid #40353e; background:#171319; color:#ffe4ea; font:500 12px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace; overflow-wrap:anywhere; }
+.commandPerm { display:flex;align-items:flex-start;gap:9px; font-size:11px;line-height:1.7;color:#c7c3cc; }
+.commandPerm svg { flex:none;color:#e64968;margin-top:2px; }
+.commandOptionList { display:grid;gap:6px; }
+.commandOption { display:flex;flex-wrap:wrap;align-items:center;gap:7px 12px;padding:12px 13px;border:1px solid #332f36;border-radius:8px;background:#101013; }
+.commandOptionName { font-weight:600;font-size:12px;color:#f7f4f8; }
+.commandOptionType { font-size:10px;color:#d08e9f; }
+.commandOptionHelp { width:100%;font-size:11px;color:#b6b1bd;line-height:1.7; }
+.commandSubs { display:grid;gap:10px; }
+.commandSubs h4 { font-size:13px;font-weight:600;margin:0;color:#fff; }
+.commandSub { padding:13px;border:1px solid #353039;border-radius:9px; }
+.commandSub strong { font-size:12px;font-weight:600;color:#f5f4f6;overflow-wrap:anywhere; }
+.commandSub>p { margin:8px 0;color:#b5b3bd;font-size:11px;line-height:1.7; }
+.commandSub .commandOptionList { margin-top:12px; }
+.commandSource { margin:0;color:#8d8993;font-size:10px;line-height:1.8;overflow-wrap:anywhere; }
+.commandSource code { color:#aaa5ae;font:inherit; }
+.commandDemoLink { display:inline-flex; align-items:center; gap:8px; justify-self:start; font-size:11px; font-weight:600; color:#f75c75; padding:10px 12px; border:1px solid #653845; border-radius:7px; background:#21131a; }
+.commandDemoLink:hover { background:#361722; }
+.featureDetailsList { display:grid; gap:12px; padding:10px 0 5px; }
+.featureDetailsSection { display:grid;gap:7px; }
+.featureDetailsSection strong { color:#f5f2f5;font-size:11px;font-weight:600; }
+.featureDetailsFields { display:flex;gap:6px;flex-wrap:wrap; }
+.featureDetailsFields span { font-size:10px;border:1px solid #40353d;background:#181419;padding:5px 9px;border-radius:5px;color:#c9c3cd; }
+.backArrow { transform:none; }
+@media(max-width:800px) { .commandGrid { grid-template-columns:1fr; } .commandCard>summary { min-height:0; } }
+@media(max-width:600px) { .commandCard>summary,.commandDetails { padding:17px; } }
+@media(prefers-reduced-motion:reduce) { .commandCard,.commandChevron { transition:none; } }
+
+.featureDetailBody { display:grid; gap:10px; flex:1; min-width:0; }
+.featureDetailBody>p,.featureDetailsSection>p { margin:0; line-height:1.7; color:#c7c0c8; }
+.featureDetailBody .inlineGuide { display:inline-flex;align-items:center;gap:5px;justify-self:start;font-weight:550; }

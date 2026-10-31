@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { Route } from 'next';
-import { ArrowRight, Check, ChevronDown, CircleHelp, Search, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, ChevronDown, CircleHelp, Search, SlidersHorizontal, X } from 'lucide-react';
 import { ModuleIcon } from './module-icon';
 import type { PublicFeature } from '@/lib/bot-dashboard/public-feature-catalog';
 import styles from './feature-explorer.module.css';
@@ -43,7 +43,7 @@ export function FeatureExplorer({ items, groups }: { items: PublicFeature[]; gro
           <h1>One bot.<br /><span>Every detail matters.</span></h1>
           <p>Discover the tools behind Cloudy, configure what's already connected, and see what still needs a website integration. No fake switches. No invented server statistics.</p>
           <div className={styles.heroActions}>
-            <Link href="/bot" className={styles.primary}>Open dashboard <ArrowRight size={17} /></Link>
+            <Link href="/bot" className={styles.primary}><ArrowLeft size={17} /> Back</Link>
           </div>
           <div className={styles.metrics}>
             <div><strong>{available}</strong><span>Dashboard modules</span></div>
@@ -113,7 +113,21 @@ export function FeatureExplorer({ items, groups }: { items: PublicFeature[]; gro
                         <Link href="/bot">Open dashboard <ArrowRight size={15} /></Link>}
                     </div>
                     {active ? <div id={'detail-' + feature.id} className={styles.details}>
-                      <CircleHelp size={15} aria-hidden="true" /><span>{feature.explanation}{feature.status !== 'integration' ? <> <Link href={('/bot/guides#' + feature.id) as Route} className={styles.inlineGuide}>View setting guide</Link></> : null}</span>
+                      <CircleHelp size={15} aria-hidden="true" />
+                      <div className={styles.featureDetailBody}>
+                        <p>{feature.explanation}</p>
+                        {feature.details?.length ? <div className={styles.featureDetailsList}>
+                          {feature.details.map(section => <section key={section.title} className={styles.featureDetailsSection}>
+                            <strong>{section.title}</strong>
+                            {section.description ? <p>{section.description}</p> : null}
+                            <div className={styles.featureDetailsFields}>
+                              {section.fields.map(field => <span key={field.label} title={field.help || field.type}>{field.label}</span>)}
+                            </div>
+                          </section>)}
+                        </div> : null}
+                        {feature.status !== 'integration' ? <Link href={('/bot/guides#' + feature.id) as Route} className={styles.inlineGuide}>Full settings and permissions <ArrowRight size={13} /></Link> : null}
+                        {(feature.id === 'tickets' || feature.id === 'verification' || feature.id === 'embeds') ? <Link href="/bot/preview" className={styles.inlineGuide}>Try interactive example <ArrowRight size={13} /></Link> : null}
+                      </div>
                     </div> : null}
                   </article>;
                 })}

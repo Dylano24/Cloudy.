@@ -29,7 +29,7 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
               Moderation, tickets, giveaways and more.<br />All in one powerful Discord bot and one connected dashboard.
             </p>
             <div className={styles.heroActions}>
-              <a className={styles.button} href="#cloudy-dashboard">Explore Cloudy <ArrowRight size={17} aria-hidden="true" /></a>
+              <a className={styles.button} href="/bot/preview">Try preview session <ArrowRight size={17} aria-hidden="true" /></a>
               <a className={styles.buttonGhost} href="#bot-pricing">See pricing</a>
               <a className={styles.buttonGhost} href="/bot/features">All features</a>
               <a className={styles.buttonGhost} href="/bot/command-reference">Commands</a>
