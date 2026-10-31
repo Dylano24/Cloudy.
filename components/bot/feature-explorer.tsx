@@ -44,8 +44,6 @@ export function FeatureExplorer({ items, groups }: { items: PublicFeature[]; gro
           <p>Discover the tools behind Cloudy, configure what's already connected, and see what still needs a website integration. No fake switches. No invented server statistics.</p>
           <div className={styles.heroActions}>
             <Link href="/bot" className={styles.primary}>Open dashboard <ArrowRight size={17} /></Link>
-            <Link href="/bot#cloudy-demos" className={styles.secondary}>Try interactive previews</Link>
-            <Link href="/bot/guides" className={styles.secondary}>Read documentation</Link>
           </div>
           <div className={styles.metrics}>
             <div><strong>{available}</strong><span>Dashboard modules</span></div>

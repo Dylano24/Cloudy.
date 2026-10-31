@@ -47,7 +47,6 @@ export function CommandReference({ commands }: { commands: CommandEntry[] }) {
           <p>Explore slash commands defined in the Cloudy bot source. Search their names, required options and subcommands, then use the command in Discord.</p>
           <div className={styles.heroActions}>
             <Link href="/bot" className={styles.primary}>Open Cloudy dashboard <ArrowRight size={16} /></Link>
-            <Link href="/bot/guides" className={styles.secondary}>Setting guides</Link>
             <Link href="/bot/features" className={styles.secondary}>All features</Link>
           </div>
         </div>

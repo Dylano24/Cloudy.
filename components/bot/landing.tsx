@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { AlertTriangle, ArrowRight, Check, KeyRound, ShieldCheck, Zap } from 'lucide-react';
-import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_ORDER_URL, PLAN_PRICE_EUR } from '@/lib/bot-dashboard/plan';
+import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_PRICE_EUR } from '@/lib/bot-dashboard/plan';
 import { BotStatusPill, StatusPlaceholder } from './bot-status';
 import { BotShowcase } from './landing-showcase';
 import styles from './bot.module.css';
@@ -29,7 +29,7 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
               Moderation, tickets, giveaways and more.<br />All in one powerful Discord bot and one connected dashboard.
             </p>
             <div className={styles.heroActions}>
-              <a className={styles.button} href="#cloudy-demos">Explore Cloudy <ArrowRight size={17} aria-hidden="true" /></a>
+              <a className={styles.button} href="#cloudy-dashboard">Explore Cloudy <ArrowRight size={17} aria-hidden="true" /></a>
               <a className={styles.buttonGhost} href="#bot-pricing">See pricing</a>
               <a className={styles.buttonGhost} href="/bot/features">All features</a>
               <a className={styles.buttonGhost} href="/bot/command-reference">Commands</a>
@@ -77,12 +77,6 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
             </a>
             <p className={styles.small + ' ' + styles.muted} style={{ margin: 0, textAlign: 'center' }}>
               Secure Discord login opens your Cloudy Bot dashboard and server settings, not a Discord channel.
-            </p>
-            <a href={PLAN_ORDER_URL} className={styles.buttonGhost} style={{ alignSelf: 'stretch', justifyContent: 'center' }} target="_blank" rel="noopener noreferrer">
-              Order Premium via Discord support <ArrowRight size={17} aria-hidden="true" />
-            </a>
-            <p className={styles.small + ' ' + styles.muted} style={{ margin: 0, textAlign: 'center' }}>
-              Premium orders use the Cloudy Discord support server. No automatic payment is started here.
             </p>
           </div>
         </div>

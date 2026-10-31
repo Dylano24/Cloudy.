@@ -1,4 +1,3 @@
-import { Clock3 } from 'lucide-react';
 import { getBotHealth } from '@/lib/bot-dashboard/bot-api';
 import styles from './bot.module.css';
 
@@ -14,22 +13,13 @@ export function formatUptime(seconds: number) {
 /** Live health, sourced exclusively from Cloudy's public health endpoint. */
 export async function BotStatusPill() {
   const health = await getBotHealth();
-  const degraded = health.online && health.databaseOk === false;
-  return (
-    <div className={styles.healthRail} role="status" data-tone={!health.online ? 'unavailable' : degraded ? 'degraded' : 'healthy'}>
-      <span className={styles.healthBeacon} aria-hidden="true"><span /></span>
-      <span className={styles.healthHeadline}>
-        <span className={styles.healthEyebrow}>CLOUDY · LIVE STATUS</span>
-        <strong>{!health.online ? 'Status unavailable' : degraded ? 'Partial disruption' : 'All systems operational'}</strong>
-      </span>
-      <span className={styles.healthDetails}>
-        <span className={styles.healthDescription}>{!health.online ? 'Unable to reach Cloudy' : degraded ? 'Database connection issue' : 'Cloudy is online'}</span>
-        {health.online && health.uptimeSeconds !== null ? (
-          <span className={styles.healthDuration}><Clock3 size={13} aria-hidden="true" /> {formatUptime(health.uptimeSeconds)} <span>uptime</span></span>
-        ) : null}
-      </span>
-    </div>
-  );
+  const tone = !health.online ? 'unavailable' : health.databaseOk === false ? 'degraded' : 'healthy';
+  const label = !health.online
+    ? 'Cloudy status unavailable'
+    : health.databaseOk === false
+      ? 'Cloudy is online with a database issue'
+      : 'Cloudy is online and operational';
+  return <span className={styles.healthSingleDot} data-tone={tone} role="status" aria-label={label} title={label} />;
 }
 
 export async function BotStatusTile() {
@@ -55,10 +45,5 @@ export function StatusPlaceholder({ tile = false }: { tile?: boolean }) {
       </div>
     );
   }
-  return (
-    <div className={styles.healthRail} data-tone="checking" aria-busy="true">
-      <span className={styles.healthBeacon} aria-hidden="true"><span /></span>
-      <span className={styles.healthHeadline}><span className={styles.healthEyebrow}>CLOUDY · LIVE STATUS</span><strong>Checking connection…</strong></span>
-    </div>
-  );
+  return <span className={styles.healthSingleDot} data-tone="checking" role="status" aria-label="Checking Cloudy status" aria-busy="true" />;
 }

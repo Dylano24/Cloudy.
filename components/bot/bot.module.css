@@ -479,34 +479,19 @@
   .priceCardLanding .priceHead .price small { display: block; margin: 7px 0 0; }
 }
 
-/* Premium live-status rail. Scoped only to the Bot landing page. */
-.healthRail {
-  position: relative; display: inline-flex; align-items: center; gap: 15px;
-  padding: 12px 20px 12px 15px; min-height: 64px; max-width: 100%;
-  border: 1px solid rgba(255,255,255,.14); border-radius: 999px;
-  background: linear-gradient(125deg, rgba(22,19,22,.97), rgba(8,8,10,.98));
-  box-shadow: 0 15px 45px rgba(0,0,0,.26), inset 0 1px rgba(255,255,255,.04);
-  text-align: left;
+/* Minimal live indicator on Bot hero; no ring, card, glow, status text or misleading green during errors. */
+.healthSingleDot {
+  display: inline-block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #18d39c;
+  vertical-align: middle;
 }
-.healthRail::after { content: ''; position: absolute; bottom: 0; left: 35px; right: 35px; height: 1px; background: linear-gradient(90deg, transparent, rgba(231,27,55,.35), transparent); pointer-events: none; }
-.healthBeacon { width: 35px; height: 35px; flex: 0 0 35px; display: grid; place-items: center; border-radius: 50%; background: rgba(22,194,148,.07); border: 1px solid rgba(22,194,148,.14); }
-.healthBeacon > span { display: block; width: 9px; height: 9px; border-radius: 50%; background: #15d2a3; box-shadow: 0 0 0 5px rgba(21,210,163,.09), 0 0 14px rgba(21,210,163,.35); }
-.healthRail[data-tone='degraded'] .healthBeacon, .healthRail[data-tone='unavailable'] .healthBeacon, .healthRail[data-tone='checking'] .healthBeacon { background: rgba(255,192,92,.065); border-color: rgba(255,192,92,.16); }
-.healthRail[data-tone='degraded'] .healthBeacon > span, .healthRail[data-tone='unavailable'] .healthBeacon > span, .healthRail[data-tone='checking'] .healthBeacon > span { background: #ffc861; box-shadow: 0 0 0 5px rgba(255,200,97,.09); }
-.healthHeadline { display: grid; gap: 4px; min-width: 0; }
-.healthEyebrow { color: #99949c; font-size: 9px; font-weight: 800; letter-spacing: .13em; white-space: nowrap; }
-.healthHeadline strong { font-size: 13px; font-weight: 700; letter-spacing: -.018em; color: #fafafa; line-height: 1.35; white-space: nowrap; }
-.healthDetails { display: grid; gap: 5px; align-self: center; text-align: right; padding-left: 18px; margin-left: 3px; border-left: 1px solid rgba(255,255,255,.1); }
-.healthDescription { font-size: 10px; font-weight: 700; color: #c7c5c9; white-space: nowrap; }
-.healthDuration { display: inline-flex; align-items: center; justify-content: flex-end; gap: 5px; color: #efefef; font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.healthDuration svg { color: #c74153; }
-.healthDuration > span { color: #98959e; font-size: 10px; }
-@media(max-width: 700px) {
-  .healthRail { width: min(100%, 390px); border-radius: 17px; flex-wrap: wrap; justify-content: flex-start; gap: 10px; }
-  .healthHeadline strong { white-space: normal; }
-  .healthDetails { width: 100%; margin-left: 45px; padding-left: 0; border-left: 0; text-align: left; }
-  .healthDuration { justify-content: flex-start; }
-}
+.healthSingleDot[data-tone="degraded"] { background: #ffbe58; }
+.healthSingleDot[data-tone="unavailable"] { background: #ef4761; }
+.healthSingleDot[data-tone="checking"] { background: #81818b; }
 
 /* Team and command-center pages: read-only, server-authenticated website UI. */
 .accessHero {
@@ -595,25 +580,34 @@
 .navGroupCollapsed { transform: rotate(-90deg); }
 @media (prefers-reduced-motion: reduce) { .navGroupToggle > svg { transition: none; } }
 
-/* Typography polish for the Cloudy Bot ONLY. No copy, component layout or behavior changes. */
-.root { font-family: var(--font-sans), sans-serif; }
-.root .display { font-family: var(--font-display), sans-serif; font-weight: 650; letter-spacing: -.038em; line-height: 1.08; }
-.root .moduleCard h3, .root .cardHead h2, .root .accessLink strong, .root .accessModule strong, .root .accessRoleHeader strong, .root .accessOverviewLink strong {
+/* Elegant, lightweight Cloudy Bot typography; only scoped within /bot. */
+.root { font-family: var(--font-sans), sans-serif; font-weight: 400; }
+.root .display {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 500;
+  letter-spacing: -.042em;
+  line-height: 1.085;
+}
+.root .moduleCard h3, .root .cardHead h2, .root .accessLink strong,
+.root .accessModule strong, .root .accessRoleHeader strong,
+.root .accessOverviewLink strong, .root .pillar h2 {
   font-family: var(--font-sans), sans-serif;
-  font-weight: 700;
-  line-height: 1.42;
-  letter-spacing: -.021em;
+  font-weight: 570;
+  line-height: 1.45;
+  letter-spacing: -.015em;
   text-wrap: pretty;
 }
-.root .moduleCard p, .root .cardHead p, .root .accessLink span, .root .accessModule small, .root .accessRole p, .root .accessOverviewLink small {
+.root .moduleCard p, .root .cardHead p, .root .accessLink span,
+.root .accessModule small, .root .accessRole p, .root .accessOverviewLink small,
+.root .featureList, .root .priceHead > p {
   font-family: var(--font-sans), sans-serif;
-  font-weight: 430;
-  line-height: 1.75;
+  font-weight: 400;
+  line-height: 1.78;
   letter-spacing: 0;
 }
-.root .navItem { font-family: var(--font-sans), sans-serif; font-weight: 560; letter-spacing: -.007em; }
+.root .navItem { font-family: var(--font-sans), sans-serif; font-weight: 490; letter-spacing: 0; }
 .root .navLabel { font-family: var(--font-sans), sans-serif; letter-spacing: .12em; }
-.root .tile strong, .root .accessMetric strong { font-family: var(--font-display), sans-serif; font-weight: 650; letter-spacing: -.036em; }
-.root .button, .root .buttonGhost, .root .buttonDanger { font-family: var(--font-sans), sans-serif; font-weight: 680; letter-spacing: -.008em; }
-.root .priceHead, .root .featureList, .root .pill { font-family: var(--font-sans), sans-serif; }
+.root .tile strong, .root .accessMetric strong { font-family: var(--font-display), sans-serif; font-weight: 500; letter-spacing: -.034em; }
+.root .button, .root .buttonGhost, .root .buttonDanger { font-family: var(--font-sans), sans-serif; font-weight: 550; letter-spacing: 0; }
+.root .priceHead, .root .pill { font-family: var(--font-sans), sans-serif; }
 @media (max-width: 700px) { .root .moduleCard h3 { line-height: 1.48; } }
