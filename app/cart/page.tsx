@@ -133,8 +133,8 @@ export default function CartPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center py-20">
             <BasketIcon className="w-24 h-24 text-muted mx-auto mb-6" />
-            <h1 className="text-3xl font-bold mb-4">Your basket is empty</h1>
-            <p className="text-muted mb-8">
+            <h1 className="cloudy-title mb-4">Your basket is empty</h1>
+            <p className="cloudy-lead mb-8">
               Looks like you haven't added any products to your basket yet.
             </p>
             <Link href="/shop" className={buyButton.button}>
@@ -153,8 +153,8 @@ export default function CartPage() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Shopping basket</h1>
-            <p className="text-muted">{cart.getItemCount()} item{cart.getItemCount() !== 1 ? 's' : ''} in your basket</p>
+            <h1 className="cloudy-title mb-2">Shopping basket</h1>
+            <p className="cloudy-lead">{cart.getItemCount()} item{cart.getItemCount() !== 1 ? 's' : ''} in your basket</p>
           </div>
 
           {hasMixedCheckout && (
@@ -215,7 +215,7 @@ export default function CartPage() {
                   {/* Details */}
                   <div className="flex-1 min-w-0">
                     <Link href={isCloudyServiceProduct(item.product) ? '/service#websites' : `/product/${item.product.slug}`}>
-                      <h3 className={`font-semibold text-lg mb-1 hover:text-primary transition-colors ${isCloudyServiceProduct(item.product) ? 'whitespace-normal break-words leading-snug' : 'truncate'}`}>
+                      <h3 className={`cloudy-subheading mb-1 hover:text-primary transition-colors ${isCloudyServiceProduct(item.product) ? 'whitespace-normal break-words leading-snug' : 'truncate'}`}>
                         {isCloudyServiceProduct(item.product)
                           ? `Cloudy Studio ${item.product.slug.replace('cloudy-studio-', '')}`
                           : item.product.name}
@@ -320,7 +320,7 @@ export default function CartPage() {
             {/* Order summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-20 p-6 rounded-xl bg-card border border-border">
-                <h2 className="text-2xl font-bold mb-6">Order summary</h2>
+                <h2 className="cloudy-card-title mb-6">Order summary</h2>
 
                 <div className="space-y-4 mb-6">
                   {cart.items.map((item, index) => {

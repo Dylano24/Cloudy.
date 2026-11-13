@@ -484,8 +484,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
         <div className="container mx-auto px-4">
           <div className="text-center py-20">
             <X className="w-16 h-16 text-muted mx-auto mb-4" />
-            <h1 className="text-2xl font-bold mb-2">Product Not Found</h1>
-            <p className="text-muted mb-8">The product you're looking for doesn't exist.</p>
+            <h1 className="cloudy-card-title mb-2">Product Not Found</h1>
+            <p className="cloudy-lead mb-8">The product you're looking for doesn't exist.</p>
             <Link href="/shop">
               <button className="px-6 py-3 rounded-lg bg-primary text-background font-semibold cursor-pointer">
                 Back to Shop
@@ -677,7 +677,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
             {/* Details */}
             <div className="flex flex-col">
-              <h1 className="text-4xl font-bold mb-4">{product.name}</h1>
+              <h1 className="cloudy-title mb-4">{product.name}</h1>
 
               <div className="flex items-baseline gap-4 mb-6">
                 <span className="text-5xl font-bold text-primary">
@@ -738,7 +738,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
               {product.description && (
                 <div className="mb-6">
-                  <h2 className="text-lg font-semibold mb-2">Description</h2>
+                  <h2 className="cloudy-subheading mb-2">Description</h2>
                   <div 
                     className="text-white leading-relaxed prose prose-invert max-w-none"
                     dangerouslySetInnerHTML={{ __html: product.description }}
@@ -749,7 +749,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Donation Input */}
               {product?.donation && (
                 <div className="mb-6 space-y-2">
-                  <h2 className="text-lg font-semibold">
+                  <h2 className="cloudy-subheading">
                     Donation Amount {product?.min_donation && `(Minimum: ${money}${product.min_donation})`}
                   </h2>
                   <input
@@ -767,7 +767,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Server Selection */}
               {product.server_choice && product.server_options && product.server_options.length > 0 && (
                 <div className="mb-6 space-y-2">
-                  <h2 className="text-lg font-semibold">Select Server</h2>
+                  <h2 className="cloudy-subheading">Select Server</h2>
                   <select
                     value={serverSelection ?? ''}
                     onChange={(e) => setServerSelection(Number(e.target.value))}
@@ -788,7 +788,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Custom Fields */}
               {product.custom_fields && product.custom_fields.length > 0 && (
                 <div className="mb-6 space-y-4">
-                  <h2 className="text-lg font-semibold">Customize Your Order</h2>
+                  <h2 className="cloudy-subheading">Customize Your Order</h2>
                   {product.custom_fields
                     .sort((a, b) => a.order - b.order)
                     .filter((field) => isFieldVisible(field))
@@ -974,7 +974,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {/* Custom Rules Display */}
               {product.custom_rules && product.custom_rules.length > 0 && (
                 <div className="mb-6 space-y-3">
-                  <h2 className="text-lg font-semibold">Field Limits</h2>
+                  <h2 className="cloudy-subheading">Field Limits</h2>
                   {validateCustomRules(product.custom_rules, customFields, product.custom_fields)
                     .map((validation) => {
                       const { rule, total, isValid } = validation;

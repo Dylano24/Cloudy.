@@ -311,8 +311,8 @@ function CheckoutContent() {
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
           <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
-          <h1 className="text-2xl font-bold">Preparing your purchase</h1>
-          <p className="text-muted text-lg">
+          <h1 className="cloudy-card-title">Preparing your purchase</h1>
+          <p className="cloudy-lead">
             Your purchase is about to be made, you will be redirected please wait.
           </p>
         </div>
@@ -330,8 +330,8 @@ function CheckoutContent() {
         <div className="max-w-4xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-2">Checkout</h1>
-            <p className="text-muted">{isCloudyServicePreviewCheckout ? 'Review your Cloudy Studio purchase. Payment is disabled in this preview.' : 'Complete your purchase'}</p>
+            <h1 className="cloudy-title mb-2">Checkout</h1>
+            <p className="cloudy-lead">{isCloudyServicePreviewCheckout ? 'Review your Cloudy Studio purchase. Payment is disabled in this preview.' : 'Complete your purchase'}</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -341,7 +341,7 @@ function CheckoutContent() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Required User Information */}
                 <div className="p-6 rounded-xl bg-card border border-border">
-                  <h2 className="text-xl font-semibold mb-4">Your Information</h2>
+                  <h2 className="cloudy-card-title mb-4">Your Information</h2>
                   
                   {loadingIdentifiers ? (
                     <div className="flex items-center justify-center py-8">
@@ -485,7 +485,7 @@ function CheckoutContent() {
             {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="sticky top-20 p-6 rounded-xl bg-card border border-border">
-                <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+                <h2 className="cloudy-card-title mb-4">Order Summary</h2>
 
                 <div className="space-y-3 mb-6">
                   {cart.items.map((item) => (
@@ -523,7 +523,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-xl w-full p-8 rounded-2xl bg-card border border-border shadow-lg text-center space-y-4">
           <Loader2 className="w-10 h-10 mx-auto text-primary animate-spin" />
-          <h1 className="text-2xl font-bold">Loading checkout...</h1>
+          <h1 className="cloudy-card-title">Loading checkout...</h1>
         </div>
       </div>
     }>

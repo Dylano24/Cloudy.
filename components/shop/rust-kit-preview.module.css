@@ -11,13 +11,13 @@
 .heroCopy { margin-top: 32px; }
 .eyebrow { display: flex; align-items: center; gap: 9px; color: #fff; font-size: 10px; font-weight: 700; letter-spacing: .16em; }
 .eyebrow > span { width: 6px; height: 6px; background: #e51b2e; border-radius: 50%; box-shadow: 0 0 12px #e51b2e80; }
-.hero h1 { margin: 14px 0 15px; font-size: clamp(54px,7.5vw,92px); line-height: 1; letter-spacing: -.065em; font-weight: 750; }
+.hero h1 { margin: 14px 0 15px; font-family: var(--cloudy-type-family); font-size: var(--cloudy-type-title); line-height: var(--cloudy-type-leading); letter-spacing: var(--cloudy-type-tracking); font-weight: var(--cloudy-type-weight); text-shadow: var(--cloudy-type-glow); }
 .hero h1 > span { color: #e51b2e; }
 .wrap { max-width: 1180px; margin: auto; padding-bottom: 50px; }
 .sectionTop { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; margin-bottom: 25px; }
 .sectionNumber { display: block; color: #fff; font-size: 9px; letter-spacing: .17em; font-weight: 700; margin-bottom: 10px; }
-.sectionTop h2 { font-size: clamp(27px,3.3vw,39px); font-weight: 550; letter-spacing: -.045em; line-height: 1.2; margin: 0; }
-.sectionTop p { font-size: 13px; color: #fff; margin: 9px 0 0; line-height: 1.6; }
+.sectionTop h2 { font-family: var(--cloudy-type-family); font-size: var(--cloudy-type-heading); font-weight: var(--cloudy-type-weight); letter-spacing: var(--cloudy-type-tracking); line-height: var(--cloudy-type-leading); text-shadow: var(--cloudy-type-glow); margin: 0; }
+.sectionTop p { font-size: var(--cloudy-type-copy); color: #fff; margin: 9px 0 0; line-height: var(--cloudy-type-copy-leading); }
 .selection { text-align: right; flex-shrink: 0; }
 .selection > span { display: block; font-size: 10px; color: #fff; margin-bottom: 7px; }
 .selection > strong { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; }
@@ -57,7 +57,7 @@
 .cardBody { padding: 20px 20px 0; }
 .cardKicker { display: flex; justify-content: space-between; color: #ed4058; font-size: 8px; font-weight: 650; letter-spacing: .15em; text-transform: uppercase; }
 .cardKicker > span:first-child { color: #ff5267; }
-.card h3 { margin: 10px 0 7px; font-size: 23px; font-weight: 550; letter-spacing: -.04em; line-height: 1.25; }
+.card h3 { margin: 10px 0 7px; font-size: var(--cloudy-type-subheading); font-weight: var(--cloudy-type-weight); letter-spacing: -0.01em; line-height: 1.3; }
 .priceRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 20px 0 17px; }
 .priceRow > div { display: flex; flex-direction: column; gap: 3px; }
 .priceRow span { font-size: 10px; color: #fff; }
@@ -68,7 +68,7 @@
 .buy:hover { background: #ec2139; }
 .purchaseNotice { color: #fff; font-size: 11px; line-height: 1.6; margin: 0 0 17px; padding: 10px; background: #ffffff05; border: 1px solid #ffffff12; border-radius: 6px; }
 .empty { display: flex; flex-direction: column; align-items: center; padding: 70px 20px; border: 1px dashed #2f2f35; border-radius: 12px; text-align: center; color: #fff; }
-.empty h3 { color: #e6e6eb; margin: 15px 0 7px; font-size: 20px; font-weight: 500; }
+.empty h3 { color: #fff; margin: 15px 0 7px; font-size: var(--cloudy-type-subheading); font-weight: var(--cloudy-type-weight); letter-spacing: -0.01em; line-height: 1.3; }
 .empty p { font-size: 12px; margin: 0 0 22px; }
 .empty button { display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #fff; font-size: 11px; background: #151518; border: 1px solid #45454e; border-radius: 7px; }
 @media (max-width: 1240px) { .wrap, .heroInner { margin-inline: 24px; } }
@@ -85,10 +85,10 @@
   .heroShade { background: linear-gradient(90deg,#000e,#0005),linear-gradient(0deg,#030303,transparent 90%); }
   .heroInner { padding: 21px 0 35px; }
   .heroCopy { margin-top: 39px; }
-  .hero h1 { font-size: clamp(54px,13vw,78px); }
+
   .eyebrow { font-size: 8px; }
   .sectionTop { gap: 14px; align-items: flex-start; margin-bottom: 20px; }
-  .sectionTop h2 { font-size: 28px; }
+
   .sectionTop p { font-size: 11px; }
   .selection { padding-top: 3px; }
   .selection > span { font-size: 8px; }

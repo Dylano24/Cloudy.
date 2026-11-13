@@ -299,7 +299,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                   })()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 id="custom-fields-modal-title" className="text-2xl font-bold mb-2">{product.name}</h2>
+                  <h2 id="custom-fields-modal-title" className="cloudy-card-title mb-2">{product.name}</h2>
                   <div className="flex items-baseline gap-2 flex-wrap">
                     <p className="text-3xl font-bold text-primary">
                       {calculateTotalPrice() > 0 ? `${money}${calculateTotalPrice().toFixed(2)}` : 'Free'}
@@ -389,7 +389,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                 {/* Custom Fields */}
                 {product.custom_fields && product.custom_fields.length > 0 && (
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Customize Your Order</h3>
+                    <h3 className="cloudy-subheading">Customize Your Order</h3>
                     {product.custom_fields
                       .sort((a, b) => a.order - b.order)
                       .filter((field) => isFieldVisible(field))
@@ -555,7 +555,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                 {/* Custom Rules Display */}
                 {product.custom_rules && product.custom_rules.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold">Field Limits</h3>
+                    <h3 className="cloudy-subheading">Field Limits</h3>
                     {validateCustomRules(product.custom_rules, customFields, product.custom_fields)
                       .map((validation) => {
                         const { rule, total, isValid } = validation;
