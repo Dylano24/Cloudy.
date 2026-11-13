@@ -139,7 +139,9 @@
    ================================================================= */
 .shell { display: grid; grid-template-columns: 272px minmax(0, 1fr); gap: 28px; width: min(1440px, calc(100% - 48px)); margin-inline: auto; padding-block: 28px var(--cloudy-page-pad); align-items: start; }
 .sidebar { position: sticky; top: 100px; display: flex; flex-direction: column; max-height: calc(100vh - 124px); border: 1px solid var(--b-line); border-radius: 18px; background: var(--b-panel); overflow: hidden; }
-.sidebarScroll { overflow-y: auto; overscroll-behavior: contain; padding: 10px; scrollbar-width: thin; scrollbar-color: #2a2a2e transparent; }
+.sidebarScroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 10px; scrollbar-width: thin; scrollbar-color: #2a2a2e transparent; }
+/* The server switcher and the account row keep their size; only the module list scrolls. */
+.sidebar > .switcher, .sidebar > .sidebarFoot { flex: none; }
 .switcher { position: relative; padding: 12px; border-bottom: 1px solid var(--b-line); }
 .switcherButton { width: 100%; display: flex; align-items: center; gap: 12px; padding: 8px; border: 1px solid transparent; border-radius: 12px; background: transparent; cursor: pointer; text-align: left; transition: background-color .2s ease, border-color .2s ease; }
 .switcherButton[aria-expanded="true"], .switcherButton:hover { background: rgba(255, 255, 255, .04); border-color: var(--b-line); }
@@ -374,8 +376,14 @@
 }
 @media (max-width: 960px) {
   .shell { grid-template-columns: minmax(0, 1fr); gap: 18px; width: calc(100% - 32px); padding-top: 16px; }
-  .sidebar { position: fixed; z-index: 110; top: 0; bottom: 0; left: 0; width: min(320px, 86vw); max-height: none; border-radius: 0 18px 18px 0; transform: translateX(-105%); transition: transform .24s cubic-bezier(.3, .7, .4, 1); visibility: hidden; }
+  /* The drawer and dialogs cover the site header instead of sliding under it. */
+  .root { isolation: auto; }
+  /* Sized to the part of the screen Safari's toolbars never cover, so the last items and the account row can always be reached. */
+  .sidebar { position: fixed; z-index: 110; top: 0; bottom: auto; left: 0; height: 100vh; height: 100svh; width: min(320px, 86vw); max-height: none; border-radius: 0 18px 18px 0; transform: translateX(-105%); transition: transform .24s cubic-bezier(.3, .7, .4, 1); visibility: hidden; }
   .sidebar[data-open="true"] { transform: translateX(0); visibility: visible; }
+  .sidebar .switcher { padding-top: calc(12px + env(safe-area-inset-top, 0px)); }
+  .sidebar .sidebarFoot { padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .sidebar .sidebarScroll { padding-bottom: 28px; }
   .closeDrawer { display: inline-grid; }
   .drawerBackdrop[data-open="true"] { display: block; position: fixed; inset: 0; z-index: 105; background: rgba(0, 0, 0, .66); animation: fade .16s ease-out; }
   .mobileBar { display: flex; align-items: center; gap: 10px; margin: 0 -16px; padding: 4px 16px 14px; border-bottom: 1px solid var(--b-line); }
