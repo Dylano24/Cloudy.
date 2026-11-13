@@ -114,12 +114,12 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
       </section>
 
       <section className={styles.section} style={{ paddingBottom: 'var(--cloudy-page-pad)' }}>
-        <div className={styles.container}>
+        <div className={`${styles.container} ${styles.faqColumn}`}>
           <div className={[studioStyles.faqHeading, studioStyles.faqHeadingInline].join(' ')} style={{ marginBottom: 28 }}>
             <span className={studioStyles.faqSingleDot} aria-hidden="true" />
             <h2 className={studioStyles.faqHeadingTitle}>Frequently asked questions.</h2>
           </div>
-          <div className={studioStyles.faqList} style={{ maxWidth: 900 }}>
+          <div className={studioStyles.faqList}>
             {questions.map(({ question, answer }) => (
               <details key={question} className={studioStyles.faqItem}>
                 <summary>{question}</summary>

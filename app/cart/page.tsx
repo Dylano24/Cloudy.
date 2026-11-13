@@ -9,11 +9,12 @@ import Link from 'next/link';
 import buyButton from '@/components/ui/cloudy-buy-button.module.css';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useStore } from '@/hooks/use-api';
+import { useCurrencySymbol, useStore } from '@/hooks/use-api';
 import { openTip4ServCheckout, type Tip4ServProductSimple } from '@/lib/tip4serv';
 import { isCloudyServiceProduct } from '@/lib/cloudy-service-products';
 
 export default function CartPage() {
+  const money = useCurrencySymbol();
   const cart = useCart();
   const router = useRouter();
   const { data: store } = useStore();
@@ -221,7 +222,7 @@ export default function CartPage() {
                       </h3>
                     </Link>
                     <p className="text-2xl font-bold text-primary mb-2">
-                      {isCloudyServiceProduct(item.product) ? '€' : '$'}{(() => {
+                      {isCloudyServiceProduct(item.product) ? '€' : money}{(() => {
                         // For donation products, use donation amount as the price
                         if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
                           return item.donationAmount.toFixed(2);
@@ -338,7 +339,7 @@ export default function CartPage() {
                             : item.product.name} x{item.quantity}
                         </span>
                         <span className="font-semibold whitespace-nowrap">
-                          {isCloudyServiceProduct(item.product) ? '€' : '$'}{(() => {
+                          {isCloudyServiceProduct(item.product) ? '€' : money}{(() => {
                             // For donation products, display the donation amount
                             if ('donation' in item.product && item.product.donation && item.donationAmount !== undefined) {
                               return item.donationAmount.toFixed(2);
@@ -397,7 +398,7 @@ export default function CartPage() {
                   <div className="flex justify-between items-baseline mb-6">
                     <span className="text-lg font-semibold">Total</span>
                     <span className="text-3xl font-bold text-primary">
-                      {hasMixedCheckout ? '—' : (hasCloudyServiceItems ? '€' : '$') + cart.getTotal().toFixed(2)}
+                      {hasMixedCheckout ? '—' : (hasCloudyServiceItems ? '€' : money) + cart.getTotal().toFixed(2)}
                     </span>
                   </div>
 

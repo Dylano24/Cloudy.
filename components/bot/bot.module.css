@@ -421,3 +421,9 @@
 @media (prefers-reduced-motion: reduce) {
   .root *, .root *::before, .root *::after { animation: none !important; transition: none !important; }
 }
+
+/* The FAQ column is centred under the pricing card; heading and list keep one left edge. */
+.container.faqColumn { max-width: 900px; margin-inline: auto; }
+
+/* iPhone Safari zooms into fields below 16px when they get focus. */
+@media (max-width: 700px) { .input, .select, .textarea { font-size: 16px; } }

@@ -2082,3 +2082,59 @@ body {
   .cloudy-restored-payment-brands .cloudy-payment-visa-v { font-size: 21px; }
   .cloudy-restored-payment-brands .cloudy-payment-visa-isa { font-size: 17px; }
 }
+
+/* ------------------------------------------------------------------
+   Cloudy interaction layer (2026-11 production readiness).
+   Additive only: every selector is wrapped in :where(), so it has zero
+   specificity and any component that styles its own state keeps winning.
+   No text, colour palette or layout of existing content changes here.
+   ------------------------------------------------------------------ */
+
+/* Native controls (select lists, date pickers, scrollbars) follow the dark theme. */
+:root { color-scheme: dark; }
+html { scrollbar-color: #2b2b2f #050505; }
+:where(select) option, :where(select) optgroup { background: #0b0b0c; color: #fff; }
+
+/* One visible keyboard focus ring everywhere; mouse and touch clicks show none. */
+:where(a, button, summary, [role="button"], [role="tab"], [role="menuitem"], [role="option"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid #e51b2e;
+  outline-offset: 3px;
+}
+:where(input, select, textarea):focus-visible {
+  box-shadow: 0 0 0 3px rgba(229, 27, 46, .18);
+}
+/* A dialog or panel focused as a whole (focus moved into it) shows no ring. */
+:where([role="dialog"], [role="alertdialog"]):focus-visible { outline: none; }
+
+/* Controls respond instantly on touch screens (no double-tap zoom delay on iPhone). */
+:where(a, button, summary, label, input, select, textarea, [role="button"]) { touch-action: manipulation; }
+
+/* State cursors. */
+:where(button, [role="button"]):disabled, :where([aria-disabled="true"]) { cursor: not-allowed; }
+:where([aria-busy="true"]) { cursor: progress; }
+:where(summary) { cursor: pointer; }
+
+/* Modal surfaces: depth and contained scrolling, so the page behind never scrolls along. */
+.cloudy-dialog-surface {
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .65), 0 0 0 1px rgba(229, 27, 46, .1), 0 0 40px rgba(229, 27, 46, .06);
+}
+.cloudy-dialog-surface, .cloudy-dialog-surface * { overscroll-behavior: contain; }
+
+/* Invalid fields announce themselves visually as well as to screen readers. */
+:where(input, select, textarea)[aria-invalid="true"] { border-color: #ff5268; }
+
+/* iPhone Safari zooms into any text field below 16px on focus; keep fields at 16px on phones. */
+@media (max-width: 700px) {
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) { font-size: max(16px, 1em); }
+}
+
+/* People who ask their device for less motion get none: no looping or sliding animations. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

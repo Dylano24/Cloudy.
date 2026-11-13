@@ -1,6 +1,6 @@
 'use client';
 
-import { useProduct } from '@/hooks/use-api';
+import { useCurrencySymbol, useProduct } from '@/hooks/use-api';
 import { useCart } from '@/hooks/use-cart';
 import { ShoppingCart, ArrowLeft, Check, X, AlertCircle, ChevronLeft, ChevronRight, Maximize, ArrowRight, HelpCircle } from 'lucide-react';
 import Image from 'next/image';
@@ -12,6 +12,7 @@ import { validateCustomRules, getCustomRulesErrorMessage, missingRequiredCustomF
 import { calculateNumberRangeCharge } from '@/lib/cart-utils';
 
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const money = useCurrencySymbol();
   const { slug } = use(params);
   const { data: product, isLoading } = useProduct(slug);
   const cart = useCart();
@@ -287,7 +288,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
     }
 
     if (product?.donation && (!donationAmount || donationAmount < (product?.min_donation || 0))) {
-      setError(`Donation must be at least $${product?.min_donation || 0}`);
+      setError(`Donation must be at least ${money}${product?.min_donation || 0}`);
       setTimeout(() => setError(null), 5000);
       return;
     }
@@ -680,7 +681,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
               <div className="flex items-baseline gap-4 mb-6">
                 <span className="text-5xl font-bold text-primary">
-                  {calculateTotalPrice() > 0 ? `$${calculateTotalPrice().toFixed(2)}` : 'Free'}
+                  {calculateTotalPrice() > 0 ? `${money}${calculateTotalPrice().toFixed(2)}` : 'Free'}
                 </span>
                 {/* For subscriptions with non-recurring discount, show "then original price / period" */}
                 {product.subscription && product.recurring_discount === false && product.old_price && product.old_price > product.price ? (
@@ -708,14 +709,14 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     {/* Show old price strikethrough for recurring discounts or non-subscriptions */}
                     {product.old_price && product.old_price > product.price && product.price > 0 ? (
                       <span className="text-2xl text-muted line-through">
-                        ${(product.old_price * quantity).toFixed(2)}
+                        {money}{(product.old_price * quantity).toFixed(2)}
                       </span>
                     ) : null}
                   </>
                 )}
                 {product.custom_fields && product.custom_fields.length > 0 && product.price > 0 ? (
                   <span className="text-sm text-muted">
-                    (Base: ${(product.price * quantity).toFixed(2)})
+                    (Base: {money}{(product.price * quantity).toFixed(2)})
                   </span>
                 ) : null}
               </div>
@@ -749,7 +750,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               {product?.donation && (
                 <div className="mb-6 space-y-2">
                   <h2 className="text-lg font-semibold">
-                    Donation Amount {product?.min_donation && `(Minimum: $${product.min_donation})`}
+                    Donation Amount {product?.min_donation && `(Minimum: ${money}${product.min_donation})`}
                   </h2>
                   <input
                     type="number"
@@ -757,7 +758,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     step="0.01"
                     value={donationAmount ?? ''}
                     onChange={(e) => setDonationAmount(e.target.value ? Number(e.target.value) : undefined)}
-                    placeholder={`Enter donation amount${product?.min_donation ? ` (minimum $${product.min_donation})` : ''}`}
+                    placeholder={`Enter donation amount${product?.min_donation ? ` (minimum ${money}${product.min_donation})` : ''}`}
                     className="w-full px-4 py-3 rounded-lg bg-card border border-border focus:border-primary outline-none transition-colors"
                   />
                 </div>
@@ -935,7 +936,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                                   .map((option) => (
                                     <option key={option.id} value={option.id.toString()}>
                                       {option.name}
-                                      {option.price !== undefined && option.price !== null && option.price > 0 && ` (+$${option.price.toFixed(2)})`}
+                                      {option.price !== undefined && option.price !== null && option.price > 0 && ` (+${money}${option.price.toFixed(2)})`}
                                     </option>
                                   ))}
                               </select>

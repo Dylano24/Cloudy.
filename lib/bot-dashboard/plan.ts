@@ -44,3 +44,25 @@ export function describePlan(plan: Plan, now = Date.now()) {
       return { label: `${PLAN_TRIAL_DAYS}-day free trial`, tone: 'neutral' as const, text: `Your free trial starts with your first saved change. After ${PLAN_TRIAL_DAYS} days Premium is ${PRICE_LABEL}.` };
   }
 }
+
+/**
+ * Direct checkout on Cloudy Store (Tip4Serv) for Premium. Server-side
+ * configuration; when it is missing the plan page keeps ordering via Discord.
+ *   CLOUDY_PREMIUM_CHECKOUT {"product": "123", "guildFieldId": "45", "subscription": true}
+ * The product needs a text custom field (marker "guild_id") for the server ID.
+ */
+export type PremiumCheckout = { product: string; guildFieldId: string; subscription: boolean; manageUrl: string | null };
+
+export function premiumCheckoutConfig(env: Record<string, string | undefined> = process.env): PremiumCheckout | null {
+  let raw: Record<string, unknown>;
+  try { raw = JSON.parse(env.CLOUDY_PREMIUM_CHECKOUT || ''); } catch { return null; }
+  if (!raw || typeof raw !== 'object') return null;
+  const product = String(raw.product ?? '');
+  const guildFieldId = String(raw.guildFieldId ?? '');
+  if (!/^[A-Za-z0-9_-]{1,64}$/.test(product) || !/^\d{1,12}$/.test(guildFieldId)) return null;
+  let manageUrl: string | null = null;
+  if (typeof raw.manageUrl === 'string') {
+    try { const url = new URL(raw.manageUrl); if (url.protocol === 'https:') manageUrl = url.toString(); } catch { manageUrl = null; }
+  }
+  return { product, guildFieldId, subscription: raw.subscription !== false, manageUrl };
+}

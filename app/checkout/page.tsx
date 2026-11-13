@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 import { useCart } from '@/hooks/use-cart';
-import { useStore, useCheckoutIdentifiers, useCheckout } from '@/hooks/use-api';
+import { useStore, useCheckoutIdentifiers, useCheckout, useCurrencySymbol } from '@/hooks/use-api';
 import { ShoppingCart, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -30,6 +30,7 @@ const IDENTIFIER_FIELD_MAPPING: Record<string, string> = {
 };
 
 function CheckoutContent() {
+  const money = useCurrencySymbol();
   const cart = useCart();
   const { data: store } = useStore();
   const router = useRouter();
@@ -493,7 +494,7 @@ function CheckoutContent() {
                         {item.product.name} x{item.quantity}
                       </span>
                       <span className="font-semibold whitespace-nowrap">
-                        {isCloudyServiceProduct(item.product) ? '€' : '$'}{(item.product.price * item.quantity).toFixed(2)}
+                        {isCloudyServiceProduct(item.product) ? '€' : money}{(item.product.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   ))}
@@ -503,7 +504,7 @@ function CheckoutContent() {
                   <div className="flex justify-between items-baseline">
                     <span className="text-lg font-semibold">Total</span>
                     <span className="text-2xl font-bold text-primary">
-                      {isCloudyServicePreviewCheckout ? '€' : '$'}{cart.getTotal().toFixed(2)}
+                      {isCloudyServicePreviewCheckout ? '€' : money}{cart.getTotal().toFixed(2)}
                     </span>
                   </div>
                 </div>

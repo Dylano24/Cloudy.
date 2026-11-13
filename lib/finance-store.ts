@@ -34,3 +34,8 @@ export async function financeRecords(): Promise<FinanceRecord[]> {
   }
   return rows.sort((a,b) => b.timestamp.localeCompare(a.timestamp));
 }
+
+/** What a payment unlocked (or why it could not): one overwritable entry per webhook event. */
+export async function saveEntitlementOutcome(recordId: string, outcome: unknown) {
+  await put(`${financePrefix()}entitlements/${recordId}.json`, JSON.stringify({ at: new Date().toISOString(), ...(outcome as object) }), { access: 'private', addRandomSuffix: false, allowOverwrite: true, contentType: 'application/json' });
+}

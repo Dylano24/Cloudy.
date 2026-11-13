@@ -1,20 +1,105 @@
 'use client';
 
-import { useState } from 'react';
-import { AlertTriangle, Check, CheckCircle2, Copy, Loader2 } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AlertTriangle, Check, CheckCircle2, Copy, CreditCard, Loader2 } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
 import type { Plan } from '@/lib/bot-dashboard/bot-api';
-import { describePlan, formatPlanDate, PLAN_FEATURES, PLAN_NAME, PLAN_ORDER_URL, PLAN_TRIAL_DAYS, PRICE_LABEL } from '@/lib/bot-dashboard/plan';
+import { describePlan, formatPlanDate, PLAN_FEATURES, PLAN_NAME, PLAN_ORDER_URL, PLAN_TRIAL_DAYS, PRICE_LABEL, type PremiumCheckout } from '@/lib/bot-dashboard/plan';
+import { openTip4ServCheckout, Tip4ServError } from '@/lib/tip4serv';
+import { useDialogBehavior } from '@/hooks/use-dialog-behavior';
 import { useDashboard } from './dashboard-context';
 import styles from './bot.module.css';
 
 const TONE = { good: styles.pillGreen, neutral: '', warn: styles.pillAmber } as const;
+const ACTIVATION_POLL_MS = 4_000;
+const ACTIVATION_WAIT_MS = 180_000;
 
-export function PlanPanel() {
-  const { plan, guild } = useDashboard();
+type Activation = 'idle' | 'waiting' | 'done' | 'late';
+
+/** After a payment: asks Cloudy for the plan until the payment shows as Premium. */
+function useActivation(guildId: string, plan: Plan, setPlan: (plan: Plan) => void) {
+  const [state, setState] = useState<Activation>('idle');
+  const baseline = useRef<string | null>(null);
+  const start = useCallback(() => {
+    baseline.current = plan.status === 'premium' ? plan.until : null;
+    setState('waiting');
+  }, [plan.status, plan.until]);
+
+  useEffect(() => {
+    // Back from the Tip4Serv payment page.
+    if (typeof window === 'undefined') return;
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('paid') !== '1') return;
+    url.searchParams.delete('paid');
+    window.history.replaceState(null, '', url.toString());
+    const timer = window.setTimeout(start, 0);
+    return () => window.clearTimeout(timer);
+    // Only on the first render after the redirect.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (state !== 'waiting') return;
+    const startedAt = Date.now();
+    let stopped = false;
+    let timer = 0;
+    const poll = async () => {
+      try {
+        const response = await fetch(`/api/bot/guilds/${guildId}/plan`, { cache: 'no-store' });
+        const data = await response.json().catch(() => null) as { plan?: Plan | null } | null;
+        const next = data?.plan;
+        if (!stopped && next && next.status === 'premium' && next.until !== baseline.current) {
+          setPlan(next);
+          setState('done');
+          return;
+        }
+      } catch { /* keep waiting */ }
+      if (stopped) return;
+      if (Date.now() - startedAt > ACTIVATION_WAIT_MS) { setState('late'); return; }
+      timer = window.setTimeout(() => { void poll(); }, ACTIVATION_POLL_MS);
+    };
+    timer = window.setTimeout(() => { void poll(); }, 1_500);
+    return () => { stopped = true; window.clearTimeout(timer); };
+  }, [state, guildId, setPlan]);
+
+  return { activation: state, startActivation: start };
+}
+
+export function PlanPanel({ checkout = null }: { checkout?: PremiumCheckout | null }) {
+  const { plan, guild, setPlan } = useDashboard();
   const info = describePlan(plan);
   const [ordering, setOrdering] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState('');
+  const { activation, startActivation } = useActivation(guild.id, plan, setPlan);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeOrder = useCallback(() => setOrdering(false), []);
+  useDialogBehavior(ordering, closeOrder, dialogRef);
+
+  async function pay() {
+    if (!checkout || paying) return;
+    setPaying(true);
+    setPayError('');
+    const here = `${window.location.origin}/bot/${guild.id}/plan`;
+    try {
+      await openTip4ServCheckout({
+        product: checkout.product,
+        subscription: checkout.subscription,
+        customFields: { [checkout.guildFieldId]: guild.id },
+        successUrl: `${here}?paid=1`,
+        cancelUrl: here,
+      });
+      setOrdering(false);
+      startActivation();
+    } catch (error) {
+      if (!(error instanceof Error && error.message === 'Checkout cancelled')) {
+        setPayError(error instanceof Tip4ServError || error instanceof Error ? error.message : 'The checkout could not be opened. Please try again.');
+      }
+    } finally {
+      setPaying(false);
+    }
+  }
 
   async function copyId() {
     try {
@@ -37,6 +122,17 @@ export function PlanPanel() {
           <span className={`${styles.pill} ${TONE[info.tone]}`}>{info.label}</span>
           <p>{info.text}</p>
         </div>
+        {activation !== 'idle' ? (
+          <p className={styles.ownerResult} data-kind={activation === 'late' ? 'error' : 'ok'} role="status" aria-live="polite">
+            {activation === 'waiting' ? <Loader2 size={15} className={styles.spin} aria-hidden="true" /> : activation === 'done' ? <CheckCircle2 size={15} aria-hidden="true" /> : <AlertTriangle size={15} aria-hidden="true" />}
+            {' '}{activation === 'waiting' ? 'Payment received. Cloudy is activating Premium for this server…'
+              : activation === 'done' ? `Premium is active for ${guild.name}.`
+              : 'Your payment is confirmed, but Premium is not showing yet. It can take a few minutes. If it does not appear, open a ticket in the Cloudy Discord with your server ID.'}
+          </p>
+        ) : null}
+        {plan.renews && checkout?.manageUrl ? (
+          <a className={`${styles.buttonGhost} ${styles.buttonSmall}`} href={checkout.manageUrl} target="_blank" rel="noopener noreferrer">Manage subscription</a>
+        ) : null}
       </section>
 
       <section className={`${styles.panel} ${styles.priceCard}`} aria-labelledby="plan-price">
@@ -61,21 +157,30 @@ export function PlanPanel() {
 
       {ordering ? (
         <div className={styles.dialogBackdrop} onClick={event => { if (event.target === event.currentTarget) setOrdering(false); }}>
-          <div className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="order-title"
-            onKeyDown={event => { if (event.key === 'Escape') setOrdering(false); }}>
+          <div ref={dialogRef} className={styles.dialog} role="dialog" aria-modal="true" aria-labelledby="order-title" tabIndex={-1}>
             <h2 id="order-title">{PLAN_NAME} for {guild.name}</h2>
-            <p>{PRICE_LABEL}. Order in the Cloudy Discord: open a ticket and paste your server ID. Premium is switched on for this server as soon as your payment is confirmed{plan.status === 'premium' && plan.until ? `, and added to the time you have left (until ${formatPlanDate(plan.until)})` : ''}.</p>
+            {checkout ? (
+              <p>{PRICE_LABEL}, paid securely on Cloudy Store. Premium is switched on for this server automatically as soon as your payment is confirmed{plan.status === 'premium' && plan.until ? `, and added to the time you have left (until ${formatPlanDate(plan.until)})` : ''}.</p>
+            ) : (
+              <p>{PRICE_LABEL}. Order in the Cloudy Discord: open a ticket and paste your server ID. Premium is switched on for this server as soon as your payment is confirmed{plan.status === 'premium' && plan.until ? `, and added to the time you have left (until ${formatPlanDate(plan.until)})` : ''}.</p>
+            )}
             <div className={styles.orderId}>
               <code>{guild.id}</code>
               <button type="button" className={`${styles.buttonGhost} ${styles.buttonSmall}`} onClick={() => void copyId()}>
                 {copied ? <CheckCircle2 size={15} aria-hidden="true" /> : <Copy size={15} aria-hidden="true" />} {copied ? 'Copied' : 'Copy server ID'}
               </button>
             </div>
+            {payError ? <p className={styles.ownerResult} data-kind="error" role="alert"><AlertTriangle size={15} aria-hidden="true" /> {payError}</p> : null}
             <div className={styles.dialogActions}>
               <button type="button" className={`${styles.buttonGhost} ${styles.buttonSmall}`} onClick={() => setOrdering(false)} autoFocus>Close</button>
-              <a className={`${styles.button} ${styles.buttonSmall}`} href={PLAN_ORDER_URL} target="_blank" rel="noopener noreferrer">
+              <a className={`${checkout ? styles.buttonGhost : styles.button} ${styles.buttonSmall}`} href={PLAN_ORDER_URL} target="_blank" rel="noopener noreferrer">
                 <SiDiscord size={15} aria-hidden="true" /> Order on Discord
               </a>
+              {checkout ? (
+                <button type="button" className={`${styles.button} ${styles.buttonSmall}`} onClick={() => void pay()} disabled={paying} aria-busy={paying}>
+                  {paying ? <Loader2 size={15} className={styles.spin} aria-hidden="true" /> : <CreditCard size={15} aria-hidden="true" />} Pay now
+                </button>
+              ) : null}
             </div>
           </div>
         </div>
