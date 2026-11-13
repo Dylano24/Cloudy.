@@ -5,6 +5,7 @@ import { UserRound } from 'lucide-react';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
 import styles from './header.module.css';
+import { siteSections } from '@/lib/site-sections';
 import { BasketIcon } from '@/components/ui/basket-icon';
 import { useAccount } from '@/hooks/use-account';
 import { useCart } from '@/hooks/use-cart';
@@ -125,9 +126,9 @@ export function Header() {
   const nav = [
     ['Home', '/'],
     ['Store', '/shop'],
-    ['Web solutions', '/service'],
-    ['VPN', '/vpn'],
-    ['Bot', '/bot'],
+    ...(siteSections.webSolutions ? ([['Web solutions', '/service']] as const) : []),
+    ...(siteSections.vpn ? ([['VPN', '/vpn']] as const) : []),
+    ['Cloudy Bot', '/bot'],
   ] as const;
 
   return (
