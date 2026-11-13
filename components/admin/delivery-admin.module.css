@@ -27,7 +27,7 @@
 .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .error { color: #ff8a98; font-size: 12px; overflow-wrap: anywhere; max-width: 260px; }
 .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-.action { min-height: 32px; padding: 0 11px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .16); background: #050505; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.action { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 0 11px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, .16); background: #050505; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
 .action:hover { border-color: rgba(229, 40, 69, .7); }
 .action[data-kind="primary"] { border-color: rgba(229, 40, 69, .8); box-shadow: 0 0 12px rgba(229, 27, 61, .18); }
 .action:disabled { opacity: .5; }

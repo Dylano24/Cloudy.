@@ -131,7 +131,7 @@ export function DeliveryAdmin() {
                           ) : null}
                         </td>
                         <td className={styles.num}>{delivery.attempts}</td>
-                        <td><span className={styles.error}>{delivery.lastError || '—'}</span></td>
+                        <td>{delivery.lastError ? <span className={styles.error}>{delivery.lastError}</span> : <span className={styles.muted}>—</span>}</td>
                         <td>
                           <div className={styles.actions}>
                             {actionsFor(delivery.status).map((action, index) => (
