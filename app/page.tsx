@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AstraBackground } from '@/components/home/astra-background';
+import { RustBattleBackground } from '@/components/home/rust-battle-background';
 import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-react';
 import styles from './home.module.css';
 import { siteSections } from '@/lib/site-sections';
@@ -16,6 +17,7 @@ export default function HomePage() {
     <>
     <div className={`cloudy-classic-home ${styles.home}`}>
       <MobilePanelSync />
+      <RustBattleBackground />
       <AstraBackground />
       <div className="cloudy-classic-smoke" aria-hidden="true" />
 

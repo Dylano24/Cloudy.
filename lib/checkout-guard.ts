@@ -8,8 +8,6 @@ export async function guardCheckout(request:NextRequest,store:string,products:{p
   if(request.headers.get('origin')!==request.nextUrl.origin)return {ok:false,error:'Invalid request origin.',status:403};
   const user=decodeSession(request.cookies.get(SESSION_COOKIE)?.value,accountSigningSecret());
   if(!user)return {ok:false,error:'Sign in to your Cloudy account before purchasing.',status:401};
-  // Preview never creates a real payment or contacts a live checkout session.
-  if(process.env.VERCEL_ENV==='preview')return {ok:false,error:'Preview only — real payments are disabled.',status:409};
   if(!products.length||products.length>100||products.some(p=>!Number.isSafeInteger(p.product_id)||p.product_id<1))return {ok:false,error:'Invalid products.',status:400};
   const official=await getStoreWhoami();
   if(!official||String(official.id)!==store)return {ok:false,error:'Store is temporarily unavailable.',status:503};
