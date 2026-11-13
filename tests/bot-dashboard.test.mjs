@@ -182,7 +182,7 @@ test('the OAuth origin comes from configuration or Vercel, never from the reques
   assert.equal(origin.dashboardOrigin('https://request.example'), 'https://cloudy-store-git-preview-cloudystore.vercel.app');
 });
 
-test('every module is either editable or a live overview, and role pickers only offer Staff, Moderator, Owner and Member', () => {
+test('every module is either editable or a live overview; Cloudy Inc. offers its four staff roles, customers all their own roles', () => {
   for (const mod of modules.MODULES) {
     assert.ok(mod.kind === 'insight' ? mod.sections.length === 0 : mod.sections.length > 0, mod.id);
   }
@@ -191,6 +191,9 @@ test('every module is either editable or a live overview, and role pickers only 
   const allowed = names.filter(name => fields.isAllowedRole({ name, managed: false }));
   assert.deepEqual(allowed, ['Staff', 'Moderator', 'Owner', 'Member', '👑 Owner']);
   assert.equal(fields.isAllowedRole({ name: 'Member', managed: true }), false, 'bot roles are never offered');
+  // A customer's server picks from all of its own roles.
+  assert.deepEqual(names.filter(name => fields.isAllowedRole({ name, managed: false }, false)), names);
+  assert.equal(fields.isAllowedRole({ name: 'VIP', managed: true }, false), false);
 });
 
 test('plan: price, no free trial, and what each plan state tells the user', () => {

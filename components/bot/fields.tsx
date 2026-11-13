@@ -5,6 +5,7 @@ import { Plus, Trash2, X } from 'lucide-react';
 import type { ChannelKind, Field } from '@/lib/bot-dashboard/modules';
 import type { BotChannel, BotRole } from '@/lib/bot-dashboard/bot-api';
 import { useDashboard } from './dashboard-context';
+import { isCloudyHomeGuild } from '@/lib/bot-dashboard/home-guild';
 import styles from './bot.module.css';
 
 type ControlProps = { field: Field; value: unknown; onChange: (value: unknown) => void; disabled: boolean; id?: string };
@@ -30,12 +31,13 @@ function channelLabel(channel: BotChannel) {
   return channel.type === 'category' ? channel.name : channel.type === 'voice' ? `🔊 ${channel.name}` : `# ${channel.name}`;
 }
 
-// Owner's choice: role pickers only offer the Staff, Moderator, Owner and Member roles.
+// Owner's choice for Cloudy Inc.'s own server: only the Staff, Moderator, Owner and Member roles.
+// A customer's server chooses from all of its own roles (never bot-managed ones).
 const ALLOWED_ROLE_KEYS = new Set(['staff', 'moderator', 'moderators', 'mod', 'mods', 'owner', 'member', 'members']);
-export const isAllowedRole = (role: Pick<BotRole, 'name' | 'managed'>) => !role.managed && ALLOWED_ROLE_KEYS.has(role.name.toLowerCase().replace(/[^a-z]/g, ''));
+export const isAllowedRole = (role: Pick<BotRole, 'name' | 'managed'>, home = true) => !role.managed && (!home || ALLOWED_ROLE_KEYS.has(role.name.toLowerCase().replace(/[^a-z]/g, '')));
 
-function usableRoles(roles: BotRole[]) {
-  return roles.filter(isAllowedRole).sort((a, b) => b.position - a.position);
+function usableRoles(roles: BotRole[], home: boolean) {
+  return roles.filter(role => isAllowedRole(role, home)).sort((a, b) => b.position - a.position);
 }
 
 function ChannelOptions({ kinds, exclude = [] }: { kinds: ChannelKind[]; exclude?: string[] }) {
@@ -52,8 +54,8 @@ function ChannelOptions({ kinds, exclude = [] }: { kinds: ChannelKind[]; exclude
 }
 
 function RoleOptions({ exclude = [], current }: { exclude?: string[]; current?: string }) {
-  const { roles } = useDashboard();
-  const offered = usableRoles(roles);
+  const { roles, guild } = useDashboard();
+  const offered = usableRoles(roles, isCloudyHomeGuild(guild.id));
   // Keep an already saved role visible so it can be changed.
   const saved = current && !offered.some(role => role.id === current) ? roles.find(role => role.id === current) : null;
   return (
