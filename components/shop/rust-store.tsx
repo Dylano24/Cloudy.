@@ -176,7 +176,7 @@ export default function RustStore() {
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-4">
                 <Filter className="w-5 h-5 text-primary" />
-                <h2 className="text-lg font-semibold">Categories</h2>
+                <h2 className="cloudy-subheading">Categories</h2>
               </div>
               <div className="flex flex-wrap gap-2">
                 <button

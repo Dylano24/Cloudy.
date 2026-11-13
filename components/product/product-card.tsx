@@ -7,7 +7,7 @@ import type { ProductGeneral, ProductDetailed } from '@/lib/schemas';
 import { useCart } from '@/hooks/use-cart';
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
-import { useProduct } from '@/hooks/use-api';
+import { useCurrencySymbol, useProduct } from '@/hooks/use-api';
 import { CustomFieldsModal } from './custom-fields-modal';
 import { useRouter } from 'next/navigation';
 import { useFavorites } from '@/hooks/use-favorites';
@@ -27,6 +27,7 @@ function needsCustomization(product: ProductDetailed | undefined) {
 }
 
 export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardProps) {
+  const money = useCurrencySymbol();
   const addItem = useCart(state => state.addItem);
   const router = useRouter();
   const { user, favorites, toggle } = useFavorites();
@@ -155,7 +156,7 @@ export function ProductCard({ product, hideFeaturedBadge = false }: ProductCardP
               <div className="flex items-center justify-between">
                 <div className="flex items-baseline gap-2">
                   <span className="text-2xl font-bold text-primary">
-                    {product.price > 0 ? `$${product.price.toFixed(2)}` : 'Free'}
+                    {product.price > 0 ? `${money}${product.price.toFixed(2)}` : 'Free'}
                   </span>
                   {/* For subscriptions with non-recurring discount, show "then original price / period" */}
                   {product.subscription && product.recurring_discount === false && product.old_price && product.old_price > product.price ? (

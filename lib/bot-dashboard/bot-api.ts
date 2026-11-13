@@ -96,15 +96,19 @@ export type GuildOverview = {
   missingPermissions: string[];
 };
 /**
- * Cloudy decides and enforces the plan. `new`: free trial starts with the first
- * save. `expired`: settings stay visible, saving needs Premium.
+ * Cloudy decides and enforces the plan. There is no free trial: `new` means
+ * no Premium (settings can be viewed, saving needs Premium). `trial` only
+ * appears for a server that already had one before; it runs out by itself.
  */
 export type Plan = {
   status: 'owner' | 'premium' | 'trial' | 'new' | 'expired';
   canSave: boolean;
   until: string | null;
   priceEur: number;
-  trialDays: number;
+  /** Old field, no longer used: Cloudy Bot has no free trial. */
+  trialDays?: number;
+  /** True while a paid Cloudy Store subscription renews automatically. */
+  renews?: boolean;
 };
 export type ModuleSnapshot = { revision: string; values: Record<string, unknown>; plan?: Plan };
 export type Insight = { stats: { label: string; value: string }[]; tables: { title: string; columns: string[]; rows: string[][]; empty: string }[] };
@@ -126,6 +130,39 @@ export const botApi = {
   grantPremium: (auth: BotAuth, guildId: string, months: number) =>
     call<{ guild: { id: string; name: string }; plan: Plan }>('POST', '/plans/grant', auth, { guildId, months }),
 };
+
+/**
+ * Server-to-server billing calls. These always need the shared secret and
+ * never fall back to a user's Discord login: Cloudy refuses billing routes
+ * that are not signed. `actorId` is the buyer's Discord ID (or the server ID
+ * when the buyer is unknown).
+ */
+export async function signedBotCall<T>(method: 'GET' | 'POST', path: string, actorId: string, payload?: unknown, fetchImpl: typeof fetch = fetch): Promise<T> {
+  const config = botApiConfig();
+  if (!config?.secret) throw new BotApiError('The signed Cloudy connection is not configured', 503, 'not_configured');
+  if (!/^\d{17,20}$/.test(actorId)) throw new BotApiError('Invalid actor', 422, 'invalid');
+  const fullPath = `${API_PREFIX}${path}`;
+  const body = payload === undefined ? '' : JSON.stringify(payload);
+  let response: Response;
+  try {
+    response = await fetchImpl(`${config.origin}${fullPath}`, {
+      method,
+      headers: { ...(body ? { 'Content-Type': 'application/json' } : {}), ...signDashboardRequest({ method, path: fullPath, body, actorId }, config.secret) },
+      body: body || undefined,
+      cache: 'no-store',
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+  } catch {
+    throw new BotApiError('Cloudy did not respond in time', 504, 'unreachable');
+  }
+  const data = await response.json().catch(() => null) as { error?: unknown; code?: unknown } | null;
+  if (!response.ok) {
+    const message = typeof data?.error === 'string' && data.error.length <= 200 ? data.error : 'Cloudy could not complete this request';
+    const code = typeof data?.code === 'string' && /^[a-z_]{1,40}$/.test(data.code) ? data.code : 'bot_error';
+    throw new BotApiError(message, response.status, code);
+  }
+  return data as T;
+}
 
 // Cloudy's public health endpoint already exists and needs no secret.
 export type BotHealth = { online: boolean; uptimeSeconds: number | null; version: string | null; databaseOk: boolean | null; checkedAt: string };

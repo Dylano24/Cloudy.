@@ -9,6 +9,11 @@ import { ModuleIcon } from '@/components/bot/module-icon';
 import { BotStatusTile, StatusPlaceholder } from '@/components/bot/bot-status';
 import { PageHead } from '@/components/bot/page-head';
 import { PlanBanner } from '@/components/bot/plan-banner';
+import { SetupChecklist } from '@/components/bot/setup-checklist';
+import { botApi } from '@/lib/bot-dashboard/bot-api';
+import { botInviteUrl } from '@/lib/bot-dashboard/origin';
+import { cloudyApplicationId } from '@/lib/bot-dashboard/server-list';
+import { setupSteps } from '@/lib/bot-dashboard/setup';
 import styles from '@/components/bot/bot.module.css';
 
 const ROLE_LABEL = { owner: 'Owner', administrator: 'Administrator', manager: 'Manage Server' } as const;
@@ -19,11 +24,26 @@ export default async function GuildOverview({ params }: { params: Promise<{ guil
   const context = await loadGuildContext(guildId);
   if (context.kind !== 'ok') return null;
   const { guild } = context;
+  // Real setup state from Cloudy; a module that cannot be read counts as not done.
+  const [logging, welcome, applicationId] = await Promise.allSettled([
+    botApi.module(context.session, guild.id, 'logging'),
+    botApi.module(context.session, guild.id, 'welcome'),
+    cloudyApplicationId(context.session),
+  ]);
+  const steps = setupSteps({
+    guildId: guild.id,
+    missingPermissions: context.missingPermissions,
+    inviteUrl: botInviteUrl(guild.id, applicationId.status === 'fulfilled' ? applicationId.value : null),
+    logging: logging.status === 'fulfilled' ? logging.value.values : null,
+    welcome: welcome.status === 'fulfilled' ? welcome.value.values : null,
+    plan: context.plan,
+  });
 
   return (
     <div className={styles.stack}>
       <PageHead guildId={guild.id} guildName={guild.name} title="Overview" summary="Everything Cloudy does on this server, at a glance." />
       <PlanBanner />
+      <SetupChecklist steps={steps} />
 
       <section className={`${styles.panel} ${styles.overviewHero}`} aria-label="Server">
         <GuildIcon name={guild.name} url={guild.iconUrl} large />

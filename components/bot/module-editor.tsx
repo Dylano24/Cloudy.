@@ -67,7 +67,7 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
         setSaved(data.values);
         setDraft(data.values);
         setRevision(data.revision);
-        setToast({ kind: 'ok', text: plan.status === 'new' && data.plan?.status === 'trial' ? 'Saved. Your free trial has started and Cloudy uses the new settings right away.' : 'Saved. Cloudy uses the new settings right away.' });
+        setToast({ kind: 'ok', text: 'Saved. Cloudy uses the new settings right away.' });
       } else if (response.status === 402) {
         setToast({ kind: 'error', text: data.error || `Saving needs Premium (${PRICE_LABEL}).` });
       } else if (response.status === 409) {
@@ -81,7 +81,7 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
     } finally {
       setSaving(false);
     }
-  }, [dirty, saving, locked, dirtyPaths, draft, guild.id, module.id, csrf, revision, plan.status, setPlan]);
+  }, [dirty, saving, locked, dirtyPaths, draft, guild.id, module.id, csrf, revision, setPlan]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {

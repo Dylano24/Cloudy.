@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import type { Route } from 'next';
-import { AlertTriangle, ArrowRight, Info, Plus, RefreshCw } from 'lucide-react';
+import { AlertTriangle, ArrowRight, Info, RefreshCw } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
 import { DiscordAuthError } from '@/lib/bot-dashboard/discord';
 import { loadServerList, type ServerCard } from '@/lib/bot-dashboard/server-list';
 import type { BotSession } from '@/lib/bot-dashboard/session';
 import { GuildIcon } from './guild-icon';
+import { InviteButton } from './invite-button';
 import styles from './bot.module.css';
 
 const ROLE_LABEL = { owner: 'Owner', administrator: 'Administrator', manager: 'Manage Server' } as const;
@@ -17,14 +18,8 @@ function PresencePill({ server }: { server: ServerCard }) {
 }
 
 function InviteLink({ server, ghost }: { server: ServerCard; ghost?: boolean }) {
-  if (!server.inviteUrl) {
-    return <span className={`${ghost ? styles.buttonGhost : styles.button} ${styles.buttonSmall}`} aria-disabled="true" title="The invite link is not configured on this deployment yet.">Invite Cloudy</span>;
-  }
-  return (
-    <a href={server.inviteUrl} className={`${ghost ? styles.buttonGhost : styles.button} ${styles.buttonSmall}`} target="_blank" rel="noopener noreferrer">
-      <Plus size={15} aria-hidden="true" /> Invite Cloudy
-    </a>
-  );
+  // Opens Discord in a new tab and continues to setup once Cloudy has joined.
+  return <InviteButton guildId={server.id} guildName={server.name} inviteUrl={server.inviteUrl} ghost={ghost} />;
 }
 
 export async function ServerList({ session }: { session: BotSession }) {
