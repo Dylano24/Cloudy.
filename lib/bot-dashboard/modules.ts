@@ -149,6 +149,21 @@ export const MODULES: ModuleDef[] = [
     ],
   },
   {
+    id: 'rules', title: 'Server rules', group: 'community', icon: 'book', kind: 'settings', access: 'manage-server',
+    summary: 'Your server rules, in your own words. Members read them with /rules.', storage: 'guild:{id}:config → rules',
+    sections: [
+      {
+        title: 'Rules',
+        description: 'Anyone can read the rules privately with /rules. Members with Manage Server can post them in a channel with /rules post:True.',
+        fields: [
+          { path: 'rules.title', type: 'text', max: 256, label: 'Title', placeholder: '{server} rules' },
+          { path: 'rules.text', type: 'textarea', max: 4000, rows: 10, label: 'Rules', placeholder: '1. Be respectful.\n2. No cheating or exploiting.\n3. Follow the Discord Terms of Service.', variables: ['{server}'] },
+          { path: 'rules.color', type: 'color', label: 'Card colour' },
+        ],
+      },
+    ],
+  },
+  {
     id: 'autoroles', title: 'Auto role', group: 'community', icon: 'user-plus', kind: 'settings', access: 'manage-server',
     summary: 'The role every new member receives automatically.', storage: 'guild:{id}:welcome → roleIds',
     sections: [{ title: 'Role on join', fields: [{ path: 'roleIds', type: 'roles', max: 1, label: 'Auto role', help: 'Cloudy\'s own role must be above this role in Discord.' }] }],
