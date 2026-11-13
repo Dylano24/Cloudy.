@@ -324,9 +324,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 .cloudy-terms-wrap { width:min(980px,calc(100% - 32px)); margin:auto; }
 .cloudy-terms-head { text-align:center; margin-bottom:var(--cloudy-section-gap); }
 .cloudy-terms-head img { width:80px; height:80px; margin:auto; filter:drop-shadow(0 0 18px rgba(68,193,255,.20)); }
-.cloudy-terms-head span { display:block; margin-top:15px; color:#55c8f5; font-size:8px; font-weight:950; letter-spacing:.21em; text-transform:uppercase; }
+.cloudy-terms-head span { display:block; margin-top:15px; color:#fff; font-size:9px; font-weight:900; letter-spacing:.22em; text-transform:uppercase; }
 .cloudy-terms-head h1 { margin-top:8px; color:white; font-size:clamp(2.4rem,5vw,4.5rem); font-weight:1000; letter-spacing:-.04em; }
-.cloudy-terms-head p { max-width:650px; margin:12px auto 0; color:#fff; font-size:11px; line-height:1.75; }
+.cloudy-terms-head p { max-width:650px; margin:12px auto 0; color:#fff; font-size:var(--cloudy-type-copy); line-height:var(--cloudy-type-copy-leading); }
 .cloudy-terms-list { display:grid; gap:10px; }
 .cloudy-term-card { padding:24px; border:1px solid rgba(94,181,229,.11); border-radius:12px; background:linear-gradient(145deg,rgba(12,20,30,.95),rgba(6,11,18,.98)); }
 .cloudy-term-card h2 { color:#eaf7fc; font-size:15px; font-weight:900; }
@@ -1991,14 +1991,14 @@ body {
 /* Cloudy legal hierarchy and balanced payment marks. */
 .cloudy-terms-head { position:relative; padding-bottom:30px; }
 .cloudy-terms-head::after { display:none; }
-.cloudy-terms-head h1 {font-size:clamp(2.2rem,6vw,4.5rem);line-height:1.1;letter-spacing:-.035em;}
+.cloudy-terms-head h1 {font-family:var(--cloudy-type-family);font-size:var(--cloudy-type-title);font-weight:var(--cloudy-type-weight);line-height:var(--cloudy-type-leading);letter-spacing:var(--cloudy-type-tracking);text-shadow:var(--cloudy-type-glow);}
 .cloudy-terms-list { gap:18px; }
 .cloudy-term-card { border:1px solid rgba(255,255,255,.10)!important; border-radius:12px; padding:28px!important; background:#070708!important; }
-.cloudy-term-card h2 {font-size:18px;font-weight:800;line-height:1.4;margin-bottom:14px;}
-.cloudy-term-card p {font-size:14px;line-height:1.9;white-space:pre-line;}
+.cloudy-term-card h2 {font-size:var(--cloudy-type-subheading);font-weight:var(--cloudy-type-weight);line-height:1.3;letter-spacing:-0.01em;margin-bottom:14px;}
+.cloudy-term-card p {font-size:var(--cloudy-type-copy);line-height:var(--cloudy-type-copy-leading);white-space:pre-line;}
 .cloudy-restored-payment-brands .cloudy-payment-visa { display:inline-flex;align-items:center;justify-content:center;min-width:82px;min-height:42px;padding:8px 16px;border:1px solid #ffffff24;border-radius:8px;background:linear-gradient(135deg,#1a1a20,#09090b); }
 .cloudy-restored-payment-brands .cloudy-payment-visa svg {width:52px;height:28px;}
-@media(max-width:600px){.cloudy-term-card{padding:22px!important;}.cloudy-term-card p{font-size:13px;}}
+@media(max-width:600px){.cloudy-term-card{padding:22px!important;}}
 
 
 
@@ -2081,4 +2081,107 @@ body {
 @media (max-width: 600px) {
   .cloudy-restored-payment-brands .cloudy-payment-visa-v { font-size: 21px; }
   .cloudy-restored-payment-brands .cloudy-payment-visa-isa { font-size: 17px; }
+}
+
+/* ------------------------------------------------------------------
+   Cloudy type system: the homepage's text style on every page.
+   Headings use the homepage's "softer typography": Manrope 650, -0.025em
+   tracking, 1.08 leading and a soft white glow, at the homepage's section
+   and feature sizes. Copy is 13px / 1.75; labels 9px, 900, .22em, uppercase.
+   Pages point their own heading and copy rules at these tokens.
+   ------------------------------------------------------------------ */
+:root {
+  --cloudy-type-family: var(--font-sans), "Manrope", system-ui, sans-serif;
+  --cloudy-type-weight: 650;
+  --cloudy-type-tracking: -0.025em;
+  --cloudy-type-leading: 1.08;
+  --cloudy-type-glow: 0 0 12px rgba(255, 255, 255, .24);
+  --cloudy-type-title: clamp(2rem, 4.2vw, 3.2rem);
+  --cloudy-type-heading: clamp(1.9rem, 3.6vw, 2.8rem);
+  --cloudy-type-card: 24px;
+  --cloudy-type-subheading: 18px;
+  --cloudy-type-copy: 13px;
+  --cloudy-type-copy-leading: 1.75;
+  --cloudy-type-lead: 14px;
+}
+@media (max-width: 620px) {
+  :root {
+    --cloudy-type-title: clamp(1.85rem, 8vw, 2.55rem);
+    --cloudy-type-heading: clamp(1.8rem, 7.6vw, 2.4rem);
+    --cloudy-type-card: 22px;
+    --cloudy-type-subheading: 17px;
+  }
+}
+.cloudy-title, .cloudy-heading, .cloudy-subheading {
+  font-family: var(--cloudy-type-family);
+  font-weight: var(--cloudy-type-weight);
+  letter-spacing: var(--cloudy-type-tracking);
+  line-height: var(--cloudy-type-leading);
+  color: #fff;
+  text-transform: none;
+  text-wrap: balance;
+}
+.cloudy-title, .cloudy-heading { text-shadow: var(--cloudy-type-glow); }
+.cloudy-title { font-size: var(--cloudy-type-title); }
+.cloudy-heading { font-size: var(--cloudy-type-heading); }
+.cloudy-subheading { font-size: var(--cloudy-type-subheading); letter-spacing: -0.01em; line-height: 1.3; }
+.cloudy-card-title { font-family: var(--cloudy-type-family); font-weight: var(--cloudy-type-weight); font-size: var(--cloudy-type-card); letter-spacing: -0.02em; line-height: 1.15; color: #fff; text-transform: none; text-wrap: balance; }
+.cloudy-copy { font-size: var(--cloudy-type-copy); line-height: var(--cloudy-type-copy-leading); color: #fff; }
+.cloudy-lead { font-size: var(--cloudy-type-lead); line-height: var(--cloudy-type-copy-leading); color: #fff; }
+.cloudy-label { font-size: 9px; font-weight: 900; letter-spacing: .22em; text-transform: uppercase; color: #fff; }
+
+/* ------------------------------------------------------------------
+   Cloudy interaction layer (2026-11 production readiness).
+   Additive only: every selector is wrapped in :where(), so it has zero
+   specificity and any component that styles its own state keeps winning.
+   No text, colour palette or layout of existing content changes here.
+   ------------------------------------------------------------------ */
+
+/* Native controls (select lists, date pickers, scrollbars) follow the dark theme. */
+:root { color-scheme: dark; }
+html { scrollbar-color: #2b2b2f #050505; }
+:where(select) option, :where(select) optgroup { background: #0b0b0c; color: #fff; }
+
+/* One visible keyboard focus ring everywhere; mouse and touch clicks show none. */
+:where(a, button, summary, [role="button"], [role="tab"], [role="menuitem"], [role="option"], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 2px solid #e51b2e;
+  outline-offset: 3px;
+}
+:where(input, select, textarea):focus-visible {
+  box-shadow: 0 0 0 3px rgba(229, 27, 46, .18);
+}
+/* A dialog or panel focused as a whole (focus moved into it) shows no ring. */
+:where([role="dialog"], [role="alertdialog"]):focus-visible { outline: none; }
+
+/* Controls respond instantly on touch screens (no double-tap zoom delay on iPhone). */
+:where(a, button, summary, label, input, select, textarea, [role="button"]) { touch-action: manipulation; }
+
+/* State cursors. */
+:where(button, [role="button"]):disabled, :where([aria-disabled="true"]) { cursor: not-allowed; }
+:where([aria-busy="true"]) { cursor: progress; }
+:where(summary) { cursor: pointer; }
+
+/* Modal surfaces: depth and contained scrolling, so the page behind never scrolls along. */
+.cloudy-dialog-surface {
+  box-shadow: 0 30px 90px rgba(0, 0, 0, .65), 0 0 0 1px rgba(229, 27, 46, .1), 0 0 40px rgba(229, 27, 46, .06);
+}
+.cloudy-dialog-surface, .cloudy-dialog-surface * { overscroll-behavior: contain; }
+
+/* Invalid fields announce themselves visually as well as to screen readers. */
+:where(input, select, textarea)[aria-invalid="true"] { border-color: #ff5268; }
+
+/* iPhone Safari zooms into any text field below 16px on focus; keep fields at 16px on phones. */
+@media (max-width: 700px) {
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea) { font-size: max(16px, 1em); }
+}
+
+/* People who ask their device for less motion get none: no looping or sliding animations. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

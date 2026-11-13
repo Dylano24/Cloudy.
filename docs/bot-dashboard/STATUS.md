@@ -14,8 +14,7 @@ Bot: Dashboard API staat live op Railway (`main`, laatste commit `bf2f496`), Clo
 
 ## Abonnement: Cloudy Bot Premium, €13,00 per maand per server
 
-- Elke server krijgt 7 dagen gratis; de proef start bij de eerste opgeslagen wijziging.
-- Na de proef blijven alle instellingen zichtbaar en kun je ze aanpassen om te proberen; opslaan vraagt Premium ("Get Premium to save").
+- Geen gratis proefperiode (keuze van de eigenaar, 13-11-2026): zonder Premium zijn alle instellingen zichtbaar, maar opslaan vraagt Premium ("Premium needed to save"). Een proef die een server al had, loopt nog af tot de einddatum; er start geen nieuwe.
 - Cloudy zelf beslist en controleert dit (niet alleen de website): zonder Premium weigert Cloudy elke wijziging.
 - De eigenaar van Cloudy (OWNER_IDS of de eigenaar van de Discord-app) heeft altijd volledige toegang en zet op de Plan-pagina Premium aan of uit voor een server (1, 3, 6 of 12 maanden; maanden worden opgeteld).
 - "Buy Premium" toont de prijs en het server-ID en opent de Cloudy Discord om te bestellen. Automatisch afrekenen via Tip4Serv kan zodra daar een product "Cloudy Bot Premium" (€13/maand) bestaat.

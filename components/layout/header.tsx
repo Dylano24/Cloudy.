@@ -156,7 +156,11 @@ export function Header() {
           <div ref={accountRef} className={styles.account} onBlur={(event) => {
             if (!event.currentTarget.contains(event.relatedTarget)) setAccountOpen(false);
           }} onKeyDown={(event) => {
-            if (event.key === 'Escape') setAccountOpen(false);
+            if (event.key === 'Escape' && accountOpen) {
+              setAccountOpen(false);
+              // Keyboard users land back on the account button, not on a hidden menu item.
+              accountRef.current?.querySelector<HTMLButtonElement>('button[aria-controls="cloudy-account-menu"]')?.focus();
+            }
           }}>
             <button type="button" className={styles.login} aria-label="Account" aria-expanded={accountOpen} aria-controls="cloudy-account-menu" onClick={() => setAccountOpen(!accountOpen)}>
               <UserRound size={20} aria-hidden="true" />

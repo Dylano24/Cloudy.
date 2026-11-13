@@ -9,10 +9,17 @@ export async function GET(request: NextRequest) {
       { status: 400 }
     );
   }
+  // Minecraft names are 3-16 letters, digits or underscores; nothing else may reach the upstream URL path.
+  if (!/^[A-Za-z0-9_]{3,16}$/.test(username)) {
+    return NextResponse.json(
+      { error: 'Minecraft username not found' },
+      { status: 404 }
+    );
+  }
 
   try {
     const response = await fetch(
-      `https://api.mojang.com/users/profiles/minecraft/${username}`
+      `https://api.mojang.com/users/profiles/minecraft/${encodeURIComponent(username)}`
     );
 
     if (!response.ok) {

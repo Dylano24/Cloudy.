@@ -16,7 +16,7 @@ type DashboardValue = DashboardData & { setPlan: (plan: Plan) => void };
 const DashboardContext = createContext<DashboardValue | null>(null);
 
 export function DashboardProvider({ value, children }: { value: DashboardData; children: ReactNode }) {
-  // The plan can change while the page is open (the first save starts the trial).
+  // The plan can change while the page is open (a purchase or Premium running out).
   const [plan, setPlan] = useState(value.plan);
   const context = useMemo(() => ({ ...value, plan, setPlan }), [value, plan]);
   return <DashboardContext.Provider value={context}>{children}</DashboardContext.Provider>;

@@ -122,7 +122,7 @@ test('the basket sends ID-keyed custom fields when starting hosted checkout', as
     imports: {
       react: { ...React, useEffect: () => {}, useState: value => [stateCall++ === 1 ? true : value, () => {}] },
       '@/hooks/use-cart': { useCart: () => cart.getState() },
-      '@/hooks/use-api': { useStore: () => ({ data: { id: 42 } }) },
+      '@/hooks/use-api': { useStore: () => ({ data: { id: 42 } }), useCurrencySymbol: () => '$' },
       'next/navigation': { useRouter: () => ({ push: () => { throw new Error('Unexpected local checkout'); } }) },
       '@/lib/tip4serv': { openTip4ServCheckout: async options => { submitted = options; } },
     },
@@ -144,7 +144,7 @@ test('the basket disables increasing either variant once aggregate stock is exha
     imports: {
       react: { ...React, useEffect: () => {}, useState: value => [value, () => {}] },
       '@/hooks/use-cart': { useCart: () => cart.getState() },
-      '@/hooks/use-api': { useStore: () => ({ data: { id: 42 } }) },
+      '@/hooks/use-api': { useStore: () => ({ data: { id: 42 } }), useCurrencySymbol: () => '$' },
       'next/navigation': { useRouter: () => ({}) },
     },
   });

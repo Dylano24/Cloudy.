@@ -39,28 +39,30 @@
 .kicker {
   display: block;
   margin-top: 18px;
-  color: #63d4ff;
-  font-size: 10px;
+  color: #fff;
+  font-size: 9px;
   font-weight: 900;
-  letter-spacing: .16em;
+  letter-spacing: .22em;
   text-transform: uppercase;
 }
 
 .top h1 {
   margin: 8px 0 0;
-  color: #f7fbff;
-  font-size: clamp(2rem, 5vw, 3.25rem);
-  line-height: 1;
-  font-weight: 1000;
-  letter-spacing: -.04em;
+  color: #fff;
+  font-family: var(--cloudy-type-family);
+  font-size: var(--cloudy-type-title);
+  line-height: var(--cloudy-type-leading);
+  font-weight: var(--cloudy-type-weight);
+  letter-spacing: var(--cloudy-type-tracking);
+  text-shadow: var(--cloudy-type-glow);
 }
 
 .top p {
   max-width: 600px;
   margin: 14px auto 0;
   color: #fff;
-  font-size: 13px;
-  line-height: 1.7;
+  font-size: var(--cloudy-type-copy);
+  line-height: var(--cloudy-type-copy-leading);
 }
 
 .content {
@@ -87,9 +89,11 @@
 
 .claimHead h2 {
   margin: 0;
-  color: #eef8fd;
-  font-size: 20px;
-  font-weight: 950;
+  color: #fff;
+  font-size: var(--cloudy-type-subheading);
+  font-weight: var(--cloudy-type-weight);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .claimHead p {

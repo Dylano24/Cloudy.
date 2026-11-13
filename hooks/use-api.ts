@@ -26,6 +26,21 @@ async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> 
 }
 
 // Store hooks
+/** The store's own currency symbol (Tip4Serv store settings); "$" until it is known. */
+export function currencySymbol(currency?: string | null) {
+  if (!currency || !/^[A-Z]{3}$/.test(currency)) return '$';
+  try {
+    return new Intl.NumberFormat('en', { style: 'currency', currency, currencyDisplay: 'narrowSymbol' }).formatToParts(0).find(part => part.type === 'currency')?.value || '$';
+  } catch {
+    return '$';
+  }
+}
+
+export function useCurrencySymbol() {
+  const { data } = useStore();
+  return currencySymbol(data?.currency);
+}
+
 export function useStore() {
   return useQuery<Store>({
     queryKey: ['store', 'whoami'],

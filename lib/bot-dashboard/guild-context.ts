@@ -55,7 +55,7 @@ export const loadGuildContext = cache(async (guildId: string): Promise<GuildCont
       servers: manageable.map(entry => ({ id: entry.id, name: entry.name, iconUrl: guildIconUrl(entry, 64) })),
       channels: overview.channels,
       roles: overview.roles,
-      plan: overview.plan || { status: 'new', canSave: true, until: null, priceEur: PLAN_PRICE_EUR, trialDays: 7 },
+      plan: overview.plan || { status: 'new', canSave: false, until: null, priceEur: PLAN_PRICE_EUR },
       missingPermissions: overview.missingPermissions,
     };
   } catch (error) {

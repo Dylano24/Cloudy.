@@ -39,7 +39,10 @@ function imports(harness, cart, api, router = { push() {}, replace() {} }) {
     'next/navigation': { useRouter: () => router, useSearchParams: () => new URLSearchParams() },
     'framer-motion': { motion: { div: 'motion.div', button: 'motion.button' }, AnimatePresence: 'presence' },
     '@/hooks/use-cart': { useCart: cart.useCart },
-    '@/hooks/use-api': api,
+    '@/hooks/use-api': { useCurrencySymbol: () => '$', ...api },
+    '@/hooks/use-favorites': { useFavorites: () => ({ user: null, favorites: [], toggle: async () => false }) },
+    // Focus and scroll handling needs a real browser; the harness has no DOM.
+    '@/hooks/use-dialog-behavior': { useDialogBehavior() {} },
   };
 }
 function button(tree, label) {

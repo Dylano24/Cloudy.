@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { emailAccountPath, normalizeAccountEmail, validAccountPassword } from '../lib/email-account.ts';
+import { loadTypeScript } from './helpers/load-typescript.mjs';
+
+// Loaded through the repository's TypeScript loader: the module imports
+// './account-session' without an extension, which plain Node cannot resolve.
+const { emailAccountPath, normalizeAccountEmail, validAccountPassword } = loadTypeScript('lib/email-account.ts');
 
 test('preview accounts use a separate storage path from live accounts', () => {
   assert.match(emailAccountPath('player@example.com', 'preview'), /^accounts\/preview-v1\/[a-f0-9]{64}\.json$/);

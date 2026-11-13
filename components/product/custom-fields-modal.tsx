@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X, ShoppingCart, AlertCircle, HelpCircle, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ProductDetailed, CustomField } from '@/lib/schemas';
 import { useCart } from '@/hooks/use-cart';
+import { useCurrencySymbol } from '@/hooks/use-api';
+import { useDialogBehavior } from '@/hooks/use-dialog-behavior';
 import { validateCustomRules, getCustomRulesErrorMessage, missingRequiredCustomFields } from '@/lib/custom-rules-utils';
 import { calculateNumberRangeCharge } from '@/lib/cart-utils';
 import Image from 'next/image';
@@ -17,6 +19,9 @@ type CustomFieldsModalProps = {
 };
 
 export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModalProps) {
+  const money = useCurrencySymbol();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogBehavior(isOpen, onClose, dialogRef);
   const addItem = useCart(state => state.addItem);
   const updateServerSelection = useCart(state => state.updateServerSelection);
   const updateDonationAmount = useCart(state => state.updateDonationAmount);
@@ -207,7 +212,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
     }
 
     if (product.donation && (!donationAmount || donationAmount < (product.min_donation || 0))) {
-      setError(`Donation must be at least $${product.min_donation || 0}`);
+      setError(`Donation must be at least ${money}${product.min_donation || 0}`);
       setTimeout(() => setError(null), 5000);
       return;
     }
@@ -261,8 +266,13 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
             className="fixed inset-0 z-50 flex items-center justify-center p-4"
           >
             <div 
+              ref={dialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="custom-fields-modal-title"
+              tabIndex={-1}
               onClick={(e) => e.stopPropagation()}
-              className="bg-card border border-border rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
+              className="cloudy-dialog-surface bg-card border border-border rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col"
             >
               {/* Header */}
               <div className="flex items-start gap-4 p-6 border-b border-border">
@@ -289,10 +299,10 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                   })()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
+                  <h2 id="custom-fields-modal-title" className="cloudy-card-title mb-2">{product.name}</h2>
                   <div className="flex items-baseline gap-2 flex-wrap">
                     <p className="text-3xl font-bold text-primary">
-                      {calculateTotalPrice() > 0 ? `$${calculateTotalPrice().toFixed(2)}` : 'Free'}
+                      {calculateTotalPrice() > 0 ? `${money}${calculateTotalPrice().toFixed(2)}` : 'Free'}
                     </p>
                     {/* For subscriptions with non-recurring discount, show "then original price / period" */}
                     {product.subscription && product.recurring_discount === false && product.old_price && product.old_price > product.price ? (
@@ -318,7 +328,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                         )}
                         {product.old_price && product.old_price > product.price && product.price > 0 && (
                           <span className="text-lg text-muted line-through">
-                            ${(product.old_price * quantity).toFixed(2)}
+                            {money}{(product.old_price * quantity).toFixed(2)}
                           </span>
                         )}
                       </>
@@ -326,10 +336,12 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                   </div>
                 </div>
                 <button
+                  type="button"
                   onClick={onClose}
+                  aria-label="Close"
                   className="p-2 hover:bg-background rounded-lg transition-colors"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-6 h-6" aria-hidden="true" />
                 </button>
               </div>
 
@@ -339,7 +351,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                 {product.donation && (
                   <div className="space-y-2">
                     <label className="text-sm font-medium">
-                      Donation Amount {product.min_donation && `(Minimum: $${product.min_donation})`}
+                      Donation Amount {product.min_donation && `(Minimum: ${money}${product.min_donation})`}
                     </label>
                     <input
                       type="number"
@@ -347,7 +359,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                       step="0.01"
                       value={donationAmount ?? ''}
                       onChange={(e) => setDonationAmount(e.target.value ? Number(e.target.value) : undefined)}
-                      placeholder={`Enter donation amount${product.min_donation ? ` (minimum $${product.min_donation})` : ''}`}
+                      placeholder={`Enter donation amount${product.min_donation ? ` (minimum ${money}${product.min_donation})` : ''}`}
                       className="w-full px-4 py-3 rounded-lg bg-background border border-border focus:border-primary outline-none transition-colors"
                     />
                   </div>
@@ -377,7 +389,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                 {/* Custom Fields */}
                 {product.custom_fields && product.custom_fields.length > 0 && (
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Customize Your Order</h3>
+                    <h3 className="cloudy-subheading">Customize Your Order</h3>
                     {product.custom_fields
                       .sort((a, b) => a.order - b.order)
                       .filter((field) => isFieldVisible(field))
@@ -522,7 +534,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                                     .map((option) => (
                                       <option key={option.id} value={option.id.toString()}>
                                         {option.name}
-                                        {option.price !== undefined && option.price !== null && option.price > 0 && ` (+$${option.price.toFixed(2)})`}
+                                        {option.price !== undefined && option.price !== null && option.price > 0 && ` (+${money}${option.price.toFixed(2)})`}
                                       </option>
                                     ))}
                                 </select>
@@ -543,7 +555,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                 {/* Custom Rules Display */}
                 {product.custom_rules && product.custom_rules.length > 0 && (
                   <div className="space-y-3">
-                    <h3 className="text-lg font-semibold">Field Limits</h3>
+                    <h3 className="cloudy-subheading">Field Limits</h3>
                     {validateCustomRules(product.custom_rules, customFields, product.custom_fields)
                       .map((validation) => {
                         const { rule, total, isValid } = validation;
@@ -674,7 +686,7 @@ export function CustomFieldsModal({ product, isOpen, onClose }: CustomFieldsModa
                   ) : (
                     <ShoppingCart className="w-5 h-5" />
                   )}
-                  {product.subscription && subscriptionType === 'recurring' ? 'Subscribe Now' : 'Add to Cart'} - {calculateTotalPrice() > 0 ? `$${calculateTotalPrice().toFixed(2)}` : 'Free'}
+                  {product.subscription && subscriptionType === 'recurring' ? 'Subscribe Now' : 'Add to Cart'} - {calculateTotalPrice() > 0 ? `${money}${calculateTotalPrice().toFixed(2)}` : 'Free'}
                   {product.subscription && subscriptionType === 'recurring' && product.period_num && product.duration_periodicity && (
                     <span>/ {product.period_num > 1 && product.period_num} {product.duration_periodicity}{product.period_num > 1 ? 's' : ''}</span>
                   )}

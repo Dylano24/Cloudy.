@@ -7,14 +7,17 @@ import { componentHarness, elements, textContent } from './helpers/component-har
 for (const provider of ['discord', 'google', 'email']) {
   test(`${provider} account keeps identity details only on My information`, () => {
     const user = { id: 'private-provider-12345', provider, email: 'player@example.test', name: 'Cloudy player' };
+    // AccountPanel keeps local state, so it renders through the hook harness.
+    const render = props => componentHarness().mount(AccountPanel, props);
     const { AccountPanel } = loadTypeScript('components/account/account-panel.tsx', { imports: {
+      react: componentHarness().react,
       '@/hooks/use-account': { useAccount: () => ({ user, pending: false }) },
       'next/navigation': { useSearchParams: () => new URLSearchParams() },
       './email-account-form': { EmailAccountForm() {} },
       './account-name-form': { AccountNameForm() {} },
     } });
     for (const section of ['account', 'create', 'orders', 'favorites', 'fidelity']) {
-      const tree = AccountPanel({ section });
+      const tree = render({ section });
       const text = textContent(tree);
       assert.doesNotMatch(text, /private-provider-12345|player@example\.test|Discord ID|Google ID/);
       if (section === 'account') {
@@ -23,7 +26,7 @@ for (const provider of ['discord', 'google', 'email']) {
         assert.equal(form.props.provider, provider);
       }
     }
-    const information = textContent(AccountPanel({ section: 'information' }));
+    const information = textContent(render({ section: 'information' }));
     assert.match(information, provider === 'email' ? /Emailplayer@example\.test/ : new RegExp(`${provider === 'google' ? 'Google' : 'Discord'} IDprivate-provider-12345`));
     assert.doesNotMatch(information, /Successfully connected!/);
   });
@@ -40,8 +43,10 @@ for (const provider of ['discord', 'google', 'email', undefined]) {
     const text = textContent(tree);
     const input = elements(tree, node => node.type === 'input')[0];
     if (provider === 'email') {
+      // Email accounts get their own guidance, never a Discord or Google one.
       assert.doesNotMatch(text, /Discord name|Google name/);
-      assert.equal(input.props['aria-describedby'], undefined);
+      assert.ok(text.includes('Your email name is used by default, but you can customize it here.'));
+      assert.equal(input.props['aria-describedby'], 'cloudy-account-name-help');
     } else {
       const expected = provider === 'google' ? 'Google' : 'Discord';
       assert.ok(text.includes(`Your ${expected} name is used by default, but you can customize it here.`));

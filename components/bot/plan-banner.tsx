@@ -12,7 +12,7 @@ const PILL_TONE = { good: styles.pillGreen, neutral: '', warn: styles.pillAmber 
 /** Small plan label next to "Plan" in the sidebar. */
 export function PlanNavPill() {
   const { plan } = useDashboard();
-  const short = plan.status === 'owner' ? 'Owner' : plan.status === 'premium' ? 'Premium' : plan.status === 'expired' ? 'Locked' : 'Trial';
+  const short = plan.status === 'owner' ? 'Owner' : plan.status === 'premium' ? 'Premium' : plan.status === 'trial' ? 'Access' : 'Locked';
   return <span className={styles.navPlan} data-tone={describePlan(plan).tone}>{short}</span>;
 }
 

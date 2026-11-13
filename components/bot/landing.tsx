@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { AlertTriangle, Check, KeyRound, ShieldCheck, Zap } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
 import studioStyles from '@/app/service/service.module.css';
-import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_PRICE_EUR, PLAN_TRIAL_DAYS } from '@/lib/bot-dashboard/plan';
+import { euro, PLAN_FEATURES, PLAN_NAME, PLAN_PRICE_EUR } from '@/lib/bot-dashboard/plan';
 import { BotStatusPill, StatusPlaceholder } from './bot-status';
 import styles from './bot.module.css';
 
@@ -25,7 +25,7 @@ const questions = [
   },
   {
     question: 'What does it cost?',
-    answer: `Every server starts with ${PLAN_TRIAL_DAYS} days free. After that ${PLAN_NAME} is ${euro.format(PLAN_PRICE_EUR)} per month per server. You can keep viewing and trying every setting; saving needs Premium.`,
+    answer: `${PLAN_NAME} is ${euro.format(PLAN_PRICE_EUR)} per month per server. After logging in you can view every setting for your server before you buy; saving changes needs Premium.`,
   },
   {
     question: 'Do changes need a restart?',
@@ -101,25 +101,25 @@ export function BotLanding({ loginError, next }: { loginError: string | null; ne
             <div className={styles.priceHead}>
               <span className={styles.eyebrow}>{PLAN_NAME}</span>
               <p className={styles.price}>{euro.format(PLAN_PRICE_EUR)}<small>/ month per server</small></p>
-              <p>Start with {PLAN_TRIAL_DAYS} days free. After the trial you can still see and try every setting; saving needs Premium.</p>
+              <p>Log in to see every setting for your server before you buy. Saving changes needs Premium.</p>
             </div>
             <ul className={styles.featureList}>
               {PLAN_FEATURES.map(feature => <li key={feature}><Check size={16} aria-hidden="true" /> {feature}</li>)}
             </ul>
             <a href={loginError === 'consent' ? consentHref : loginHref} className={styles.button}>
-              <SiDiscord size={18} aria-hidden="true" /> Start your free trial
+              <SiDiscord size={18} aria-hidden="true" /> Get Premium
             </a>
           </div>
         </div>
       </section>
 
       <section className={styles.section} style={{ paddingBottom: 'var(--cloudy-page-pad)' }}>
-        <div className={styles.container}>
+        <div className={`${styles.container} ${styles.faqColumn}`}>
           <div className={[studioStyles.faqHeading, studioStyles.faqHeadingInline].join(' ')} style={{ marginBottom: 28 }}>
             <span className={studioStyles.faqSingleDot} aria-hidden="true" />
             <h2 className={studioStyles.faqHeadingTitle}>Frequently asked questions.</h2>
           </div>
-          <div className={studioStyles.faqList} style={{ maxWidth: 900 }}>
+          <div className={studioStyles.faqList}>
             {questions.map(({ question, answer }) => (
               <details key={question} className={studioStyles.faqItem}>
                 <summary>{question}</summary>

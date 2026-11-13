@@ -37,7 +37,7 @@ export function PasswordResetForm({ token }: { token?: string }) {
 
   return <div className="cloudy-black-page min-h-[70vh] px-4 py-16 sm:py-24"><div className="mx-auto max-w-4xl">
     <section className={`cloud-panel cloudy-traced-panel relative isolate mt-8 rounded-2xl border p-7 sm:p-10 ${styles.card}`}>
-      <h1 className="text-2xl font-bold">{resetting ? 'Reset password' : 'Forgot password?'}</h1>
+      <h1 className="cloudy-card-title">{resetting ? 'Reset password' : 'Forgot password?'}</h1>
       <p className={styles.intro}>{resetting ? 'Choose a new password for your Cloudy email account.' : 'Enter your Cloudy account email and we will send you a reset link.'}</p>
       <form className={styles.form} onSubmit={submit} noValidate>
         {resetting ? <>
