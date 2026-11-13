@@ -17,7 +17,7 @@ type Toast = { kind: 'ok' | 'error'; text: string } | null;
 const same = (a: unknown, b: unknown) => JSON.stringify(a ?? null) === JSON.stringify(b ?? null);
 
 export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: { values: Values; revision: string } }) {
-  const { guild, csrf, plan, setPlan } = useDashboard();
+  const { guild, csrf, plan, setPlan, demo } = useDashboard();
   const locked = !plan.canSave;
   const [saved, setSaved] = useState<Values>(initial.values);
   const [draft, setDraft] = useState<Values>(initial.values);
@@ -54,6 +54,12 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
   const save = useCallback(async () => {
     if (!dirty || saving || locked) return;
     const changes = Object.fromEntries(dirtyPaths.map(path => [path, draft[path]]));
+    if (demo) {
+      // Preview demo: the change stays in this browser; nothing reaches Cloudy.
+      setSaved(draft);
+      setToast({ kind: 'ok', text: 'Demo: saved in this preview only. Nothing was sent to Cloudy.' });
+      return;
+    }
     setSaving(true);
     try {
       const response = await fetch(`/api/bot/guilds/${guild.id}/modules/${module.id}`, {
@@ -67,7 +73,7 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
         setSaved(data.values);
         setDraft(data.values);
         setRevision(data.revision);
-        setToast({ kind: 'ok', text: plan.status === 'new' && data.plan?.status === 'trial' ? 'Saved. Your free trial has started and Cloudy uses the new settings right away.' : 'Saved. Cloudy uses the new settings right away.' });
+        setToast({ kind: 'ok', text: 'Saved. Cloudy uses the new settings right away.' });
       } else if (response.status === 402) {
         setToast({ kind: 'error', text: data.error || `Saving needs Premium (${PRICE_LABEL}).` });
       } else if (response.status === 409) {
@@ -81,7 +87,7 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
     } finally {
       setSaving(false);
     }
-  }, [dirty, saving, locked, dirtyPaths, draft, guild.id, module.id, csrf, revision, plan.status, setPlan]);
+  }, [dirty, saving, locked, demo, dirtyPaths, draft, guild.id, module.id, csrf, revision, setPlan]);
 
   useEffect(() => {
     const onKey = (event: KeyboardEvent) => {
@@ -93,6 +99,11 @@ export function ModuleEditor({ module, initial }: { module: ModuleDef; initial: 
 
   async function runAction() {
     if (!confirm) return;
+    if (demo) {
+      setToast({ kind: 'ok', text: 'Demo: in your own server Cloudy would do this now. Nothing was sent.' });
+      setConfirm(null);
+      return;
+    }
     setActing(true);
     try {
       const response = await fetch(`/api/bot/guilds/${guild.id}/modules/${module.id}/actions/${confirm.id}`, { method: 'POST', headers: { 'x-cloudy-csrf': csrf } });

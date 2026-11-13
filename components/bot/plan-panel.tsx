@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AlertTriangle, Check, CheckCircle2, Copy, CreditCard, Loader2 } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
 import type { Plan } from '@/lib/bot-dashboard/bot-api';
-import { describePlan, formatPlanDate, PLAN_FEATURES, PLAN_NAME, PLAN_ORDER_URL, PLAN_TRIAL_DAYS, PRICE_LABEL, type PremiumCheckout } from '@/lib/bot-dashboard/plan';
+import { describePlan, formatPlanDate, PLAN_FEATURES, PLAN_NAME, PLAN_ORDER_URL, PRICE_LABEL, type PremiumCheckout } from '@/lib/bot-dashboard/plan';
 import { openTip4ServCheckout, Tip4ServError } from '@/lib/tip4serv';
 import { useDialogBehavior } from '@/hooks/use-dialog-behavior';
 import { useDashboard } from './dashboard-context';
@@ -139,7 +139,7 @@ export function PlanPanel({ checkout = null }: { checkout?: PremiumCheckout | nu
         <div className={styles.priceHead}>
           <span className={styles.eyebrow}>{PLAN_NAME}</span>
           <h2 id="plan-price" className={styles.price}>{PRICE_LABEL.replace(' / month', '')}<small>/ month per server</small></h2>
-          <p>{PLAN_TRIAL_DAYS} days free first. Every setting stays visible after the trial, so you can try changes before you buy.</p>
+          <p>Every setting stays visible, so you can look around before you buy. Saving changes needs Premium.</p>
         </div>
         <ul className={styles.featureList}>
           {PLAN_FEATURES.map(feature => <li key={feature}><Check size={16} aria-hidden="true" /> {feature}</li>)}

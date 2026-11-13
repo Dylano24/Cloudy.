@@ -12,13 +12,13 @@ const PILL_TONE = { good: styles.pillGreen, neutral: '', warn: styles.pillAmber 
 /** Small plan label next to "Plan" in the sidebar. */
 export function PlanNavPill() {
   const { plan } = useDashboard();
-  const short = plan.status === 'owner' ? 'Owner' : plan.status === 'premium' ? 'Premium' : plan.status === 'expired' ? 'Locked' : 'Trial';
+  const short = plan.status === 'owner' ? 'Owner' : plan.status === 'premium' ? 'Premium' : plan.status === 'trial' ? 'Access' : 'Locked';
   return <span className={styles.navPlan} data-tone={describePlan(plan).tone}>{short}</span>;
 }
 
 /** Plan strip shown on the overview and on every module page. */
 export function PlanBanner() {
-  const { plan, guild } = useDashboard();
+  const { plan, guild, base } = useDashboard();
   const info = describePlan(plan);
   if (plan.status === 'owner' || plan.status === 'premium') return null;
   return (
@@ -28,7 +28,7 @@ export function PlanBanner() {
         <span className={`${styles.pill} ${PILL_TONE[info.tone]}`}>{info.label}</span>
         <p>{info.text}</p>
       </div>
-      <Link href={`/bot/${guild.id}/plan` as Route} className={`${styles.button} ${styles.buttonSmall}`}>
+      <Link href={`${base || `/bot/${guild.id}`}/plan` as Route} className={`${styles.button} ${styles.buttonSmall}`}>
         Get Premium · {PRICE_LABEL}
       </Link>
     </div>

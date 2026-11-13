@@ -8,6 +8,7 @@ import { csrfTokenFor, safeReturnPath } from '@/lib/bot-dashboard/session';
 import { getManageableGuilds } from '@/lib/bot-dashboard/discord';
 import { userAvatarUrl } from '@/lib/bot-dashboard/permissions';
 import { BotLanding } from '@/components/bot/landing';
+import { DEMO_BASE, demoAllowed } from '@/lib/bot-dashboard/demo';
 import { ServerList, ServerListSkeleton } from '@/components/bot/server-picker';
 import { LogoutButton } from '@/components/bot/logout-button';
 import styles from '@/components/bot/bot.module.css';
@@ -27,7 +28,7 @@ export default async function BotPage({ searchParams }: Props) {
   if (!session) {
     const loginError = typeof params.login_error === 'string' ? params.login_error.slice(0, 20) : null;
     const next = safeReturnPath(typeof params.next === 'string' ? params.next : null);
-    return <div className={styles.root}><BotLanding loginError={loginError} next={next} /></div>;
+    return <div className={styles.root}><BotLanding loginError={loginError} next={next} demoHref={demoAllowed() ? DEMO_BASE : null} /></div>;
   }
 
   if (params.refresh === '1') await getManageableGuilds(session.at, { fresh: true }).catch(() => undefined);

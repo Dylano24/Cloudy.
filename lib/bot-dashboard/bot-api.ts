@@ -96,15 +96,17 @@ export type GuildOverview = {
   missingPermissions: string[];
 };
 /**
- * Cloudy decides and enforces the plan. `new`: free trial starts with the first
- * save. `expired`: settings stay visible, saving needs Premium.
+ * Cloudy decides and enforces the plan. There is no free trial: `new` means
+ * no Premium (settings can be viewed, saving needs Premium). `trial` only
+ * appears for a server that already had one before; it runs out by itself.
  */
 export type Plan = {
   status: 'owner' | 'premium' | 'trial' | 'new' | 'expired';
   canSave: boolean;
   until: string | null;
   priceEur: number;
-  trialDays: number;
+  /** Old field, no longer used: Cloudy Bot has no free trial. */
+  trialDays?: number;
   /** True while a paid Cloudy Store subscription renews automatically. */
   renews?: boolean;
 };
