@@ -25,3 +25,9 @@ Payments are taken by Tip4Serv. The signed webhook (`app/api/tip4serv/webhook`) 
 - Set `CLOUDY_DASHBOARD_API_SECRET` (same value on Railway and Vercel), `CLOUDY_PREMIUM_PRODUCTS`, `CLOUDY_PREMIUM_CHECKOUT`, `TIP4SERV_WEBHOOK_SECRET`, `TIP4SERV_STORE_ID`.
 - Run a Tip4Serv test-mode purchase on a preview and confirm Premium appears; check in the Tip4Serv sandbox whether a renewal also sends `payment.success` (revenue in the ledger depends on it).
 - Rust kits: keep `CLOUDY_RUST_KIT_PRODUCTS` empty until the commercial rules are checked and a real server delivery test passed (see the bot's `docs/billing-and-rust-delivery.md`).
+
+## Customers, staff and onboarding
+
+- **My orders** (`/account/orders`) and receipts (`/account/receipt/<id>`): a payment shows for a signed-in customer only through a proven identity (the Cloudy account the webhook matched, their Discord login, or a Discord/Steam account linked through OAuth); never through an email address alone. Ledger entries are filed under hashed identity folders when saved (`customers/`) and ownership is checked again on read. Payments logged before this change are not filed and do not appear.
+- **Kit deliveries** (`/admin/deliveries`): staff in `CLOUDY_STAFF_ADMINS` (else `CLOUDY_FINANCE_ADMINS`) with a Discord ID; Cloudy checks again that this Discord user is its owner.
+- **Cloudy Bot setup**: "Invite Cloudy" watches for Cloudy to join and continues to the server's dashboard; the overview shows a setup checklist from Cloudy's real settings. The bot posts one setup message with the dashboard link when it joins a customer's server once `CLOUDY_DASHBOARD_URL` is set on Railway.

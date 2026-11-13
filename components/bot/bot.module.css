@@ -427,3 +427,27 @@
 
 /* iPhone Safari zooms into fields below 16px when they get focus. */
 @media (max-width: 700px) { .input, .select, .textarea { font-size: 16px; } }
+
+/* ---------- setup checklist and invite watcher ---------- */
+.setup { padding: 22px; display: grid; gap: 16px; }
+.setupHead { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.setupHead p { margin: 6px 0 0; }
+.setupCount { font-size: 13px; color: var(--b-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.setupCount b { font-size: 22px; color: #fff; font-weight: var(--cloudy-type-weight); }
+.setupBar { height: 4px; border-radius: 999px; background: rgba(255, 255, 255, .08); overflow: hidden; }
+.setupBar span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--b-red), var(--b-red-2)); box-shadow: 0 0 10px rgba(229, 27, 46, .5); transition: width .4s ease; }
+.setupList { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.setupStep { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 14px; border: 1px solid var(--b-line); border-radius: 12px; background: rgba(255, 255, 255, .015); }
+.setupStep[data-done="true"] { opacity: .78; }
+.setupMark { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--b-line-2); color: #050505; }
+.setupStep[data-done="true"] .setupMark { background: var(--b-green); border-color: var(--b-green); box-shadow: 0 0 10px rgba(0, 196, 157, .45); }
+.setupText { min-width: 0; }
+.setupText strong { display: block; font-size: 14px; font-weight: var(--cloudy-type-weight); letter-spacing: -0.01em; }
+.setupText p { margin: 3px 0 0; font-size: 12.5px; line-height: 1.6; color: var(--b-soft); overflow-wrap: anywhere; }
+.inviteWrap { display: inline-grid; gap: 8px; justify-items: start; }
+.inviteStatus { font-size: 12px; line-height: 1.6; color: var(--b-soft); max-width: 340px; }
+@media (max-width: 620px) {
+  .setupStep { grid-template-columns: 26px minmax(0, 1fr); }
+  .setupStep > a { grid-column: 2; justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) { .setupBar span { transition: none; } }

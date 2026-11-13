@@ -3,11 +3,12 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import type { Route } from 'next';
 import { notFound, redirect } from 'next/navigation';
-import { AlertTriangle, Plus, ShieldOff } from 'lucide-react';
+import { AlertTriangle, ShieldOff } from 'lucide-react';
 import { SiDiscord } from 'react-icons/si';
 import { loadGuildContext } from '@/lib/bot-dashboard/guild-context';
 import { GROUPS, MODULES } from '@/lib/bot-dashboard/modules';
 import { DashboardShell } from '@/components/bot/dashboard-shell';
+import { InviteButton } from '@/components/bot/invite-button';
 import styles from '@/components/bot/bot.module.css';
 
 export const metadata: Metadata = { title: 'Cloudy Bot | Dashboard', robots: { index: false, follow: false } };
@@ -46,7 +47,7 @@ export default async function GuildLayout({ children, params }: { children: Reac
     case 'not-installed':
       return (
         <Blocked title={`Cloudy is not in ${context.guildName} yet`} text="Add Cloudy to this server to manage it here."
-          action={<>{context.inviteUrl ? <a className={`${styles.button} ${styles.buttonSmall}`} href={context.inviteUrl} target="_blank" rel="noopener noreferrer"><Plus size={15} aria-hidden="true" /> Invite Cloudy</a> : null}{back}</>} />
+          action={<>{context.inviteUrl ? <InviteButton guildId={guildId} guildName={context.guildName} inviteUrl={context.inviteUrl} /> : null}{back}</>} />
       );
     case 'offline':
       return <Blocked title="Cloudy did not answer" text={`Cloudy could not load ${context.guildName} right now. Nothing was changed. Please try again in a moment.`} action={<><Link className={`${styles.button} ${styles.buttonSmall}`} href={`/bot/${guildId}` as Route}>Try again</Link>{back}</>} />;
