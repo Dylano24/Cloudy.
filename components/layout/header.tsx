@@ -128,7 +128,7 @@ export function Header() {
     ['Store', '/shop'],
     ...(siteSections.webSolutions ? ([['Web solutions', '/service']] as const) : []),
     ...(siteSections.vpn ? ([['VPN', '/vpn']] as const) : []),
-    ['Bot', '/bot'],
+    ['Cloudy Bot', '/bot'],
   ] as const;
 
   return (
