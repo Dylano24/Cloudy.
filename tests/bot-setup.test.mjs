@@ -32,18 +32,3 @@ test('missing permissions point to a fresh invite that updates Cloudy\'s role', 
   assert.equal(step.external, true);
   assert.equal(step.href, base.inviteUrl);
 });
-
-test('the dashboard demo exists only on previews and a developer machine, never in production', () => {
-  const { demoAllowed, demoValues, DEMO_GUILD } = loadTypeScript('lib/bot-dashboard/demo.ts');
-  assert.equal(demoAllowed({ VERCEL_ENV: 'preview' }), true);
-  assert.equal(demoAllowed({ VERCEL_ENV: 'production' }), false);
-  assert.equal(demoAllowed({ VERCEL_ENV: 'production', CLOUDY_DASHBOARD_DEMO: '1', NODE_ENV: 'development' }), false);
-  assert.equal(demoAllowed({ NODE_ENV: 'development' }), true);
-  assert.equal(demoAllowed({}), false);
-  assert.equal(DEMO_GUILD.name, 'Demo server');
-  const { MODULES } = loadTypeScript('lib/bot-dashboard/modules.ts');
-  for (const module of MODULES.filter(entry => entry.kind === 'settings')) {
-    const values = demoValues(module);
-    for (const section of module.sections) for (const field of section.fields) assert.ok(field.path in values, `${module.id}: ${field.path}`);
-  }
-});

@@ -12,14 +12,12 @@ export type SetupInput = {
   logging: Record<string, unknown> | null;
   welcome: Record<string, unknown> | null;
   plan: Plan;
-  /** Where this server's dashboard lives (default /bot/<server id>). */
-  base?: string;
 };
 
 const isId = (value: unknown) => typeof value === 'string' && /^\d{17,20}$/.test(value);
 
-export function setupSteps({ guildId, missingPermissions, inviteUrl, logging, welcome, plan, base: basePath }: SetupInput): SetupStep[] {
-  const base = basePath || `/bot/${guildId}`;
+export function setupSteps({ guildId, missingPermissions, inviteUrl, logging, welcome, plan }: SetupInput): SetupStep[] {
+  const base = `/bot/${guildId}`;
   const hasLogs = Boolean(logging && ['logging.channels.audit', 'logging.channels.applications', 'logging.channels.reports'].some(key => isId(logging[key])));
   const hasWelcome = Boolean(welcome && welcome.enabled === true && isId(welcome.channelId));
   const planDone = plan.status === 'premium' || plan.status === 'owner';

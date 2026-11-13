@@ -9,10 +9,6 @@ export type DashboardData = {
   roles: BotRole[];
   csrf: string;
   plan: Plan;
-  /** Where this dashboard's pages live (default /bot/<server id>). */
-  base?: string;
-  /** Preview-only demo with sample data: nothing is sent to Cloudy. */
-  demo?: boolean;
 };
 
 type DashboardValue = DashboardData & { setPlan: (plan: Plan) => void };

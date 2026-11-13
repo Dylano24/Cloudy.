@@ -33,7 +33,7 @@ const questions = [
   },
 ];
 
-export function BotLanding({ loginError, next, demoHref = null }: { loginError: string | null; next: string; demoHref?: string | null }) {
+export function BotLanding({ loginError, next }: { loginError: string | null; next: string }) {
   const loginHref = `/api/bot/auth/login${next !== '/bot' ? `?next=${encodeURIComponent(next)}` : ''}`;
   const consentHref = `/api/bot/auth/login?consent=1${next !== '/bot' ? `&next=${encodeURIComponent(next)}` : ''}`;
   const error = loginError === 'consent' ? null : loginError ? LOGIN_ERRORS[loginError] || LOGIN_ERRORS.failed : null;
@@ -52,8 +52,6 @@ export function BotLanding({ loginError, next, demoHref = null }: { loginError: 
               <a href={loginError === 'consent' ? consentHref : loginHref} className={styles.button}>
                 <SiDiscord size={18} aria-hidden="true" /> {loginError === 'consent' ? 'Allow server access' : 'Log in with Discord'}
               </a>
-              {/* Preview deployments only: the dashboard with sample data, without a login. */}
-              {demoHref ? <a href={demoHref} className={styles.buttonGhost}>View the demo dashboard</a> : null}
             </div>
             <div className={styles.heroStatus}>
               <Suspense fallback={<StatusPlaceholder />}><BotStatusPill /></Suspense>

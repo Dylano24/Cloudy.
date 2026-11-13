@@ -31,7 +31,7 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
   const [leaving, setLeaving] = useState(false);
   const sidebarRef = useRef<HTMLElement>(null);
   const switcherRef = useRef<HTMLDivElement>(null);
-  const base = data.base || `/bot/${data.guild.id}`;
+  const base = `/bot/${data.guild.id}`;
 
   // Close the phone drawer and the server menu after navigation.
   useEffect(() => { setDrawerOpen(false); setSwitcherOpen(false); }, [pathname]);
@@ -95,7 +95,7 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
             {switcherOpen ? (
               <nav className={styles.switcherMenu} aria-label="Switch server">
                 {servers.map(server => (
-                  <Link key={server.id} href={(data.demo ? base : `/bot/${server.id}`) as Route} aria-current={server.id === data.guild.id}>
+                  <Link key={server.id} href={`/bot/${server.id}` as Route} aria-current={server.id === data.guild.id}>
                     <GuildIcon name={server.name} url={server.iconUrl} />
                     <span>{server.name}</span>
                   </Link>
@@ -139,11 +139,9 @@ export function DashboardShell({ data, user, servers, groups, modules, children 
           <div className={styles.sidebarFoot}>
             <img className={`${styles.avatar} ${styles.avatarSmall}`} src={user.avatarUrl} alt="" width={34} height={34} decoding="async" />
             <span className={styles.who}><strong>{user.name}</strong><span>@{user.username}</span></span>
-            {data.demo ? null : (
-              <button type="button" className={styles.iconButton} onClick={logout} disabled={leaving} aria-label="Log out of the dashboard" title="Log out">
-                <LogOut size={16} aria-hidden="true" />
-              </button>
-            )}
+            <button type="button" className={styles.iconButton} onClick={logout} disabled={leaving} aria-label="Log out of the dashboard" title="Log out">
+              <LogOut size={16} aria-hidden="true" />
+            </button>
             <button type="button" className={`${styles.iconButton} ${styles.closeDrawer}`} onClick={() => setDrawerOpen(false)} aria-label="Close dashboard menu">
               <X size={16} aria-hidden="true" />
             </button>

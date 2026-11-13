@@ -18,7 +18,7 @@ export function PlanNavPill() {
 
 /** Plan strip shown on the overview and on every module page. */
 export function PlanBanner() {
-  const { plan, guild, base } = useDashboard();
+  const { plan, guild } = useDashboard();
   const info = describePlan(plan);
   if (plan.status === 'owner' || plan.status === 'premium') return null;
   return (
@@ -28,7 +28,7 @@ export function PlanBanner() {
         <span className={`${styles.pill} ${PILL_TONE[info.tone]}`}>{info.label}</span>
         <p>{info.text}</p>
       </div>
-      <Link href={`${base || `/bot/${guild.id}`}/plan` as Route} className={`${styles.button} ${styles.buttonSmall}`}>
+      <Link href={`/bot/${guild.id}/plan` as Route} className={`${styles.button} ${styles.buttonSmall}`}>
         Get Premium · {PRICE_LABEL}
       </Link>
     </div>
