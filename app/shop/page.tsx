@@ -4,6 +4,7 @@ import styles from './shop.module.css';
 import { GameCarousel } from '@/components/home/game-carousel';
 import { StorePanelSync } from '@/components/shop/store-panel-sync';
 import RustKitPreview from '@/components/shop/rust-kit-preview';
+import { kitProductSlugs } from '@/lib/kit-products';
 
 type ShopPageProps = { searchParams: Promise<{ game?: string; view?: string }> };
 
@@ -45,7 +46,7 @@ function StatusCount({ label, count, online }: { label: string; count: number | 
 
 export default async function ShopPage({ searchParams }: ShopPageProps) {
   const { game } = await searchParams;
-  if (game === 'rust') return <RustKitPreview />;
+  if (game === 'rust') return <RustKitPreview productSlugs={kitProductSlugs()} />;
 
   return (
     <main className={`${styles.page} cloudy-store-page`}>

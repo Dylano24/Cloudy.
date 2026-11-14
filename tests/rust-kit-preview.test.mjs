@@ -14,19 +14,24 @@ function setup() {
 }
 const buttons = tree => elements(tree, node => node.type === 'button');
 
-test('Buy shows only the requested preview notice without creating a checkout link', () => {
+test('Buy opens the kit\'s real product page; a kit without a product says it is not on sale yet', () => {
+  const imports = { 'next/link': 'a', 'next/image': 'img', '@/lib/rust-items.json': JSON.parse(readFileSync(new URL('../lib/rust-items.json', import.meta.url), 'utf8')) };
+  const { previewKits } = loadTypeScript('lib/rust-kit-preview.ts', { imports });
   const h = componentHarness();
-  const { KitPreviewCard } = loadTypeScript('components/shop/rust-kit-preview.tsx', {
-    imports: { react: h.react, 'next/link': 'a', 'next/image': 'img', '@/lib/rust-items.json': JSON.parse(readFileSync(new URL('../lib/rust-items.json', import.meta.url), 'utf8')) },
-  });
-  const { previewKits } = loadTypeScript('lib/rust-kit-preview.ts', { imports: { '@/lib/rust-items.json': JSON.parse(readFileSync(new URL('../lib/rust-items.json', import.meta.url), 'utf8')) } });
+  const { KitPreviewCard } = loadTypeScript('components/shop/rust-kit-preview.tsx', { imports: { react: h.react, ...imports } });
   h.mount(KitPreviewCard, { kit: previewKits[0], server: 'Server 2' });
-  buttons(h.tree).find(node => node.props['aria-label'] === 'Preview purchase of VIP kit').props.onClick();
+  buttons(h.tree).find(node => node.props['aria-label'] === 'Buy VIP kit').props.onClick();
   let tree = h.render();
-  assert.equal(textContent(elements(tree, node => node.props.role === 'status')), 'Preview only');
-  tree = h.update({ kit: previewKits[0], server: 'Server 3' });
-  assert.equal(textContent(elements(tree, node => node.props.role === 'status')), 'Preview only');
+  assert.match(textContent(elements(tree, node => node.props.role === 'status')), /not on sale yet/);
+  assert.doesNotMatch(textContent(tree), /preview/i);
   assert.equal(elements(tree, node => node.type === 'a' || node.type === 'form').length, 0);
+
+  const sold = componentHarness();
+  const loaded = loadTypeScript('components/shop/rust-kit-preview.tsx', { imports: { react: sold.react, ...imports } });
+  tree = sold.mount(loaded.KitPreviewCard, { kit: previewKits[0], server: 'Server 2', productSlug: 'vip-kit' });
+  const link = elements(tree, node => node.type === 'a' && node.props['aria-label'] === 'Buy VIP kit')[0];
+  assert.equal(link.props.href, '/product/vip-kit');
+  assert.doesNotMatch(textContent(tree), /preview/i);
 });
 
 test('choosing any of the three servers updates every visible kit without adding products to a cart', () => {

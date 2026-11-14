@@ -57,7 +57,7 @@ export function KitInventory({ kit }: { kit: PreviewKit }) {
   );
 }
 
-export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: string }) {
+export function KitPreviewCard({ kit, server, productSlug = null }: { kit: PreviewKit; server: string; productSlug?: string | null }) {
   const [purchaseNotice, setPurchaseNotice] = useState(false);
   return (
     <article className={`${styles.card} cloudy-traced-panel cloudy-store-traced-panel`} aria-labelledby={`title-${kit.id}`}>
@@ -73,17 +73,19 @@ export function KitPreviewCard({ kit, server }: { kit: PreviewKit; server: strin
           <KitInventory kit={kit} />
         </details>
         <div className={styles.priceRow}>
-          <div><span>Preview price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
-          <button type="button" className={`${buyButton.button} ${buyButton.kitButton}`} onClick={() => setPurchaseNotice(true)} aria-label={`Preview purchase of ${kit.name}`}>Buy</button>
+          <div><span>Price</span><strong>{kit.price === null ? '—' : `€${kit.price.toFixed(2)}`}</strong></div>
+          {productSlug
+            ? <Link href={`/product/${encodeURIComponent(productSlug)}`} className={`${buyButton.button} ${buyButton.kitButton}`} aria-label={`Buy ${kit.name}`}>Buy</Link>
+            : <button type="button" className={`${buyButton.button} ${buyButton.kitButton}`} onClick={() => setPurchaseNotice(true)} aria-label={`Buy ${kit.name}`}>Buy</button>}
         </div>
-        {purchaseNotice && <p className={styles.purchaseNotice} role="status">Preview only</p>}
+        {purchaseNotice && <p className={styles.purchaseNotice} role="status">This kit is not on sale yet. Check back soon or ask in the Cloudy Discord.</p>}
         <div className={styles.cardServer}><span>{server}</span></div>
       </div>
     </article>
   );
 }
 
-export default function RustKitPreview() {
+export default function RustKitPreview({ productSlugs = {} }: { productSlugs?: Record<string, string> }) {
   const [server, setServer] = useState(1);
   const [category, setCategory] = useState<(typeof categories)[number]>('All kits');
   const [query, setQuery] = useState('');
@@ -128,7 +130,7 @@ export default function RustKitPreview() {
             <div className={styles.search}><Search size={16} aria-hidden="true" /><input type="search" aria-label="Search kits" placeholder="Search kits" value={query} onChange={event => setQuery(event.target.value)} /></div>
           </div>
           <div className={styles.results} role="status"><span>{kits.length} {kits.length === 1 ? 'kit' : 'kits'}<i />{serverName}</span></div>
-          {kits.length ? <div className={styles.kitGrid}>{kits.map(kit => <KitPreviewCard key={kit.id} kit={kit} server={serverName} />)}</div> : <div className={styles.empty}><Search size={28} /><h3>No kits found</h3><button type="button" onClick={() => { setQuery(''); setCategory('All kits'); }}>Reset filters<ArrowRight size={15} /></button></div>}
+          {kits.length ? <div className={styles.kitGrid}>{kits.map(kit => <KitPreviewCard key={kit.id} kit={kit} server={serverName} productSlug={productSlugs[kit.id] || null} />)}</div> : <div className={styles.empty}><Search size={28} /><h3>No kits found</h3><button type="button" onClick={() => { setQuery(''); setCategory('All kits'); }}>Reset filters<ArrowRight size={15} /></button></div>}
         </section>
       </div>
     </div>
