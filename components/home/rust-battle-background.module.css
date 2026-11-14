@@ -1,23 +1,25 @@
-/* The homepage's Rust backdrop. Fixed behind the content (above the page's own
-   gradient, below the smoke), with a dark shade so every text stays readable. */
+/* The homepage's Rust raid backdrop. Fixed behind the content, with a light
+   shade so every text stays readable. The gradient shows until the canvas has
+   painted. On phones the layer keeps the large viewport height, so the
+   scenery is not repainted while the browser bars slide in and out. */
 .layer {
   position: fixed;
   z-index: -3;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
   pointer-events: none;
   overflow: hidden;
   contain: strict;
+  background: linear-gradient(180deg, #03040a 0%, #0a0b17 38%, #1f0e15 58%, #6a2814 67%, #090506 70%, #040203 100%);
 }
 .scene {
   position: absolute;
   inset: 0;
-  transform: scale(1.04);
-  animation: rust-drift 38s ease-in-out infinite alternate;
-}
-.picture {
-  object-fit: cover;
-  object-position: 50% 50%;
-  filter: saturate(.85) contrast(1.05);
+  transform: scale(1.03);
+  animation: rust-drift 46s ease-in-out infinite alternate;
 }
 .canvas {
   position: absolute;
@@ -31,11 +33,11 @@
 }
 .shade {
   background:
-    radial-gradient(ellipse 75% 60% at 50% 38%, rgba(3, 3, 3, .18), rgba(3, 3, 3, .66) 78%),
-    linear-gradient(180deg, rgba(3, 3, 3, .5) 0%, rgba(3, 3, 3, .34) 30%, rgba(3, 3, 3, .5) 62%, rgba(3, 3, 3, .9) 100%);
+    radial-gradient(ellipse 60% 42% at 50% 34%, rgba(3, 3, 3, .34), rgba(3, 3, 3, 0) 72%),
+    linear-gradient(180deg, rgba(3, 3, 3, .3) 0%, rgba(3, 3, 3, .08) 30%, rgba(3, 3, 3, .1) 70%, rgba(3, 3, 3, .55) 100%);
 }
-/* Past the hero the artwork steps back so the sections read clearly. Browsers
-   without scroll-driven animations keep the hero's shade, which is readable too. */
+/* Past the hero the scene steps back so the sections read clearly. Browsers
+   without scroll-driven animations keep a middle shade, which is readable too. */
 .dim {
   background: rgba(3, 3, 3, .5);
   opacity: .6;
@@ -52,12 +54,8 @@
   to { opacity: 1; }
 }
 @keyframes rust-drift {
-  from { transform: scale(1.04) translate3d(0, 0, 0); }
-  to { transform: scale(1.09) translate3d(-1%, -.6%, 0); }
-}
-@media (max-width: 700px) {
-  /* Keep the rifle in view on a tall phone screen (matches OBJECT_POSITION.phone). */
-  .picture { object-position: 37% 50%; }
+  from { transform: scale(1.03) translate3d(0, 0, 0); }
+  to { transform: scale(1.06) translate3d(-.6%, -.4%, 0); }
 }
 @media (prefers-reduced-motion: reduce) {
   .scene { animation: none; }
