@@ -25,20 +25,20 @@ function run({ phone, seconds, seed = 7 }) {
   const [width, height] = phone ? [390, 844] : [1440, 900];
   scene.resize(width, height, 1);
   const screen = fakeSurface(width, height);
-  const seen = { heli: false, drop: false, rockets: 0, max: { puffs: 0, sparks: 0, tracers: 0 } };
+  const seen = { heli: false, drop: false, explosions: 0, max: { puffs: 0, sparks: 0 } };
   for (let frame = 0; frame < seconds * 40; frame++) {
     scene.step(1 / 40);
     if (frame % 4 === 0) scene.draw(screen.getContext('2d'));
     const stats = scene.stats();
-    seen.heli ||= stats.heli; seen.drop ||= stats.drop; seen.rockets = Math.max(seen.rockets, stats.rockets);
+    seen.heli ||= stats.heli; seen.drop ||= stats.drop; seen.explosions = stats.explosions;
     for (const key of Object.keys(seen.max)) seen.max[key] = Math.max(seen.max[key], stats[key]);
   }
   return { seen, screen, scene };
 }
 
-test('the raid plays out for two minutes: rockets, a helicopter and an airdrop, nothing throws', () => {
+test('two minutes of the night: a helicopter patrol, an airdrop and C4, nothing throws', () => {
   const { seen, screen } = run({ phone: false, seconds: 120 });
-  assert.ok(seen.rockets > 0, 'rockets were fired');
+  assert.ok(seen.explosions > 0, 'C4 went off');
   assert.ok(seen.heli, 'the helicopter flew over');
   assert.ok(seen.drop, 'a supply drop happened');
   assert.ok(screen.calls.drawImage > 0, 'the scene was drawn');
@@ -46,18 +46,23 @@ test('the raid plays out for two minutes: rockets, a helicopter and an airdrop, 
 
 test('effects stay within their limits, lower on phones', () => {
   const desktop = run({ phone: false, seconds: 90, seed: 3 }).seen.max;
-  assert.ok(desktop.puffs <= 260 && desktop.sparks <= 260 && desktop.tracers <= 110, JSON.stringify(desktop));
+  assert.ok(desktop.puffs <= 260 && desktop.sparks <= 260, JSON.stringify(desktop));
   const phone = run({ phone: true, seconds: 90, seed: 3 }).seen.max;
-  assert.ok(phone.puffs <= 140 && phone.sparks <= 140 && phone.tracers <= 60, JSON.stringify(phone));
+  assert.ok(phone.puffs <= 140 && phone.sparks <= 140, JSON.stringify(phone));
 });
 
 test('a resize starts the raid again from the new layout', () => {
   const { scene } = run({ phone: false, seconds: 20 });
   scene.resize(1280, 720, 1);
   const stats = scene.stats();
-  assert.equal(stats.rockets, 0);
   assert.equal(stats.heli, false);
+  assert.equal(stats.drop, false);
   assert.ok(stats.fires >= 2, 'bases are already burning');
+});
+
+test('nobody shoots: no tracers, rockets or muzzle flashes in the scene', () => {
+  const scene = readFileSync(new URL('../components/home/rust-battle-scene.ts', import.meta.url), 'utf8');
+  assert.doesNotMatch(scene, /tracer|launchRocket|muzzle|burst\(|flyby/i);
 });
 
 test('the homepage backdrop is drawn in code: no photo, no red star field', () => {

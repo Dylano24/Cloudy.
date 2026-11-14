@@ -1,9 +1,9 @@
-// The homepage's Rust raid night, drawn entirely in code (no photos): a night
-// sky with a moon and drifting clouds, mountains, a launch tower, power
-// pylons, a pine forest, walled player bases and a sandbag foreground. On top
-// of it a raid plays out: rockets with smoke trails, explosions with shock
-// rings and sparks, C4 on a wall, an attack helicopter with a searchlight,
-// flares, searchlights, tracer fire and burning bases.
+// The homepage's Rust night, drawn entirely in code (no photos): a night sky
+// with a moon and drifting clouds, mountains, a launch tower, power pylons, a
+// pine forest, walled player bases and a sandbag foreground. Nobody shoots:
+// bases burn and smoke, searchlights sweep the sky, a helicopter patrols with
+// its searchlight, flares drift down, a cargo plane drops a supply crate with
+// purple signal smoke, and now and then C4 goes off on a wall.
 //
 // The scenery is painted once per resize into a few layers; every frame only
 // the layers and the effects are drawn. No React here, so it can be tested
@@ -29,21 +29,19 @@ export function seeded(seed: number) {
 
 // ------------------------------------------------------------------ effects
 
-type Rocket = { sx: number; sy: number; cx: number; cy: number; tx: number; ty: number; t: number; dur: number; s0: number; s1: number; big: boolean; trail: number; near: boolean };
 type Blast = { x: number; y: number; r: number; life: number; max: number };
 type Ring = { x: number; y: number; r: number; life: number; max: number };
 type Spark = { x: number; y: number; vx: number; vy: number; life: number; max: number; size: number };
 type Puff = { x: number; y: number; vx: number; vy: number; r: number; grow: number; alpha: number; life: number; max: number; signal?: boolean };
-type Tracer = { x: number; y: number; vx: number; vy: number; life: number; max: number; len: number; width: number; hostile: boolean; near: boolean };
 type Flash = { x: number; y: number; r: number; life: number; max: number; alpha: number };
 type Fire = { x: number; y: number; s: number; heat: number; decay: number; ember: number; smoke: number; seed: number };
-type Heli = { x: number; y: number; dir: 1 | -1; speed: number; t: number; attack: number; gun: number };
-type Flare = { x: number; y: number; vy: number; t: number; rise: number; fromX: number; fromY: number; topY: number; life: number };
+type Heli = { x: number; y: number; dir: 1 | -1; speed: number; t: number };
+type Flare = { x: number; y: number; vy: number; t: number; life: number };
 type Charge = { x: number; y: number; t: number; dur: number };
 type Drop = { x: number; y: number; dir: 1 | -1; speed: number; t: number; target: Point; crate: { x: number; y: number; t: number; landed: number } | null; dropped: boolean; signal: number };
 type Compound = { targets: Point[]; windows: { x: number; y: number; w: number; h: number; seed: number }[]; tower: Point; fire: Point[] };
 
-export type SceneStats = { rockets: number; sparks: number; puffs: number; tracers: number; fires: number; heli: boolean; drop: boolean };
+export type SceneStats = { sparks: number; puffs: number; fires: number; explosions: number; heli: boolean; drop: boolean };
 
 export function createBattleScene({ phone, makeSurface, random = Math.random }: { phone: boolean; makeSurface: MakeSurface; random?: () => number }) {
   const rand = (min: number, max: number) => min + random() * (max - min);
@@ -53,20 +51,20 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
   // Each layer covers only the band of the screen it paints, to keep every frame cheap.
   type Layer = { surface: Surface; top: number; height: number };
   let layers: { back: Layer; near: Layer; front: Layer; clouds: Layer; fog: Layer } | null = null;
-  let compounds: Compound[] = [], shooters: Point[] = [], stacks: Point[] = [], beacon: Point = { x: 0, y: 0 };
+  let compounds: Compound[] = [], stacks: Point[] = [], beacon: Point = { x: 0, y: 0 };
   let groundTargets: Point[] = [], campfires: Point[] = [];
 
-  const rockets: Rocket[] = [], blasts: Blast[] = [], rings: Ring[] = [], sparks: Spark[] = [], puffs: Puff[] = [];
-  const tracers: Tracer[] = [], flashes: Flash[] = [], lights: Flash[] = [], fires: Fire[] = [], flares: Flare[] = [], charges: Charge[] = [];
+  const blasts: Blast[] = [], rings: Ring[] = [], sparks: Spark[] = [], puffs: Puff[] = [];
+  const lights: Flash[] = [], fires: Fire[] = [], flares: Flare[] = [], charges: Charge[] = [];
   let heli: Heli | null = null;
   let drop: Drop | null = null;
   const queue: { at: number; run: () => void }[] = [];
   const later = (delay: number, run: () => void) => queue.push({ at: now + delay, run });
-  let now = 0, shake = 0, whiteout = 0;
+  let now = 0, shake = 0, whiteout = 0, explosions = 0;
   const pointer = { x: 0, y: 0 };
   let aim = { x: 0, y: 0 };
-  const timers = { rocket: 1.2, burst: 0.3, flyby: 6, heli: 3.5, flare: 2.2, charge: 8, stack: 0, drop: 11 };
-  const cap = phone ? { puffs: 140, sparks: 140, tracers: 60 } : { puffs: 260, sparks: 260, tracers: 110 };
+  const timers = { heli: 3.5, flare: 2.2, charge: 7, stack: 0, drop: 11 };
+  const cap = phone ? { puffs: 140, sparks: 140 } : { puffs: 260, sparks: 260 };
 
   // ------------------------------------------------------------- sprites
 
@@ -296,7 +294,6 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
     // The bases being raided.
     const spots = phone ? [0.18, 0.62] : [0.13, 0.5, 0.9];
     compounds = spots.map(f => compound(g, rng, W * f, horizon + 16 * S, S * (phone ? 0.85 : 1)));
-    shooters = Array.from({ length: phone ? 6 : 12 }, () => ({ x: rng() * W, y: horizon + (6 + rng() * 10) * S }));
     paintGround(g, rng);
   }
 
@@ -341,7 +338,7 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       g.beginPath(); g.ellipse(x, y - r * 0.05, r * 1.05, r * 0.36, 0, Math.PI * 1.05, Math.PI * 1.95); g.stroke();
       groundTargets.push({ x, y });
     }
-    // Wooden barricades, with someone shooting from behind each.
+    // Wooden barricades.
     g.strokeStyle = '#070405'; g.lineCap = 'round';
     for (let i = 0; i < (phone ? 3 : 6); i++) {
       const x = W * (0.06 + rng() * 0.88), y = top + (low - top) * (0.2 + rng() * 0.6), d = depth(y);
@@ -353,7 +350,6 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       }
       g.moveTo(x - 4 * d, y - 9 * d); g.lineTo(x + 46 * d, y - 9 * d);
       g.stroke();
-      shooters.push({ x: x + 20 * d, y: y - 14 * d });
     }
     g.lineCap = 'butt';
     // Dead trees.
@@ -430,13 +426,13 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
   // ------------------------------------------------------------- spawning
 
   const push = <T,>(list: T[], item: T, limit: number) => { list.push(item); if (list.length > limit) list.splice(0, list.length - limit); };
-  const target = () => (groundTargets.length && random() < 0.25 ? pick(groundTargets) : pick(pick(compounds).targets));
 
   function puff(x: number, y: number, r: number, life: number, alpha = 0.7, vy = -10 * S, signalSmoke = false) {
     push(puffs, { x, y, vx: rand(4, 14) * S, vy, r, grow: r * rand(0.5, 1), alpha, life: 0, max: life, signal: signalSmoke }, cap.puffs);
   }
 
   function explode(x: number, y: number, size: number, big = false) {
+    explosions++;
     push(blasts, { x, y, r: size, life: 0, max: big ? 0.75 : 0.5 }, 30);
     push(rings, { x, y, r: size * (big ? 5 : 3.2), life: 0, max: big ? 0.55 : 0.4 }, 20);
     push(lights, { x, y, r: size * (big ? 16 : 9), life: 0, max: big ? 0.6 : 0.35, alpha: big ? 0.55 : 0.32 }, 20);
@@ -455,66 +451,25 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
     else push(fires, { x, y, s: S * rand(0.8, 1.2) * (big ? 1.4 : 1), heat: 1, decay: rand(0.025, 0.05), ember: 0, smoke: 0, seed: rand(0, 100) }, phone ? 6 : 10);
   }
 
-  function launchRocket(from: 'left' | 'right' | 'heli' | 'forest', to = target()) {
-    let sx: number, sy: number, s0: number, near = false;
-    if (from === 'left' || from === 'right') {
-      sx = from === 'left' ? -W * 0.04 : W * 1.04; sy = H * 1.02; s0 = 2.2; near = true;
-    } else if (from === 'heli' && heli) {
-      sx = heli.x + heli.dir * 12 * S; sy = heli.y + 12 * S; s0 = 0.9;
-    } else {
-      const shooter = pick(shooters); sx = shooter.x; sy = shooter.y; s0 = 0.6;
-    }
-    const cx = (sx + to.x) / 2 + rand(-0.1, 0.1) * W, cy = Math.min(sy, to.y) - H * rand(0.08, near ? 0.32 : 0.14);
-    rockets.push({ sx, sy, cx, cy, tx: to.x, ty: to.y, t: 0, dur: near ? rand(1.3, 1.8) : rand(0.8, 1.2), s0, s1: 0.55, big: near && random() < 0.35, trail: 0, near });
-  }
-
-  function burst(from: Point, to: Point, rounds: number, hostile: boolean, near = false) {
-    const angle = Math.atan2(to.y - from.y, to.x - from.x);
-    const speed = (near ? 2400 : rand(650, 900)) * S;
-    for (let i = 0; i < rounds; i++) {
-      const a = angle + rand(-0.05, 0.05);
-      push(tracers, { x: from.x, y: from.y, vx: Math.cos(a) * speed, vy: Math.sin(a) * speed, life: -i * 0.09, max: near ? 0.9 : rand(0.5, 0.9), len: near ? 0.07 : 0.035, width: (near ? 3 : 1.3) * S, hostile, near }, cap.tracers);
-      push(flashes, { x: from.x, y: from.y, r: (near ? 30 : 7) * S, life: -i * 0.09, max: 0.06, alpha: 1 }, 60);
-    }
-  }
-
   function step(dt: number) {
     if (!layers) return;
     now += dt;
     for (let i = queue.length - 1; i >= 0; i--) if (queue[i].at <= now) queue.splice(i, 1)[0].run();
     for (const key of Object.keys(timers) as (keyof typeof timers)[]) timers[key] -= dt;
 
-    if (timers.rocket <= 0) {
-      const source = pick(['left', 'right', 'forest', 'forest'] as const);
-      launchRocket(source);
-      if (source !== 'forest' && random() < 0.5) later(0.26, () => launchRocket(source));
-      timers.rocket = rand(2, 4.2);
-    }
-    if (timers.burst <= 0) {
-      const window = pick(pick(compounds).windows), shooter = pick(shooters);
-      if (random() < 0.5) burst(shooter, { x: window.x, y: window.y }, Math.round(rand(3, 6)), false);
-      else burst({ x: window.x + window.w / 2, y: window.y + window.h / 2 }, shooter, Math.round(rand(3, 6)), true);
-      timers.burst = rand(0.2, 0.7);
-    }
-    if (timers.flyby <= 0) {
-      const left = random() < 0.5, y = H * rand(0.25, 0.75);
-      burst({ x: left ? -40 : W + 40, y }, { x: left ? W + 40 : -40, y: y + H * rand(-0.15, 0.15) }, Math.round(rand(2, 4)), random() < 0.5, true);
-      timers.flyby = rand(5, 9);
-    }
     if (timers.heli <= 0 && !heli) {
       const dir: 1 | -1 = random() < 0.5 ? 1 : -1;
-      heli = { x: dir === 1 ? -160 * S : W + 160 * S, y: H * rand(0.17, 0.28), dir, speed: Math.max(80, W / 11), t: 0, attack: 1.4, gun: 0.8 };
+      heli = { x: dir === 1 ? -160 * S : W + 160 * S, y: H * rand(0.17, 0.28), dir, speed: Math.max(80, W / 11), t: 0 };
     }
     if (timers.flare <= 0 && flares.length < 2) {
-      const from = target();
-      flares.push({ x: from.x, y: from.y, vy: 12 * S, t: 0, rise: 0.7, fromX: from.x, fromY: from.y, topY: H * rand(0.12, 0.26), life: rand(7, 9) });
+      flares.push({ x: W * rand(0.12, 0.88), y: H * rand(0.06, 0.16), vy: 12 * S, t: 0, life: rand(8, 10) });
       timers.flare = rand(9, 14);
     }
     if (timers.charge <= 0) {
       const c = pick(compounds).targets.slice(3);
       const at = pick(c);
       charges.push({ x: at.x, y: at.y, t: 0, dur: 2.6 });
-      timers.charge = rand(13, 20);
+      timers.charge = rand(11, 17);
     }
     if (timers.drop <= 0 && !drop && groundTargets.length) {
       const dir: 1 | -1 = random() < 0.5 ? 1 : -1;
@@ -539,33 +494,16 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       timers.stack = 0.35;
     }
 
-    for (let i = rockets.length - 1; i >= 0; i--) {
-      const r = rockets[i];
-      r.t += dt / r.dur;
-      const p = bezier(r, Math.min(1, r.t));
-      r.trail -= dt;
-      if (r.trail <= 0) { puff(p.x, p.y, 4 * S * scaleOf(r), rand(1.2, 2), 0.55, -4 * S); r.trail = 0.025; }
-      if (r.t >= 1) { rockets.splice(i, 1); explode(r.tx, r.ty, (r.big ? 30 : 20) * S, r.big); }
-    }
     if (heli) {
       heli.t += dt;
       heli.x += heli.dir * heli.speed * dt;
-      heli.attack -= dt; heli.gun -= dt;
-      const over = heli.x > W * 0.08 && heli.x < W * 0.92;
-      if (over && heli.attack <= 0) { launchRocket('heli'); later(0.18, () => launchRocket('heli')); heli.attack = rand(1.6, 2.8); }
-      if (over && heli.gun <= 0) {
-        burst({ x: heli.x + heli.dir * 20 * S, y: heli.y + 14 * S }, target(), 5, true);
-        burst(pick(compounds).tower, { x: heli.x + rand(-40, 40) * S, y: heli.y + rand(-30, 10) * S }, 4, false);
-        heli.gun = rand(0.9, 1.6);
-      }
       if ((heli.dir === 1 && heli.x > W + 200 * S) || (heli.dir === -1 && heli.x < -200 * S)) { heli = null; timers.heli = rand(15, 22); }
     }
     for (let i = flares.length - 1; i >= 0; i--) {
       const f = flares[i];
       f.t += dt;
-      if (f.t < f.rise) { const k = f.t / f.rise; f.x = f.fromX; f.y = f.fromY + (f.topY - f.fromY) * (1 - (1 - k) * (1 - k)); if (random() < 0.6) puff(f.x, f.y, 2.5 * S, 1.4, 0.4, 0); }
-      else { f.y += f.vy * dt; f.x += Math.sin(f.t * 1.4) * 10 * S * dt; }
-      if (f.t > f.rise + f.life) flares.splice(i, 1);
+      f.y += f.vy * dt; f.x += Math.sin(f.t * 1.4) * 10 * S * dt;
+      if (f.t > f.life) flares.splice(i, 1);
     }
     for (let i = charges.length - 1; i >= 0; i--) {
       const c = charges[i];
@@ -581,21 +519,15 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       if (f.smoke <= 0) { puff(f.x + rand(-6, 6) * f.s, f.y - 10 * f.s, 12 * f.s, rand(4, 7), 0.6 * Math.min(1, f.heat), -rand(14, 24) * S); f.smoke = 0.3 / Math.min(1, f.heat + 0.2); }
     }
     const age = <T extends { life: number; max: number }>(list: T[]) => { for (let i = list.length - 1; i >= 0; i--) { list[i].life += dt; if (list[i].life > list[i].max) list.splice(i, 1); } };
-    age(blasts); age(rings); age(sparks); age(puffs); age(tracers); age(flashes); age(lights);
+    age(blasts); age(rings); age(sparks); age(puffs); age(lights);
     for (const s of sparks) { s.x += s.vx * dt; s.y += s.vy * dt; s.vy += 260 * S * dt; s.vx *= 1 - dt * 0.6; }
     for (const p of puffs) if (p.life > 0) { p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.grow * dt; p.vy *= 1 - dt * 0.15; }
-    for (const t of tracers) if (t.life > 0) { t.x += t.vx * dt; t.y += t.vy * dt; }
     shake = Math.max(0, shake - dt * 2.2);
     whiteout = Math.max(0, whiteout - dt * 0.6);
     pointer.x += (aim.x - pointer.x) * Math.min(1, dt * 3);
     pointer.y += (aim.y - pointer.y) * Math.min(1, dt * 3);
   }
 
-  const bezier = (r: Rocket, t: number) => ({
-    x: (1 - t) * (1 - t) * r.sx + 2 * (1 - t) * t * r.cx + t * t * r.tx,
-    y: (1 - t) * (1 - t) * r.sy + 2 * (1 - t) * t * r.cy + t * t * r.ty,
-  });
-  const scaleOf = (r: Rocket) => r.s0 + (r.s1 - r.s0) * Math.min(1, r.t);
 
   // ------------------------------------------------------------- drawing
 
@@ -730,8 +662,7 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
     g.globalCompositeOperation = 'lighter';
     compounds.forEach((c, i) => beam(g, c.tower.x + near.x, c.tower.y + near.y, -Math.PI / 2 + Math.sin(now * 0.35 + i * 2.1) * 0.65, H * 0.8, 0.05, 0.045));
     for (const f of flares) {
-      if (f.t < f.rise) continue;
-      const left = f.rise + f.life - f.t, k = Math.min(1, (f.t - f.rise) * 3) * Math.min(1, left);
+      const k = Math.min(1, f.t * 2) * Math.min(1, f.life - f.t);
       stamp(g, light, f.x + far.x, f.y + far.y, Math.max(W, H) * 0.3, 0.18 * k * (0.85 + Math.sin(now * 23) * 0.15));
     }
     g.globalCompositeOperation = 'source-over';
@@ -772,7 +703,7 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       const k = Math.min(1, p.life * 3) * (1 - p.life / p.max);
       stamp(g, p.signal ? signal : smoke, p.x + near.x, p.y + near.y, p.r, p.alpha * k);
     }
-    // Fire, tracers, rockets.
+    // Explosions.
     g.globalCompositeOperation = 'lighter';
     for (const b of blasts) {
       const k = b.life / b.max, x = b.x + near.x, y = b.y + near.y;
@@ -788,18 +719,6 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       g.strokeStyle = 'rgba(255,226,190,1)'; g.lineWidth = Math.max(1, 3 * S * (1 - k));
       g.beginPath(); g.ellipse(r.x + near.x, r.y + near.y, r.r * k, r.r * k * 0.55, 0, 0, TAU); g.stroke();
     }
-    for (const f of flashes) if (f.life >= 0) stamp(g, glow, f.x + near.x, f.y + near.y, f.r, f.alpha * (1 - f.life / f.max));
-    g.lineCap = 'round';
-    for (const t of tracers) {
-      if (t.life < 0) continue;
-      const k = 1 - t.life / t.max, ox = t.near ? sx : near.x, oy = t.near ? sy : near.y;
-      const tx = t.x - t.vx * t.len + ox, ty = t.y - t.vy * t.len + oy, hx = t.x + ox, hy = t.y + oy;
-      g.globalAlpha = 0.25 * k; g.strokeStyle = t.hostile ? '#ff6a3c' : '#ffcf7a'; g.lineWidth = t.width * 3.5;
-      g.beginPath(); g.moveTo(tx, ty); g.lineTo(hx, hy); g.stroke();
-      g.globalAlpha = 0.95 * k; g.strokeStyle = t.hostile ? '#ffb08a' : '#fff1c8'; g.lineWidth = t.width;
-      g.beginPath(); g.moveTo(tx, ty); g.lineTo(hx, hy); g.stroke();
-    }
-    g.lineCap = 'butt';
     g.strokeStyle = '#ffbf6a'; g.lineCap = 'round';
     for (const s of sparks) {
       const k = 1 - s.life / s.max, x = s.x + near.x, y = s.y + near.y;
@@ -807,15 +726,7 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       g.beginPath(); g.moveTo(x - s.vx * 0.025, y - s.vy * 0.025); g.lineTo(x, y); g.stroke();
     }
     g.lineCap = 'butt';
-    for (const r of rockets) {
-      const p = bezier(r, Math.min(1, r.t)), q = bezier(r, Math.max(0, r.t - 0.04)), s = scaleOf(r);
-      const ox = r.near ? front.x : near.x, oy = r.near ? front.y : near.y;
-      stamp(g, glow, p.x + ox, p.y + oy, 16 * S * s, 1);
-      g.globalAlpha = 0.9; g.strokeStyle = '#fff3d0'; g.lineWidth = 2.4 * S * s; g.lineCap = 'round';
-      g.beginPath(); g.moveTo(q.x + ox, q.y + oy); g.lineTo(p.x + ox, p.y + oy); g.stroke(); g.lineCap = 'butt';
-    }
     for (const f of flares) {
-      if (f.t < f.rise) { stamp(g, glow, f.x + far.x, f.y + far.y, 6 * S, 0.9); continue; }
       stamp(g, glow, f.x + far.x, f.y + far.y, 18 * S * (0.9 + Math.sin(now * 31) * 0.1), 1);
     }
     g.globalCompositeOperation = 'source-over';
@@ -838,7 +749,7 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
       margin = Math.ceil(36 * S);
       paint();
       // New geometry: start the raid again from the new positions.
-      for (const list of [rockets, blasts, rings, sparks, puffs, tracers, flashes, lights, fires, flares, charges, queue] as unknown[][]) list.length = 0;
+      for (const list of [blasts, rings, sparks, puffs, lights, fires, flares, charges, queue] as unknown[][]) list.length = 0;
       heli = null; drop = null; timers.drop = 11;
       // The raid is already under way when the page opens.
       {
@@ -849,6 +760,6 @@ export function createBattleScene({ phone, makeSurface, random = Math.random }: 
     step,
     draw,
     setPointer(x: number, y: number) { aim = { x: Math.max(-1, Math.min(1, x)), y: Math.max(-1, Math.min(1, y)) }; },
-    stats(): SceneStats { return { rockets: rockets.length, sparks: sparks.length, puffs: puffs.length, tracers: tracers.length, fires: fires.length, heli: Boolean(heli), drop: Boolean(drop) }; },
+    stats(): SceneStats { return { sparks: sparks.length, puffs: puffs.length, fires: fires.length, explosions, heli: Boolean(heli), drop: Boolean(drop) }; },
   };
 }
