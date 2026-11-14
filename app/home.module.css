@@ -167,7 +167,7 @@
 }
 /* Keep the fixed glow anchored to the viewport throughout the homepage. The
    shared page-in slide animates transform, which would make .home the box its
-   fixed layers (the Rust backdrop) size to; fade only. */
+   fixed layers (the vortex backdrop) size to; fade only. */
 .home { transform: none !important; animation-name: home-fade-in; }
 @keyframes home-fade-in {
   from { opacity: 0; }
@@ -536,7 +536,7 @@
   }
 }
 
-/* The page itself is black; the Rust raid backdrop sits behind the content. */
+/* The page itself is black; the red vortex backdrop sits behind the content. */
 .home { background: #000; }
 .home::before, .home::after { display: none !important; }
 .home :global(.cloudy-classic-smoke) { display: none; }
@@ -557,7 +557,7 @@
 }
 
 /* ------------------------------------------------------------------------
-   Rust backdrop effects: see-through surfaces, hover depth, a light sweep on
+   Backdrop effects: see-through surfaces, hover depth, a light sweep on
    the buttons and sections that settle in as they scroll into view. Text and
    content are untouched; every effect has a still fallback.
    ------------------------------------------------------------------------ */
@@ -651,4 +651,11 @@
 @keyframes home-reveal {
   from { opacity: 0; translate: 0 28px; }
   to { opacity: 1; translate: 0 0; }
+}
+
+/* The tagline sits on the vortex: a dark halo behind the letters keeps both
+   colours readable on the bright red. */
+.home :global(.cloudy-classic-tagline),
+.home :global(.cloudy-classic-tagline) strong {
+  text-shadow: 0 0 2px #000, 0 0 10px rgba(0, 0, 0, .95), 0 0 22px rgba(0, 0, 0, .9), 0 0 44px rgba(0, 0, 0, .8);
 }
