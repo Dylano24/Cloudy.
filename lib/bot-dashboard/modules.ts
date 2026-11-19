@@ -36,6 +36,8 @@ export type ModuleDef = {
   storage: string;
   access: 'manage-server' | 'owner-role';
   note?: string;
+  /** Shown only in Cloudy Inc.'s own server. */
+  homeNote?: string;
   sections: Section[];
   actions?: { id: string; label: string; description: string }[];
 };
@@ -101,7 +103,7 @@ export const MODULES: ModuleDef[] = [
   {
     id: 'logging', title: 'Logs', group: 'server', icon: 'scroll', kind: 'settings', access: 'manage-server',
     summary: 'Audit, application and report log channels and which events are logged.', storage: 'guild:{id}:config → logging',
-    note: 'The Staff, Member, AutoMod and Embed logs of the Cloudy Inc. server use fixed channels and styling and are not changed here.',
+    homeNote: 'The Staff, Member, AutoMod and Embed logs of the Cloudy Inc. server use fixed channels and styling and are not changed here.',
     sections: [
       {
         title: 'Log channels',
@@ -118,15 +120,20 @@ export const MODULES: ModuleDef[] = [
   },
   {
     id: 'welcome', title: 'Welcome & goodbye', group: 'community', icon: 'hand', kind: 'settings', access: 'manage-server',
+    homeNote: 'In the Cloudy Inc. server Cloudy keeps its own welcome card; the card settings apply to other servers.',
     summary: 'Where Cloudy welcomes new members, and the goodbye message when someone leaves.', storage: 'guild:{id}:welcome',
     sections: [
       {
         title: 'Welcome message',
-        description: 'Cloudy posts its Cloudy Inc. welcome card (rules, account link, store and support).',
+        description: 'New members get a welcome card with your own title, text, colour and picture.',
         fields: [
           { path: 'enabled', type: 'toggle', label: 'Send welcome messages' },
           { path: 'channelId', type: 'channel', kinds: TEXT_CHANNEL, label: 'Welcome channel' },
           { path: 'welcomePing', type: 'toggle', label: 'Mention the new member', help: 'Adds a mention above the welcome card.' },
+          { path: 'welcomeEmbed.title', type: 'text', max: 256, label: 'Card title', placeholder: 'Welcome to {server}' },
+          { path: 'welcomeMessage', type: 'textarea', max: 2000, rows: 4, label: 'Welcome text', placeholder: 'Welcome {user} to {server}! Read the rules and have fun.', variables: ['{user}', '{user.tag}', '{server}', '{memberCount}'] },
+          { path: 'welcomeEmbed.color', type: 'color', label: 'Card colour' },
+          { path: 'welcomeEmbed.image', type: 'url', max: 500, label: 'Card picture URL', placeholder: 'https://' },
         ],
       },
       {
@@ -137,6 +144,21 @@ export const MODULES: ModuleDef[] = [
           { path: 'goodbyePing', type: 'toggle', label: 'Mention the member' },
           { path: 'leaveMessage', type: 'textarea', max: 2000, rows: 2, label: 'Goodbye message', variables: ['{user}', '{user.tag}', '{server}'] },
           { path: 'leaveEmbed.image', type: 'url', max: 500, label: 'Goodbye image URL', placeholder: 'https://' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'rules', title: 'Server rules', group: 'community', icon: 'book', kind: 'settings', access: 'manage-server',
+    summary: 'Your server rules, in your own words. Members read them with /rules.', storage: 'guild:{id}:config → rules',
+    sections: [
+      {
+        title: 'Rules',
+        description: 'Anyone can read the rules privately with /rules. Members with Manage Server can post them in a channel with /rules post:True.',
+        fields: [
+          { path: 'rules.title', type: 'text', max: 256, label: 'Title', placeholder: '{server} rules' },
+          { path: 'rules.text', type: 'textarea', max: 4000, rows: 10, label: 'Rules', placeholder: '1. Be respectful.\n2. No cheating or exploiting.\n3. Follow the Discord Terms of Service.', variables: ['{server}'] },
+          { path: 'rules.color', type: 'color', label: 'Card colour' },
         ],
       },
     ],
@@ -227,8 +249,19 @@ export const MODULES: ModuleDef[] = [
         title: 'Panel',
         fields: [
           { path: 'ticketPanelChannelId', type: 'channel', kinds: TEXT_CHANNEL, label: 'Panel channel' },
+          { path: 'ticketPanelTitle', type: 'text', max: 256, label: 'Panel title', placeholder: 'Contact the support' },
           { path: 'ticketPanelMessage', type: 'textarea', max: 4000, rows: 4, label: 'Panel text', help: 'Empty: Cloudy\'s standard support text.' },
           { path: 'ticketButtonLabel', type: 'text', max: 80, label: 'Button label', placeholder: 'Start Chat' },
+          { path: 'ticketFaqChannelId', type: 'channel', kinds: TEXT_CHANNEL, label: 'Help or rules channel', help: 'Adds a button on the panel that opens this channel.' },
+          { path: 'ticketFaqLabel', type: 'text', max: 80, label: 'Help button label', placeholder: 'FAQ' },
+        ],
+      },
+      {
+        title: 'Message in a new ticket',
+        description: 'The first message a member sees in their new ticket: your rules, what to send, response times.',
+        fields: [
+          { path: 'ticketOpenTitle', type: 'text', max: 256, label: 'Title', placeholder: 'Ticket #{number}' },
+          { path: 'ticketOpenMessage', type: 'textarea', max: 4000, rows: 6, label: 'Text', help: 'Empty: Cloudy\'s standard text. The reason the member gave is always shown.', variables: ['{user}', '{reason}', '{number}', '{server}'] },
         ],
       },
       {

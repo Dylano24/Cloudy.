@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { AstraBackground } from '@/components/home/astra-background';
+import { VortexBackground } from '@/components/home/vortex-background';
 import { ArrowRight, Shield, ShieldCheck, Users2, Zap, Target } from 'lucide-react';
 import styles from './home.module.css';
 import { siteSections } from '@/lib/site-sections';
@@ -16,7 +16,7 @@ export default function HomePage() {
     <>
     <div className={`cloudy-classic-home ${styles.home}`}>
       <MobilePanelSync />
-      <AstraBackground />
+      <VortexBackground />
       <div className="cloudy-classic-smoke" aria-hidden="true" />
 
       <section className="cloudy-classic-hero">
